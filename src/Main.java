@@ -1,6 +1,6 @@
 /**
  * Created by Lars on 27-Feb-15.
- * Last changes: 27-Feb-15 by Florian
+ * Last changes: 27-Feb-15 by Jonas
  */
 public class Main
 {
