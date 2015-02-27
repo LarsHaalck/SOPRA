@@ -11,5 +11,5 @@ private boolean sagJa()
 ```
 - Variablennamen beginnen immer mit Kleinbuchstaben und verwenden camelCase
 `diesIstEineVariable`
-- Nach Kommata folgt ein Leerzeichen
+- Nach Kommata folgt ein Leerzeichenlk sj
 `public funktion(String name, boolean wahrheitswert)`
