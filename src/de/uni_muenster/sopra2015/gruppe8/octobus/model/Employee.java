@@ -20,6 +20,24 @@ public class Employee
     private String salt;
     private String note;
 
+    public Employee(String name, String firstName, String address, String zipCode, String city, Date birthDate,
+                    String phone, String mail, String username, String password, String salt, String note)
+    {
+        this.name = name;
+        this.firstName = firstName;
+        this.address = address;
+        this.zipCode = zipCode;
+
+        this.city = city;
+        this.birthDate = birthDate;
+        this.phone = phone;
+        this.mail = mail;
+        this.username = username;
+        this.password = password;
+        this.salt = salt;
+        this.note = note;
+    }
+
     public String getName()
     {
         return name;
@@ -139,24 +157,4 @@ public class Employee
     {
         this.note = note;
     }
-
-    public Employee(String name, String firstName, String address, String zipCode, String city, Date birthDate,
-                    String phone, String mail, String username, String password, String salt, String note)
-    {
-        this.name = name;
-        this.firstName = firstName;
-        this.address = address;
-        this.zipCode = zipCode;
-
-        this.city = city;
-        this.birthDate = birthDate;
-        this.phone = phone;
-        this.mail = mail;
-        this.username = username;
-        this.password = password;
-        this.salt = salt;
-        this.note = note;
-    }
-
-
 }
