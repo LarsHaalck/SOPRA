@@ -23,6 +23,8 @@ public class Route
 		this.stops = stops;
 		this.night = night;
 		this.startTimes = startTimes;
+
+		//TODO: Create empty list and hashmap if parameters are null??
 	}
 
 	public Route()
@@ -100,6 +102,51 @@ public class Route
 		if (id != route.id) return false;
 
 		return true;
+	}
+
+	public BusStop getStart()
+	{
+		if(stops.size() > 0)
+			return stops.getFirst().getFirst();
+		return null;
+	}
+
+	public BusStop getEnd()
+	{
+		if(stops.size() > 0)
+			return stops.getLast().getFirst();
+		return null;
+	}
+
+	/**
+	 * Returns duration bus would need to go from first to last stop
+	 * @return duration in minutes
+	 */
+	public int getDuration()
+	{
+		return getDuration(getStart(), getEnd());
+	}
+
+	/**
+	 * Returns duration between start and end
+	 * @param start
+	 * @param end
+	 * @return duration in minutes
+	 */
+	public int getDuration(BusStop start, BusStop end)
+	{
+		int duration = 0;
+		boolean sumUp = false;
+		for(Tuple<BusStop, Integer> t: stops)
+		{
+			if(sumUp)
+				duration += t.getSecond();
+			if(t.getFirst().equals(start))
+				sumUp = true;
+			if(t.getFirst().equals(end))
+				break;
+		}
+		return duration;
 	}
 
 }
