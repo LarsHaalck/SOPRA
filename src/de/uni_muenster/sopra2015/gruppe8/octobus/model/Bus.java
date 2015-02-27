@@ -31,11 +31,6 @@ public class Bus
 		return licencePlate;
 	}
 
-	public void setLicencePlate(String licencePlate)
-	{
-		this.licencePlate = licencePlate;
-	}
-
 	public int getNumberOfSeats()
 	{
 		return numberOfSeats;
