@@ -151,4 +151,14 @@ public class Employee
     {
         this.note = note;
     }
+
+	public void addRole(Role role)
+	{
+		roles.add(role);
+	}
+
+	public boolean isRole(Role role)
+	{
+		return roles.contains(role);
+	}
 }
