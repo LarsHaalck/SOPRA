@@ -1,9 +1,11 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Created by Jonas on 27.02.2015.
+ * Edited by Lars on 27.02.2015.
  */
 public class Employee
 {
@@ -19,9 +21,10 @@ public class Employee
     private String password;
     private String salt;
     private String note;
+	private HashSet<Role> roles;
 
     public Employee(String name, String firstName, String address, String zipCode, String city, Date birthDate,
-                    String phone, String mail, String username, String password, String salt, String note)
+                    String phone, String mail, String username, String password, String salt, String note, HashSet<Role> roles)
     {
         this.name = name;
         this.firstName = firstName;
@@ -36,6 +39,7 @@ public class Employee
         this.password = password;
         this.salt = salt;
         this.note = note;
+		this.roles = roles;
     }
 
     public String getName()
@@ -147,4 +151,14 @@ public class Employee
     {
         this.note = note;
     }
+
+	public void addRole(Role role)
+	{
+		roles.add(role);
+	}
+
+	public boolean isRole(Role role)
+	{
+		return roles.contains(role);
+	}
 }
