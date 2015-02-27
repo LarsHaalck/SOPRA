@@ -2,21 +2,23 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 import java.util.Set;
 
+/**
+ * Created by Michael Biech on 27.02.15
+ */
 public class BusStop
 {
+    private int id;
     private String name;
     private Tuple<Integer, Integer> location;
-    private Set<String> subStops; //?
+    private Set<String> stoppingPoints;
     private boolean barrierFree;
-    private int id;
 
-    public BusStop(String name, Tuple<Integer, Integer> location, Set<String> subStops, boolean barrierFree, int id)
+    public BusStop(String name, Tuple<Integer, Integer> location, Set<String> stoppingPoints, boolean barrierFree)
     {
         this.name = name;
         this.location = location;
-        this.subStops = subStops;
+        this.stoppingPoints = stoppingPoints;
         this.barrierFree = barrierFree;
-        this.id = id;
     }
 
     public String getName()
@@ -39,14 +41,14 @@ public class BusStop
         this.location = location;
     }
 
-    public Set<String> getSubStops()
+    public Set<String> getStoppingPoints()
     {
-        return subStops;
+        return stoppingPoints;
     }
 
-    public void setSubStops(Set<String> subStops)
+    public void setStoppingPoints(Set<String> stoppingPoints)
     {
-        this.subStops = subStops;
+        this.stoppingPoints = stoppingPoints;
     }
 
     public boolean isBarrierFree()
