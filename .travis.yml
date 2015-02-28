@@ -28,7 +28,7 @@ install:
   - mv idea-IC-* idea-IC
   - echo "Creating build.properties file for ant."
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
-  - echo "jdk.home.1.8=$JAVA_HOME" > build.properties
+  - echo "jdk.home.1.8=$JAVA_HOME" >> build.properties
   - cat build.properties
 
 script: ant
