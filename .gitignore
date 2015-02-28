@@ -17,3 +17,6 @@ hs_err_pid*
 out/
 .idea_modules/
 
+#user-specific .properties for ant-build
+*.properties
+
