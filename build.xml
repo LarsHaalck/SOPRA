@@ -206,7 +206,7 @@
   <target name="artifact.sopra:jar" depends="init.artifacts, compile.module.sopra" description="Build &#39;SOPRA:jar&#39; artifact">
     <property name="artifact.temp.output.sopra:jar" value="${artifacts.temp.dir}/SOPRA_jar"/>
     <mkdir dir="${artifact.temp.output.sopra:jar}"/>
-    <jar destfile="${temp.jar.path.SOPRA.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+    <jar destfile="${temp.jar.path.SOPRA.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain" whenmanifestonly="fail" manifest="${basedir}/src/META-INF/MANIFEST.MF">
       <zipfileset dir="${sopra.output.dir}"/>
     </jar>
     <copy file="${temp.jar.path.SOPRA.jar}" tofile="${artifact.temp.output.sopra:jar}/SOPRA.jar"/>
