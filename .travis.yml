@@ -30,7 +30,6 @@ install:
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
   - echo "jdk.home.1.8=$JAVA_HOME" >> build.properties
   - cat build.properties
-  - travis encrypt DEPLOY_KEY="a2:03:d6:08:13:fa:22:9e:c7:cc:f6:9a:bd:37:ec:cf" --add env.matrix
   - cat travis/deploy_key.pem
 
 script: ant
