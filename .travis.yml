@@ -7,6 +7,10 @@ jdk:
   - oraclejdk8
 #  - openjdk6
 
+
+notifications:
+  email: false
+
 install:
   - IDEA_VERSION=14.0.3
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz
@@ -29,7 +33,9 @@ install:
   - echo "Creating build.properties file for ant."
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
   - echo "jdk.home.1.8=$JAVA_HOME" >> build.properties
-  - cat build.properties
-  - travis encrypt BLA=blubb
+
+after_success:
+  - git remote add deploy LHulk@github.com/LHulk/SOPRA
+
 
 script: ant
