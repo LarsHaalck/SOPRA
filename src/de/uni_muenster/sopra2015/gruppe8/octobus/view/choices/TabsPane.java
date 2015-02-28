@@ -1,0 +1,19 @@
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
+
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.bussesTab;
+
+import javax.swing.*;
+
+/**
+ * @author Michael Biech
+ */
+public class TabsPane extends JTabbedPane
+{
+    public TabsPane(){
+        addTab("Allgemein", new bussesTab());
+        addTab("Allgemein", new JPanel());
+        addTab("Allgemein", new JPanel());
+        addTab("Allgemein", new JPanel());
+        addTab("Allgemein", new JPanel());
+    }
+}
