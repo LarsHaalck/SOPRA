@@ -29,7 +29,7 @@ public class Route
 
 	public Route()
 	{
-		name = "";
+		name = ""; 
 		note = "";
 		stops = new LinkedList<Tuple<BusStop, Integer>>();
 		night = false;
