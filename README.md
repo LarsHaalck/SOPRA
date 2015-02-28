@@ -1,5 +1,5 @@
 # SOPRA
-SOPRA und so
+Aktueller Status: ![Travis-Stats](https://magnum.travis-ci.com/LHulk/SOPRA.svg?token=xByAUd2R8jHHWnUTMZau&branch=master)
 
 # Code Style
 - Öffnende geschweifte Klammern in eigener Zeile
