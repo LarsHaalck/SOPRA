@@ -30,6 +30,6 @@ install:
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
   - echo "jdk.home.1.8=$JAVA_HOME" >> build.properties
   - cat build.properties
-  - cat travis/deploy_key.pem
+  - travis encrpyt BLA=blubb
 
 script: ant
