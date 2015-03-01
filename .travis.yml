@@ -1,4 +1,7 @@
 language: java
+branches:
+  only:
+    - master
 jdk:
 - oraclejdk8
 notifications:
@@ -27,5 +30,7 @@ deploy:
   api_key:
     secure: ewkvtZkVtApajgmrp3CVrNFhLK3lblhaeD1Amsd0yED/UtCUUaAg8Odf7NBIXe3+w3cr0w0rNVicr8JGqk0D0rJM5+78ArRH8nfk3KElJ9V35DWMHCftmV/QCUz6ADFJBC01/UVlXzKoslQ9MXf3BsfZ1j5Fcjse3j6E7qC5RCY=
   file: out/artifacts/SOPRA_JAR/SOPRA.jar
+  skip_cleanup: true
   on:
     repo: LHulk/SOPRA
+    tags: true
