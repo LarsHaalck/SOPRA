@@ -9,20 +9,20 @@ public class Bus
 {
 	private String licencePlate;
 	private int numberOfSeats;
-	private int standingRooms;
-	private String manufactuer;
+	private int standingRoom;
+	private String manufacturer;
 	private String model;
-	private Date nexInspectionDue;
+	private Date nextInspectionDue;
 	private boolean articulatedBus;
 
-	public Bus(String licencePlate, int numberOfSeats, int standingRooms, String manufactuer, String model, Date nexInspectionDue, boolean articulatedBus)
+	public Bus(String licencePlate, int numberOfSeats, int standingRoom, String manufacturer, String model, Date nextInspectionDue, boolean articulatedBus)
 	{
 		this.licencePlate = licencePlate;
 		this.numberOfSeats = numberOfSeats;
-		this.standingRooms = standingRooms;
-		this.manufactuer = manufactuer;
+		this.standingRoom = standingRoom;
+		this.manufacturer = manufacturer;
 		this.model = model;
-		this.nexInspectionDue = nexInspectionDue;
+		this.nextInspectionDue = nextInspectionDue;
 		this.articulatedBus = articulatedBus;
 	}
 
@@ -41,24 +41,24 @@ public class Bus
 		this.numberOfSeats = numberOfSeats;
 	}
 
-	public int getStandingRooms()
+	public int getStandingRoom()
 	{
-		return standingRooms;
+		return standingRoom;
 	}
 
-	public void setStandingRooms(int standingRooms)
+	public void setStandingRoom(int standingRoom)
 	{
-		this.standingRooms = standingRooms;
+		this.standingRoom = standingRoom;
 	}
 
-	public String getManufactuer()
+	public String getManufacturer()
 	{
-		return manufactuer;
+		return manufacturer;
 	}
 
-	public void setManufactuer(String manufactuer)
+	public void setManufacturer(String manufacturer)
 	{
-		this.manufactuer = manufactuer;
+		this.manufacturer = manufacturer;
 	}
 
 	public String getModel()
@@ -71,14 +71,14 @@ public class Bus
 		this.model = model;
 	}
 
-	public Date getNexInspectionDue()
+	public Date getNextInspectionDue()
 	{
-		return nexInspectionDue;
+		return nextInspectionDue;
 	}
 
-	public void setNexInspectionDue(Date nexInspectionDue)
+	public void setNextInspectionDue(Date nextInspectionDue)
 	{
-		this.nexInspectionDue = nexInspectionDue;
+		this.nextInspectionDue = nextInspectionDue;
 	}
 
 	public boolean isArticulatedBus()

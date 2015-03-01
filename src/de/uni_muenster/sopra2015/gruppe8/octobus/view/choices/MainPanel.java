@@ -14,6 +14,7 @@ public class MainPanel extends JPanel
     private MainPanelListener mainPanelListener;
 
     public MainPanel(){
+        super();
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();

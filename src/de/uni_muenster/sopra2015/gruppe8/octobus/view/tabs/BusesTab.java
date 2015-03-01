@@ -5,9 +5,6 @@ import javax.swing.*;
 /**
  * @author Michael Biech
  */
-public class bussesTab extends JPanel
+public class BusesTab extends JPanel
 {
-    public bussesTab(){
-        add(new JLabel("Stub"));
-    }
 }

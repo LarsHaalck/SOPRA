@@ -13,6 +13,7 @@ import javax.swing.*;
 public class EmployeePanel extends JPanel implements NavigationPanelListener
 {
     public EmployeePanel(){
+        super();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

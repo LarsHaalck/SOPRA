@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.bussesTab;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.BusesTab;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.ExampleTab;
 
 import javax.swing.*;
 
@@ -10,7 +11,9 @@ import javax.swing.*;
 public class TabsPane extends JTabbedPane
 {
     public TabsPane(){
-        addTab("Allgemein", new bussesTab());
+        super();
+
+        addTab("Allgemein", new ExampleTab());
         addTab("Allgemein", new JPanel());
         addTab("Allgemein", new JPanel());
         addTab("Allgemein", new JPanel());

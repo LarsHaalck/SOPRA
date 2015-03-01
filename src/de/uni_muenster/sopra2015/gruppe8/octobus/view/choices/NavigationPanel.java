@@ -16,9 +16,10 @@ public class NavigationPanel extends JPanel
     private NavigationPanelListener navigationPanelListener;
 
     public NavigationPanel(String username){
+        super();
+
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        //
         JLabel lbWelcomeText = new JLabel("Willkommen, " + username + "!");
         JButton btnChangePassword = new JButton("Passwort ändern");
         JButton btnLogout = new JButton("Ausloggen");
