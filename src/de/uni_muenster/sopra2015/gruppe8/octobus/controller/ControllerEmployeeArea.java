@@ -1,13 +1,12 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.NavigationPanelListener;
-
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 import javax.swing.*;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerEmployeeArea implements NavigationPanelListener
+public class ControllerEmployeeArea implements ButtonListener
 {
     private JPanel panel;
 
@@ -17,14 +16,11 @@ public class ControllerEmployeeArea implements NavigationPanelListener
     }
 
     @Override
-    public void NavigationRequestEmitted(String emitter)
+    public void buttonPressed(String emitter)
     {
         switch (emitter){
             case "passwordChangeRequest":
                 System.out.println("User wishes to change their password");
-                break;
-            case "logoutRequest":
-                System.out.println("User wishes to log out");
                 break;
         }
     }

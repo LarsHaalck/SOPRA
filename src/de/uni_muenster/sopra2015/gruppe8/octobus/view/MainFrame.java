@@ -2,7 +2,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.MainPanelListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +15,15 @@ import java.awt.*;
  */
 public class MainFrame extends JFrame
 {
-	private ControllerMainFrame controller;
+	private ControllerMainFrame controllerMainFrame;
     public MainFrame()
 	{
         super("OctoBUS");
 
-		controller = new ControllerMainFrame(this);
+        controllerMainFrame = new ControllerMainFrame(this);
         MainPanel mainPanel = new MainPanel();
-        mainPanel.setMainPanelListener(controller);
-        controller.displayContent(mainPanel);
+        mainPanel.setListener(controllerMainFrame);
+        controllerMainFrame.displayContent(mainPanel);
 
         ////////////////////////////////////////////////
         // Anything below this line is just GUI stuff //
@@ -61,6 +60,10 @@ public class MainFrame extends JFrame
         // Center frame on screen (as per http://stackoverflow.com/a/2442614/2010258)
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+    public ControllerMainFrame getController()
+    {
+        return controllerMainFrame;
     }
 
 }

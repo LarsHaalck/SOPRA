@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.MainPanelListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +11,14 @@ import java.awt.*;
  */
 public class MainPanel extends JPanel
 {
+    private ControllerMainPanel controllerMainPanel;
+    private ControllerMainFrame controllerMainFrame;
 
-    private MainPanelListener mainPanelListener;
-
-    public MainPanel(){
+    public MainPanel()
+    {
         super();
+
+        controllerMainPanel = new ControllerMainPanel(this);
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -74,32 +78,32 @@ public class MainPanel extends JPanel
 
         // Add action listeners to buttons
         btnLogin.addActionListener(e -> {
-            if (mainPanelListener != null){
-                mainPanelListener.MainPanelRequestEmitted("loginRequest");
+            if (controllerMainFrame != null){
+                controllerMainFrame.buttonPressed("loginRequest");
             }
         });
 
         btnSearchConnection.addActionListener(e -> {
-            if (mainPanelListener != null){
-                mainPanelListener.MainPanelRequestEmitted("searchConnectionRequest");
+            if (controllerMainPanel != null){
+                controllerMainPanel.buttonPressed("searchConnectionRequest");
             }
         });
 
         btnShowTickets.addActionListener(e -> {
-            if (mainPanelListener != null){
-                mainPanelListener.MainPanelRequestEmitted("showTicketsRequest");
+            if (controllerMainPanel != null){
+                controllerMainPanel.buttonPressed("showTicketsRequest");
             }
         });
 
         btnShowNetwork.addActionListener(e -> {
-            if (mainPanelListener != null){
-                mainPanelListener.MainPanelRequestEmitted("showNetworkRequest");
+            if (controllerMainPanel != null){
+                controllerMainPanel.buttonPressed("showNetworkRequest");
             }
         });
     }
 
-    public void setMainPanelListener(MainPanelListener listener){
-        mainPanelListener = listener;
+    public void setListener(ControllerMainFrame listener)
+    {
+        controllerMainFrame = listener;
     }
-
 }
