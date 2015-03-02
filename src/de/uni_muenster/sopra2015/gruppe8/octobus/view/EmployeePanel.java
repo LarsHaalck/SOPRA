@@ -13,7 +13,6 @@ import javax.swing.*;
 public class EmployeePanel extends JPanel
 {
     private ControllerEmployeeArea controllerEmployeeArea;
-    private ControllerMainFrame controllerMainFrame;
     private NavigationPanel navigationPanel;
 
     public EmployeePanel(){
@@ -36,7 +35,6 @@ public class EmployeePanel extends JPanel
     }
     public void setListener(ControllerMainFrame listener)
     {
-        controllerMainFrame = listener;
-        navigationPanel.setListener(controllerMainFrame);
+        controllerEmployeeArea.setListener(listener);
     }
 }

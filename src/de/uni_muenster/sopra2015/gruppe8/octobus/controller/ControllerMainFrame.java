@@ -23,22 +23,17 @@ public class ControllerMainFrame implements ButtonListener
 	@Override
 	public void buttonPressed(String emitter)
 	{
-		System.out.println(emitter);
-		if (emitter == "loginRequest") displayContent(new EmployeePanel());
-		else System.out.println(emitter);
         switch (emitter)
         {
             case "loginRequest":
                 EmployeePanel newEmployeePanel = new EmployeePanel();
                 newEmployeePanel.setListener(frame.getController());
                 displayContent(newEmployeePanel);
-                System.out.println("login");
                 break;
             case "logoutRequest":
                 MainPanel newMainPanel = new MainPanel();
                 newMainPanel.setListener(frame.getController());
                 displayContent(newMainPanel);
-                System.out.println("User wishes to log out");
                 break;
         }
 	}

@@ -12,7 +12,6 @@ import java.awt.*;
 public class NavigationPanel extends JPanel
 {
     private ControllerEmployeeArea controllerEmployeeArea;
-    private ControllerMainFrame controllerMainFrame;
 
     public NavigationPanel(String username){
         super();
@@ -38,18 +37,13 @@ public class NavigationPanel extends JPanel
         });
 
         btnLogout.addActionListener(e -> {
-            if (controllerMainFrame != null)
-                controllerMainFrame.buttonPressed("logoutRequest");
+            if (controllerEmployeeArea != null)
+                controllerEmployeeArea.buttonPressed("logoutRequest");
         });
     }
-
 
     //TODO change name
     public void setListener(ControllerEmployeeArea listener){
         controllerEmployeeArea = listener;
     }
-    public void setListener(ControllerMainFrame listener){
-        controllerMainFrame = listener;
-    }
-
 }
