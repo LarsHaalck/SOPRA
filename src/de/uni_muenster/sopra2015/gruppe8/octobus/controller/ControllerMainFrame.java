@@ -6,7 +6,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -20,27 +19,28 @@ public class ControllerMainFrame implements ButtonListener
 	{
 		this.frame = frame;
 	}
+
 	@Override
 	public void buttonPressed(String emitter)
 	{
-        switch (emitter)
-        {
-            case "loginRequest":
-                EmployeePanel newEmployeePanel = new EmployeePanel();
-                newEmployeePanel.setListener(this);
-                displayContent(newEmployeePanel);
-                break;
-            case "logoutRequest":
-                MainPanel newMainPanel = new MainPanel();
-                newMainPanel.setListener(this);
-                displayContent(newMainPanel);
-                break;
-        }
+		switch (emitter)
+		{
+			case "loginRequest":
+				EmployeePanel newEmployeePanel = new EmployeePanel();
+				newEmployeePanel.setListener(this);
+				displayContent(newEmployeePanel);
+				break;
+			case "logoutRequest":
+				MainPanel newMainPanel = new MainPanel();
+				newMainPanel.setListener(this);
+				displayContent(newMainPanel);
+				break;
+		}
 	}
 
 	public void displayForm(String emitter)
 	{
-		switch(emitter)
+		switch (emitter)
 		{
 			case "login":
 				LoginDialog d = new LoginDialog(frame);

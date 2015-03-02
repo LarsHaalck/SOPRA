@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 
 import javax.swing.*;
 import java.awt.*;
