@@ -61,9 +61,5 @@ public class MainFrame extends JFrame
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    public ControllerMainFrame getController()
-    {
-        return controllerMainFrame;
-    }
 
 }

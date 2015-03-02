@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 public class LoginDialog extends JDialog
 {
 	private ControllerLoginForm controllerLoginForm;
-	private ControllerMainFrame controllerMainFrame;
 
     private JTextField tfUsername;
     private JPasswordField pfPassword;
@@ -122,7 +121,6 @@ public class LoginDialog extends JDialog
 
 	public void setListener(ControllerMainFrame controllerMainFrame)
 	{
-		this.controllerMainFrame = controllerMainFrame;
 		controllerLoginForm.setListener(controllerMainFrame);
 	}
 

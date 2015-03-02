@@ -33,8 +33,8 @@ public class EmployeePanel extends JPanel
 
         setVisible(true);
     }
-    public void setListener(ControllerMainFrame listener)
+    public void setListener(ControllerMainFrame controllerMainFrame)
     {
-        controllerEmployeeArea.setListener(listener);
+        controllerEmployeeArea.setListener(controllerMainFrame);
     }
 }

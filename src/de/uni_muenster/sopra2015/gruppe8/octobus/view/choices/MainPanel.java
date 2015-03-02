@@ -12,7 +12,6 @@ import java.awt.*;
 public class MainPanel extends JPanel
 {
     private ControllerMainPanel controllerMainPanel;
-    private ControllerMainFrame controllerMainFrame;
 
     public MainPanel()
     {
@@ -102,9 +101,8 @@ public class MainPanel extends JPanel
         });
     }
 
-    public void setListener(ControllerMainFrame listener)
+    public void setListener(ControllerMainFrame controllerMainFrame)
     {
-        controllerMainFrame = listener;
 		controllerMainPanel.setListener(controllerMainFrame);
     }
 }

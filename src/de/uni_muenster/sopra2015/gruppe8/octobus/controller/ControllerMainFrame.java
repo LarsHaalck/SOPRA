@@ -27,12 +27,12 @@ public class ControllerMainFrame implements ButtonListener
         {
             case "loginRequest":
                 EmployeePanel newEmployeePanel = new EmployeePanel();
-                newEmployeePanel.setListener(frame.getController());
+                newEmployeePanel.setListener(this);
                 displayContent(newEmployeePanel);
                 break;
             case "logoutRequest":
                 MainPanel newMainPanel = new MainPanel();
-                newMainPanel.setListener(frame.getController());
+                newMainPanel.setListener(this);
                 displayContent(newMainPanel);
                 break;
         }
