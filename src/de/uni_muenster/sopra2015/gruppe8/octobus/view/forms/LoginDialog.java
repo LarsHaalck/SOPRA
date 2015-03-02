@@ -102,6 +102,7 @@ public class LoginDialog extends JDialog
         pack();
         setResizable(false);
         setLocationRelativeTo(parent);
+		setDefaultValues();
     }
 
     public void illegalInput()
@@ -121,5 +122,11 @@ public class LoginDialog extends JDialog
 	{
 		this.controllerMainFrame = controllerMainFrame;
 		controllerLoginForm.setListener(controllerMainFrame);
+	}
+
+	private void setDefaultValues()
+	{
+		tfUsername.setText("herbert");
+		pfPassword.setText("octobus");
 	}
 }
