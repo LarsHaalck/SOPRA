@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * @author Patricia Schinke
  * lenght of textfield
- * test?
+ * zip an city
  */
 public class FormulaAdminEmployee extends JPanel
 {
@@ -17,6 +17,7 @@ public class FormulaAdminEmployee extends JPanel
 	private JPanel leftPanel = new JPanel();
 	private JPanel topPanel = new JPanel();
 	private JPanel bottomPanel = new JPanel();
+	private JPanel leftPanel1 = new JPanel();
 
 	private JButton save = new JButton("Speichern");
 	private JButton cancel = new JButton("Abbrechen");
@@ -38,17 +39,8 @@ public class FormulaAdminEmployee extends JPanel
 	private JTextField cityText = new JTextField();
 	private JTextField dateText = new JTextField();
 	private JTextField phoneText = new JTextField();
-	private JTextField remarkText = new JTextField();
+	private JTextArea remarkText = new JTextArea();
 	private JTextField usernameText = new JTextField();
-
-	private JPanel firstNamePanel = new JPanel();
-	private JPanel lastNamePanel = new JPanel();
-	private JPanel addressPanel = new JPanel();
-	private JPanel zipPanel = new JPanel(); //with city
-	private JPanel datePanel = new JPanel();
-	private JPanel phonePanel = new JPanel();
-	private JPanel remarkPanel = new JPanel();
-	private JPanel usernamePanel = new JPanel();
 
 	private JPanel picturePanel = new JPanel();
 	private JLabel roleLabel = new JLabel("Rollen:");
@@ -67,46 +59,33 @@ public class FormulaAdminEmployee extends JPanel
 		add(bottomPanel);
 
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-		topPanel.add(leftPanel);
+		topPanel.add(leftPanel1);
 		topPanel.add(rightPanel);
 
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.add(explanationPanel);
+		leftPanel1.setLayout(new BoxLayout(leftPanel1, BoxLayout.Y_AXIS));
+		leftPanel1.add(explanationPanel);
 		explanationPanel.add(explanation);
-		leftPanel.add(lastNamePanel);
-		lastNamePanel.setLayout(new FlowLayout());
-		lastNamePanel.add(lastName);
-		lastNamePanel.add(lastNameText);
-		leftPanel.add(firstNamePanel);
-		firstNamePanel.setLayout(new FlowLayout());
-		firstNamePanel.add(firstName);
-		firstNamePanel.add(firstNameText);
-		leftPanel.add(addressPanel);
-		addressPanel.setLayout(new FlowLayout());
-		addressPanel.add(address);
-		addressPanel.add(addressText);
-		leftPanel.add(zipPanel);
-		zipPanel.setLayout(new FlowLayout());
-		zipPanel.add(zip);
-		zipPanel.add(zipText);
-		zipPanel.add(city);
-		zipPanel.add(cityText);
-		leftPanel.add(datePanel);
-		datePanel.setLayout(new FlowLayout());
-		datePanel.add(date);
-		datePanel.add(dateText);
-		leftPanel.add(phonePanel);
-		phonePanel.setLayout(new FlowLayout());
-		phonePanel.add(phone);
-		phonePanel.add(phoneText);
-		leftPanel.add(remarkPanel);
-		remarkPanel.setLayout(new FlowLayout());
-		remarkPanel.add(remark);
-		remarkPanel.add(remarkText);
-		leftPanel.add(usernamePanel);
-		usernamePanel.setLayout(new FlowLayout());
-		usernamePanel.add(username);
-		usernamePanel.add(usernameText);
+		leftPanel1.add(leftPanel);
+
+		leftPanel.setLayout(new GridLayout(9, 2));
+		leftPanel.add(lastName);
+		leftPanel.add(lastNameText);
+		leftPanel.add(firstName);
+		leftPanel.add(firstNameText);
+		leftPanel.add(address);
+		leftPanel.add(addressText);
+		leftPanel.add(zip);
+		leftPanel.add(zipText);
+		leftPanel.add(city);
+		leftPanel.add(cityText);
+		leftPanel.add(date);
+		leftPanel.add(dateText);
+		leftPanel.add(phone);
+		leftPanel.add(phoneText);
+		leftPanel.add(remark);
+		leftPanel.add(remarkText);
+		leftPanel.add(username);
+		leftPanel.add(usernameText);
 
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		rightPanel.add(picturePanel);
