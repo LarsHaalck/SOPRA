@@ -9,7 +9,7 @@ private boolean sagJa()
     return true;
 }
 ```
-- Variablennamen beginnen immer mit Kleinbuchstaben und verwenden camelCase
+- Variablennamens beginnen immer mit Kleinbuchstaben und verwenden camelCase
 `diesIstEineVariable`
 - Nach Kommata folgt ein Leerzeichen
 `public funktion(String name, boolean wahrheitswert)`
