@@ -78,8 +78,8 @@ public class MainPanel extends JPanel
 
         // Add action listeners to buttons
         btnLogin.addActionListener(e -> {
-            if (controllerMainFrame != null){
-                controllerMainFrame.buttonPressed("loginRequest");
+            if (controllerMainPanel != null){
+                controllerMainPanel.buttonPressed("loginRequest");
             }
         });
 
@@ -105,5 +105,6 @@ public class MainPanel extends JPanel
     public void setListener(ControllerMainFrame listener)
     {
         controllerMainFrame = listener;
+		controllerMainPanel.setListener(controllerMainFrame);
     }
 }

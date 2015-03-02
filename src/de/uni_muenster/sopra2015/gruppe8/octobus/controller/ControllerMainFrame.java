@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.EmployeePanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.MainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class ControllerMainFrame implements ButtonListener
 	@Override
 	public void buttonPressed(String emitter)
 	{
+		System.out.println(emitter);
 		if (emitter == "loginRequest") displayContent(new EmployeePanel());
 		else System.out.println(emitter);
         switch (emitter)
@@ -39,6 +41,18 @@ public class ControllerMainFrame implements ButtonListener
                 System.out.println("User wishes to log out");
                 break;
         }
+	}
+
+	public void displayForm(String emitter)
+	{
+		switch(emitter)
+		{
+			case "login":
+				LoginDialog d = new LoginDialog(frame);
+				d.setListener(this);
+				d.setVisible(true);
+				break;
+		}
 	}
 
 	// TODO: Considering this might be used in more than one place,

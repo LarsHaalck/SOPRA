@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 import javax.swing.*;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 public class ControllerMainPanel implements ButtonListener
 {
     private JPanel panel;
+	private ControllerMainFrame controllerMainFrame;
 
     public ControllerMainPanel(JPanel panel)
     {
@@ -20,6 +22,9 @@ public class ControllerMainPanel implements ButtonListener
     {
         switch (emitter)
         {
+			case "loginRequest":
+				controllerMainFrame.displayForm("login");
+				break;
             case "searchConnectionRequest":
                 System.out.println("Searching Connection");
                 break;
@@ -31,4 +36,9 @@ public class ControllerMainPanel implements ButtonListener
                 break;
         }
     }
+
+	public void setListener(ControllerMainFrame controllerMainFrame)
+	{
+		this.controllerMainFrame = controllerMainFrame;
+	}
 }
