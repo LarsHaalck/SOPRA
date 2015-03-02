@@ -21,7 +21,7 @@ public class MainFrame extends JFrame
 	{
         super("OctoBUS");
 
-		ControllerMainFrame controller = new ControllerMainFrame(this);
+		controller = new ControllerMainFrame(this);
         MainPanel mainPanel = new MainPanel();
         mainPanel.setMainPanelListener(controller);
         controller.displayContent(mainPanel);
