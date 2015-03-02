@@ -102,6 +102,8 @@ public class LoginDialog extends JDialog
         pack();
         setResizable(false);
         setLocationRelativeTo(parent);
+		getRootPane().setDefaultButton(btnLogin);
+
 		setDefaultValues();
     }
 
