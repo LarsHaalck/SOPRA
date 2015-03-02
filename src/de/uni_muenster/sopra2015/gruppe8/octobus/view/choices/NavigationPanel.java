@@ -1,19 +1,17 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.NavigationPanelListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Michael Biech
  */
 public class NavigationPanel extends JPanel
 {
-
-    private NavigationPanelListener navigationPanelListener;
+    private ControllerEmployeeArea controllerEmployeeArea;
 
     public NavigationPanel(String username){
         super();
@@ -33,33 +31,19 @@ public class NavigationPanel extends JPanel
         add(btnLogout);
         add(Box.createRigidArea(new Dimension(5, 0)));
 
-        btnChangePassword.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (navigationPanelListener != null) navigationPanelListener
-                        // TODO: I suggest getText-internationalisation for consistency
-                        // Stub
-                        .NavigationRequestEmitted("passwordChangeRequest");
-            }
+        btnChangePassword.addActionListener(e -> {
+            if (controllerEmployeeArea != null)
+                controllerEmployeeArea.buttonPressed("passwordChangeRequest");
         });
 
-        btnLogout.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (navigationPanelListener != null) navigationPanelListener
-                        // TODO: I suggest getText-internationalisation for consistency
-                        // Stub
-                        .NavigationRequestEmitted("logoutRequest");
-            }
+        btnLogout.addActionListener(e -> {
+            if (controllerEmployeeArea != null)
+                controllerEmployeeArea.buttonPressed("logoutRequest");
         });
     }
 
-    public void setNavigationPanelListener(NavigationPanelListener listener){
-        navigationPanelListener = listener;
+    //TODO change name
+    public void setListener(ControllerEmployeeArea listener){
+        controllerEmployeeArea = listener;
     }
-
 }
