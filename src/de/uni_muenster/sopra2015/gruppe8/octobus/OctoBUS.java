@@ -6,7 +6,7 @@ import javax.swing.*;
 
 /**
  * Main entry point for the OctoBUS application
- * test
+ *
  * @author Michael Biech
  */
 public class OctoBUS
