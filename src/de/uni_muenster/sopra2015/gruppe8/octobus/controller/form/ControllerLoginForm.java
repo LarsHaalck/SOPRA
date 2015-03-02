@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 
@@ -12,7 +13,6 @@ import javax.swing.*;
 public class ControllerLoginForm implements ButtonListener
 {
 	LoginDialog dialog;
-	ControllerMainFrame controllerMainFrame;
 
 	public ControllerLoginForm(LoginDialog dialog)
 	{
@@ -23,12 +23,11 @@ public class ControllerLoginForm implements ButtonListener
 	{
 		switch(emitter)
 		{
-			case "login":
+			case "login_form_login":
 				if(dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
-					if (controllerMainFrame != null)
-						controllerMainFrame.buttonPressed("loginRequest");
-					dialog.dispose();
+					ControllerManager.informButtonPressed("loginDone");
+					dispose();
 				}
 				else
 				{
@@ -36,14 +35,18 @@ public class ControllerLoginForm implements ButtonListener
 				}
 				break;
 
-			case "cancel":
-				dialog.dispose();
+			case "login_form_cancel":
+				dispose();
 				break;
 		}
 	}
 
-	public void setListener(ControllerMainFrame controllerMainFrame)
+	/**
+	 * Close dialog and remove this controller from manager
+	 */
+	public void dispose()
 	{
-		this.controllerMainFrame = controllerMainFrame;
+		dialog.dispose();
+		ControllerManager.removeListener(this);
 	}
 }

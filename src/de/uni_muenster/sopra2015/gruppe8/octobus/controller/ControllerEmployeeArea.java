@@ -8,14 +8,18 @@ import javax.swing.*;
  */
 public class ControllerEmployeeArea implements ButtonListener
 {
-	private ControllerMainFrame controllerMainFrame;
-
     private JPanel panel;
 
     public ControllerEmployeeArea(JPanel panel)
     {
         this.panel = panel;
+		ControllerManager.addListener(this);
     }
+
+	public void dispose()
+	{
+		ControllerManager.removeListener(this);
+	}
 
     @Override
     public void buttonPressed(String emitter)
@@ -24,14 +28,10 @@ public class ControllerEmployeeArea implements ButtonListener
             case "passwordChangeRequest":
                 System.out.println("User wishes to change their password");
                 break;
-			case "logoutRequest":
-				controllerMainFrame.buttonPressed("logoutRequest");
+			case "logoutButtonPressed":
+				dispose();
+				ControllerManager.informButtonPressed("logoutDone");
 				break;
         }
     }
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		this.controllerMainFrame = controllerMainFrame;
-	}
 }

@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,6 @@ import java.awt.*;
  */
 public class NavigationPanel extends JPanel
 {
-	private ControllerEmployeeArea controllerEmployeeArea;
 
 	public NavigationPanel(String username)
 	{
@@ -34,20 +34,12 @@ public class NavigationPanel extends JPanel
 
 		btnChangePassword.addActionListener(e ->
 		{
-			if (controllerEmployeeArea != null)
-				controllerEmployeeArea.buttonPressed("passwordChangeRequest");
+			ControllerManager.informButtonPressed("passwordChangedRequest");
 		});
 
 		btnLogout.addActionListener(e ->
 		{
-			if (controllerEmployeeArea != null)
-				controllerEmployeeArea.buttonPressed("logoutRequest");
+			ControllerManager.informButtonPressed("logoutButtonPressed");
 		});
-	}
-
-	//TODO change name
-	public void setListener(ControllerEmployeeArea controllerEmployeeArea)
-	{
-		this.controllerEmployeeArea = controllerEmployeeArea;
 	}
 }

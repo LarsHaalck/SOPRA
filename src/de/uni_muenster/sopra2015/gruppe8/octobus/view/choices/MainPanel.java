@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,10 +100,5 @@ public class MainPanel extends JPanel
                 controllerMainPanel.buttonPressed("showNetworkRequest");
             }
         });
-    }
-
-    public void setListener(ControllerMainFrame controllerMainFrame)
-    {
-		controllerMainPanel.setListener(controllerMainFrame);
     }
 }

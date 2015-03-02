@@ -23,7 +23,6 @@ public class EmployeePanel extends JPanel
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         navigationPanel = new NavigationPanel("Günni");
-        navigationPanel.setListener(controllerEmployeeArea);
         add(navigationPanel);
 
         TabsPane tabsPane = new TabsPane();
@@ -32,9 +31,5 @@ public class EmployeePanel extends JPanel
         add(tabsPane);
 
         setVisible(true);
-    }
-    public void setListener(ControllerMainFrame controllerMainFrame)
-    {
-        controllerEmployeeArea.setListener(controllerMainFrame);
     }
 }

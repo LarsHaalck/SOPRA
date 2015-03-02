@@ -10,11 +10,11 @@ import javax.swing.*;
 public class ControllerMainPanel implements ButtonListener
 {
     private JPanel panel;
-	private ControllerMainFrame controllerMainFrame;
 
     public ControllerMainPanel(JPanel panel)
     {
         this.panel = panel;
+		ControllerManager.addListener(this);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ControllerMainPanel implements ButtonListener
         switch (emitter)
         {
 			case "loginRequest":
-				controllerMainFrame.displayForm("login");
+				ControllerManager.informButtonPressed("showLoginForm");
 				break;
             case "searchConnectionRequest":
                 System.out.println("Searching Connection");
@@ -36,9 +36,4 @@ public class ControllerMainPanel implements ButtonListener
                 break;
         }
     }
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		this.controllerMainFrame = controllerMainFrame;
-	}
 }

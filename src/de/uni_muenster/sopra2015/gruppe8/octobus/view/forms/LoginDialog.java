@@ -84,12 +84,12 @@ public class LoginDialog extends JDialog
 
         btnLogin = new JButton("Login");
         btnLogin.addActionListener(e -> {
-            controllerLoginForm.buttonPressed("login");
+            controllerLoginForm.buttonPressed("login_form_login");
         });
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {
-           controllerLoginForm.buttonPressed("cancel");
+           controllerLoginForm.buttonPressed("login_form_cancel");
         });
         JPanel bp = new JPanel();
         bp.add(btnLogin);
@@ -118,11 +118,6 @@ public class LoginDialog extends JDialog
     public String getPassword() {
         return new String(pfPassword.getPassword());
     }
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		controllerLoginForm.setListener(controllerMainFrame);
-	}
 
 	private void setDefaultValues()
 	{
