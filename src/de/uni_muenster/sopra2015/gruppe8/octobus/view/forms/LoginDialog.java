@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerLoginForm;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -11,6 +14,9 @@ import java.awt.event.ActionListener;
  */
 public class LoginDialog extends JDialog
 {
+	private ControllerLoginForm controllerLoginForm;
+	private ControllerMainFrame controllerMainFrame;
+
     private JTextField tfUsername;
     private JPasswordField pfPassword;
     private JLabel lbUsername, lbPassword, lbError;
@@ -21,6 +27,8 @@ public class LoginDialog extends JDialog
     public LoginDialog(Frame parent)
     {
         super(parent, "Login", true);
+
+		controllerLoginForm = new ControllerLoginForm(this);
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -77,14 +85,12 @@ public class LoginDialog extends JDialog
 
         btnLogin = new JButton("Login");
         btnLogin.addActionListener(e -> {
-            illegalInput();
-            System.out.println("Username: " + this.getUsername());
-            System.out.println("Password: " + this.getPassword());
+            controllerLoginForm.buttonPressed("login");
         });
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> {
-           dispose();
+           controllerLoginForm.buttonPressed("cancel");
         });
         JPanel bp = new JPanel();
         bp.add(btnLogin);
@@ -111,9 +117,9 @@ public class LoginDialog extends JDialog
         return new String(pfPassword.getPassword());
     }
 
-    public static void main(String[] args)
-    {
-        LoginDialog fenster = new LoginDialog(null);
-        fenster.setVisible(true);
-    }
+	public void setListener(ControllerMainFrame controllerMainFrame)
+	{
+		this.controllerMainFrame = controllerMainFrame;
+		controllerLoginForm.setListener(controllerMainFrame);
+	}
 }

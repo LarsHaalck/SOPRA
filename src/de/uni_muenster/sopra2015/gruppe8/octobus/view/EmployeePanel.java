@@ -1,10 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.NavigationPanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.TabsPane;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.NavigationPanelListener;
 
 import javax.swing.*;
 
@@ -14,6 +13,8 @@ import javax.swing.*;
 public class EmployeePanel extends JPanel
 {
     private ControllerEmployeeArea controllerEmployeeArea;
+    private ControllerMainFrame controllerMainFrame;
+    private NavigationPanel navigationPanel;
 
     public EmployeePanel(){
         super();
@@ -22,8 +23,8 @@ public class EmployeePanel extends JPanel
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        NavigationPanel navigationPanel = new NavigationPanel("Günni");
-        navigationPanel.setNavigationPanelListener(controllerEmployeeArea);
+        navigationPanel = new NavigationPanel("Günni");
+        navigationPanel.setListener(controllerEmployeeArea);
         add(navigationPanel);
 
         TabsPane tabsPane = new TabsPane();
@@ -32,5 +33,10 @@ public class EmployeePanel extends JPanel
         add(tabsPane);
 
         setVisible(true);
+    }
+    public void setListener(ControllerMainFrame listener)
+    {
+        controllerMainFrame = listener;
+        navigationPanel.setListener(controllerMainFrame);
     }
 }
