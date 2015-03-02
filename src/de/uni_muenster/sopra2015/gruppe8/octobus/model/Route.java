@@ -14,7 +14,6 @@ public class Route
 	private LinkedList<Tuple<BusStop,Integer>> stops;
 	private boolean night;
 	private HashMap<DayOfWeek,Integer> startTimes;
-	private int id;
 
 	public Route(String name, String note, LinkedList<Tuple<BusStop, Integer>> stops, boolean night, HashMap<DayOfWeek, Integer> startTimes)
 	{
@@ -84,24 +83,6 @@ public class Route
 	public void setStartTimes(HashMap<DayOfWeek, Integer> startTimes)
 	{
 		this.startTimes = startTimes;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		Route route = (Route) o;
-
-		if (id != route.id) return false;
-
-		return true;
 	}
 
 	public BusStop getStart()

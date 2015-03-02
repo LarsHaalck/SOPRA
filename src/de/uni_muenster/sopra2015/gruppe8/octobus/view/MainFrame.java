@@ -16,6 +16,7 @@ import java.awt.*;
 public class MainFrame extends JFrame
 {
 	private ControllerMainFrame controllerMainFrame;
+    
     public MainFrame()
 	{
         super("OctoBUS");
