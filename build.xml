@@ -93,18 +93,6 @@
   <property name="project.jdk.home" value="${jdk.home.1.8}"/>
   <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  <!-- Register Custom Compiler Taskdefs -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
   
   <!-- Modules -->
   
@@ -163,15 +151,15 @@
   
   <target name="compile.module.sopra" depends="compile.module.sopra.production,compile.module.sopra.tests" description="Compile module SOPRA"/>
   
-  <target name="compile.module.sopra.production" depends="register.custom.compilers" description="Compile module SOPRA; production classes">
+  <target name="compile.module.sopra.production" description="Compile module SOPRA; production classes">
     <mkdir dir="${sopra.output.dir}"/>
-    <javac2 destdir="${sopra.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sopra}/javac">
+    <javac destdir="${sopra.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sopra}/javac">
       <compilerarg line="${compiler.args.sopra}"/>
       <bootclasspath refid="sopra.module.bootclasspath"/>
       <classpath refid="sopra.module.production.classpath"/>
       <src refid="sopra.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.sopra"/>
-    </javac2>
+    </javac>
     
     <copy todir="${sopra.output.dir}">
       <fileset dir="${module.sopra.basedir}/src">
@@ -181,7 +169,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.sopra.tests" depends="register.custom.compilers,compile.module.sopra.production" description="compile module SOPRA; test classes" unless="skip.tests"/>
+  <target name="compile.module.sopra.tests" depends="compile.module.sopra.production" description="compile module SOPRA; test classes" unless="skip.tests"/>
   
   <target name="clean.module.sopra" description="cleanup module">
     <delete dir="${sopra.output.dir}"/>
