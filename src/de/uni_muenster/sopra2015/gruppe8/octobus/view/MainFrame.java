@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.MainPanelListener;
 
@@ -13,34 +14,41 @@ import java.awt.*;
  *
  * @author Michael Biech
  */
-public class MainFrame extends JFrame implements MainPanelListener
+public class MainFrame extends JFrame
 {
-
-    public MainFrame(){
+	private ControllerMainFrame controller;
+    public MainFrame()
+	{
         super("OctoBUS");
 
+		ControllerMainFrame controller = new ControllerMainFrame(this);
         MainPanel mainPanel = new MainPanel();
-        mainPanel.setMainPanelListener(this);
-        displayContent(mainPanel);
+        mainPanel.setMainPanelListener(controller);
+        controller.displayContent(mainPanel);
 
         ////////////////////////////////////////////////
         // Anything below this line is just GUI stuff //
         ////////////////////////////////////////////////
 
         // Set cross-platform Java Look and Feel (also called "Metal")
-        try {
+        try
+		{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        catch (UnsupportedLookAndFeelException e) {
+        catch (UnsupportedLookAndFeelException e)
+		{
             e.printStackTrace();
         }
-        catch (ClassNotFoundException e) {
+        catch (ClassNotFoundException e)
+		{
             e.printStackTrace();
         }
-        catch (InstantiationException e) {
+        catch (InstantiationException e)
+		{
             e.printStackTrace();
         }
-        catch (IllegalAccessException e) {
+        catch (IllegalAccessException e)
+		{
             e.printStackTrace();
         }
 
@@ -52,33 +60,6 @@ public class MainFrame extends JFrame implements MainPanelListener
         pack();
         // Center frame on screen (as per http://stackoverflow.com/a/2442614/2010258)
         setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    // TODO: This is still a stub!
-    /**
-     * Take action depending on passenger's choice, namely:
-     *
-     * - Display entire network on a map
-     * - Search for a connection between points A and B
-     * - Display all tickets available
-     *
-     * @param emitter
-     */
-    @Override
-    public void MainPanelRequestEmitted(String emitter)
-    {
-        if (emitter == "loginRequest") displayContent(new EmployeePanel());
-        else System.out.println(emitter);
-    }
-
-    // TODO: Considering this might be used in more than one place,
-    // TODO: putting it in a separate helper class might be appropriate.
-    // Adapted from http://stackoverflow.com/a/5077773/2010258 and http://stackoverflow.com/a/11073097/2010258
-    private void displayContent(Container container){
-        Container cp = getContentPane();
-        cp.removeAll();
-        setContentPane(container);
         setVisible(true);
     }
 
