@@ -138,6 +138,20 @@ public class ControllerDatabaseJOOQ
 		create.delete(BUSES).where(BUSES.LICENCEPLATE.equal(plate)).execute();
 	}
 
+	public void modifyBus(int id, Bus bus)
+	{
+		create.update(BUSES)
+				.set(BUSES.LICENCEPLATE,bus.getLicencePlate())
+				.set(BUSES.NUMBEROFSEATS,bus.getNumberOfSeats())
+				.set(BUSES.STANDINGROOM, bus.getStandingRoom())
+				.set(BUSES.MANUFACTURER,bus.getManufacturer())
+				.set(BUSES.MODEL,bus.getModel())
+				.set(BUSES.NEXTINSPECTIONDUE,(int) bus.getNextInspectionDue().getTime()/1000)
+				.set(BUSES.ARTICULATEDBUS, bus.isArticulatedBus())
+				.where(BUSES.BUSES_ID.equal(id))
+				.execute();
+	}
+
 	//////////////////////////
 	// Methods for BusStops //
 	//////////////////////////
@@ -161,6 +175,22 @@ public class ControllerDatabaseJOOQ
 		}
 	}
 
+	public void deleteBusStop(int id)
+	{
+		create.delete(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.equal(id)).execute();
+	}
+
+	public void modifyBusStop(int id, BusStop bstop)
+	{
+		create.update(BUSSTOPS)
+				.set(BUSSTOPS.NAME,bstop.getName())
+				.set(BUSSTOPS.LOCATIONX,bstop.getLocation().getFirst())
+				.set(BUSSTOPS.LOCATIONY,bstop.getLocation().getSecond())
+				.set(BUSSTOPS.BARRIERFREE,bstop.isBarrierFree())
+				.execute();
+	}
+
+
 	///////////////////////////
 	// Methods for Employees //
 	///////////////////////////
@@ -176,6 +206,44 @@ public class ControllerDatabaseJOOQ
 						emp.getSalt(),emp.getPassword(),emp.getNote(),emp.isRole(Role.BUSDRIVER),
 						emp.isRole(Role.NETWORK_PLANNER),emp.isRole(Role.TICKET_PLANNER),emp.isRole(Role.HR_MANAGER),
 						emp.isRole(Role.SCHEDULE_MANAGER))
+				.execute();
+	}
+
+	public void deleteEmployee(String username)
+	{
+		create.delete(EMPLOYEES).where(EMPLOYEES.USERNAME.equal(username)).execute();
+	}
+
+	public void deleteEmployee(Employee emp)
+	{
+		deleteEmployee(emp.getUsername());
+	}
+
+	public void deleteEmployee(int id)
+	{
+		create.delete(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.equal(id)).execute();
+	}
+
+	public void modifyEmployee(int id, Employee emp)
+	{
+		create.update(EMPLOYEES)
+				.set(EMPLOYEES.NAME, emp.getName())
+				.set(EMPLOYEES.FIRSTNAME,emp.getFirstName())
+				.set(EMPLOYEES.ADDRESS,emp.getAddress())
+				.set(EMPLOYEES.ZIPCODE,emp.getZipCode())
+				.set(EMPLOYEES.CITY,emp.getCity())
+				.set(EMPLOYEES.DATEOFBIRTH,(int) emp.getDateOfBirth().getTime()/1000)
+				.set(EMPLOYEES.PHONE,emp.getPhone())
+				.set(EMPLOYEES.EMAIL,emp.getEmail())
+				.set(EMPLOYEES.USERNAME,emp.getUsername())
+				.set(EMPLOYEES.SALT,emp.getSalt())
+				.set(EMPLOYEES.PASSWORD,emp.getPassword())
+				.set(EMPLOYEES.NOTE,emp.getNote())
+				.set(EMPLOYEES.ISBUSDRIVER,emp.isRole(Role.BUSDRIVER))
+				.set(EMPLOYEES.ISNETWORK_PLANNER,emp.isRole(Role.NETWORK_PLANNER))
+				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
+				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
+				.set(EMPLOYEES.ISSCHEDULE_MANAGER,emp.isRole(Role.SCHEDULE_MANAGER))
 				.execute();
 	}
 
@@ -211,6 +279,12 @@ public class ControllerDatabaseJOOQ
 			}
 		}
 	}
+
+	public void deleteRoute(int id)
+	{
+		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
+	}
+
 	/////////////////////////////
 	// Methods for soldTickets //
 	/////////////////////////////
@@ -222,6 +296,21 @@ public class ControllerDatabaseJOOQ
 			.execute();
 	}
 
+	public void deleteSoldTicket(int id)
+	{
+		create.delete(SOLDTICKETS).where(SOLDTICKETS.SOLDTICKETS_ID.equal(id)).execute();
+	}
+
+	public void modifySoldTicket(int id, SoldTicket sold)
+	{
+		create.update(SOLDTICKETS)
+				.set(SOLDTICKETS.NAME, sold.getName())
+				.set(SOLDTICKETS.TIMESTAMP,(int) sold.getDate().getTime()/1000)
+				.set(SOLDTICKETS.PRICE,sold.getPrice())
+				.execute();
+	}
+
+
 	/////////////////////////
 	// Methods for Tickets //
 	/////////////////////////
@@ -230,6 +319,21 @@ public class ControllerDatabaseJOOQ
 	{
 		create.insertInto(TICKETS,TICKETS.NAME,TICKETS.PRICE,TICKETS.NUMPASSENGERS,TICKETS.DESCRIPTION)
 				.values(tick.getName(),tick.getPrice(),tick.getNumPassengers(),tick.getDescription())
+				.execute();
+	}
+
+	public void deleteTickets(int id)
+	{
+		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
+	}
+
+	public void modifyTickets(int id, Ticket tick)
+	{
+		create.update(TICKETS)
+				.set(TICKETS.NAME, tick.getName())
+				.set(TICKETS.PRICE, tick.getPrice())
+				.set(TICKETS.NUMPASSENGERS, tick.getNumPassengers())
+				.set(TICKETS.DESCRIPTION, tick.getDescription())
 				.execute();
 	}
 
