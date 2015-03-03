@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 import jdk.nashorn.internal.codegen.Emitter;
@@ -12,9 +13,9 @@ import javax.swing.*;
  */
 public class ControllerFormChangePassword implements ListenerButton
 {
-	JDialog dialog;
+	FormChangePassword dialog;
 
-	public ControllerFormChangePassword(JDialog dialog)
+	public ControllerFormChangePassword(FormChangePassword dialog)
 	{
 		this.dialog = dialog;
 		ControllerManager.addListener((ListenerButton)this);
@@ -38,9 +39,17 @@ public class ControllerFormChangePassword implements ListenerButton
 
 			case FORM_CHANGE_PASSWORD_SAVE:
 				//TODO:Save
-				dialog.dispose();
-				finalize();
-				break;
+				boolean oldPasswordInvalid = false; // TODO prüfe ob Passwort korrekt
+				boolean newPasswordInvalid = (dialog.getNewPassword().length() < 8);
+				boolean newPasswordCorrectInvalid = (!dialog.getNewPasswordCorrect().equals(dialog.getNewPassword()));
+
+				dialog.illegalChanges(oldPasswordInvalid, newPasswordInvalid, newPasswordCorrectInvalid);
+				if (!oldPasswordInvalid && !newPasswordInvalid && !newPasswordCorrectInvalid)
+				{
+					dialog.dispose();
+					finalize();
+					break;
+				}
 		}
 	}
 }
