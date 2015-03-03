@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormLogin;
-
 import javax.swing.*;
 import java.awt.*;
 

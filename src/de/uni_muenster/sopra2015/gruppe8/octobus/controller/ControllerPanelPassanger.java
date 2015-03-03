@@ -7,11 +7,11 @@ import javax.swing.*;
 /**
  * Created by Joshua on 02.03.2015.
  */
-public class ControllerMainPanel implements ListenerButton
+public class ControllerPanelPassanger implements ListenerButton
 {
 	private JPanel panel;
 
-	public ControllerMainPanel(JPanel panel)
+	public ControllerPanelPassanger(JPanel panel)
 	{
 		ControllerManager.addListener(this);
 		this.panel = panel;

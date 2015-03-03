@@ -5,9 +5,9 @@ import javax.swing.*;
 /**
  * @author Michael Biech
  */
-public class TabsPane extends JTabbedPane
+public class PaneTabs extends JTabbedPane
 {
-	public TabsPane()
+	public PaneTabs()
 	{
 		super();
 

@@ -8,13 +8,13 @@ import javax.swing.table.TableRowSorter;
  * @author Patricia Schinke
  *         still does not get the Data
  */
-public class TicketDisplay extends JPanel
+public class DisplayTicket extends JPanel
 {
 	private JTable ticketTable;
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	private String[] columnNames = {"Name", "Preis", "Anzahl Personen", "Beschreibung"};
 
-	public TicketDisplay()
+	public DisplayTicket()
 	{
 		ticketTable = new JTable(tableModel);
 		add(new JScrollPane(ticketTable));

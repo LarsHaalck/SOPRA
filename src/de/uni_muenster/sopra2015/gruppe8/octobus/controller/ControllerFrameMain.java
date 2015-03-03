@@ -11,11 +11,11 @@ import java.awt.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerMainFrame implements ListenerButton
+public class ControllerFrameMain implements ListenerButton
 {
 	private FrameMain frame;
 
-	public ControllerMainFrame(FrameMain frame)
+	public ControllerFrameMain(FrameMain frame)
 	{
 		ControllerManager.addListener(this);
 		this.frame = frame;

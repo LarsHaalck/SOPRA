@@ -1,6 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 
 import javax.swing.*;
@@ -9,9 +8,9 @@ import java.awt.*;
 /**
  * @author Michael Biech
  */
-public class NavigationPanel extends JPanel
+public class PanelNavigation extends JPanel
 {
-	public NavigationPanel(String username)
+	public PanelNavigation(String username)
 	{
 		super();
 
