@@ -7,11 +7,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerLoginForm implements ListenerButton
+public class ControllerFormLogin implements ListenerButton
 {
 	FormLogin dialog;
 
-	public ControllerLoginForm(FormLogin dialog)
+	public ControllerFormLogin(FormLogin dialog)
 	{
 		this.dialog = dialog;
 	}
