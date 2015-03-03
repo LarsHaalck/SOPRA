@@ -43,6 +43,7 @@ public class TabBuses extends TabTable<TableModelBus>
 		JPanel plFilter = new JPanel();
 		plFilter.add(lbFilter);
 		plFilter.add(tfFilter);
+		plFilter.add(cbFilter);
 		add(plFilter, BorderLayout.PAGE_START);
 
 		JPanel plButtons = new JPanel();

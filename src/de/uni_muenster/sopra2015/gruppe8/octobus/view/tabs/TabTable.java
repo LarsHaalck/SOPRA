@@ -1,37 +1,43 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.DefaultExtendedTableModel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Florian on 03.03.2015.
  */
-public abstract class TabTable<TM extends TableModel> extends JPanel
+public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 {
 	protected JTable table;
 	protected JTextField tfFilter;
 	protected JLabel lbFilter = new JLabel("Filter-Text:");
+	protected JComboBox<String> cbFilter;
 	protected TableRowSorter<TM> sorter;
+	private ExtendedTableModel model;
 
-	private boolean isRefinable = true;
+	private boolean isRefineable = true;
 	protected int selectedRow = -1;
+	private int filterColumn = 0;
 
-	public TabTable(Class<TM> type, boolean isRefinable)
+	public TabTable(Class<TM> type, boolean isRefineable)
 	{
-		this.isRefinable = isRefinable;
-		//TODO: Check this!
-		TableModel model;
+		this.isRefineable = isRefineable;
+		//TODO: Check this! Could we get problems?
 		try
 		{
 			model = type.newInstance();
 		} catch (Exception e)
 		{
-			model = new DefaultTableModel();
+			model = new DefaultExtendedTableModel();
 		}
 
 		sorter = new TableRowSorter<>((TM)model);
@@ -56,10 +62,19 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 				}
 		);
 
+		cbFilter = new JComboBox<>(model.getRefineableColumns());
+		if(isRefineable)
+		{
+			cbFilter.addActionListener(e -> {
+				filterColumn = model.getColumnIndex((String) cbFilter.getSelectedItem());
+				newFilter();
+			});
+		}
+
 
 		tfFilter = new JTextField();
 		//Whenever filterText changes, invoke newFilter.
-		if(isRefinable)
+		if(isRefineable)
 		{
 			tfFilter.getDocument().addDocumentListener(
 					new DocumentListener()
@@ -93,7 +108,7 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 		//If current expression doesn't parse, don't update.
 		try
 		{
-			rf = RowFilter.regexFilter(tfFilter.getText(), 0);
+			rf = RowFilter.regexFilter(tfFilter.getText(), filterColumn);
 		} catch (java.util.regex.PatternSyntaxException e)
 		{
 			return;

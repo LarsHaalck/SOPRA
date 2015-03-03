@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 /**
  * Created by Florian on 03.03.2015.
  */
-public class TableModelBus implements TableModel
+public class TableModelBus extends ExtendedTableModel
 {
 	private String[] columnNames = {"Kennzeichen",
 			"Hersteller",
@@ -84,5 +84,20 @@ public class TableModelBus implements TableModel
 	public boolean isCellEditable(int rowIndex, int columnIndex)
 	{
 		return false;
+	}
+
+	@Override
+	public String[] getRefineableColumns()
+	{
+		return new String[]{"Kennzeichen", "Hersteller", "Typ"};
+	}
+
+	@Override
+	public int getColumnIndex(String column)
+	{
+		for(int i=0; i<columnNames.length; i++)
+			if(column.equals(columnNames[i]))
+				return i;
+		return 0;
 	}
 }
