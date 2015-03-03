@@ -7,7 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
 import javax.swing.*;
 
 /**
- * @author Michael Biech
+ * Displays the content available to logged in users, consisting of PanelNavigation and PanelTabs.
  */
 public class PanelEmployee extends JPanel
 {

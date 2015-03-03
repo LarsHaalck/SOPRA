@@ -9,8 +9,6 @@ import java.awt.*;
  * Handles the overall application and takes care of changing the main
  * content panel depending on whether a user is logged in or not, as
  * well as handling the options available to a passenger.
- *
- * @author Michael Biech
  */
 public class FrameMain extends JFrame
 {

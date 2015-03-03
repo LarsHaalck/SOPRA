@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Michael Biech
+ * Displays the content available to non logged in users.
  */
 public class PanelPassenger extends JPanel
 {
