@@ -46,13 +46,11 @@ public class LoginDialog extends JDialog
 		panel = new JPanel(new GridBagLayout());
 		cs = new GridBagConstraints();
 
-		//cs.fill = GridBagConstraints.HORIZONTAL;
-
 		lbUsername = new JLabel("Username: ");
 		cs.gridx = 0;
 		cs.gridy = 0;
 		cs.gridwidth = 1;
-		panel.add(lbUsername);
+		panel.add(lbUsername, cs);
 
 		tfUsername = new JTextField(20);
 		cs.gridx = 1;
