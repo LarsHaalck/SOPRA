@@ -37,10 +37,14 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case LOGGED_IN:
+				ControllerManager.clearListeners();
+				addListeners();
 				PanelEmployee newPanelEmployee = new PanelEmployee();
 				displayContent(newPanelEmployee);
 				break;
 			case LOGGED_OUT:
+				ControllerManager.clearListeners();
+				addListeners();
 				PanelPassenger newPanelPassenger = new PanelPassenger();
 				displayContent(newPanelPassenger);
 				break;

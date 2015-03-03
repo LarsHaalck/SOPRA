@@ -9,10 +9,7 @@ public abstract class Controller
 	{
 		addListeners();
 	}
-	public void finallize()
-	{
-		removeListeners();
-	}
+
 	protected abstract void addListeners();
 	protected abstract void removeListeners();
 

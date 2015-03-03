@@ -51,6 +51,16 @@ public class ControllerManager
 	}
 
 
+	/**
+	 * Clears listeners, so they are free
+	 * Evil method, only use by user-state-change
+	 */
+	public static void clearListeners()
+	{
+		listenerUserState.clear();
+		listenerButton.clear();
+		listenerWindow.clear();
+	}
 
 	public static void addListener(ListenerButton listener)
 	{
