@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the FormLogin class.
  */
 public class ControllerFormLogin extends Controller implements ListenerButton
 {

@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
 
 /**
- * EmitterButton is an enum used to describe buttons.
+ * Used to describe buttons.
  * Each button has an unique value consisting of the source class and his name
  */
 public enum EmitterButton
