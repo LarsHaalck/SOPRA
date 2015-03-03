@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassanger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassenger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,15 +9,15 @@ import java.awt.*;
 /**
  * @author Michael Biech
  */
-public class PanelPassanger extends JPanel
+public class PanelPassenger extends JPanel
 {
-	private ControllerPanelPassanger controllerPanelPassanger;
+	private ControllerPanelPassenger controllerPanelPassenger;
 
-	public PanelPassanger()
+	public PanelPassenger()
 	{
 		super();
 
-		controllerPanelPassanger = new ControllerPanelPassanger(this);
+		controllerPanelPassenger = new ControllerPanelPassenger(this);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -76,30 +77,30 @@ public class PanelPassanger extends JPanel
 
 		// Add action listeners to buttons
 		btnLogin.addActionListener(e -> {
-			if (controllerPanelPassanger != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerPanelPassanger.buttonPressed("loginRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_LOGIN);
 			}
 		});
 
 		btnSearchConnection.addActionListener(e -> {
-			if (controllerPanelPassanger != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerPanelPassanger.buttonPressed("searchConnectionRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SEARCH_CONNECTION);
 			}
 		});
 
 		btnShowTickets.addActionListener(e -> {
-			if (controllerPanelPassanger != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerPanelPassanger.buttonPressed("showTicketsRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
 			}
 		});
 
 		btnShowNetwork.addActionListener(e -> {
-			if (controllerPanelPassanger != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerPanelPassanger.buttonPressed("showNetworkRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_NETWORK);
 			}
 		});
 	}

@@ -2,43 +2,72 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassanger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
 import java.awt.*;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerFrameMain implements ListenerButton
+public class ControllerFrameMain implements ListenerButton, ListenerUserState, ListenerWindow
 {
 	private FrameMain frame;
 
 	public ControllerFrameMain(FrameMain frame)
 	{
-		ControllerManager.addListener(this);
+		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerUserState)this);
+		ControllerManager.addListener((ListenerWindow)this);
 		this.frame = frame;
 	}
 
 	@Override
-	public void buttonPressed(String emitter)
+	public void buttonPressed(EmitterButton emitter)
 	{
 		switch (emitter)
 		{
-			case "login_request":
-				displayForm("login");
-				break;
-			case "login_done":
+
+		}
+	}
+
+	@Override
+	public void userStateChanged(EmitterUserState emitter)
+	{
+		switch (emitter)
+		{
+			case LOGGED_IN:
 				PanelEmployee newPanelEmployee = new PanelEmployee();
 				displayContent(newPanelEmployee);
 				break;
-			case "logout_done":
-				PanelPassanger newPanelPassanger = new PanelPassanger();
-				displayContent(newPanelPassanger);
+			case LOGGED_OUT:
+				PanelPassenger newPanelPassenger = new PanelPassenger();
+				displayContent(newPanelPassenger);
 				break;
 		}
+
 	}
+
+	@Override
+	public void windowOpen(EmitterWindow emitter)
+	{
+		switch (emitter)
+		{
+			case OPEN_LOGIN_FORM:
+				displayForm("login");
+		}
+
+
+	}
+
+	@Override
+	public void windowClose(EmitterWindow emitter)
+	{
+
+	}
+
+
 
 	public void displayForm(String emitter)
 	{

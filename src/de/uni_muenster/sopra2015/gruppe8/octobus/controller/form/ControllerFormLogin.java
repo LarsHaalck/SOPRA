@@ -2,6 +2,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 /**
@@ -17,14 +19,14 @@ public class ControllerFormLogin implements ListenerButton
 	}
 
 	@Override
-	public void buttonPressed(String emitter)
+	public void buttonPressed(EmitterButton emitter)
 	{
 		switch (emitter)
 		{
-			case "login_button_pressed":
+			case FORM_LOGIN_LOGIN:
 				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
-					ControllerManager.informButtonPressed("login_done");
+					ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_IN);
 					dialog.dispose();
 				} else
 				{
@@ -32,7 +34,7 @@ public class ControllerFormLogin implements ListenerButton
 				}
 				break;
 
-			case "cancel_button_pressed":
+			case FORM_LOGIN_CANCEL:
 				dialog.dispose();
 				break;
 		}

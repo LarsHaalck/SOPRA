@@ -1,6 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -80,12 +82,12 @@ public class FormLogin extends JDialog
 
 		btnLogin = new JButton("Login");
 		btnLogin.addActionListener(e -> {
-			controllerFormLogin.buttonPressed("login_button_pressed");
+			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_LOGIN);
 		});
 
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
-			controllerFormLogin.buttonPressed("cancel_button_pressed");
+			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_CANCEL);
 		});
 		JPanel bp = new JPanel();
 		bp.add(btnLogin);

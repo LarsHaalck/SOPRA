@@ -21,8 +21,8 @@ public class FrameMain extends JFrame
 		super("OctoBUS");
 
 		controllerFrameMain = new ControllerFrameMain(this);
-		PanelPassanger panelPassanger = new PanelPassanger();
-		controllerFrameMain.displayContent(panelPassanger);
+		PanelPassenger panelPassenger = new PanelPassenger();
+		controllerFrameMain.displayContent(panelPassenger);
 
 		////////////////////////////////////////////////
 		// Anything below this line is just GUI stuff //

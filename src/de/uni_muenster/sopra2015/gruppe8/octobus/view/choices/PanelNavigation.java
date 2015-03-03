@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,12 +32,12 @@ public class PanelNavigation extends JPanel
 
 		btnChangePassword.addActionListener(e ->
 		{
-			ControllerManager.informButtonPressed("change_password_request");
+			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_CHANGE_PASSWORD);
 		});
 
 		btnLogout.addActionListener(e ->
 		{
-			ControllerManager.informButtonPressed("logout_done");
+			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT);
 		});
 	}
 }
