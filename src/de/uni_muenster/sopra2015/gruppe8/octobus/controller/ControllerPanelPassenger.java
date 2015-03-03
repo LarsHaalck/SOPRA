@@ -25,7 +25,7 @@ public class ControllerPanelPassenger implements ListenerButton
 		switch (emitter)
 		{
 			case PANEL_PASSENGER_LOGIN:
-				ControllerManager.informWindowOpen(EmitterWindow.OPEN_LOGIN_FORM);
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_LOGIN);
 				break;
 			case PANEL_PASSENGER_SEARCH_CONNECTION:
 				System.out.println("Searching Connection");

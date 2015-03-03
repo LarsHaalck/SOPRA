@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
@@ -54,8 +55,12 @@ public class ControllerFrameMain implements ListenerButton, ListenerUserState, L
 	{
 		switch (emitter)
 		{
-			case OPEN_LOGIN_FORM:
-				displayForm("login");
+			case FORM_LOGIN:
+				displayForm(EmitterWindow.FORM_LOGIN);
+				break;
+
+			case FORM_CHANGE_PASSWORD:
+				displayForm(EmitterWindow.FORM_CHANGE_PASSWORD);
 		}
 
 
@@ -69,13 +74,18 @@ public class ControllerFrameMain implements ListenerButton, ListenerUserState, L
 
 
 
-	public void displayForm(String emitter)
+	private void displayForm(EmitterWindow form)
 	{
-		switch (emitter)
+		switch (form)
 		{
-			case "login":
+			case FORM_LOGIN:
 				FormLogin d = new FormLogin(frame);
 				d.setVisible(true);
+				break;
+
+			case FORM_CHANGE_PASSWORD:
+				FormChangePassword w = new FormChangePassword(frame);
+				w.setVisible(true);
 				break;
 		}
 	}

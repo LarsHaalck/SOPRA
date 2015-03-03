@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class ControllerPanelEmployee implements ListenerButton
 		switch (emitter)
 		{
 			case PANEL_EMPLOYEE_CHANGE_PASSWORD:
-				System.out.println("User wishes to change their password");
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
 				break;
 			case PANEL_EMPLOYEE_LOGOUT:
 				ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_OUT);

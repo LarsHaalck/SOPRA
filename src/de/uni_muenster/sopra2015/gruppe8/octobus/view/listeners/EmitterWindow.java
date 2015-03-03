@@ -5,5 +5,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
  */
 public enum EmitterWindow
 {
-	OPEN_LOGIN_FORM
+	FORM_LOGIN,
+	FORM_CHANGE_PASSWORD
 }
