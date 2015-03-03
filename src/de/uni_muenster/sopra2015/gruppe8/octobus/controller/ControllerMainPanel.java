@@ -27,6 +27,13 @@ public class ControllerMainPanel implements ButtonListener
 				break;
             case "searchConnectionRequest":
                 System.out.println("Searching Connection");
+                try
+                {
+                    (new ControllerDatabaseJOOQ()).run();
+                } catch (ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
                 break;
             case "showTicketsRequest":
                 System.out.println("Show tickets");

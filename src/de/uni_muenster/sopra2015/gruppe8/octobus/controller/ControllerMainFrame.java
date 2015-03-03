@@ -44,6 +44,7 @@ public class ControllerMainFrame implements ButtonListener
 		{
 			case "login":
 				LoginDialog d = new LoginDialog(frame);
+                // This doesn't belong here!!
 				d.setListener(this);
 				d.setVisible(true);
 				break;
