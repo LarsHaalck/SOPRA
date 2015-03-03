@@ -7,7 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 import javax.swing.*;
 
 /**
- * Controller for the PanelPassanger class.
+ * Controller for the PanelPassenger class.
  */
 public class ControllerPanelPassenger extends Controller implements ListenerButton
 {

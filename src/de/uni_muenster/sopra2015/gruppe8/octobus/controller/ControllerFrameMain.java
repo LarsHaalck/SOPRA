@@ -9,7 +9,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
 import java.awt.*;
 
-
 /**
  * Controller for the FrameMain class.
  */
@@ -71,7 +70,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	{
 
 	}
-
 
 	/**
 	 * Displays forms in the FrameMain.

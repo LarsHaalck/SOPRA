@@ -2,7 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
 
 /**
  * Used to describe buttons.
- * Each button has an unique value consisting of the source class and his name
+ * Each button has a unique value consisting of the source class and its name
  */
 public enum EmitterButton
 {

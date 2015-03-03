@@ -26,13 +26,13 @@ public class ControllerFormChangePassword extends Controller implements Listener
 		{
 			case FORM_CHANGE_PASSWORD_CANCEL:
 				dialog.dispose();
-				//TODO: Pruefe ob passwoerter identisch, wenn identisch, finalize, sonst fehler anzeigen
+                // TODO: Check to see if passwords are identical, finalize, show error message otherwise
 				removeListeners();
 				break;
 
 			case FORM_CHANGE_PASSWORD_SAVE:
-				//TODO:Save
-				boolean oldPasswordInvalid = false; // TODO prüfe ob Passwort korrekt
+				//TODO: Save
+				boolean oldPasswordInvalid = false; // TODO: Check if password is correct
 				boolean newPasswordInvalid = (dialog.getNewPassword().length() < 8);
 				boolean newPasswordCorrectInvalid = (!dialog.getNewPasswordCorrect().equals(dialog.getNewPassword()));
 
