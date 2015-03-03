@@ -42,7 +42,7 @@ public class TableModelBus implements TableModel
 	@Override
 	public String getColumnName(int columnIndex)
 	{
-		return null;
+		return columnNames[columnIndex];
 	}
 
 	@Override

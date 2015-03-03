@@ -1,8 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.FabricTableModel;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -22,6 +19,7 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 	protected TableRowSorter<TM> sorter;
 
 	protected boolean isSortable = true;
+	protected int selectedRow = -1;
 
 	public TabTable(Class<TM> type)
 	{
@@ -52,8 +50,7 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 
 					} else
 					{
-						int modelRow =
-								table.convertRowIndexToModel(viewRow);
+						selectedRow = table.convertRowIndexToModel(viewRow);
 					}
 				}
 		);
