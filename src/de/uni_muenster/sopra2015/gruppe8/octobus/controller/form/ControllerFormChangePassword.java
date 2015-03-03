@@ -7,7 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the FormChangePassword class.
  */
 public class ControllerFormChangePassword extends Controller implements ListenerButton
 {
