@@ -5,7 +5,6 @@ import javax.swing.*;
 /**
  * @author Patricia Schinke
  */
-public class NetworkTab extends JPanel
+public class TabWorkPlan extends JPanel
 {
-
 }

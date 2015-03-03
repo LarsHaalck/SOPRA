@@ -5,6 +5,6 @@ import javax.swing.*;
 /**
  * @author Patricia Schinke
  */
-public class LineTab extends JPanel
+public class TabSchedule extends JPanel
 {
 }

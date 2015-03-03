@@ -3,8 +3,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 import javax.swing.*;
 
 /**
- * @author Michael Biech
+ * @author Patricia Schinke
  */
-public class BusesTab extends JPanel
+public class TabNetwork extends JPanel
 {
+
 }

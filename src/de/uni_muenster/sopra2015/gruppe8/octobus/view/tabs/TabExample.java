@@ -18,7 +18,7 @@ import java.awt.*;
  *         This is still terribly mangled, but should give you a basic idea
  *         of how these things might be implemented.
  */
-public class ExampleTab extends JPanel
+public class TabExample extends JPanel
 {
 
 	private boolean DEBUG = false;
@@ -27,7 +27,7 @@ public class ExampleTab extends JPanel
 	private JTextField statusText;
 	private TableRowSorter<BusTableModel> sorter;
 
-	public ExampleTab()
+	public TabExample()
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

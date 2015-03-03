@@ -5,6 +5,6 @@ import javax.swing.*;
 /**
  * @author Patricia Schinke
  */
-public class WorkPlanTab extends JPanel
+public class TabEmployee extends JPanel
 {
 }
