@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
@@ -11,19 +12,14 @@ import javax.swing.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerFormChangePassword implements ListenerButton
+public class ControllerFormChangePassword extends Controller implements ListenerButton
 {
 	FormChangePassword dialog;
 
 	public ControllerFormChangePassword(FormChangePassword dialog)
 	{
+		super();
 		this.dialog = dialog;
-		ControllerManager.addListener((ListenerButton)this);
-	}
-
-	public void finalize()
-	{
-		ControllerManager.removeListener((ListenerButton)this);
 	}
 
 	@Override
@@ -34,7 +30,7 @@ public class ControllerFormChangePassword implements ListenerButton
 			case FORM_CHANGE_PASSWORD_CANCEL:
 				dialog.dispose();
 				//TODO: Pruefe ob passwoerter identisch, wenn identisch, finalize, sonst fehler anzeigen
-				finalize();
+				removeListeners();
 				break;
 
 			case FORM_CHANGE_PASSWORD_SAVE:
@@ -47,9 +43,21 @@ public class ControllerFormChangePassword implements ListenerButton
 				if (!oldPasswordInvalid && !newPasswordInvalid && !newPasswordCorrectInvalid)
 				{
 					dialog.dispose();
-					finalize();
+					removeListeners();
 					break;
 				}
 		}
+	}
+
+	@Override
+	protected void addListeners()
+	{
+		ControllerManager.addListener((ListenerButton)this);
+	}
+
+	@Override
+	protected void removeListeners()
+	{
+		ControllerManager.removeListener((ListenerButton)this);
 	}
 }
