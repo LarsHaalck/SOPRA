@@ -9,7 +9,7 @@ import javax.swing.*;
 /**
  * Created by Joshua on 02.03.2015.
  */
-public class ControllerPanelPassenger implements ListenerButton
+public class ControllerPanelPassenger extends Controller implements ListenerButton
 {
 	private JPanel panel;
 
@@ -37,5 +37,17 @@ public class ControllerPanelPassenger implements ListenerButton
 				System.out.println("Show network");
 				break;
 		}
+	}
+
+	@Override
+	protected void addListeners()
+	{
+		ControllerManager.addListener((ListenerButton) this);
+	}
+
+	@Override
+	protected void removeListeners()
+	{
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 }
