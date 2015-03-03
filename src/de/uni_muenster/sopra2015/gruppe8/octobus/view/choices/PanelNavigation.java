@@ -9,9 +9,9 @@ import java.awt.*;
 /**
  * @author Michael Biech
  */
-public class NavigationPanel extends JPanel
+public class PanelNavigation extends JPanel
 {
-	public NavigationPanel(String username)
+	public PanelNavigation(String username)
 	{
 		super();
 

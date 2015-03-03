@@ -1,10 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.NavigationPanel;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.TabsPane;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PanelNavigation;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
 
 import javax.swing.*;
 
@@ -14,7 +13,7 @@ import javax.swing.*;
 public class PanelEmployee extends JPanel
 {
 	private ControllerEmployeeArea controllerEmployeeArea;
-	private NavigationPanel navigationPanel;
+	private PanelNavigation panelNavigation;
 
 	public PanelEmployee()
 	{
@@ -25,13 +24,13 @@ public class PanelEmployee extends JPanel
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		navigationPanel = new NavigationPanel("Günni");
-		add(navigationPanel);
+		panelNavigation = new PanelNavigation("Günni");
+		add(panelNavigation);
 
-		TabsPane tabsPane = new TabsPane();
+		PaneTabs paneTabs = new PaneTabs();
 		// ...
 		// Pretty much same as above
-		add(tabsPane);
+		add(paneTabs);
 
 		setVisible(true);
 	}
