@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord> {
 
-	private static final long serialVersionUID = -392321585;
+	private static final long serialVersionUID = 1114170029;
 
 	/**
 	 * The reference instance of <code>employees</code>
@@ -32,29 +32,34 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 	}
 
 	/**
+	 * The column <code>employees.employees_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Integer> EMPLOYEES_ID = createField("employees_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
 	 * The column <code>employees.name</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> NAME = createField("name", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.firstName</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> FIRSTNAME = createField("firstName", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> FIRSTNAME = createField("firstName", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.address</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> ADDRESS = createField("address", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> ADDRESS = createField("address", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.zipCode</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> ZIPCODE = createField("zipCode", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> ZIPCODE = createField("zipCode", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.city</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> CITY = createField("city", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> CITY = createField("city", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.dateOfBirth</code>.
@@ -64,32 +69,32 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 	/**
 	 * The column <code>employees.phone</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> PHONE = createField("phone", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> PHONE = createField("phone", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.email</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> EMAIL = createField("email", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> EMAIL = createField("email", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>employees.username</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> USERNAME = createField("username", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> USERNAME = createField("username", org.jooq.impl.SQLDataType.CLOB.length(200).nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.salt</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> SALT = createField("salt", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> SALT = createField("salt", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
 	 * The column <code>employees.password</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> PASSWORD = createField("password", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
 	 * The column <code>employees.note</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Object> NOTE = createField("note", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> NOTE = createField("note", org.jooq.impl.SQLDataType.CLOB.length(2000), this, "");
 
 	/**
 	 * The column <code>employees.isBUSDRIVER</code>.
@@ -136,6 +141,14 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 
 	private Employees(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_EMPLOYEES;
 	}
 
 	/**

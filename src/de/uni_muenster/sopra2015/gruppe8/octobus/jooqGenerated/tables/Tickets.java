@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord> {
 
-	private static final long serialVersionUID = -1263721694;
+	private static final long serialVersionUID = 1787356880;
 
 	/**
 	 * The reference instance of <code>tickets</code>
@@ -32,9 +32,14 @@ public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.g
 	}
 
 	/**
+	 * The column <code>tickets.tickets_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.Integer> TICKETS_ID = createField("tickets_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
 	 * The column <code>tickets.name</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.Object> NAME = createField("name", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>tickets.price</code>.
@@ -49,7 +54,7 @@ public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.g
 	/**
 	 * The column <code>tickets.descritption</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.Object> DESCRITPTION = createField("descritption", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.String> DESCRITPTION = createField("descritption", org.jooq.impl.SQLDataType.CLOB.length(2000), this, "");
 
 	/**
 	 * Create a <code>tickets</code> table reference
@@ -71,6 +76,30 @@ public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.g
 
 	private Tickets(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_TICKETS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord> getPrimaryKey() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TICKETS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord>> getKeys() {
+		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TICKETS);
 	}
 
 	/**

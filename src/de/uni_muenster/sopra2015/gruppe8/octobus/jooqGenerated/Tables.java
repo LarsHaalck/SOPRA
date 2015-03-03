@@ -62,11 +62,6 @@ public class Tables {
 	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.SqliteSequence SQLITE_SEQUENCE = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.SqliteSequence.SQLITE_SEQUENCE;
 
 	/**
-	 * The table testtabelle
-	 */
-	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Testtabelle TESTTABELLE = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Testtabelle.TESTTABELLE;
-
-	/**
 	 * The table tickets
 	 */
 	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets TICKETS = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets.TICKETS;

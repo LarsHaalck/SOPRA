@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RoutesStarttimes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord> {
 
-	private static final long serialVersionUID = -1094736681;
+	private static final long serialVersionUID = -1046260900;
 
 	/**
 	 * The reference instance of <code>routes_startTimes</code>
@@ -32,14 +32,19 @@ public class RoutesStarttimes extends org.jooq.impl.TableImpl<de.uni_muenster.so
 	}
 
 	/**
+	 * The column <code>routes_startTimes.routes_startTimes_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.Integer> ROUTES_STARTTIMES_ID = createField("routes_startTimes_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
 	 * The column <code>routes_startTimes.routes_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.Object> ROUTES_ID = createField("routes_id", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.Integer> ROUTES_ID = createField("routes_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>routes_startTimes.dayOfWeek</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.Object> DAYOFWEEK = createField("dayOfWeek", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING"), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.String> DAYOFWEEK = createField("dayOfWeek", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
 	 * The column <code>routes_startTimes.startTime</code>.
@@ -66,6 +71,30 @@ public class RoutesStarttimes extends org.jooq.impl.TableImpl<de.uni_muenster.so
 
 	private RoutesStarttimes(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_ROUTES_STARTTIMES;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord> getPrimaryKey() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_ROUTES_STARTTIMES;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord>> getKeys() {
+		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_ROUTES_STARTTIMES);
 	}
 
 	/**

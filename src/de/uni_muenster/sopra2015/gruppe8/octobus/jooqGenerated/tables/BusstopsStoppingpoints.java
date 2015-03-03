@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord> {
 
-	private static final long serialVersionUID = -1964139715;
+	private static final long serialVersionUID = 1916218231;
 
 	/**
 	 * The reference instance of <code>busStops_stoppingPoints</code>
@@ -32,29 +32,19 @@ public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muens
 	}
 
 	/**
-	 * The column <code>busStops_stoppingPoints.id</code>.
+	 * The column <code>busStops_stoppingPoints.busStops_stoppingPoints_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> BUSSTOPS_STOPPINGPOINTS_ID = createField("busStops_stoppingPoints_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
-	 * The column <code>busStops_stoppingPoints.busStops_name</code>.
+	 * The column <code>busStops_stoppingPoints.busStops_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Object> BUSSTOPS_NAME = createField("busStops_name", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
-
-	/**
-	 * The column <code>busStops_stoppingPoints.busStops_locationX</code>.
-	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Object> BUSSTOPS_LOCATIONX = createField("busStops_locationX", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
-
-	/**
-	 * The column <code>busStops_stoppingPoints.busStops_locationY</code>.
-	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Object> BUSSTOPS_LOCATIONY = createField("busStops_locationY", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> BUSSTOPS_ID = createField("busStops_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>busStops_stoppingPoints.name</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Object> NAME = createField("name", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * Create a <code>busStops_stoppingPoints</code> table reference

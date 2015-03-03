@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Routes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord> {
 
-	private static final long serialVersionUID = -557516064;
+	private static final long serialVersionUID = 1497509269;
 
 	/**
 	 * The reference instance of <code>routes</code>
@@ -32,19 +32,19 @@ public class Routes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gr
 	}
 
 	/**
-	 * The column <code>routes.id</code>.
+	 * The column <code>routes.routes_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Integer> ROUTES_ID = createField("routes_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
 	 * The column <code>routes.name</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Object> NAME = createField("name", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>routes.note</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Object> NOTE = createField("note", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.String> NOTE = createField("note", org.jooq.impl.SQLDataType.CLOB.length(2000), this, "");
 
 	/**
 	 * The column <code>routes.night</code>.

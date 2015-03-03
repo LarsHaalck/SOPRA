@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RoutesStops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord> {
 
-	private static final long serialVersionUID = -1430420681;
+	private static final long serialVersionUID = 486076051;
 
 	/**
 	 * The reference instance of <code>routes_stops</code>
@@ -32,24 +32,19 @@ public class RoutesStops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra20
 	}
 
 	/**
+	 * The column <code>routes_stops.routes_stops_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Integer> ROUTES_STOPS_ID = createField("routes_stops_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
 	 * The column <code>routes_stops.routes_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Object> ROUTES_ID = createField("routes_id", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Integer> ROUTES_ID = createField("routes_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>routes_stops.busStops_name</code>.
+	 * The column <code>routes_stops.busStops_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Object> BUSSTOPS_NAME = createField("busStops_name", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
-
-	/**
-	 * The column <code>routes_stops.busStops_locationX</code>.
-	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Object> BUSSTOPS_LOCATIONX = createField("busStops_locationX", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
-
-	/**
-	 * The column <code>routes_stops.busStops_locationY</code>.
-	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Object> BUSSTOPS_LOCATIONY = createField("busStops_locationY", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Integer> BUSSTOPS_ID = createField("busStops_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>routes_stops.timeToPrevious</code>.
@@ -76,6 +71,30 @@ public class RoutesStops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra20
 
 	private RoutesStops(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_ROUTES_STOPS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord> getPrimaryKey() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_ROUTES_STOPS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord>> getKeys() {
+		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStopsRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_ROUTES_STOPS);
 	}
 
 	/**

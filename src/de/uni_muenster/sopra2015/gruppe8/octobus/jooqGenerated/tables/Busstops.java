@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Busstops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord> {
 
-	private static final long serialVersionUID = 1743754856;
+	private static final long serialVersionUID = -1541771006;
 
 	/**
 	 * The reference instance of <code>busStops</code>
@@ -32,19 +32,24 @@ public class Busstops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.
 	}
 
 	/**
+	 * The column <code>busStops.busStops_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> BUSSTOPS_ID = createField("busStops_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
 	 * The column <code>busStops.name</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(50).nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>busStops.locationX</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> LOCATIONX = createField("locationX", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> LOCATIONX = createField("locationX", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>busStops.locationY</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> LOCATIONY = createField("locationY", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> LOCATIONY = createField("locationY", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>busStops.barrierFree</code>.
@@ -71,6 +76,14 @@ public class Busstops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.
 
 	private Busstops(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_BUSSTOPS;
 	}
 
 	/**

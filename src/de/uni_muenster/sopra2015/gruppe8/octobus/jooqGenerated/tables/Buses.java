@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord> {
 
-	private static final long serialVersionUID = -1705526658;
+	private static final long serialVersionUID = -749415873;
 
 	/**
 	 * The reference instance of <code>buses</code>
@@ -30,6 +30,11 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	public java.lang.Class<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord> getRecordType() {
 		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord.class;
 	}
+
+	/**
+	 * The column <code>buses.buses_id</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> BUSES_ID = createField("buses_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
 	 * The column <code>buses.licencePlate</code>.
@@ -49,17 +54,17 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	/**
 	 * The column <code>buses.manufacturer</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Object> MANUFACTURER = createField("manufacturer", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MANUFACTURER = createField("manufacturer", org.jooq.impl.SQLDataType.CLOB.length(50), this, "");
 
 	/**
 	 * The column <code>buses.model</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Object> MODEL = createField("model", org.jooq.impl.DefaultDataType.getDefaultDataType("STRING "), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MODEL = createField("model", org.jooq.impl.SQLDataType.CLOB.length(50), this, "");
 
 	/**
-	 * The column <code>buses.nextInspectionDateDue</code>.
+	 * The column <code>buses.nextInspectionDue</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> NEXTINSPECTIONDATEDUE = createField("nextInspectionDateDue", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> NEXTINSPECTIONDUE = createField("nextInspectionDue", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
 	 * The column <code>buses.articulatedBus</code>.
@@ -86,6 +91,14 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 
 	private Buses(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_BUSES;
 	}
 
 	/**

@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = 1924796926;
+	private static final long serialVersionUID = -1480322830;
 
 	/**
 	 * The reference instance of <code></code>
@@ -48,7 +48,6 @@ public class DefaultSchema extends org.jooq.impl.SchemaImpl {
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.RoutesStops.ROUTES_STOPS,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Soldtickets.SOLDTICKETS,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.SqliteSequence.SQLITE_SEQUENCE,
-			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Testtabelle.TESTTABELLE,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets.TICKETS,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tours.TOURS);
 	}

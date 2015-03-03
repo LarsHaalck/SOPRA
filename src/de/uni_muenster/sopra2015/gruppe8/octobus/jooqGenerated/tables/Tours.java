@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord> {
 
-	private static final long serialVersionUID = -76039637;
+	private static final long serialVersionUID = 772946145;
 
 	/**
 	 * The reference instance of <code>tours</code>
@@ -32,24 +32,29 @@ public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	}
 
 	/**
-	 * The column <code>tours.date</code>.
+	 * The column <code>tours.tours_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> DATE = createField("date", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> TOURS_ID = createField("tours_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
+	 * The column <code>tours.timestamp</code>.
+	 */
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> TIMESTAMP = createField("timestamp", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>tours.routes_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Object> ROUTES_ID = createField("routes_id", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> ROUTES_ID = createField("routes_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>tours.bus_licensePlate</code>.
+	 * The column <code>tours.buses_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Object> BUS_LICENSEPLATE = createField("bus_licensePlate", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> BUSES_ID = createField("buses_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>tours.employee_username</code>.
+	 * The column <code>tours.employee_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Object> EMPLOYEE_USERNAME = createField("employee_username", org.jooq.impl.DefaultDataType.getDefaultDataType(""), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> EMPLOYEE_ID = createField("employee_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>tours</code> table reference
@@ -77,8 +82,32 @@ public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	 * {@inheritDoc}
 	 */
 	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_TOURS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord> getPrimaryKey() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TOURS;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>> getKeys() {
+		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TOURS);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public java.util.List<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_ROUTES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_ROUTES_2, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_BUSES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_EMPLOYEES_1);
+		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_ROUTES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_BUSES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_EMPLOYEES_1);
 	}
 
 	/**
