@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Jonas on 02.03.2015.
  */
-public class LoginDialog extends JDialog
+public class FormLogin extends JDialog
 {
 	private ControllerLoginForm controllerLoginForm;
 
@@ -20,7 +20,7 @@ public class LoginDialog extends JDialog
 	private JPanel panel;
 	private GridBagConstraints cs;
 
-	public LoginDialog(Frame parent)
+	public FormLogin(Frame parent)
 	{
 		super(parent, "Login", true);
 

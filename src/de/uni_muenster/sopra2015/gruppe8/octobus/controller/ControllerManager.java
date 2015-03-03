@@ -1,6 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 import java.util.ArrayList;
 
@@ -9,27 +9,27 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ArrayList<ButtonListener> buttonListener;
+	private static ArrayList<ListenerButton> listenerButton;
 
 	static
 	{
-		buttonListener = new ArrayList<>();
+		listenerButton = new ArrayList<>();
 	}
 
 	public static void informButtonPressed(String emitter)
 	{
-		ArrayList<ButtonListener> list = (ArrayList<ButtonListener>) buttonListener.clone();
-		for (ButtonListener listener : list)
+		ArrayList<ListenerButton> list = (ArrayList<ListenerButton>) listenerButton.clone();
+		for (ListenerButton listener : list)
 			listener.buttonPressed(emitter);
 	}
 
-	public static void addListener(ButtonListener listener)
+	public static void addListener(ListenerButton listener)
 	{
-		buttonListener.add(listener);
+		listenerButton.add(listener);
 	}
 
-	public static void removeListener(ButtonListener listener)
+	public static void removeListener(ListenerButton listener)
 	{
-		buttonListener.remove(listener);
+		listenerButton.remove(listener);
 	}
 }

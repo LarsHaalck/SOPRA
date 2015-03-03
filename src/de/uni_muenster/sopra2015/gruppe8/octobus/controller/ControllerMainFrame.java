@@ -1,21 +1,21 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.EmployeePanel;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.MainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassanger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 import java.awt.*;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerMainFrame implements ButtonListener
+public class ControllerMainFrame implements ListenerButton
 {
-	private MainFrame frame;
+	private FrameMain frame;
 
-	public ControllerMainFrame(MainFrame frame)
+	public ControllerMainFrame(FrameMain frame)
 	{
 		ControllerManager.addListener(this);
 		this.frame = frame;
@@ -30,12 +30,12 @@ public class ControllerMainFrame implements ButtonListener
 				displayForm("login");
 				break;
 			case "login_done":
-				EmployeePanel newEmployeePanel = new EmployeePanel();
-				displayContent(newEmployeePanel);
+				PanelEmployee newPanelEmployee = new PanelEmployee();
+				displayContent(newPanelEmployee);
 				break;
 			case "logout_done":
-				MainPanel newMainPanel = new MainPanel();
-				displayContent(newMainPanel);
+				PanelPassanger newPanelPassanger = new PanelPassanger();
+				displayContent(newPanelPassanger);
 				break;
 		}
 	}
@@ -45,7 +45,7 @@ public class ControllerMainFrame implements ButtonListener
 		switch (emitter)
 		{
 			case "login":
-				LoginDialog d = new LoginDialog(frame);
+				FormLogin d = new FormLogin(frame);
 				d.setVisible(true);
 				break;
 		}

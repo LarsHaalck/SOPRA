@@ -1,6 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.MainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 
 import javax.swing.*;
 
@@ -19,7 +19,7 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new MainFrame();
+				new FrameMain();
 			}
 		});
 	}

@@ -11,12 +11,12 @@ import javax.swing.*;
 /**
  * @author Michael Biech
  */
-public class EmployeePanel extends JPanel
+public class PanelEmployee extends JPanel
 {
 	private ControllerEmployeeArea controllerEmployeeArea;
 	private NavigationPanel navigationPanel;
 
-	public EmployeePanel()
+	public PanelEmployee()
 	{
 		super();
 

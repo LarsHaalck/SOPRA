@@ -1,13 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 import javax.swing.*;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerEmployeeArea implements ButtonListener
+public class ControllerEmployeeArea implements ListenerButton
 {
 	private JPanel panel;
 

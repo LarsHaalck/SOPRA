@@ -8,7 +8,7 @@ import java.awt.*;
  *         lenght of textfield
  *         zip an city
  */
-public class FormulaAdminEmployee extends JPanel
+public class FormEmployee extends JPanel
 {
 	private JPanel explanationPanel = new JPanel();
 	private String explanationText = "Bitte geben Sie die Daten des Mitarbeiters ein.";
@@ -52,7 +52,7 @@ public class FormulaAdminEmployee extends JPanel
 	private JToggleButton ticketplaner = new JToggleButton("Fahrkartenplaner");
 	private JToggleButton hrmanager = new JToggleButton("Personalleiter");
 
-	public FormulaAdminEmployee()
+	public FormEmployee()
 	{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(topPanel);

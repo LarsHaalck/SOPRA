@@ -7,7 +7,7 @@ import java.awt.*;
  * @author Patricia Schinke
  *         lenght of textfield
  */
-public class FormulaAdminBus extends JPanel
+public class FormBus extends JPanel
 {
 	private String explanationText = "Bitte geben Sie die Daten des Busses ein.";
 	private JLabel explanation = new JLabel(explanationText);
@@ -35,7 +35,7 @@ public class FormulaAdminBus extends JPanel
 	private JTextField nextInspectionDueText = new JTextField();
 	private JTextField articulatedBusText = new JTextField();
 
-	public FormulaAdminBus()
+	public FormBus()
 	{
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);

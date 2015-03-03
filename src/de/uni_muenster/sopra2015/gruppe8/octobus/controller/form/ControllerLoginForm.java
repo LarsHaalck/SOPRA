@@ -1,18 +1,17 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerLoginForm implements ButtonListener
+public class ControllerLoginForm implements ListenerButton
 {
-	LoginDialog dialog;
+	FormLogin dialog;
 
-	public ControllerLoginForm(LoginDialog dialog)
+	public ControllerLoginForm(FormLogin dialog)
 	{
 		this.dialog = dialog;
 	}

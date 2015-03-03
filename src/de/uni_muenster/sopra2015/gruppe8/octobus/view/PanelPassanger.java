@@ -1,4 +1,4 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
@@ -9,11 +9,11 @@ import java.awt.*;
 /**
  * @author Michael Biech
  */
-public class MainPanel extends JPanel
+public class PanelPassanger extends JPanel
 {
 	private ControllerMainPanel controllerMainPanel;
 
-	public MainPanel()
+	public PanelPassanger()
 	{
 		super();
 
