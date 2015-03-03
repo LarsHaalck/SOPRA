@@ -19,7 +19,7 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new EntryPoint("TabNetwork");
+				new EntryPoint("TabBuses");
 			}
 		});
 	}
