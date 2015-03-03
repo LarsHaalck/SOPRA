@@ -17,7 +17,7 @@ public class FormChangePassword extends JDialog
 	private GridBagConstraints cs;
 	private JLabel lbOldPassword, lbNewPassword, lbNewPasswordCorrect, lbOldPassword_Error,
 			lbNewPassword_Error, lbNewPasswordCorrect_Error;
-	private JTextField tfOldPassword, tfNewPassword, tfNewPasswordCorrect;
+	private JPasswordField tfOldPassword, tfNewPassword, tfNewPasswordCorrect;
 	private JButton btnSave, btnCancel;
 
 	public FormChangePassword(Frame parent)
@@ -54,7 +54,7 @@ public class FormChangePassword extends JDialog
 		cs.gridwidth = 1;
 		panel.add(lbOldPassword, cs);
 
-		tfOldPassword = new JTextField(20);
+		tfOldPassword = new JPasswordField(20);
 		cs.gridx = 1;
 		cs.gridy = 0;
 		cs.gridwidth = 2;
@@ -77,7 +77,7 @@ public class FormChangePassword extends JDialog
 		cs.gridwidth = 1;
 		panel.add(lbNewPassword, cs);
 
-		tfNewPassword = new JTextField(20);
+		tfNewPassword = new JPasswordField(20);
 		tfNewPassword.setToolTipText("Das Passwort muss aus 8 Zeichen bestehen");
 		cs.gridx = 1;
 		cs.gridy = 2;
@@ -101,7 +101,7 @@ public class FormChangePassword extends JDialog
 		cs.gridwidth = 1;
 		panel.add(lbNewPasswordCorrect, cs);
 
-		tfNewPasswordCorrect = new JTextField(20);
+		tfNewPasswordCorrect = new JPasswordField(20);
 		cs.gridx = 1;
 		cs.gridy = 4;
 		cs.gridwidth = 2;
@@ -137,8 +137,6 @@ public class FormChangePassword extends JDialog
 		setResizable(false);
 		setLocationRelativeTo(parent);
 		getRootPane().setDefaultButton(btnSave);
-
-		illegalChanges(false, false, true);
 	}
 
 	public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
@@ -159,16 +157,16 @@ public class FormChangePassword extends JDialog
 
 	public String getOldPassword()
 	{
-		return tfOldPassword.getText().trim();
+		return new String(tfOldPassword.getPassword());
 	}
 
 	public String getNewPassword()
 	{
-		return tfNewPassword.getText().trim();
+		return new String(tfNewPassword.getPassword());
 	}
 
 	public String getNewPasswordCorrect()
 	{
-		return tfNewPasswordCorrect.getText().trim();
+		return new String(tfNewPasswordCorrect.getPassword());
 	}
 }
