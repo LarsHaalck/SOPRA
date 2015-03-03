@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.DayOfWeek;
 import java.util.*;
+import java.util.Date;
 
 /**
  * @author Michael Biech
@@ -58,11 +59,12 @@ public class ControllerDatabaseJOOQ
 
 		openDB();
 
+		/*
 		BusStop coesfeld = new BusStop("Coesfelder Kreuz",new Tuple<>(20,40),new HashSet<>(Arrays.asList("A","B","C")), false);
 		BusStop wilhelm = new BusStop("Wilhelmstraße ",new Tuple<>(30,60),new HashSet<>(Arrays.asList("A","B")),true);
 
 		addBusStop(coesfeld);
-		addBusStop(wilhelm);
+		addBusStop(wilhelm); */
 
 		/* LinkedList<Tuple<BusStop,Integer>> stops = new LinkedList<>();
 		stops.add(new Tuple<>(coesfeld,0));
@@ -152,6 +154,27 @@ public class ControllerDatabaseJOOQ
 				.execute();
 	}
 
+	public ArrayList<Bus> getBuses()
+	{
+		Result<Record> busRecords = create.select().from(BUSES).fetch();
+
+		ArrayList<Bus> busList = new ArrayList<>();
+
+		for (Record rec : busRecords)
+		{
+			Bus bus = new Bus(
+					rec.getValue(BUSES.LICENCEPLATE),
+					rec.getValue(BUSES.NUMBEROFSEATS),
+					rec.getValue(BUSES.STANDINGROOM),
+					rec.getValue(BUSES.MANUFACTURER),
+					rec.getValue(BUSES.MODEL),
+					new Date(rec.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+					rec.getValue(BUSES.ARTICULATEDBUS));
+			busList.add(bus);
+		}
+		return busList;
+	}
+
 	//////////////////////////
 	// Methods for BusStops //
 	//////////////////////////
@@ -188,6 +211,32 @@ public class ControllerDatabaseJOOQ
 				.set(BUSSTOPS.LOCATIONY,bstop.getLocation().getSecond())
 				.set(BUSSTOPS.BARRIERFREE,bstop.isBarrierFree())
 				.execute();
+	}
+
+	public ArrayList<BusStop> getBusStops()
+	{
+		Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();		// get all busStops from DB
+		ArrayList<BusStop> busStopList = new ArrayList<>();
+
+		for (Record rec : busStopRecords)			// for each busStop in DB...
+		{
+			Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
+					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
+
+			HashSet<String> spoints = new HashSet<>();
+			for (Record sp : stoppingPoints)
+			{
+				spoints.add(sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));		//.. and put them into a HashSet
+			}
+
+			BusStop busStop = new BusStop(
+					rec.getValue(BUSSTOPS.NAME),
+					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
+					spoints,
+					rec.getValue(BUSSTOPS.BARRIERFREE));
+			busStopList.add(busStop);			// create busStop object and add to ArrayList
+		}
+		return busStopList;
 	}
 
 
@@ -247,6 +296,46 @@ public class ControllerDatabaseJOOQ
 				.execute();
 	}
 
+	public ArrayList<Employee> getEmployees()
+	{
+		Result<Record> empRecords = create.select().from(EMPLOYEES).fetch();
+
+		ArrayList<Employee> empList = new ArrayList<>();
+
+		for (Record rec : empRecords)
+		{
+			HashSet<Role> roles = new HashSet<>();
+			if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
+				roles.add(Role.SCHEDULE_MANAGER);
+			if (rec.getValue(EMPLOYEES.ISHR_MANAGER))
+				roles.add(Role.HR_MANAGER);
+			if (rec.getValue(EMPLOYEES.ISTICKET_PLANNER))
+				roles.add(Role.TICKET_PLANNER);
+			if (rec.getValue(EMPLOYEES.ISNETWORK_PLANNER))
+				roles.add(Role.NETWORK_PLANNER);
+			if (rec.getValue(EMPLOYEES.ISBUSDRIVER))
+				roles.add(Role.BUSDRIVER);
+
+			Employee emp = new Employee(
+					rec.getValue(EMPLOYEES.NAME),
+					rec.getValue(EMPLOYEES.FIRSTNAME),
+					rec.getValue(EMPLOYEES.ADDRESS),
+					rec.getValue(EMPLOYEES.ZIPCODE),
+					rec.getValue(EMPLOYEES.CITY),
+					new Date(rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
+					rec.getValue(EMPLOYEES.PHONE),
+					rec.getValue(EMPLOYEES.EMAIL),
+					rec.getValue(EMPLOYEES.USERNAME),
+					rec.getValue(EMPLOYEES.PASSWORD),
+					rec.getValue(EMPLOYEES.SALT),
+					rec.getValue(EMPLOYEES.NOTE),
+					roles);
+			empList.add(emp);
+		}
+		return empList;
+	}
+
+
 	////////////////////////
 	// Methods for Routes //
 	////////////////////////
@@ -285,6 +374,67 @@ public class ControllerDatabaseJOOQ
 		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
 	}
 
+	public ArrayList<Route> getRoutes()
+	{
+		Result<Record> routesRecords = create.select().from(ROUTES).fetch();        // get all busStops from DB
+		ArrayList<Route> routesList = new ArrayList<>();
+
+		for (Record rec : routesRecords)            // for each busStop in DB...
+		{
+			Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)    //.. get all corresponding stoppingPoints ...
+					.where(ROUTES_STARTTIMES.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+
+			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = new HashMap<>();
+			startTimes.put(DayOfWeek.MONDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.TUESDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.THURSDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.FRIDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.SATURDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.SUNDAY, new LinkedList<Integer>());
+
+			for (Record timerec : startTimesRecords)
+			{
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("MONDAY"))
+					startTimes.get(DayOfWeek.MONDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("TUESDAY"))
+					startTimes.get(DayOfWeek.TUESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("WEDNESDAY"))
+					startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("THURSDAY"))
+					startTimes.get(DayOfWeek.THURSDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("FRIDAY"))
+					startTimes.get(DayOfWeek.FRIDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SATURDAY"))
+					startTimes.get(DayOfWeek.SATURDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SUNDAY"))
+					startTimes.get(DayOfWeek.SUNDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+			}
+
+
+			Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)    //.. get all corresponding stoppingPoints ...
+					.where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+			LinkedList<Tuple<BusStop, Integer>> stops = new LinkedList<>();
+
+			// TODO: zu Ende bringen!
+//			for (Record s : stopsRecords)
+//			{
+//				String stopName =
+//				stops.add(new Tuple<BusStop,Integer>());		//.. and put them into a HashSet
+//			}
+
+			Route route = new Route(
+					rec.getValue(ROUTES.NAME),
+					rec.getValue(ROUTES.NOTE),
+					stops,
+					rec.getValue(ROUTES.NIGHT),
+					startTimes);
+			routesList.add(route);            // create busStop object and add to ArrayList
+		}
+		return routesList;
+	}
+
+
 	/////////////////////////////
 	// Methods for soldTickets //
 	/////////////////////////////
@@ -308,6 +458,24 @@ public class ControllerDatabaseJOOQ
 				.set(SOLDTICKETS.TIMESTAMP,(int) sold.getDate().getTime()/1000)
 				.set(SOLDTICKETS.PRICE,sold.getPrice())
 				.execute();
+	}
+
+	public ArrayList<SoldTicket> getSoldTickets()
+	{
+		Result<Record> soldTicketRecords = create.select().from(SOLDTICKETS).fetch();
+
+		ArrayList<SoldTicket> soldTicketsList = new ArrayList<>();
+
+		for (Record rec : soldTicketRecords)
+		{
+			SoldTicket sold = new SoldTicket(
+					rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
+					rec.getValue(SOLDTICKETS.NAME),
+					new Date(rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
+					rec.getValue(SOLDTICKETS.PRICE));
+			soldTicketsList.add(sold);
+		}
+		return soldTicketsList;
 	}
 
 
@@ -335,6 +503,25 @@ public class ControllerDatabaseJOOQ
 				.set(TICKETS.NUMPASSENGERS, tick.getNumPassengers())
 				.set(TICKETS.DESCRIPTION, tick.getDescription())
 				.execute();
+	}
+
+	public ArrayList<Ticket> getTickets()
+	{
+		Result<Record> ticketRecords = create.select().from(TICKETS).fetch();
+
+		ArrayList<Ticket> ticketList = new ArrayList<>();
+
+		for (Record rec : ticketRecords)
+		{
+			Ticket tick = new Ticket(
+					rec.getValue(TICKETS.PRICE),
+					rec.getValue(TICKETS.NAME),
+					rec.getValue(TICKETS.NUMPASSENGERS),
+					rec.getValue(TICKETS.DESCRIPTION),
+					rec.getValue(TICKETS.TICKETS_ID));
+			ticketList.add(tick);
+		}
+		return ticketList;
 	}
 
 	////////////////////////
