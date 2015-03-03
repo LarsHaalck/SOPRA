@@ -21,7 +21,7 @@ public class TabBuses extends TabTable<TableModelBus>
 	private JButton btnNew;
 	public TabBuses()
 	{
-		super(TableModelBus.class, true);
+		super(TableModelBus.class, true, true);
 
 		setLayout(new BorderLayout(5,5));
 
@@ -40,11 +40,14 @@ public class TabBuses extends TabTable<TableModelBus>
 			//Do new stuff
 		});
 
-		JPanel plFilter = new JPanel();
-		plFilter.add(lbFilter);
-		plFilter.add(tfFilter);
-		plFilter.add(cbFilter);
-		add(plFilter, BorderLayout.PAGE_START);
+		if(super.isRefineable())
+		{
+			JPanel plFilter = new JPanel();
+			plFilter.add(lbFilter);
+			plFilter.add(tfFilter);
+			plFilter.add(cbFilter);
+			add(plFilter, BorderLayout.PAGE_START);
+		}
 
 		JPanel plButtons = new JPanel();
 		plButtons.add(btnNew);
