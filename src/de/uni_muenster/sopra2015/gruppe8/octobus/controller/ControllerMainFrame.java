@@ -17,6 +17,7 @@ public class ControllerMainFrame implements ButtonListener
 
 	public ControllerMainFrame(MainFrame frame)
 	{
+		ControllerManager.addListener(this);
 		this.frame = frame;
 	}
 
@@ -25,14 +26,15 @@ public class ControllerMainFrame implements ButtonListener
 	{
 		switch (emitter)
 		{
-			case "loginRequest":
+			case "login_request":
+				displayForm("login");
+				break;
+			case "login_done":
 				EmployeePanel newEmployeePanel = new EmployeePanel();
-				newEmployeePanel.setListener(this);
 				displayContent(newEmployeePanel);
 				break;
-			case "logoutRequest":
+			case "logout_done":
 				MainPanel newMainPanel = new MainPanel();
-				newMainPanel.setListener(this);
 				displayContent(newMainPanel);
 				break;
 		}
@@ -44,7 +46,6 @@ public class ControllerMainFrame implements ButtonListener
 		{
 			case "login":
 				LoginDialog d = new LoginDialog(frame);
-				d.setListener(this);
 				d.setVisible(true);
 				break;
 		}

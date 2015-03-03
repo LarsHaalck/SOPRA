@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.NavigationPanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.TabsPane;
 
@@ -20,11 +21,11 @@ public class EmployeePanel extends JPanel
 		super();
 
 		controllerEmployeeArea = new ControllerEmployeeArea(this);
+		ControllerManager.addListener(controllerEmployeeArea);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		navigationPanel = new NavigationPanel("Günni");
-		navigationPanel.setListener(controllerEmployeeArea);
 		add(navigationPanel);
 
 		TabsPane tabsPane = new TabsPane();
@@ -33,10 +34,5 @@ public class EmployeePanel extends JPanel
 		add(tabsPane);
 
 		setVisible(true);
-	}
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		controllerEmployeeArea.setListener(controllerMainFrame);
 	}
 }

@@ -23,7 +23,6 @@ public class MainFrame extends JFrame
 
 		controllerMainFrame = new ControllerMainFrame(this);
 		MainPanel mainPanel = new MainPanel();
-		mainPanel.setListener(controllerMainFrame);
 		controllerMainFrame.displayContent(mainPanel);
 
 		////////////////////////////////////////////////

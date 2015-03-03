@@ -104,9 +104,4 @@ public class MainPanel extends JPanel
 			}
 		});
 	}
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		controllerMainPanel.setListener(controllerMainFrame);
-	}
 }
