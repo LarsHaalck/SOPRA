@@ -3,59 +3,58 @@ package de.uni_muenster.sopra2015.gruppe8.octobus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 
-import java.awt.*;
-
 /**
  * Created by Lars on 03-Mar-15.
  */
 public class EntryPoint
 {
-	EntryPoint(String ep)
+	public EntryPoint(String ep)
 	{
-		FrameMain main = new FrameMain();
-		PanelEmployee employ = new PanelEmployee();
+		FrameMain frameMain = new FrameMain();
+		PanelEmployee panelEmployee = new PanelEmployee();
+
 		switch (ep)
 		{
 			case "FrameMain":
 				break;
 			case "PanelEmployee":
-				main.getMainFrame().displayContent(new PanelEmployee());
+				frameMain.getControllerFrameMain().displayContent(new PanelEmployee());
 				break;
 			case "TabExample":
-				employ.getPaneTabs().setSelectedIndex(0);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(0);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabNetwork":
-				employ.getPaneTabs().setSelectedIndex(1);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(1);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabBuses":
-				employ.getPaneTabs().setSelectedIndex(2);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(2);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabEmployee":
-				employ.getPaneTabs().setSelectedIndex(3);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(3);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabBusStop":
-				employ.getPaneTabs().setSelectedIndex(4);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(4);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabLine":
-				employ.getPaneTabs().setSelectedIndex(5);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(5);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabTicket":
-				employ.getPaneTabs().setSelectedIndex(6);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(6);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabWorkPlan":
-				employ.getPaneTabs().setSelectedIndex(7);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(7);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 			case "TabSchedule":
-				employ.getPaneTabs().setSelectedIndex(8);
-				main.getMainFrame().displayContent(employ);
+				panelEmployee.getPaneTabs().setSelectedIndex(8);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 		}
 	}

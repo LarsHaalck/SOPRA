@@ -50,7 +50,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				displayContent(newPanelPassenger);
 				break;
 		}
-
 	}
 
 	@Override
@@ -65,8 +64,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 			case FORM_CHANGE_PASSWORD:
 				displayForm(EmitterWindow.FORM_CHANGE_PASSWORD);
 		}
-
-
 	}
 
 	@Override
