@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerLoginForm;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormLogin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +10,7 @@ import java.awt.*;
  */
 public class FormLogin extends JDialog
 {
-	private ControllerLoginForm controllerLoginForm;
+	private ControllerFormLogin controllerFormLogin;
 
 	private JTextField tfUsername;
 	private JPasswordField pfPassword;
@@ -24,7 +23,7 @@ public class FormLogin extends JDialog
 	{
 		super(parent, "Login", true);
 
-		controllerLoginForm = new ControllerLoginForm(this);
+		controllerFormLogin = new ControllerFormLogin(this);
 
 		try
 		{
@@ -82,12 +81,12 @@ public class FormLogin extends JDialog
 
 		btnLogin = new JButton("Login");
 		btnLogin.addActionListener(e -> {
-			controllerLoginForm.buttonPressed("login_button_pressed");
+			controllerFormLogin.buttonPressed("login_button_pressed");
 		});
 
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
-			controllerLoginForm.buttonPressed("cancel_button_pressed");
+			controllerFormLogin.buttonPressed("cancel_button_pressed");
 		});
 		JPanel bp = new JPanel();
 		bp.add(btnLogin);
