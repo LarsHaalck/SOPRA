@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * @author Patricia Schinke
- * lenght of textfield
+ *         lenght of textfield
  */
 public class FormulaAdminBus extends JPanel
 {

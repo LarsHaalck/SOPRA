@@ -1,7 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.BusesTab;
-
 import javax.swing.*;
 
 /**
@@ -9,16 +7,17 @@ import javax.swing.*;
  */
 public class TabsPane extends JTabbedPane
 {
-    public TabsPane(){
-        super();
+	public TabsPane()
+	{
+		super();
 
-        addTab("Busnetz", new JPanel());
-        addTab("Busse", new JPanel());
-        addTab("Benutzer", new JPanel());
-        addTab("Haltestellen", new JPanel());
-				addTab("Linien", new JPanel());
-				addTab("Fahrkarten", new JPanel());
-				addTab("Arbeitsplan", new JPanel());
-				addTab("Dienstplanung", new JPanel());
-    }
+		addTab("Busnetz", new JPanel());
+		addTab("Busse", new JPanel());
+		addTab("Benutzer", new JPanel());
+		addTab("Haltestellen", new JPanel());
+		addTab("Linien", new JPanel());
+		addTab("Fahrkarten", new JPanel());
+		addTab("Arbeitsplan", new JPanel());
+		addTab("Dienstplanung", new JPanel());
+	}
 }

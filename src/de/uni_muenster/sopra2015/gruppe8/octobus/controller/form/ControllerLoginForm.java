@@ -4,8 +4,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 
-import javax.swing.*;
-
 /**
  * Created by Lars on 02-Mar-15.
  */
@@ -18,19 +16,19 @@ public class ControllerLoginForm implements ButtonListener
 	{
 		this.dialog = dialog;
 	}
+
 	@Override
 	public void buttonPressed(String emitter)
 	{
-		switch(emitter)
+		switch (emitter)
 		{
 			case "login":
-				if(dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
+				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
 					if (controllerMainFrame != null)
 						controllerMainFrame.buttonPressed("loginRequest");
 					dialog.dispose();
-				}
-				else
+				} else
 				{
 					dialog.illegalInput();
 				}

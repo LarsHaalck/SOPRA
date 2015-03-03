@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 /**
  * Created by PhiSt on 27.02.2015.
  */
-public class Quadruple<W,X,Y,Z>
+public class Quadruple<W, X, Y, Z>
 {
 	private W first;
 	private X second;

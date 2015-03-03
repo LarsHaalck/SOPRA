@@ -8,7 +8,6 @@ import java.util.Date;
 public class Tour
 {
 	private Date date;
-	private int time;
 	private Route route;
 	private Bus bus;
 	private Employee driver;
@@ -16,7 +15,6 @@ public class Tour
 	public Tour(Date date, int time, Route route, Bus bus, Employee driver)
 	{
 		this.date = date;
-		this.time = time;
 		this.route = route;
 		this.bus = bus;
 		this.driver = driver;
@@ -40,16 +38,6 @@ public class Tour
 	public void setDate(Date date)
 	{
 		this.date = date;
-	}
-
-	public int getTime()
-	{
-		return time;
-	}
-
-	public void setTime(int time)
-	{
-		this.time = time;
 	}
 
 	public Route getRoute()

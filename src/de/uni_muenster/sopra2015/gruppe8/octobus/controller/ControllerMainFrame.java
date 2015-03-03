@@ -6,7 +6,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -20,32 +19,28 @@ public class ControllerMainFrame implements ButtonListener
 	{
 		this.frame = frame;
 	}
+
 	@Override
 	public void buttonPressed(String emitter)
 	{
-		System.out.println(emitter);
-		if (emitter == "loginRequest") displayContent(new EmployeePanel());
-		else System.out.println(emitter);
-        switch (emitter)
-        {
-            case "loginRequest":
-                EmployeePanel newEmployeePanel = new EmployeePanel();
-                newEmployeePanel.setListener(frame.getController());
-                displayContent(newEmployeePanel);
-                System.out.println("login");
-                break;
-            case "logoutRequest":
-                MainPanel newMainPanel = new MainPanel();
-                newMainPanel.setListener(frame.getController());
-                displayContent(newMainPanel);
-                System.out.println("User wishes to log out");
-                break;
-        }
+		switch (emitter)
+		{
+			case "loginRequest":
+				EmployeePanel newEmployeePanel = new EmployeePanel();
+				newEmployeePanel.setListener(this);
+				displayContent(newEmployeePanel);
+				break;
+			case "logoutRequest":
+				MainPanel newMainPanel = new MainPanel();
+				newMainPanel.setListener(this);
+				displayContent(newMainPanel);
+				break;
+		}
 	}
 
 	public void displayForm(String emitter)
 	{
-		switch(emitter)
+		switch (emitter)
 		{
 			case "login":
 				LoginDialog d = new LoginDialog(frame);
