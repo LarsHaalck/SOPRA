@@ -18,11 +18,12 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 	protected JLabel lbFilter = new JLabel("Filter-Text:");
 	protected TableRowSorter<TM> sorter;
 
-	protected boolean isSortable = true;
+	private boolean isRefinable = true;
 	protected int selectedRow = -1;
 
-	public TabTable(Class<TM> type)
+	public TabTable(Class<TM> type, boolean isRefinable)
 	{
+		this.isRefinable = isRefinable;
 		//TODO: Check this!
 		TableModel model;
 		try
@@ -58,25 +59,27 @@ public abstract class TabTable<TM extends TableModel> extends JPanel
 
 		tfFilter = new JTextField();
 		//Whenever filterText changes, invoke newFilter.
-		tfFilter.getDocument().addDocumentListener(
-				new DocumentListener()
-				{
-					public void changedUpdate(DocumentEvent e)
+		if(isRefinable)
+		{
+			tfFilter.getDocument().addDocumentListener(
+					new DocumentListener()
 					{
-						newFilter();
-					}
+						public void changedUpdate(DocumentEvent e)
+						{
+							newFilter();
+						}
 
-					public void insertUpdate(DocumentEvent e)
-					{
-						newFilter();
-					}
+						public void insertUpdate(DocumentEvent e)
+						{
+							newFilter();
+						}
 
-					public void removeUpdate(DocumentEvent e)
-					{
-						newFilter();
-					}
-				});
-		//l1.setLabelFor(filterText);
+						public void removeUpdate(DocumentEvent e)
+						{
+							newFilter();
+						}
+					});
+		}
 
 	}
 
