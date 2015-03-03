@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
 
 /**
- * EmitterUserState is an enum used to describe user states.
+ * Used to describe user states.
  * Each value represents a unique user state.
  */
 public enum EmitterUserState
