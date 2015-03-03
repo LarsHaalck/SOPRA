@@ -18,6 +18,7 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 
 	public ControllerFrameMain(FrameMain frame)
 	{
+		super();
 		this.frame = frame;
 	}
 

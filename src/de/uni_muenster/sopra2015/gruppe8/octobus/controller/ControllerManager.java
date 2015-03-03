@@ -54,7 +54,8 @@ public class ControllerManager
 
 	public static void addListener(ListenerButton listener)
 	{
-		listenerButton.add(listener);
+		if(!listenerButton.contains(listener))
+			listenerButton.add(listener);
 	}
 
 	public static void removeListener(ListenerButton listener)
@@ -64,7 +65,8 @@ public class ControllerManager
 
 	public static void addListener(ListenerUserState listener)
 	{
-		listenerUserState.add(listener);
+		if(!listenerUserState.contains(listener))
+			listenerUserState.add(listener);
 	}
 
 	public static void removeListener(ListenerUserState listener)
@@ -74,7 +76,8 @@ public class ControllerManager
 
 	public static void addListener(ListenerWindow listener)
 	{
-		listenerWindow.add(listener);
+		if(!listenerWindow.contains(listener))
+			listenerWindow.add(listener);
 	}
 
 	public static void removeListener(ListenerWindow listener)

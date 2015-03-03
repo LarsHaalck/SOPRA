@@ -141,17 +141,17 @@ public class FormChangePassword extends JDialog
         illegalChanges(false, false, true);
     }
 
-    public void illegalChanges(boolean oldPasswordInvalid, boolean newPasswordInvalid, boolean newPasswordCorrectInvalid)
+    public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
     {
-        if (oldPasswordInvalid)
+        if (OldPassword)
             lbOldPassword_Error.setText("Das Passwort ist falsch!");
         else
             lbOldPassword_Error.setText(" ");
-        if (newPasswordInvalid)
+        if (NewPassword)
             lbNewPassword_Error.setText("Das Passwort ist falsch!");
         else
             lbNewPassword_Error.setText(" ");
-        if (newPasswordCorrectInvalid)
+        if (NewPasswordCorrect)
             lbNewPasswordCorrect_Error.setText("Das Passwort ist falsch!");
         else
             lbNewPasswordCorrect_Error.setText(" ");

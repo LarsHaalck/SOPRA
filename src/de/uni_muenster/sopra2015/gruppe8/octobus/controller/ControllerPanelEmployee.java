@@ -16,6 +16,7 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 
 	public ControllerPanelEmployee(JPanel panel)
 	{
+		super();
 		this.panel = panel;
 	}
 
