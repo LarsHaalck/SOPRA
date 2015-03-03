@@ -30,25 +30,25 @@ public class ControllerMainFrame implements ButtonListener
 	@Override
 	public void buttonPressed(String emitter)
 	{
-        switch (emitter)
-        {
+		switch (emitter)
+		{
 			case "showLoginForm":
 				displayForm("login");
 				break;
-            case "loginDone":
-                EmployeePanel newEmployeePanel = new EmployeePanel();
-                displayContent(newEmployeePanel);
-                break;
-            case "logoutDone":
-                MainPanel newMainPanel = new MainPanel();
-                displayContent(newMainPanel);
-                break;
-        }
+			case "loginDone":
+				EmployeePanel newEmployeePanel = new EmployeePanel();
+				displayContent(newEmployeePanel);
+				break;
+			case "logoutDone":
+				MainPanel newMainPanel = new MainPanel();
+				displayContent(newMainPanel);
+				break;
+		}
 	}
 
 	public void displayForm(String emitter)
 	{
-		switch(emitter)
+		switch (emitter)
 		{
 			case "login":
 				LoginDialog d = new LoginDialog(frame);

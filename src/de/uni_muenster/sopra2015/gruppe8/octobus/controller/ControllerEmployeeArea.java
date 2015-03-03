@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+
 import javax.swing.*;
 
 /**
@@ -8,30 +9,31 @@ import javax.swing.*;
  */
 public class ControllerEmployeeArea implements ButtonListener
 {
-    private JPanel panel;
+	private JPanel panel;
 
-    public ControllerEmployeeArea(JPanel panel)
-    {
-        this.panel = panel;
+	public ControllerEmployeeArea(JPanel panel)
+	{
+		this.panel = panel;
 		ControllerManager.addListener(this);
-    }
+	}
 
 	public void dispose()
 	{
 		ControllerManager.removeListener(this);
 	}
 
-    @Override
-    public void buttonPressed(String emitter)
-    {
-        switch (emitter){
-            case "passwordChangeRequest":
-                System.out.println("User wishes to change their password");
-                break;
+	@Override
+	public void buttonPressed(String emitter)
+	{
+		switch (emitter)
+		{
+			case "passwordChangeRequest":
+				System.out.println("User wishes to change their password");
+				break;
 			case "logoutButtonPressed":
 				dispose();
 				ControllerManager.informButtonPressed("logoutDone");
 				break;
-        }
-    }
+		}
+	}
 }

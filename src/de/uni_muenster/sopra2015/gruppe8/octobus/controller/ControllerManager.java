@@ -18,8 +18,8 @@ public class ControllerManager
 
 	public static void informButtonPressed(String emitter)
 	{
-		ArrayList<ButtonListener> list = (ArrayList<ButtonListener>)buttonListener.clone();
-		for(ButtonListener listener: list)
+		ArrayList<ButtonListener> list = (ArrayList<ButtonListener>) buttonListener.clone();
+		for (ButtonListener listener : list)
 			listener.buttonPressed(emitter);
 	}
 

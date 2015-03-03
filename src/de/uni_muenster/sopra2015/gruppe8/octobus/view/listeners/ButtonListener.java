@@ -5,5 +5,5 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
  */
 public interface ButtonListener
 {
-    public void buttonPressed(String emitter);
+	public void buttonPressed(String emitter);
 }

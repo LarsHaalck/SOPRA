@@ -18,18 +18,18 @@ public class ControllerLoginForm implements ButtonListener
 	{
 		this.dialog = dialog;
 	}
+
 	@Override
 	public void buttonPressed(String emitter)
 	{
-		switch(emitter)
+		switch (emitter)
 		{
 			case "login_form_login":
-				if(dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
+				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
 					ControllerManager.informButtonPressed("loginDone");
 					dispose();
-				}
-				else
+				} else
 				{
 					dialog.illegalInput();
 				}

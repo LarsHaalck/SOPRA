@@ -6,7 +6,7 @@ import javax.swing.table.TableRowSorter;
 
 /**
  * @author Patricia Schinke
- * still does not get the Data
+ *         still does not get the Data
  */
 public class TicketDisplay extends JPanel
 {

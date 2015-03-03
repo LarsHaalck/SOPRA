@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 /**
  * Created by Florian on 27.02.2015.
  */
-public class Tuple<X,Y>
+public class Tuple<X, Y>
 {
 	private X first;
 	private Y second;
@@ -25,17 +25,17 @@ public class Tuple<X,Y>
 	}
 
 	@Override
-	public boolean equals (Object o)
+	public boolean equals(Object o)
 	{
-		if(this == o)
+		if (this == o)
 			return false;
-		if(o == null || getClass() != o.getClass())
+		if (o == null || getClass() != o.getClass())
 			return false;
 
-		Tuple tuple = (Tuple)o;
+		Tuple tuple = (Tuple) o;
 
-		if(first != null ? !first.equals(tuple.getFirst()) : tuple.first != null) return false;
-		if(second != null ? !second.equals(tuple.getSecond()) : tuple.second != null) return false;
+		if (first != null ? !first.equals(tuple.getFirst()) : tuple.first != null) return false;
+		if (second != null ? !second.equals(tuple.getSecond()) : tuple.second != null) return false;
 
 		return true;
 	}
@@ -43,6 +43,6 @@ public class Tuple<X,Y>
 	@Override
 	public String toString()
 	{
-		return "("+first.toString()+","+second.toString()+")";
+		return "(" + first.toString() + "," + second.toString() + ")";
 	}
 }

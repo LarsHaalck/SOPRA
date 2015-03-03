@@ -5,8 +5,8 @@ import java.awt.*;
 
 /**
  * @author Patricia Schinke
- * lenght of textfield
- * zip an city
+ *         lenght of textfield
+ *         zip an city
  */
 public class FormulaAdminEmployee extends JPanel
 {

@@ -12,24 +12,25 @@ import javax.swing.*;
  */
 public class EmployeePanel extends JPanel
 {
-    private ControllerEmployeeArea controllerEmployeeArea;
-    private NavigationPanel navigationPanel;
+	private ControllerEmployeeArea controllerEmployeeArea;
+	private NavigationPanel navigationPanel;
 
-    public EmployeePanel(){
-        super();
+	public EmployeePanel()
+	{
+		super();
 
-        controllerEmployeeArea = new ControllerEmployeeArea(this);
+		controllerEmployeeArea = new ControllerEmployeeArea(this);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        navigationPanel = new NavigationPanel("Günni");
-        add(navigationPanel);
+		navigationPanel = new NavigationPanel("Günni");
+		add(navigationPanel);
 
-        TabsPane tabsPane = new TabsPane();
-        // ...
-        // Pretty much same as above
-        add(tabsPane);
+		TabsPane tabsPane = new TabsPane();
+		// ...
+		// Pretty much same as above
+		add(tabsPane);
 
-        setVisible(true);
-    }
+		setVisible(true);
+	}
 }

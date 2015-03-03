@@ -11,16 +11,16 @@ import javax.swing.*;
  */
 public class OctoBUS
 {
-    public static void main(String[] args)
-    {
-        // For thread safety and adhering to best practices
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                new MainFrame();
-            }
-        });
-    }
+	public static void main(String[] args)
+	{
+		// For thread safety and adhering to best practices
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new MainFrame();
+			}
+		});
+	}
 }
