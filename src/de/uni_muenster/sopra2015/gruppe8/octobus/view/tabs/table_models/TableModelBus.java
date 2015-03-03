@@ -10,13 +10,7 @@ import javax.swing.table.TableModel;
  */
 public class TableModelBus extends ExtendedTableModel
 {
-	private String[] columnNames = {"Kennzeichen",
-			"Hersteller",
-			"Modell",
-			"Typ",
-			"Sitzplätze",
-			"Stehplätze",
-			"Nächste Inspektion"};
+	private String[] columnNames;
 
 	private Object[][] data = {
 			{"MS-OB-482", "MAN", "Lion's City C LE", "Normal", new Integer(44),
@@ -26,6 +20,15 @@ public class TableModelBus extends ExtendedTableModel
 			{"MS-OB-546", "MAN", "Lion's City M", "Klein", new Integer(29),
 					new Integer(48), "02.02.2015"}
 	};
+
+	public TableModelBus()
+	{
+		//Add column-names from enum
+		ColumnsBus[] values = ColumnsBus.values();
+		columnNames = new String[values.length];
+		for(int i=0; i<columnNames.length; i++)
+			columnNames[i] = values[i].toString();
+	}
 
 	@Override
 	public int getRowCount()
@@ -89,7 +92,7 @@ public class TableModelBus extends ExtendedTableModel
 	@Override
 	public String[] getRefineableColumns()
 	{
-		return new String[]{"Kennzeichen", "Hersteller", "Typ"};
+		return new String[]{ColumnsBus.LICENCE_PLATE.toString(), ColumnsBus.MANUFACTURER.toString(), ColumnsBus.TYPE.toString()};
 	}
 
 	@Override
