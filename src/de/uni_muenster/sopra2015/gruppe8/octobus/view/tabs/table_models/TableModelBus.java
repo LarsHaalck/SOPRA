@@ -1,9 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  * Created by Florian on 03.03.2015.

@@ -6,14 +6,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.Extended
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
- * Created by Florian on 03.03.2015.
+ * Abstract class that creates stuff we need for every tab with a table
+ * TM is TableModel that should be use
  */
 public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 {

@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 import javax.swing.table.TableModel;
 
 /**
- * Created by Florian on 03.03.2015.
+ * Class extends normal table to have methods for getting an array of specified columns and get index by column by name
  */
 public abstract class ExtendedTableModel implements TableModel
 {

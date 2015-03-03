@@ -3,7 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 import javax.swing.event.TableModelListener;
 
 /**
- * Created by Florian on 03.03.2015.
+ * We only need this to catch errors while parsing generics.
+ * Hopefully this isn't used anytime.
  */
 public class DefaultExtendedTableModel extends ExtendedTableModel
 {
