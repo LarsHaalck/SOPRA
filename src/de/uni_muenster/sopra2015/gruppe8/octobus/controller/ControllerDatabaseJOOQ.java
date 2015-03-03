@@ -5,6 +5,8 @@ import static org.jooq.impl.DSL.*;
 
 import java.sql.*;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord;
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -14,10 +16,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.DayOfWeek;
+import java.util.*;
 
 /**
  * @author Michael Biech
@@ -58,12 +58,35 @@ public class ControllerDatabaseJOOQ
 
 		openDB();
 
-		HashSet<Role> roles = new HashSet<>(Arrays.asList(Role.BUSDRIVER,Role.HR_MANAGER));
+		BusStop coesfeld = new BusStop("Coesfelder Kreuz",new Tuple<>(20,40),new HashSet<>(Arrays.asList("A","B","C")), false);
+		BusStop wilhelm = new BusStop("Wilhelmstraße ",new Tuple<>(30,60),new HashSet<>(Arrays.asList("A","B")),true);
+
+		addBusStop(coesfeld);
+		addBusStop(wilhelm);
+
+		/* LinkedList<Tuple<BusStop,Integer>> stops = new LinkedList<>();
+		stops.add(new Tuple<>(coesfeld,0));
+		stops.add(new Tuple<>(wilhelm,5));
+
+		HashMap<DayOfWeek,LinkedList<Integer>> startTimes = new HashMap<>();
+		LinkedList<Integer> startTimesTimes = new LinkedList<>();
+		startTimesTimes.add(480);
+		startTimesTimes.add(600);
+		startTimesTimes.add(720);
+
+		startTimes.put(DayOfWeek.MONDAY, startTimesTimes);
+		startTimes.put(DayOfWeek.FRIDAY,startTimesTimes);
+
+		Route linie = new Route("Linie Test","Testlinie",stops,false,startTimes);
+		addRoute(linie); */
+
+
+		/* HashSet<Role> roles = new HashSet<>(Arrays.asList(Role.BUSDRIVER,Role.HR_MANAGER));
 
 		Employee klaus = new Employee("Schwackowiak","Herbert","Daniela-Katzenberger-Allee","48149","Münster",
 				new Date(2000000),"0123456789","herbert@octobus.com","herbie","SALZ","HASH","netter Typ!",roles);
 
-		addEmployee(klaus);
+		addEmployee(klaus); */
 
 
 		/* Set<String> spoints = new HashSet<>();
@@ -104,9 +127,9 @@ public class ControllerDatabaseJOOQ
 	public void addBus(Bus bus)
 	{
 		create.insertInto(BUSES,BUSES.LICENCEPLATE,BUSES.NUMBEROFSEATS,BUSES.STANDINGROOM,BUSES.MANUFACTURER,
-				BUSES.MODEL,BUSES.NEXTINSPECTIONDATEDUE,BUSES.ARTICULATEDBUS)
+				BUSES.MODEL,BUSES.NEXTINSPECTIONDUE,BUSES.ARTICULATEDBUS)
 				.values(bus.getLicencePlate(),bus.getNumberOfSeats(),bus.getStandingRoom(),bus.getManufacturer(),
-						bus.getModel(),2000000,(Boolean) bus.isArticulatedBus())
+						bus.getModel(),(int) bus.getNextInspectionDue().getTime()/1000,(Boolean) bus.isArticulatedBus())
 				.execute();
 	}
 
@@ -121,22 +144,20 @@ public class ControllerDatabaseJOOQ
 
 	public void addBusStop(BusStop bstop)
 	{
-		create.insertInto(BUSSTOPS,BUSSTOPS.NAME,BUSSTOPS.LOCATIONX,BUSSTOPS.LOCATIONY,BUSSTOPS.BARRIERFREE)
-				.values(bstop.getName(),bstop.getLocation().getFirst(),bstop.getLocation().getSecond(),
+		BusstopsRecord newStop = create.insertInto(BUSSTOPS,BUSSTOPS.NAME,BUSSTOPS.LOCATIONX,BUSSTOPS.LOCATIONY,
+				BUSSTOPS.BARRIERFREE)
+				.values(bstop.getName(), bstop.getLocation().getFirst(), bstop.getLocation().getSecond(),
 						bstop.isBarrierFree())
-				.execute();
+				.returning(BUSSTOPS.BUSSTOPS_ID)
+				.fetchOne();
 
-		Set<String> stopPoints = bstop.getStoppingPoints();
+		HashSet<String> points = bstop.getStoppingPoints();
 
-		for(String sp : stopPoints)
+		for (String s : points)
 		{
-			create.insertInto(BUSSTOPS_STOPPINGPOINTS,
-					BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_NAME,
-					BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_LOCATIONX,
-					BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_LOCATIONY,
-					BUSSTOPS_STOPPINGPOINTS.NAME)
-					.values(bstop.getName(), bstop.getLocation().getFirst(), bstop.getLocation().getSecond(), sp)
-					.execute();
+			create.insertInto(BUSSTOPS_STOPPINGPOINTS,BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,BUSSTOPS_STOPPINGPOINTS.NAME)
+				.values(newStop.getBusstopsId(),s)
+				.execute();
 		}
 	}
 
@@ -164,16 +185,57 @@ public class ControllerDatabaseJOOQ
 
 	public void addRoute(Route r)
 	{
-		Result<?> result = create.insertInto(ROUTES,ROUTES.NAME,ROUTES.NOTE,ROUTES.NIGHT)
+		RoutesRecord newRoute = create.insertInto(ROUTES,ROUTES.NAME,ROUTES.NOTE,ROUTES.NIGHT)
 				.values(r.getName(),r.getNote(),(Boolean) r.isNight())
-				.returning(ROUTES.ID)
-				.fetch();
-		result.get(0);
-		System.out.println("" + result);
+				.returning(ROUTES.ROUTES_ID)
+				.fetchOne();
 
+		LinkedList<Tuple<BusStop,Integer>>  stops = r.getStops();
+		for (Tuple<BusStop,Integer> pair : stops)
+		{
+			create.insertInto(ROUTES_STOPS, ROUTES_STOPS.ROUTES_ID, ROUTES_STOPS.BUSSTOPS_ID,
+					ROUTES_STOPS.TIMETOPREVIOUS)
+					.values(newRoute.getRoutesId(), pair.getFirst().getId(), pair.getSecond())
+					.execute();
+		}
 
+		HashMap<DayOfWeek,LinkedList<Integer>> times = r.getStartTimes();
+		for (DayOfWeek day : times.keySet())
+		{
+			for (Integer time : times.get(day))
+			{
+				create.insertInto(ROUTES_STARTTIMES,ROUTES_STARTTIMES.ROUTES_ID,ROUTES_STARTTIMES.DAYOFWEEK,
+					ROUTES_STARTTIMES.STARTTIME)
+					.values(newRoute.getRoutesId(), day.toString(), time)
+					.execute();
+			}
+		}
+	}
+	/////////////////////////////
+	// Methods for soldTickets //
+	/////////////////////////////
 
+	public void addSoldTicket(SoldTicket sold)
+	{
+		create.insertInto(SOLDTICKETS, SOLDTICKETS.NAME, SOLDTICKETS.TIMESTAMP, SOLDTICKETS.PRICE)
+			.values(sold.getName(),(int) sold.getDate().getTime()/1000,sold.getPrice())
+			.execute();
 	}
 
+	/////////////////////////
+	// Methods for Tickets //
+	/////////////////////////
 
+	public void addTickets(Ticket tick)
+	{
+		create.insertInto(TICKETS,TICKETS.NAME,TICKETS.PRICE,TICKETS.NUMPASSENGERS,TICKETS.DESCRIPTION)
+				.values(tick.getName(),tick.getPrice(),tick.getNumPassengers(),tick.getDescription())
+				.execute();
+	}
+
+	////////////////////////
+	//	Methods for Tours //
+	////////////////////////
+
+	// not yet implemented
 }

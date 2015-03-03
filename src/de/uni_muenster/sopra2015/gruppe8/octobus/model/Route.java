@@ -13,9 +13,9 @@ public class Route
 	private String note;
 	private LinkedList<Tuple<BusStop,Integer>> stops;
 	private boolean night;
-	private HashMap<DayOfWeek,Integer> startTimes;
+	private HashMap<DayOfWeek,LinkedList<Integer>> startTimes;
 
-	public Route(String name, String note, LinkedList<Tuple<BusStop, Integer>> stops, boolean night, HashMap<DayOfWeek, Integer> startTimes)
+	public Route(String name, String note, LinkedList<Tuple<BusStop, Integer>> stops, boolean night, HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
 	{
 		this.name = name;
 		this.note = note;
@@ -32,7 +32,7 @@ public class Route
 		note = "";
 		stops = new LinkedList<Tuple<BusStop, Integer>>();
 		night = false;
-		startTimes = new HashMap<DayOfWeek, Integer>();
+		startTimes = new HashMap<DayOfWeek, LinkedList<Integer>>();
 	}
 
 	public String getName()
@@ -75,12 +75,12 @@ public class Route
 		this.night = night;
 	}
 
-	public HashMap<DayOfWeek, Integer> getStartTimes()
+	public HashMap<DayOfWeek, LinkedList<Integer>> getStartTimes()
 	{
 		return startTimes;
 	}
 
-	public void setStartTimes(HashMap<DayOfWeek, Integer> startTimes)
+	public void setStartTimes(HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
 	{
 		this.startTimes = startTimes;
 	}
