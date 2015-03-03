@@ -57,4 +57,12 @@ public class FrameMain extends JFrame
 		setVisible(true);
 	}
 
+	/*
+	TODO: delete before deploy, only for DEBUGGING purposes
+	 */
+	public ControllerFrameMain getMainFrame()
+	{
+		return this.controllerFrameMain;
+	}
+
 }
