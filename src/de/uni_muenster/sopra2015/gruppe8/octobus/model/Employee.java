@@ -14,17 +14,17 @@ public class Employee
 	private String address;
 	private String zipCode;
 	private String city;
-	private Date dateOfBirth;
+	private Date birthDate;
 	private String phone;
-	private String email;
+	private String mail;
 	private String username;
 	private String password;
 	private String salt;
 	private String note;
 	private HashSet<Role> roles;
 
-	public Employee(String name, String firstName, String address, String zipCode, String city, Date dateOfBirth,
-	                String phone, String email, String username, String password, String salt, String note, HashSet<Role> roles)
+	public Employee(String name, String firstName, String address, String zipCode, String city, Date birthDate,
+					String phone, String mail, String username, String password, String salt, String note, HashSet<Role> roles)
 	{
 		this.name = name;
 		this.firstName = firstName;
@@ -32,9 +32,9 @@ public class Employee
 		this.zipCode = zipCode;
 
 		this.city = city;
-		this.dateOfBirth = dateOfBirth;
+		this.birthDate = birthDate;
 		this.phone = phone;
-		this.email = email;
+		this.mail = mail;
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
@@ -92,9 +92,9 @@ public class Employee
 		this.city = city;
 	}
 
-	public Date getDateOfBirth()
+	public Date getBirthDate()
 	{
-		return dateOfBirth;
+		return birthDate;
 	}
 
 	public String getPhone()
@@ -107,14 +107,14 @@ public class Employee
 		this.phone = phone;
 	}
 
-	public String getEmail()
+	public String getMail()
 	{
-		return email;
+		return mail;
 	}
 
-	public void setEmail(String email)
+	public void setMail(String mail)
 	{
-		this.email = email;
+		this.mail = mail;
 	}
 
 	public String getUsername()
