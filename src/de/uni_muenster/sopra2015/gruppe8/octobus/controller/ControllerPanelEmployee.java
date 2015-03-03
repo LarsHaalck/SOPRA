@@ -9,7 +9,7 @@ import javax.swing.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerPanelEmployee implements ListenerButton
+public class ControllerPanelEmployee extends Controller implements ListenerButton
 {
 	private JPanel panel;
 
@@ -30,5 +30,17 @@ public class ControllerPanelEmployee implements ListenerButton
 				ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_OUT);
 				break;
 		}
+	}
+
+	@Override
+	protected void addListeners()
+	{
+		ControllerManager.addListener((ListenerButton) this);
+	}
+
+	@Override
+	protected void removeListeners()
+	{
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 }

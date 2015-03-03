@@ -11,15 +11,12 @@ import java.awt.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerFrameMain implements ListenerButton, ListenerUserState, ListenerWindow
+public class ControllerFrameMain extends Controller implements ListenerButton, ListenerUserState, ListenerWindow
 {
 	private FrameMain frame;
 
 	public ControllerFrameMain(FrameMain frame)
 	{
-		ControllerManager.addListener((ListenerButton)this);
-		ControllerManager.addListener((ListenerUserState)this);
-		ControllerManager.addListener((ListenerWindow)this);
 		this.frame = frame;
 	}
 
@@ -89,5 +86,21 @@ public class ControllerFrameMain implements ListenerButton, ListenerUserState, L
 		cp.removeAll();
 		frame.setContentPane(container);
 		frame.setVisible(true);
+	}
+
+	@Override
+	protected void addListeners()
+	{
+		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerUserState)this);
+		ControllerManager.addListener((ListenerWindow)this);
+	}
+
+	@Override
+	protected void removeListeners()
+	{
+		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerUserState)this);
+		ControllerManager.removeListener((ListenerWindow)this);
 	}
 }
