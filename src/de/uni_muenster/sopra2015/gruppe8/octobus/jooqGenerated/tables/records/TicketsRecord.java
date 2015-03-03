@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord> implements org.jooq.Record5<java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.String> {
 
-	private static final long serialVersionUID = 1041211808;
+	private static final long serialVersionUID = -1094430846;
 
 	/**
 	 * Setter for <code>tickets.tickets_id</code>.
@@ -75,16 +75,16 @@ public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muen
 	}
 
 	/**
-	 * Setter for <code>tickets.descritption</code>.
+	 * Setter for <code>tickets.description</code>.
 	 */
-	public void setDescritption(java.lang.String value) {
+	public void setDescription(java.lang.String value) {
 		setValue(4, value);
 	}
 
 	/**
-	 * Getter for <code>tickets.descritption</code>.
+	 * Getter for <code>tickets.description</code>.
 	 */
-	public java.lang.String getDescritption() {
+	public java.lang.String getDescription() {
 		return (java.lang.String) getValue(4);
 	}
 
@@ -157,7 +157,7 @@ public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muen
 	 */
 	@Override
 	public org.jooq.Field<java.lang.String> field5() {
-		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets.TICKETS.DESCRITPTION;
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets.TICKETS.DESCRIPTION;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muen
 	 */
 	@Override
 	public java.lang.String value5() {
-		return getDescritption();
+		return getDescription();
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muen
 	 */
 	@Override
 	public TicketsRecord value5(java.lang.String value) {
-		setDescritption(value);
+		setDescription(value);
 		return this;
 	}
 
@@ -267,13 +267,13 @@ public class TicketsRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muen
 	/**
 	 * Create a detached, initialised TicketsRecord
 	 */
-	public TicketsRecord(java.lang.Integer ticketsId, java.lang.String name, java.lang.Integer price, java.lang.Integer numpassengers, java.lang.String descritption) {
+	public TicketsRecord(java.lang.Integer ticketsId, java.lang.String name, java.lang.Integer price, java.lang.Integer numpassengers, java.lang.String description) {
 		super(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tickets.TICKETS);
 
 		setValue(0, ticketsId);
 		setValue(1, name);
 		setValue(2, price);
 		setValue(3, numpassengers);
-		setValue(4, descritption);
+		setValue(4, description);
 	}
 }

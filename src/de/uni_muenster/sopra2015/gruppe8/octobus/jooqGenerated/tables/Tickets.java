@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord> {
 
-	private static final long serialVersionUID = 1787356880;
+	private static final long serialVersionUID = 1877505814;
 
 	/**
 	 * The reference instance of <code>tickets</code>
@@ -52,9 +52,9 @@ public class Tickets extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.g
 	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.Integer> NUMPASSENGERS = createField("numPassengers", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>tickets.descritption</code>.
+	 * The column <code>tickets.description</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.String> DESCRITPTION = createField("descritption", org.jooq.impl.SQLDataType.CLOB.length(2000), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.TicketsRecord, java.lang.String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.CLOB.length(2000), this, "");
 
 	/**
 	 * Create a <code>tickets</code> table reference
