@@ -23,7 +23,6 @@ public class FormChangePassword extends JDialog
 	public FormChangePassword(Frame parent)
 	{
 		super(parent, "Passwort ändern", true);
-
 		controllerFormChangePassword = new ControllerFormChangePassword(this);
 
 		try
