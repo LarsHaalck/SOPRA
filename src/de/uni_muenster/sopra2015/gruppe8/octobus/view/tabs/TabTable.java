@@ -126,12 +126,13 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		RowFilter<TM, Object> rf = null;
 		if(enableMultiFilter && ((String)cbFilter.getSelectedItem()).equals("alle"))
 		{
-			ArrayList<RowFilter<TM, Object>> filters = new ArrayList<>(table.getColumnCount()); //one filter for every column
-			for(int i = 0; i < table.getColumnCount(); i++)
+			int[] ids = model.getRefineableColumnsIDs();
+			ArrayList<RowFilter<TM, Object>> filters = new ArrayList<>(ids.length); //one filter for every column
+			for(int i = 0; i < ids.length; i++)
 			{
 				try
 				{
-					filters.add(RowFilter.regexFilter("(?i)" + tfFilter.getText(), i));
+					filters.add(RowFilter.regexFilter("(?i)" + tfFilter.getText(), ids[i]));
 				} catch (java.util.regex.PatternSyntaxException e)
 				{
 					return;
