@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 import javax.swing.*;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the PanelEmployee class.
  */
 public class ControllerPanelEmployee extends Controller implements ListenerButton
 {
