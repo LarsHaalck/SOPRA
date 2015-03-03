@@ -8,7 +8,7 @@ import java.awt.*;
  *         lenght of textfield
  *         zip an city
  */
-public class FormEmployee extends JPanel
+public class FormEmployee extends JDialog
 {
 	private JPanel explanationPanel = new JPanel();
 	private String explanationText = "Bitte geben Sie die Daten des Mitarbeiters ein.";
@@ -54,6 +54,8 @@ public class FormEmployee extends JPanel
 
 	public FormEmployee()
 	{
+		setResizable(false);
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(topPanel);
 		add(bottomPanel);

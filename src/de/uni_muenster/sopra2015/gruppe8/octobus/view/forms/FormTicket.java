@@ -7,7 +7,7 @@ import java.awt.*;
 /** @author Patricia Schinke
  * lenght of textfield
  */
-public class FormTicket extends JPanel
+public class FormTicket extends JDialog
 {
 	private String explanationText = "Bitte geben Sie die Daten des Tickets ein.";
 	private JLabel explanation = new JLabel(explanationText);
@@ -30,6 +30,8 @@ public class FormTicket extends JPanel
 	private JButton cancel = new JButton("Abbrechen");
 
 	public FormTicket(){
+		setResizable(false);
+
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
 		add(mid, BorderLayout.CENTER);

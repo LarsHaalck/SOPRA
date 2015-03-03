@@ -7,7 +7,7 @@ import java.awt.*;
  * @author Patricia Schinke
  *         lenght of textfield
  */
-public class FormBus extends JPanel
+public class FormBus extends JDialog
 {
 	private String explanationText = "Bitte geben Sie die Daten des Busses ein.";
 	private JLabel explanation = new JLabel(explanationText);
@@ -27,16 +27,53 @@ public class FormBus extends JPanel
 	private JLabel nextInspectionDue = new JLabel("Nächste Inspektion");
 	private JLabel articulatedBus = new JLabel("?"); //????
 
+	public String getLicencePlateText() //nicht mehr wirklich getter
+	{
+		return licencePlateText.getText();
+	}
+
+	public String getNumberOfSeatsText()
+	{
+		return numberOfSeatsText.getText();
+	}
+
+	public String getStandingRoomText()
+	{
+		return standingRoomText.getText();
+	}
+
+	public String getManufacturerText()
+	{
+		return manufacturerText.getText();
+	}
+
+	public String getModelText()
+	{
+		return modelText.getText();
+	}
+
+	public String getNextInspectionDueText()
+	{
+		return nextInspectionDueText.getText();
+	}
+
+	public String getArticulatedBusText()
+	{
+		return articulatedBusText.getText();
+	}
+
 	private JTextField licencePlateText = new JTextField();
 	private JTextField numberOfSeatsText = new JTextField();
 	private JTextField standingRoomText = new JTextField();
 	private JTextField manufacturerText = new JTextField();
 	private JTextField modelText = new JTextField();
 	private JTextField nextInspectionDueText = new JTextField();
-	private JTextField articulatedBusText = new JTextField();
+	private JToggleButton articulatedBusText = new JToggleButton();
 
 	public FormBus()
 	{
+		setResizable(false);
+
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
 		add(midPanel, BorderLayout.CENTER);
