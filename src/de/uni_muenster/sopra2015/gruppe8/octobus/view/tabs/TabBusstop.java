@@ -5,6 +5,6 @@ import javax.swing.*;
 /**
  * @author Patricia Schinke
  */
-public class TabBusstop extends JPanel
+public class TabBusStop extends JPanel
 {
 }
