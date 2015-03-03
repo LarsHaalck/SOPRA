@@ -15,7 +15,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 
 	public ControllerPanelPassenger(JPanel panel)
 	{
-		ControllerManager.addListener(this);
+		super();
 		this.panel = panel;
 	}
 

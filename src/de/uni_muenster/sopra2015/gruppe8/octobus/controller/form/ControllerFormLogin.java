@@ -29,6 +29,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
 					ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_IN);
+					removeListeners();
 					dialog.dispose();
 				} else
 				{
@@ -37,6 +38,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 				break;
 
 			case FORM_LOGIN_CANCEL:
+				removeListeners();
 				dialog.dispose();
 				break;
 		}
