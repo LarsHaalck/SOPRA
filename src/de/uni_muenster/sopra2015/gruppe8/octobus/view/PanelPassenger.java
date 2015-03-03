@@ -1,7 +1,7 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassenger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,15 +9,15 @@ import java.awt.*;
 /**
  * @author Michael Biech
  */
-public class MainPanel extends JPanel
+public class PanelPassenger extends JPanel
 {
-	private ControllerMainPanel controllerMainPanel;
+	private ControllerPanelPassenger controllerPanelPassenger;
 
-	public MainPanel()
+	public PanelPassenger()
 	{
 		super();
 
-		controllerMainPanel = new ControllerMainPanel(this);
+		controllerPanelPassenger = new ControllerPanelPassenger(this);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -77,36 +77,31 @@ public class MainPanel extends JPanel
 
 		// Add action listeners to buttons
 		btnLogin.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerMainPanel.buttonPressed("loginRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_LOGIN);
 			}
 		});
 
 		btnSearchConnection.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerMainPanel.buttonPressed("searchConnectionRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SEARCH_CONNECTION);
 			}
 		});
 
 		btnShowTickets.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerMainPanel.buttonPressed("showTicketsRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
 			}
 		});
 
 		btnShowNetwork.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassenger != null)
 			{
-				controllerMainPanel.buttonPressed("showNetworkRequest");
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_NETWORK);
 			}
 		});
-	}
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		controllerMainPanel.setListener(controllerMainFrame);
 	}
 }

@@ -1,7 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
+import jdk.nashorn.internal.codegen.Emitter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -9,27 +11,74 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ArrayList<ButtonListener> buttonListener;
+	private static ArrayList<ListenerButton> listenerButton;
+	private static ArrayList<ListenerUserState> listenerUserState;
+	private static ArrayList<ListenerWindow> listenerWindow;
 
 	static
 	{
-		buttonListener = new ArrayList<>();
+		listenerButton = new ArrayList<>();
+		listenerUserState = new ArrayList<>();
+		listenerWindow = new ArrayList<>();
 	}
 
-	public static void informButtonPressed(String emitter)
+	public static void informButtonPressed(EmitterButton emitter)
 	{
-		ArrayList<ButtonListener> list = (ArrayList<ButtonListener>) buttonListener.clone();
-		for (ButtonListener listener : list)
+		ArrayList<ListenerButton> list = (ArrayList<ListenerButton>) listenerButton.clone();
+		for (ListenerButton listener : list)
 			listener.buttonPressed(emitter);
 	}
 
-	public static void addListener(ButtonListener listener)
+	public static void informUserStateChanged(EmitterUserState emitter)
 	{
-		buttonListener.add(listener);
+		ArrayList<ListenerUserState> list = (ArrayList<ListenerUserState>) listenerUserState.clone();
+		for (ListenerUserState listener : list)
+			listener.userStateChanged(emitter);
 	}
 
-	public static void removeListener(ButtonListener listener)
+	public static void informWindowOpen(EmitterWindow emitter)
 	{
-		buttonListener.remove(listener);
+		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		for (ListenerWindow listener : list)
+			listener.windowOpen(emitter);
+	}
+
+	public static void informWindowClose(EmitterWindow emitter)
+	{
+		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		for (ListenerWindow listener : list)
+			listener.windowClose(emitter);
+	}
+
+
+
+	public static void addListener(ListenerButton listener)
+	{
+		listenerButton.add(listener);
+	}
+
+	public static void removeListener(ListenerButton listener)
+	{
+		listenerButton.remove(listener);
+	}
+
+	public static void addListener(ListenerUserState listener)
+	{
+		listenerUserState.add(listener);
+	}
+
+	public static void removeListener(ListenerUserState listener)
+	{
+		listenerUserState.remove(listener);
+	}
+
+	public static void addListener(ListenerWindow listener)
+	{
+		listenerWindow.add(listener);
+	}
+
+	public static void removeListener(ListenerWindow listener)
+	{
+		listenerWindow.remove(listener);
 	}
 }

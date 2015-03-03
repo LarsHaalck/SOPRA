@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerLoginForm;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +9,9 @@ import java.awt.*;
 /**
  * Created by Jonas on 02.03.2015.
  */
-public class LoginDialog extends JDialog
+public class FormLogin extends JDialog
 {
-	private ControllerLoginForm controllerLoginForm;
+	private ControllerFormLogin controllerFormLogin;
 
 	private JTextField tfUsername;
 	private JPasswordField pfPassword;
@@ -20,11 +20,11 @@ public class LoginDialog extends JDialog
 	private JPanel panel;
 	private GridBagConstraints cs;
 
-	public LoginDialog(Frame parent)
+	public FormLogin(Frame parent)
 	{
 		super(parent, "Login", true);
 
-		controllerLoginForm = new ControllerLoginForm(this);
+		controllerFormLogin = new ControllerFormLogin(this);
 
 		try
 		{
@@ -80,12 +80,12 @@ public class LoginDialog extends JDialog
 
 		btnLogin = new JButton("Login");
 		btnLogin.addActionListener(e -> {
-			controllerLoginForm.buttonPressed("login");
+			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_LOGIN);
 		});
 
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
-			controllerLoginForm.buttonPressed("cancel");
+			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_CANCEL);
 		});
 		JPanel bp = new JPanel();
 		bp.add(btnLogin);
@@ -115,11 +115,6 @@ public class LoginDialog extends JDialog
 	public String getPassword()
 	{
 		return new String(pfPassword.getPassword());
-	}
-
-	public void setListener(ControllerMainFrame controllerMainFrame)
-	{
-		controllerLoginForm.setListener(controllerMainFrame);
 	}
 
 	private void setDefaultValues()

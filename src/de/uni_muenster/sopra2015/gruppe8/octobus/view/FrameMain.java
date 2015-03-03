@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.MainPanel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerFrameMain;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,18 +12,17 @@ import java.awt.*;
  *
  * @author Michael Biech
  */
-public class MainFrame extends JFrame
+public class FrameMain extends JFrame
 {
-	private ControllerMainFrame controllerMainFrame;
+	private ControllerFrameMain controllerFrameMain;
 
-	public MainFrame()
+	public FrameMain()
 	{
 		super("OctoBUS");
 
-		controllerMainFrame = new ControllerMainFrame(this);
-		MainPanel mainPanel = new MainPanel();
-		mainPanel.setListener(controllerMainFrame);
-		controllerMainFrame.displayContent(mainPanel);
+		controllerFrameMain = new ControllerFrameMain(this);
+		PanelPassenger panelPassenger = new PanelPassenger();
+		controllerFrameMain.displayContent(panelPassenger);
 
 		////////////////////////////////////////////////
 		// Anything below this line is just GUI stuff //
