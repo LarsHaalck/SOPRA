@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassanger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +10,13 @@ import java.awt.*;
  */
 public class PanelPassanger extends JPanel
 {
-	private ControllerMainPanel controllerMainPanel;
+	private ControllerPanelPassanger controllerPanelPassanger;
 
 	public PanelPassanger()
 	{
 		super();
 
-		controllerMainPanel = new ControllerMainPanel(this);
+		controllerPanelPassanger = new ControllerPanelPassanger(this);
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -77,30 +76,30 @@ public class PanelPassanger extends JPanel
 
 		// Add action listeners to buttons
 		btnLogin.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassanger != null)
 			{
-				controllerMainPanel.buttonPressed("loginRequest");
+				controllerPanelPassanger.buttonPressed("loginRequest");
 			}
 		});
 
 		btnSearchConnection.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassanger != null)
 			{
-				controllerMainPanel.buttonPressed("searchConnectionRequest");
+				controllerPanelPassanger.buttonPressed("searchConnectionRequest");
 			}
 		});
 
 		btnShowTickets.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassanger != null)
 			{
-				controllerMainPanel.buttonPressed("showTicketsRequest");
+				controllerPanelPassanger.buttonPressed("showTicketsRequest");
 			}
 		});
 
 		btnShowNetwork.addActionListener(e -> {
-			if (controllerMainPanel != null)
+			if (controllerPanelPassanger != null)
 			{
-				controllerMainPanel.buttonPressed("showNetworkRequest");
+				controllerPanelPassanger.buttonPressed("showNetworkRequest");
 			}
 		});
 	}

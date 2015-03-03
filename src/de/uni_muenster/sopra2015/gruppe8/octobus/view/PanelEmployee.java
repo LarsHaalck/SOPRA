@@ -1,6 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerEmployeeArea;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PanelNavigation;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
@@ -12,15 +12,15 @@ import javax.swing.*;
  */
 public class PanelEmployee extends JPanel
 {
-	private ControllerEmployeeArea controllerEmployeeArea;
+	private ControllerPanelEmployee controllerPanelEmployee;
 	private PanelNavigation panelNavigation;
 
 	public PanelEmployee()
 	{
 		super();
 
-		controllerEmployeeArea = new ControllerEmployeeArea(this);
-		ControllerManager.addListener(controllerEmployeeArea);
+		controllerPanelEmployee = new ControllerPanelEmployee(this);
+		ControllerManager.addListener(controllerPanelEmployee);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

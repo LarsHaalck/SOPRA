@@ -7,11 +7,11 @@ import javax.swing.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerEmployeeArea implements ListenerButton
+public class ControllerPanelEmployee implements ListenerButton
 {
 	private JPanel panel;
 
-	public ControllerEmployeeArea(JPanel panel)
+	public ControllerPanelEmployee(JPanel panel)
 	{
 		this.panel = panel;
 	}
