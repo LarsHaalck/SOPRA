@@ -36,27 +36,9 @@ public abstract class ExtendedTableModel implements TableModel
 	 */
 	public int getColumnCount()
 	{
-		return getShownColumnCount() + 1;
+		return columnNames.length + 1;
 	}
 
-	/**
-	 * Return count of all visible columns.
-	 * @return number of columns.
-	 */
-	public int getShownColumnCount()
-	{
-		return columnNames.length;
-	}
-
-	/**
-	 * Returns name of a shown column by index.
-	 * @param columnIndex Index of requested column-name.
-	 * @return name corresponding to index.
-	 */
-	public String getShownColumnName(int columnIndex)
-	{
-		return columnNames[columnIndex];
-	}
 
 	/**
 	 * Returns name of a column by index (also id)
@@ -69,7 +51,7 @@ public abstract class ExtendedTableModel implements TableModel
 		{
 			return "id";
 		}
-		return getShownColumnName(columnIndex - 1);
+		return columnNames[columnIndex - 1];
 	}
 
 	/**
@@ -77,23 +59,14 @@ public abstract class ExtendedTableModel implements TableModel
 	 * @param column column name.
 	 * @return index-id
 	 */
-	public int getShownColumnIndex(String column)
+	public int getColumnIndex(String column)
 	{
 		for(int i=0; i<columnNames.length; i++)
 			if(column.equals(columnNames[i]))
-				return i;
-		return 0;
+				return i+1;
+		return 1;
 	}
 
-	/**
-	 * Return total index for a column-name (also id).
-	 * @param column column name.
-	 * @return index-id.
-	 */
-	public int getColumnIndex(String column)
-	{
-		return getShownColumnIndex(column) + 1;
-	}
 
 	/**
 	 * Returns always false, we don't want to let user edit table
