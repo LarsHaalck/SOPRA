@@ -86,6 +86,11 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormBusStop(frame, -1);
 				f.setVisible(true);
 				break;
+
+			case FORM_ROUTE_NEW:
+				f = new FormTour(frame, -1);
+				f.setVisible(true);
+				break;
 		}
 	}
 
@@ -110,6 +115,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				break;
 			case FORM_BUS_STOP_EDIT:
 				f = new FormBusStop(frame, objectID);
+				f.setVisible(true);
+				break;
+			case FORM_ROUTE_EDIT:
+				f = new FormTour(frame, objectID);
 				f.setVisible(true);
 		}
 	}

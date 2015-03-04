@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
+
 import javax.smartcardio.Card;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,9 +18,18 @@ public class FormTour extends FormGeneral
 	private Container c;
 	private int panelCounter;
 
-	public FormTour(Frame parent)
+	private ControllerFormRoute controllerFormRoute;
+
+	public FormTour(Frame parent, int objectId)
 	{
-		super(parent, "Linie erstellen");
+		super(parent, "");
+
+		if(objectId != -1)
+			setTitle("Neue Linie anlegen");
+		else
+			setTitle("Linie bearbeiten");
+
+		controllerFormRoute = new ControllerFormRoute();
 
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
