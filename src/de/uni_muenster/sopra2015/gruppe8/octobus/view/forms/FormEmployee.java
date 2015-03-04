@@ -38,6 +38,7 @@ public class FormEmployee extends FormGeneral
 	private JLabel phone = new JLabel("Telefon");
 	private JLabel remark = new JLabel("Bemerkung");
 	private JLabel username = new JLabel("Benutzername");
+	private JLabel mail = new JLabel("Mail-Adresse");
 
 	private JTextField firstNameText = new JTextField();
 	private JTextField lastNameText = new JTextField();
@@ -46,6 +47,7 @@ public class FormEmployee extends FormGeneral
 	private JTextField cityText = new JTextField();
 	private JTextField dateText = new JTextField();
 	private JTextField phoneText = new JTextField();
+	private JTextField mailText = new JTextField();
 	private JTextArea remarkText = new JTextArea();
 	private JTextField usernameText = new JTextField();
 
