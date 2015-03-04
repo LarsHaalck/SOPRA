@@ -46,12 +46,11 @@ public class FormTicket extends FormGeneral
 
 	public FormTicket(Frame parent, int objectID)
 	{
-		//super(parent, "Mitarbeiter verwalten");
 		super(parent, "");
 		if(objectID == -1)
-			setTitle("Mitarbeiter anlegen");
+			setTitle("Ticket anlegen");
 		else
-			setTitle("Mitarbeiter ändern");
+			setTitle("Ticket ändern");
 
 		controllerFormTicket = new ControllerFormTicket(this);
 
@@ -90,10 +89,9 @@ public class FormTicket extends FormGeneral
 		numPassengersPanel.add(numPassengers);
 		numPassengersPanel.add(numPassengersText);
 		descriptionPanel.add(description);
-		descriptionPanel.add(descriptionText);
 
 		JScrollPane scrollPane = new JScrollPane(descriptionText);
-		descriptionText.add(scrollPane);
+		descriptionPanel.add(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(textWidth, areaHeight));
 
 		name.setPreferredSize(new Dimension(textWidth, textHeight));
