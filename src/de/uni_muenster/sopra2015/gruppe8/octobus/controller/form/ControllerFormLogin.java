@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the FormLogin class.
  */
 public class ControllerFormLogin extends Controller implements ListenerButton
 {
@@ -28,7 +28,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 			case FORM_LOGIN_LOGIN:
 				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
-					ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_IN);
+					ControllerManager.getInstance().informUserStateChanged(EmitterUserState.LOGGED_IN);
 					removeListeners();
 					dialog.dispose();
 				} else
@@ -47,12 +47,12 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.getInstance().addListener((ListenerButton)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.getInstance().removeListener((ListenerButton)this);
 	}
 }

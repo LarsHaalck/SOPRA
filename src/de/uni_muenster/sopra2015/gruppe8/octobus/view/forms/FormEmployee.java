@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormEmployee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,8 +11,10 @@ import java.awt.*;
  *         lenght of textfield
  *         zip an city
  */
-public class FormEmployee extends JPanel
+public class FormEmployee extends JDialog
 {
+	private ControllerFormEmployee controllerFormEmployee;
+
 	private JPanel explanationPanel = new JPanel();
 	private String explanationText = "Bitte geben Sie die Daten des Mitarbeiters ein.";
 	private JLabel explanation = new JLabel(explanationText);
@@ -54,6 +59,19 @@ public class FormEmployee extends JPanel
 
 	public FormEmployee()
 	{
+		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+		controllerFormEmployee = new ControllerFormEmployee(this);
+
+		//Add events to buttons
+		save.addActionListener(e->
+		{
+			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
+		});
+		cancel.addActionListener(e->
+		{
+			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
+		});
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(topPanel);
 		add(bottomPanel);
@@ -101,6 +119,10 @@ public class FormEmployee extends JPanel
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
 	}
-
 }

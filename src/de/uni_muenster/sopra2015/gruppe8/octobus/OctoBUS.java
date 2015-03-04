@@ -19,7 +19,7 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new FrameMain();
+				new EntryPoint("TabBuses");
 			}
 		});
 	}

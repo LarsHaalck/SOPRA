@@ -5,12 +5,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
-import jdk.nashorn.internal.codegen.Emitter;
-
-import javax.swing.*;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the FormChangePassword class.
  */
 public class ControllerFormChangePassword extends Controller implements ListenerButton
 {
@@ -29,12 +26,13 @@ public class ControllerFormChangePassword extends Controller implements Listener
 		{
 			case FORM_CHANGE_PASSWORD_CANCEL:
 				dialog.dispose();
-				//TODO: Pruefe ob passwoerter identisch, wenn identisch, finalize, sonst fehler anzeigen
+                // TODO: Check to see if passwords are identical, finalize, show error message otherwise
 				removeListeners();
 				break;
 
 			case FORM_CHANGE_PASSWORD_SAVE:
-				boolean oldPasswordInvalid = false; // TODO prüfe ob Passwort korrekt
+				//TODO: Save
+				boolean oldPasswordInvalid = false; // TODO: Check if password is correct
 				boolean newPasswordInvalid = (dialog.getNewPassword().length() < 8);
 				boolean newPasswordCorrectInvalid = (!dialog.getNewPasswordCorrect().equals(dialog.getNewPassword()));
 
@@ -52,12 +50,12 @@ public class ControllerFormChangePassword extends Controller implements Listener
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.getInstance().addListener((ListenerButton)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.getInstance().removeListener((ListenerButton)this);
 	}
 }

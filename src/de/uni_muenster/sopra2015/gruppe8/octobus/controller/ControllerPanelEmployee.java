@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 import javax.swing.*;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the PanelEmployee class.
  */
 public class ControllerPanelEmployee extends Controller implements ListenerButton
 {
@@ -26,10 +26,10 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 		switch (emitter)
 		{
 			case PANEL_EMPLOYEE_CHANGE_PASSWORD:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
+				ControllerManager.getInstance().informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
 				break;
 			case PANEL_EMPLOYEE_LOGOUT:
-				ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_OUT);
+				ControllerManager.getInstance().informUserStateChanged(EmitterUserState.LOGGED_OUT);
 				break;
 		}
 	}
@@ -37,12 +37,12 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.getInstance().addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.getInstance().removeListener((ListenerButton) this);
 	}
 }

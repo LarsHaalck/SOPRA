@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,8 +10,10 @@ import java.awt.*;
  * @author Patricia Schinke
  * lenght of textfield
  */
-public class FormBusStop extends JPanel
+public class FormBusStop extends JDialog
 {
+	private ControllerFormBusStop controllerFormBusStop;
+
 	private JPanel mid = new JPanel();
 	private JPanel bottom = new JPanel();
 
@@ -31,12 +36,25 @@ public class FormBusStop extends JPanel
 
 	public FormBusStop()
 	{
+		setResizable(false);
+
+		controllerFormBusStop = new ControllerFormBusStop(this);
+
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
 		add(mid, BorderLayout.CENTER);
 		add(bottom, BorderLayout.SOUTH);
 
 		explanationPanel.add(explanation);
+
+		save.addActionListener(e->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
+		});
+		cancel.addActionListener(e ->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
+		});
 
 		mid.setLayout(new GridLayout(4,2));
 		mid.add(name);

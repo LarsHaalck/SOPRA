@@ -7,12 +7,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
 import javax.swing.*;
 
 /**
- * @author Michael Biech
+ * Displays the content available to logged in users, consists of PanelNavigation and PaneTabs.
  */
 public class PanelEmployee extends JPanel
 {
 	private ControllerPanelEmployee controllerPanelEmployee;
 	private PanelNavigation panelNavigation;
+	private PaneTabs paneTabs;
 
 	public PanelEmployee()
 	{
@@ -25,11 +26,20 @@ public class PanelEmployee extends JPanel
 		panelNavigation = new PanelNavigation("Günni");
 		add(panelNavigation);
 
-		PaneTabs paneTabs = new PaneTabs();
+		paneTabs = new PaneTabs();
 		// ...
 		// Pretty much same as above
 		add(paneTabs);
 
 		setVisible(true);
+	}
+
+
+	/*
+	* TODO: delete before Deployment, only for DEBUGGING-purposes
+	 */
+	public PaneTabs getPaneTabs()
+	{
+		return this.paneTabs;
 	}
 }

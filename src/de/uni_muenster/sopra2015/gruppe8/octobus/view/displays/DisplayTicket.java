@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplayTicket;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -10,12 +12,16 @@ import javax.swing.table.TableRowSorter;
  */
 public class DisplayTicket extends JPanel
 {
+	private ControllerDisplayTicket controllerDisplayTicket;
+
 	private JTable ticketTable;
 	private DefaultTableModel tableModel = new DefaultTableModel();
 	private String[] columnNames = {"Name", "Preis", "Anzahl Personen", "Beschreibung"};
 
 	public DisplayTicket()
 	{
+		controllerDisplayTicket = new ControllerDisplayTicket(this);
+
 		ticketTable = new JTable(tableModel);
 		add(new JScrollPane(ticketTable));
 		tableModel.setColumnIdentifiers(columnNames);
