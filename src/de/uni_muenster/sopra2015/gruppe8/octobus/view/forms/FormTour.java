@@ -38,7 +38,7 @@ public class FormTour extends JDialog
 	public static void main(String[] args)
 	{
 		FormTour fenster = new FormTour(null);
-		fenster.setL
+		//fenster.setL
 		fenster.setVisible(true);
 	}
 }
