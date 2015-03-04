@@ -41,7 +41,8 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 				break;
 
 			case TAB_EMPLOYEE_EDIT:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, 1);
+				System.out.println(tabEmployee.getSelectedID()+"");
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, tabEmployee.getSelectedID());
 				break;
 
 			case TAB_EMPLOYEE_DELETE:

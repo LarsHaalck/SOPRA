@@ -38,7 +38,10 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_EDIT);
+			if(getSelectedID() == -1)
+				JOptionPane.showMessageDialog(this, "Um einen Mitarbeiter zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			else
+				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_EDIT);
 		});
 
 		btnNew = new JButton("Neu");
