@@ -20,6 +20,7 @@ public class FrameMain extends JFrame
 
 		controllerFrameMain = new ControllerFrameMain(this);
 		PanelPassenger panelPassenger = new PanelPassenger();
+
 		controllerFrameMain.displayContent(panelPassenger);
 
 		////////////////////////////////////////////////
@@ -58,7 +59,7 @@ public class FrameMain extends JFrame
 	/*
 	TODO: delete before deploy, only for DEBUGGING purposes
 	 */
-	public ControllerFrameMain getMainFrame()
+	public ControllerFrameMain getControllerFrameMain()
 	{
 		return this.controllerFrameMain;
 	}

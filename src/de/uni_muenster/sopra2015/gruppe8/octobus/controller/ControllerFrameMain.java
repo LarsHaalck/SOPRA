@@ -9,7 +9,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
 import java.awt.*;
 
-
 /**
  * Controller for the FrameMain class.
  */
@@ -38,19 +37,18 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case LOGGED_IN:
-				ControllerManager.clearListeners();
+				ControllerManager.getInstance().clearListeners();
 				addListeners();
 				PanelEmployee newPanelEmployee = new PanelEmployee();
 				displayContent(newPanelEmployee);
 				break;
 			case LOGGED_OUT:
-				ControllerManager.clearListeners();
+				ControllerManager.getInstance().clearListeners();
 				addListeners();
 				PanelPassenger newPanelPassenger = new PanelPassenger();
 				displayContent(newPanelPassenger);
 				break;
 		}
-
 	}
 
 	@Override
@@ -65,8 +63,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 			case FORM_CHANGE_PASSWORD:
 				displayForm(EmitterWindow.FORM_CHANGE_PASSWORD);
 		}
-
-
 	}
 
 	@Override
@@ -74,7 +70,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	{
 
 	}
-
 
 	/**
 	 * Displays forms in the FrameMain.
@@ -115,16 +110,16 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
-		ControllerManager.addListener((ListenerUserState)this);
-		ControllerManager.addListener((ListenerWindow)this);
+		ControllerManager.getInstance().addListener((ListenerButton)this);
+		ControllerManager.getInstance().addListener((ListenerUserState)this);
+		ControllerManager.getInstance().addListener((ListenerWindow)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
-		ControllerManager.removeListener((ListenerUserState)this);
-		ControllerManager.removeListener((ListenerWindow)this);
+		ControllerManager.getInstance().removeListener((ListenerButton)this);
+		ControllerManager.getInstance().removeListener((ListenerUserState)this);
+		ControllerManager.getInstance().removeListener((ListenerWindow)this);
 	}
 }

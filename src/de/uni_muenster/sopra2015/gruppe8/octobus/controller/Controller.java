@@ -1,9 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 /**
- * Abstract Controller to ensure that each controller will add himself to the ControllerManager with its constructor
- * and that each controller has the ability to remove itself from the ControllerManager.
- *
+ * Abstract Controller to ensure that each controller will add itself to the ControllerManager with its constructor
+ * and that each controller has the ability to remove itself from the ControllerManager.getInstance().
  */
 public abstract class Controller
 {

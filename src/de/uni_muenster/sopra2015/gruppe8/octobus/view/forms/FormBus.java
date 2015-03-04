@@ -10,7 +10,7 @@ import java.awt.*;
  * @author Patricia Schinke
  *         lenght of textfield
  */
-public class FormBus extends JPanel
+public class FormBus extends JDialog
 {
 	private ControllerFormBus controllerFormBus;
 
@@ -31,17 +31,18 @@ public class FormBus extends JPanel
 	private JLabel model = new JLabel("Modell");
 	private JLabel nextInspectionDue = new JLabel("Nächste Inspektion");
 	private JLabel articulatedBus = new JLabel("?"); //????
-
 	private JTextField licencePlateText = new JTextField();
 	private JTextField numberOfSeatsText = new JTextField();
 	private JTextField standingRoomText = new JTextField();
 	private JTextField manufacturerText = new JTextField();
 	private JTextField modelText = new JTextField();
 	private JTextField nextInspectionDueText = new JTextField();
-	private JTextField articulatedBusText = new JTextField();
+	private JToggleButton articulatedBusText = new JToggleButton();
 
 	public FormBus()
 	{
+		setResizable(false);
+
 		controllerFormBus = new ControllerFormBus(this);
 
 		save.addActionListener(e -> {
@@ -77,5 +78,40 @@ public class FormBus extends JPanel
 		bottomPanel.setLayout(new FlowLayout());
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+	}
+
+	public String getLicencePlateText() //nicht mehr wirklich getter
+	{
+		return licencePlateText.getText();
+	}
+
+	public String getNumberOfSeatsText()
+	{
+		return numberOfSeatsText.getText();
+	}
+
+	public String getStandingRoomText()
+	{
+		return standingRoomText.getText();
+	}
+
+	public String getManufacturerText()
+	{
+		return manufacturerText.getText();
+	}
+
+	public String getModelText()
+	{
+		return modelText.getText();
+	}
+
+	public String getNextInspectionDueText()
+	{
+		return nextInspectionDueText.getText();
+	}
+
+	public String getArticulatedBusText()
+	{
+		return articulatedBusText.getText();
 	}
 }

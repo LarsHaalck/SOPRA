@@ -11,15 +11,33 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ArrayList<ListenerButton> listenerButton;
-	private static ArrayList<ListenerUserState> listenerUserState;
-	private static ArrayList<ListenerWindow> listenerWindow;
+	private static ControllerManager manager = null;
+	private static ArrayList<ListenerButton> listenerButton = null;
+	private static ArrayList<ListenerUserState> listenerUserState = null;
+	private static ArrayList<ListenerWindow> listenerWindow = null;
 
-	static
+	private ControllerManager() { } //Singleton
+
+	public static ControllerManager getInstance()
 	{
-		listenerButton = new ArrayList<>();
-		listenerUserState = new ArrayList<>();
-		listenerWindow = new ArrayList<>();
+		if (listenerButton == null)
+		{
+			listenerButton = new ArrayList<>();
+		}
+		if (listenerUserState == null)
+		{
+			listenerUserState = new ArrayList<>();
+		}
+		if (listenerWindow == null)
+		{
+			listenerWindow = new ArrayList<>();
+		}
+		if (manager == null)
+		{
+			manager = new ControllerManager();
+		}
+
+		return manager;
 	}
 
 	/**
@@ -43,9 +61,10 @@ public class ControllerManager
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
-	//TODO "window" needs to be more precise/ added to glossary
+	// TODO "window" needs to be more precise/ added to glossary
 	/**
 	 * Informs every active ListenerWindow to open a new window.
+     *
 	 * @param emitter window to open.
 	 */
 	public static void informWindowOpen(EmitterWindow emitter)
@@ -57,6 +76,7 @@ public class ControllerManager
 
 	/**
 	 * Informs every active ListenerWindow to close a certain window.
+     *
 	 * @param emitter window to be closed.
 	 */
 	public static void informWindowClose(EmitterWindow emitter)
@@ -79,7 +99,8 @@ public class ControllerManager
 	}
 
 	/**
-	 *Adds a ListenerButton to the listenerButton list.
+	 * Adds a ListenerButton to the listenerButton list.
+     *
 	 * @param listener Listener to be added.
 	 */
 	public static void addListener(ListenerButton listener)
@@ -89,6 +110,7 @@ public class ControllerManager
 
 	/**
 	 * Removes a ListenerButton from the listenerButton list.
+     *
 	 * @param listener Listener to be removed.
 	 */
 	public static void removeListener(ListenerButton listener)
@@ -98,6 +120,7 @@ public class ControllerManager
 
 	/**
 	 * Adds a ListenerUserState to the listenerUserState list.
+     *
 	 * @param listener Listener to be added.
 	 */
 	public static void addListener(ListenerUserState listener)
@@ -107,6 +130,7 @@ public class ControllerManager
 
 	/**
 	 * Removes a ListenerUserState from the listenerUserState list.
+     *
 	 * @param listener Listener to be removed
 	 */
 	public static void removeListener(ListenerUserState listener)
@@ -116,6 +140,7 @@ public class ControllerManager
 
 	/**
 	 * Adds a ListenerWindow to the listenerWindow list.
+     *
 	 * @param listener Listener to be added.
 	 */
 	public static void addListener(ListenerWindow listener)
@@ -125,6 +150,7 @@ public class ControllerManager
 
 	/**
 	 * Removes a ListenerWindow to the listenerWindow list.
+     *
 	 * @param listener Listener to be removed
 	 */
 	public static void removeListener(ListenerWindow listener)
