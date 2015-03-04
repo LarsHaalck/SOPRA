@@ -61,6 +61,7 @@ public class FormEmployee extends FormGeneral
 	private JPanel mailPanel = new JPanel();
 	private JPanel remarkPanel = new JPanel();
 	private JPanel usernamePanel = new JPanel();
+	private JPanel innerRemarkPanel = new JPanel();
 
 	private JLabel roleLabel = new JLabel("Rollen:");
 
@@ -100,11 +101,11 @@ public class FormEmployee extends FormGeneral
 		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
 		//Add events to buttons
-		save.addActionListener(e->
+		save.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
 		});
-		cancel.addActionListener(e->
+		cancel.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
@@ -115,7 +116,7 @@ public class FormEmployee extends FormGeneral
 		add(bottomPanel, BorderLayout.SOUTH);
 
 		explanationPanel.setPreferredSize(new Dimension(924, 60));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(30,0,30,0)));
+		explanationPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
 		explanationPanel.add(explanation);
 
 		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
@@ -149,11 +150,13 @@ public class FormEmployee extends FormGeneral
 		mailPanel.add(mail);
 		mailPanel.add(mailText);
 		remarkPanel.add(remark);
-		remarkPanel.add(remarkText);
+		remarkPanel.add(innerRemarkPanel);
 		usernamePanel.add(username);
 		usernamePanel.add(usernameText);
 
-		remarkPanel.add(new JScrollPane(remarkText));
+		JScrollPane scrollPane = new JScrollPane(remarkText);
+		innerRemarkPanel.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(textWidth, areaHeight));
 
 		lastName.setPreferredSize(new Dimension(textWidth, textHeight));
 		lastNameText.setPreferredSize(new Dimension(textWidth, textHeight));
@@ -172,7 +175,6 @@ public class FormEmployee extends FormGeneral
 		mail.setPreferredSize(new Dimension(textWidth, textHeight));
 		mailText.setPreferredSize(new Dimension(textWidth, textHeight));
 		remark.setPreferredSize(new Dimension(textWidth, textHeight));
-		remarkText.setPreferredSize(new Dimension(textWidth, areaHeight));
 		username.setPreferredSize(new Dimension(textWidth, textHeight));
 		usernameText.setPreferredSize(new Dimension(textWidth, textHeight));
 
