@@ -9,16 +9,9 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ArrayList<ListenerButton> listenerButton = null;
-	private static ArrayList<ListenerUserState> listenerUserState = null;
-	private static ArrayList<ListenerWindow> listenerWindow = null;
-
-	static
-	{
-		listenerButton = new ArrayList<>();
-		listenerUserState = new ArrayList<>();
-		listenerWindow = new ArrayList<>();
-	}
+	private static ArrayList<ListenerButton> listenerButton = new ArrayList<>();
+	private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
+	private static ArrayList<ListenerWindow> listenerWindow = new ArrayList<>();
 
 	/**
 	 * Doesn't allow creating a single instance of ControllerManager
