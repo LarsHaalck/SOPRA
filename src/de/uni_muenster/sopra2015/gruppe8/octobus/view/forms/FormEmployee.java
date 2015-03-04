@@ -56,11 +56,11 @@ public class FormEmployee extends FormGeneral
 	private JPanel cityPanel = new JPanel();
 	private JPanel datePanel = new JPanel();
 	private JPanel phonePanel = new JPanel();
+	private JPanel mailPanel = new JPanel();
 	private JPanel remarkPanel = new JPanel();
 	private JPanel usernamePanel = new JPanel();
 
 	private JLabel roleLabel = new JLabel("Rollen:");
-	private JPanel rolePanel = new JPanel();
 
 	private JLabel schedulemanager = new JLabel("Einsatzplaner");
 	private JLabel networkplaner = new JLabel("Netzpaner");
@@ -98,11 +98,11 @@ public class FormEmployee extends FormGeneral
 		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
 		//Add events to buttons
-		save.addActionListener(e ->
+		save.addActionListener(e->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
 		});
-		cancel.addActionListener(e ->
+		cancel.addActionListener(e->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
@@ -112,8 +112,8 @@ public class FormEmployee extends FormGeneral
 		add(midPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 
-		explanationPanel.setPreferredSize(new Dimension(924, 100));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		explanationPanel.setPreferredSize(new Dimension(924, 60));
+		explanationPanel.setBorder(new EmptyBorder(new Insets(30,0,30,0)));
 		explanationPanel.add(explanation);
 
 		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
@@ -126,6 +126,7 @@ public class FormEmployee extends FormGeneral
 		midPanel.add(cityPanel);
 		midPanel.add(datePanel);
 		midPanel.add(phonePanel);
+		midPanel.add(mailPanel);
 		midPanel.add(remarkPanel);
 		midPanel.add(usernamePanel);
 
@@ -143,10 +144,14 @@ public class FormEmployee extends FormGeneral
 		datePanel.add(dateText);
 		phonePanel.add(phone);
 		phonePanel.add(phoneText);
+		mailPanel.add(mail);
+		mailPanel.add(mailText);
 		remarkPanel.add(remark);
 		remarkPanel.add(remarkText);
 		usernamePanel.add(username);
 		usernamePanel.add(usernameText);
+
+		remarkPanel.add(new JScrollPane(remarkText));
 
 		lastName.setPreferredSize(new Dimension(textWidth, textHeight));
 		lastNameText.setPreferredSize(new Dimension(textWidth, textHeight));
@@ -162,6 +167,8 @@ public class FormEmployee extends FormGeneral
 		dateText.setPreferredSize(new Dimension(textWidth, textHeight));
 		phone.setPreferredSize(new Dimension(textWidth, textHeight));
 		phoneText.setPreferredSize(new Dimension(textWidth, textHeight));
+		mail.setPreferredSize(new Dimension(textWidth, textHeight));
+		mailText.setPreferredSize(new Dimension(textWidth, textHeight));
 		remark.setPreferredSize(new Dimension(textWidth, textHeight));
 		remarkText.setPreferredSize(new Dimension(textWidth, areaHeight));
 		username.setPreferredSize(new Dimension(textWidth, textHeight));
@@ -203,11 +210,11 @@ public class FormEmployee extends FormGeneral
 		hrmanager.setPreferredSize(new Dimension(textWidth, textHeight));
 		hrmanagerBox.setPreferredSize(new Dimension(boxWidth, textHeight));
 
-		bottomPanel.setLayout(new FlowLayout());
-		bottomPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
 		bottomPanel.setPreferredSize(new Dimension(924, 100));
-		bottomPanel.add(save);
-		bottomPanel.add(cancel);
+		bottomPanel.add(cancel, BorderLayout.WEST);
+		bottomPanel.add(save, BorderLayout.EAST);
 
 		controllerFormEmployee.insertValuesIntoForm();
 

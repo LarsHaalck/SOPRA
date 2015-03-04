@@ -8,8 +8,8 @@ import javax.swing.table.TableModel;
  */
 public abstract class ExtendedTableModel implements TableModel
 {
-	protected String[] columnNames;
-	protected Object[][] data;
+	protected String[] columnNames = new String[]{};
+	protected Object[][] data = new Object[][]{};
 
 	/**
 	 * Returns all refineable columns.
