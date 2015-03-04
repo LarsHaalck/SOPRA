@@ -46,7 +46,7 @@ public class FormBusStop extends FormGeneral
 	private JTextField intXText = new JTextField();
 	private JTextField intYText = new JTextField();
 
-	private DefaultListModel listModel = new DefaultListModel<>();
+	private DefaultListModel<String> listModel = new DefaultListModel<String>();
 	private JList list = new JList(listModel);
 	private JPanel listName = new JPanel();
 	private JPanel listPanel = new JPanel();
@@ -133,63 +133,17 @@ public class FormBusStop extends FormGeneral
 
 		listButtons.add(listAdd);
 		listAdd.addActionListener(e -> {
-			while(true)
-			{
-				String text = JOptionPane.showInputDialog(null, "Bitte geben Sie den Namen eines neuen Haltepunktes ein");
-				if (text != null)
-				{
-					if (text.length() > 0)
-					{
-						listModel.addElement(text);
-						break;
-					} else
-					{
-						JOptionPane.showMessageDialog(null, "Der Haltepunkt-Name darf nicht leer sein.", "Fehler", JOptionPane.ERROR_MESSAGE);
-					}
-				} else
-				{
-					break;
-				}
-			}
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_ADD_POINT);
 		});
 
 		listButtons.add(listEdit);
 		listEdit.addActionListener(e -> {
-			int index = list.getSelectedIndex();
-			if(index > -1)
-			{
-				while (true)
-				{
-					String text = JOptionPane.showInputDialog(null, "Bitte geben Sie den neuen Namen des Haltepunktes ein", listModel.getElementAt(index));
-					if (text != null)
-					{
-						if (text.length() > 0)
-						{
-							listModel.setElementAt(text, index);
-							break;
-						} else
-						{
-							JOptionPane.showMessageDialog(null, "Der Haltepunkt-Name darf nicht leer sein.", "Fehler", JOptionPane.ERROR_MESSAGE);
-						}
-					} else
-					{
-						break;
-					}
-				}
-			}
-
-
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
 		});
 
 		listButtons.add(listDelete);
 		listDelete.addActionListener(e -> {
-			int index = list.getSelectedIndex();
-			if(index > -1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					== JOptionPane.YES_OPTION)
-			{
-				listModel.remove(index);
-			}
-
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT);
 		});
 
 		bottom.setLayout(new BorderLayout());
@@ -198,5 +152,50 @@ public class FormBusStop extends FormGeneral
 		bottom.add(cancel, BorderLayout.WEST);
 		bottom.add(save, BorderLayout.EAST);
 		pack();
+	}
+
+	public String showNewStopPointDialog()
+	{
+		return JOptionPane.showInputDialog(null, "Bitte geben Sie den Namen eines neuen Haltepunktes ein");
+	}
+
+	public String showEditStopPointDialog(String value)
+	{
+		return JOptionPane.showInputDialog(null, "Bitte geben Sie den neuen Namen des Haltepunktes ein", value);
+	}
+
+	public int showDeleteStopPointDialog()
+	{
+		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+	}
+
+	public void showErrorForm(String error)
+	{
+		JOptionPane.showMessageDialog(this, error, "Fehler", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public int getSelectedStopPoint()
+	{
+		return list.getSelectedIndex();
+	}
+
+	public String getSelectedStopPointName()
+	{
+		return (String)list.getSelectedValue();
+	}
+
+	public void addStopPoint(String name)
+	{
+		listModel.addElement(name);
+	}
+
+	public void editStopPoint(int index, String name)
+	{
+		listModel.setElementAt(name, index);
+	}
+
+	public void removeStopPoint(int index)
+	{
+		listModel.remove(index);
 	}
 }
