@@ -31,42 +31,6 @@ public class FormBus extends JDialog
 	private JLabel model = new JLabel("Modell");
 	private JLabel nextInspectionDue = new JLabel("Nächste Inspektion");
 	private JLabel articulatedBus = new JLabel("?"); //????
-
-	public String getLicencePlateText() //nicht mehr wirklich getter
-	{
-		return licencePlateText.getText();
-	}
-
-	public String getNumberOfSeatsText()
-	{
-		return numberOfSeatsText.getText();
-	}
-
-	public String getStandingRoomText()
-	{
-		return standingRoomText.getText();
-	}
-
-	public String getManufacturerText()
-	{
-		return manufacturerText.getText();
-	}
-
-	public String getModelText()
-	{
-		return modelText.getText();
-	}
-
-	public String getNextInspectionDueText()
-	{
-		return nextInspectionDueText.getText();
-	}
-
-	public String getArticulatedBusText()
-	{
-		return articulatedBusText.getText();
-	}
-
 	private JTextField licencePlateText = new JTextField();
 	private JTextField numberOfSeatsText = new JTextField();
 	private JTextField standingRoomText = new JTextField();
@@ -114,5 +78,40 @@ public class FormBus extends JDialog
 		bottomPanel.setLayout(new FlowLayout());
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+	}
+
+	public String getLicencePlateText() //nicht mehr wirklich getter
+	{
+		return licencePlateText.getText();
+	}
+
+	public String getNumberOfSeatsText()
+	{
+		return numberOfSeatsText.getText();
+	}
+
+	public String getStandingRoomText()
+	{
+		return standingRoomText.getText();
+	}
+
+	public String getManufacturerText()
+	{
+		return manufacturerText.getText();
+	}
+
+	public String getModelText()
+	{
+		return modelText.getText();
+	}
+
+	public String getNextInspectionDueText()
+	{
+		return nextInspectionDueText.getText();
+	}
+
+	public String getArticulatedBusText()
+	{
+		return articulatedBusText.getText();
 	}
 }

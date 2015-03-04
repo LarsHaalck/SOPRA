@@ -125,11 +125,4 @@ public class FormEmployee extends JDialog
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-
-	public static void main(String[] args)
-	{
-		FormEmployee test = new FormEmployee();
-
-	}
-
 }
