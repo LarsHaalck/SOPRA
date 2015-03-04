@@ -67,6 +67,8 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 					int viewRow = table.getSelectedRow();
 					if (viewRow < 0)
 					{
+						selectedRow = -1;
+						selectedID = -1;
 
 					} else
 					{

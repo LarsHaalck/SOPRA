@@ -134,6 +134,8 @@ public class FormBus extends FormGeneral
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
 
+		controllerFormBus.insertValuesIntoForm();
+
 		pack();
 	}
 

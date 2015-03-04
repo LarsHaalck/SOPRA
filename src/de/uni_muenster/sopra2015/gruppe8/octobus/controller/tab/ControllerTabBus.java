@@ -31,8 +31,8 @@ public class ControllerTabBus extends Controller implements ListenerButton
 				break;
 
 			case TAB_BUS_EDIT:
-				//GetBusByID
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, 1);
+				//TODO
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, tabBus.getSelectedID());
 				break;
 
 			case TAB_BUS_NEW:
