@@ -20,7 +20,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	protected JLabel lbFilter = new JLabel("Filter-Text:");
 	protected JComboBox<String> cbFilter;
 	protected TableRowSorter<TM> sorter;
-	private ExtendedTableModel model;
+	private TM model;
 
 	public boolean isRefineable()
 	{
@@ -41,13 +41,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	{
 		this.isRefineable = isRefineable;
 		this.enableMultiFilter = enableMultifilter;
-		//TODO: Check this! Could we get problems?
 		try
 		{
-			model = (TM)type.newInstance();
+			model = type.newInstance();
 		} catch (Exception e)
 		{
-			model = new DefaultExtendedTableModel();
+			model = (TM) new DefaultExtendedTableModel();
 		}
 
 		sorter = new TableRowSorter<>((TM)model);
