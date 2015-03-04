@@ -136,8 +136,8 @@ public class TabExample extends JPanel
 	class BusTableModel extends AbstractTableModel
 	{
 
-		ImageIcon red = new ImageIcon("red.png");
-		ImageIcon green = new ImageIcon("green.png");
+		ImageIcon red = new ImageIcon("resources/red.png");
+		ImageIcon green = new ImageIcon("resources/green.png");
 
 		private String[] columnNames = {"Name",
 				"Kennzeichen",
