@@ -8,8 +8,8 @@ import java.awt.*;
  */
 public abstract class FormGeneral extends JDialog
 {
-	private static final int WIDTH = 924;
-	private static final int HEIGHT = 540;
+	public static final int WIDTH = 924;
+	public static final int HEIGHT = 540;
 
 	public FormGeneral(Frame parent)
     {
