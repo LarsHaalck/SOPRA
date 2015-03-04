@@ -11,12 +11,14 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
  */
 public class ControllerFormBusStop extends Controller implements ListenerButton
 {
-	FormBusStop dialog;
+	private FormBusStop dialog;
+	int objectId;
 
-	public ControllerFormBusStop(FormBusStop dialog)
+	public ControllerFormBusStop(FormBusStop dialog, int objectId)
 	{
 		super();
 		this.dialog = dialog;
+		this.objectId = objectId;
 	}
 
 	@Override
