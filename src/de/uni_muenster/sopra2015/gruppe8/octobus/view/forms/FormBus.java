@@ -51,6 +51,9 @@ public class FormBus extends FormGeneral
 	private JPanel nextInspectionDuePanel = new JPanel();
 	private JPanel articulatedBusPanel = new JPanel();
 
+	private int textHeight = 25;
+	private int textWidth = 150;
+
 	public FormBus(Frame parent, int objectID)
 	{
 		super(parent, "");
@@ -112,27 +115,29 @@ public class FormBus extends FormGeneral
 		articulatedBusPanel.add(articulatedBus);
 		articulatedBusPanel.add(articulatedBusText);
 
-		licencePlate.setPreferredSize(new Dimension(150, 20));
-		numberOfSeats.setPreferredSize(new Dimension(150, 20));
-		standingRoom.setPreferredSize(new Dimension(150, 20));
-		manufacturer.setPreferredSize(new Dimension(150, 20));
-		model.setPreferredSize(new Dimension(150, 20));
-		nextInspectionDue.setPreferredSize(new Dimension(150, 20));
-		articulatedBus.setPreferredSize(new Dimension(150, 20));
+		licencePlate.setPreferredSize(new Dimension(textWidth, textHeight));
+		numberOfSeats.setPreferredSize(new Dimension(textWidth, textHeight));
+		standingRoom.setPreferredSize(new Dimension(textWidth, textHeight));
+		manufacturer.setPreferredSize(new Dimension(textWidth, textHeight));
+		model.setPreferredSize(new Dimension(textWidth, textHeight));
+		nextInspectionDue.setPreferredSize(new Dimension(textWidth, textHeight));
+		articulatedBus.setPreferredSize(new Dimension(textWidth, textHeight));
 
-		licencePlateText.setPreferredSize(new Dimension(150, 20));
-		numberOfSeatsText.setPreferredSize(new Dimension(150, 20));
-		standingRoomText.setPreferredSize(new Dimension(150, 20));
-		manufacturerText.setPreferredSize(new Dimension(150, 20));
-		modelText.setPreferredSize(new Dimension(150, 20));
-		nextInspectionDueText.setPreferredSize(new Dimension(150, 20));
-		articulatedBusText.setPreferredSize(new Dimension(150, 20));
+		licencePlateText.setPreferredSize(new Dimension(textWidth, textHeight));
+		numberOfSeatsText.setPreferredSize(new Dimension(textWidth, textHeight));
+		standingRoomText.setPreferredSize(new Dimension(textWidth, textHeight));
+		manufacturerText.setPreferredSize(new Dimension(textWidth, textHeight));
+		modelText.setPreferredSize(new Dimension(textWidth, textHeight));
+		nextInspectionDueText.setPreferredSize(new Dimension(textWidth, textHeight));
+		articulatedBusText.setPreferredSize(new Dimension(textWidth, textHeight));
 
 		bottomPanel.setLayout(new FlowLayout());
 		bottomPanel.setPreferredSize(new Dimension(924, 100));
 		bottomPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+
+		controllerFormBus.insertValuesIntoForm();
 
 		pack();
 	}

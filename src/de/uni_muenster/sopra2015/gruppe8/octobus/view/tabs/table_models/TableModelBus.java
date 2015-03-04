@@ -10,11 +10,11 @@ public class TableModelBus extends ExtendedTableModel
 	private String[] columnNames;
 
 	private Object[][] data = {
-			{"MS-OB-482", "MAN", "Lion's City C LE", "Normal", new Integer(44),
+			{11, "MS-OB-482", "MAN", "Lion's City C LE", "Normal", new Integer(44),
 					new Integer(82), "25.02.2016"},
-			{"MS-OB-7767", "MAN", "Lion's City G", "Gelenk", new Integer(51),
+			{22, "MS-OB-7767", "MAN", "Lion's City G", "Gelenk", new Integer(51),
 					new Integer(110), "27.10.2016"},
-			{"MS-OB-546", "MAN", "Lion's City M", "Klein", new Integer(29),
+			{33, "MS-OB-546", "MAN", "Lion's City M", "Klein", new Integer(29),
 					new Integer(48), "02.02.2015"}
 	};
 
@@ -34,13 +34,13 @@ public class TableModelBus extends ExtendedTableModel
 	}
 
 	@Override
-	public int getColumnCount()
+	public int getShownColumnCount()
 	{
 		return columnNames.length;
 	}
 
 	@Override
-	public String getColumnName(int columnIndex)
+	public String getShownColumnName(int columnIndex)
 	{
 		return columnNames[columnIndex];
 	}
@@ -93,7 +93,7 @@ public class TableModelBus extends ExtendedTableModel
 	}
 
 	@Override
-	public int getColumnIndex(String column)
+	public int getShownColumnIndex(String column)
 	{
 		for(int i=0; i<columnNames.length; i++)
 			if(column.equals(columnNames[i]))

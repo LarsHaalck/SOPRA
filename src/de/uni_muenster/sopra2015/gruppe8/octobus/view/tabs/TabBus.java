@@ -38,7 +38,10 @@ public class TabBus extends TabTable<TableModelBus>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_EDIT);
+			if(getSelectedID() == -1)
+				JOptionPane.showMessageDialog(this, "Um einen Bus zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			else
+				controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_EDIT);
 		});
 
 		btnNew = new JButton("Neu");

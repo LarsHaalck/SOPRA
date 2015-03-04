@@ -35,6 +35,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private boolean isRefineable = true;
 	private boolean enableMultiFilter = false;
 	protected int selectedRow = -1;
+	protected int selectedID = -1;
 	private int filterColumn = 0;
 
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
@@ -51,6 +52,9 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 		sorter = new TableRowSorter<>((TM)model);
 		table = new JTable((TM)model);
+
+		table.removeColumn(table.getColumnModel().getColumn(0));
+
 		table.setRowSorter(sorter);
 		table.setRowHeight(19);
 		//Only allow one selection
@@ -63,10 +67,13 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 					int viewRow = table.getSelectedRow();
 					if (viewRow < 0)
 					{
+						selectedRow = -1;
+						selectedID = -1;
 
 					} else
 					{
 						selectedRow = table.convertRowIndexToModel(viewRow);
+						selectedID = (int) model.getValueAt(selectedRow, 0);
 					}
 				}
 		);
@@ -114,6 +121,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 					});
 		}
 
+	}
+
+
+	public int getSelectedID()
+	{
+		return this.selectedID;
 	}
 
 	/**

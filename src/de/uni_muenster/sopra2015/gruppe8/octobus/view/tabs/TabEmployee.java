@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabEmployee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelEmployee;
 
@@ -15,25 +17,36 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 	private JButton btnEdit;
 	private JButton btnNew;
 
+	private ControllerTabEmployee controllerTabEmployee;
+
 	public TabEmployee()
 	{
 		super(TableModelEmployee.class, true, true);
+		controllerTabEmployee = new ControllerTabEmployee(this);
 
 		setLayout(new BorderLayout(5,5));
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			//Do delete stuff
+			if(JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+					== JOptionPane.YES_OPTION)
+			{
+				System.out.println("Delete pressed");
+				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_DELETE);
+			}
 		});
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			//Do edit stuff
+			if(getSelectedID() == -1)
+				JOptionPane.showMessageDialog(this, "Um einen Mitarbeiter zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+			else
+				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_EDIT);
 		});
 
 		btnNew = new JButton("Neu");
 		btnNew.addActionListener(e-> {
-			//Do new stuff
+			controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_NEW);
 		});
 
 		if(super.isRefineable())
