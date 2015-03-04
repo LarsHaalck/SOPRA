@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTicket;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabBus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 
 /**

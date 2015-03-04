@@ -1,8 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -99,11 +98,11 @@ public class FormEmployee extends FormGeneral
 		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
 		//Add events to buttons
-		save.addActionListener(e->
+		save.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
 		});
-		cancel.addActionListener(e->
+		cancel.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
@@ -114,7 +113,7 @@ public class FormEmployee extends FormGeneral
 		add(bottomPanel, BorderLayout.SOUTH);
 
 		explanationPanel.setPreferredSize(new Dimension(924, 100));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(40,0,40,0)));
+		explanationPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
 		explanationPanel.add(explanation);
 
 		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
