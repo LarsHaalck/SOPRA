@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Michael Biech
+ * Displays the content available to non logged in users.
  */
 public class PanelPassenger extends JPanel
 {
@@ -78,30 +78,22 @@ public class PanelPassenger extends JPanel
 		// Add action listeners to buttons
 		btnLogin.addActionListener(e -> {
 			if (controllerPanelPassenger != null)
-			{
 				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_LOGIN);
-			}
 		});
 
 		btnSearchConnection.addActionListener(e -> {
 			if (controllerPanelPassenger != null)
-			{
 				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SEARCH_CONNECTION);
-			}
 		});
 
 		btnShowTickets.addActionListener(e -> {
 			if (controllerPanelPassenger != null)
-			{
 				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
-			}
 		});
 
 		btnShowNetwork.addActionListener(e -> {
 			if (controllerPanelPassenger != null)
-			{
 				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_NETWORK);
-			}
 		});
 	}
 }

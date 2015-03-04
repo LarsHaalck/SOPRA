@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTicket;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,8 +10,10 @@ import java.awt.*;
 /** @author Patricia Schinke
  * lenght of textfield
  */
-public class FormTicket extends JDialog
+public class FormTicket extends JPanel
 {
+	private ControllerFormTicket controllerFormTicket;
+
 	private String explanationText = "Bitte geben Sie die Daten des Tickets ein.";
 	private JLabel explanation = new JLabel(explanationText);
 	private JPanel explanationPanel = new JPanel();
@@ -30,6 +35,17 @@ public class FormTicket extends JDialog
 	private JButton cancel = new JButton("Abbrechen");
 
 	public FormTicket(){
+		controllerFormTicket = new ControllerFormTicket(this);
+
+		save.addActionListener(e->
+		{
+			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE);
+		});
+		cancel.addActionListener(e->
+		{
+			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
+		});
+
 		setResizable(false);
 
 		setLayout(new BorderLayout());

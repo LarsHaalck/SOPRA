@@ -9,8 +9,6 @@ import java.awt.*;
  * Handles the overall application and takes care of changing the main
  * content panel depending on whether a user is logged in or not, as
  * well as handling the options available to a passenger.
- *
- * @author Michael Biech
  */
 public class FrameMain extends JFrame
 {
@@ -22,6 +20,7 @@ public class FrameMain extends JFrame
 
 		controllerFrameMain = new ControllerFrameMain(this);
 		PanelPassenger panelPassenger = new PanelPassenger();
+
 		controllerFrameMain.displayContent(panelPassenger);
 
 		////////////////////////////////////////////////
@@ -55,6 +54,14 @@ public class FrameMain extends JFrame
 		// Center frame on screen (as per http://stackoverflow.com/a/2442614/2010258)
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	/*
+	TODO: delete before deploy, only for DEBUGGING purposes
+	 */
+	public ControllerFrameMain getControllerFrameMain()
+	{
+		return this.controllerFrameMain;
 	}
 
 }

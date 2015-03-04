@@ -7,7 +7,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Created by Florian on 02.03.2015.
+ * Observer used to keep track of each active Controller and to manage interactions between them.
  */
 public class ControllerManager
 {
@@ -22,6 +22,10 @@ public class ControllerManager
 		listenerWindow = new ArrayList<>();
 	}
 
+	/**
+	 * Informs every active ListenerButton.
+	 * @param emitter pressed Button.
+	 */
 	public static void informButtonPressed(EmitterButton emitter)
 	{
 		ArrayList<ListenerButton> list = (ArrayList<ListenerButton>) listenerButton.clone();
@@ -29,13 +33,22 @@ public class ControllerManager
 			listener.buttonPressed(emitter);
 	}
 
+	/**
+	 * Informs every active ListenerUserState.
+	 * @param emitter changed UserState.
+	 */
 	public static void informUserStateChanged(EmitterUserState emitter)
 	{
 		ArrayList<ListenerUserState> list = (ArrayList<ListenerUserState>) listenerUserState.clone();
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
-
+	// TODO "window" needs to be more precise/ added to glossary
+	/**
+	 * Informs every active ListenerWindow to open a new window.
+     *
+	 * @param emitter window to open.
+	 */
 	public static void informWindowOpen(EmitterWindow emitter)
 	{
 		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
@@ -43,6 +56,11 @@ public class ControllerManager
 			listener.windowOpen(emitter);
 	}
 
+	/**
+	 * Informs every active ListenerWindow to close a certain window.
+     *
+	 * @param emitter window to be closed.
+	 */
 	public static void informWindowClose(EmitterWindow emitter)
 	{
 		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
@@ -52,8 +70,8 @@ public class ControllerManager
 
 
 	/**
-	 * Clears listeners, so they are free
-	 * Evil method, only use by user-state-change
+	 * Clears lists of listeners.
+	 * Evil method, only use by user-state-change.
 	 */
 	public static void clearListeners()
 	{
@@ -62,34 +80,61 @@ public class ControllerManager
 		listenerWindow.clear();
 	}
 
+	/**
+	 * Adds a ListenerButton to the listenerButton list.
+     *
+	 * @param listener Listener to be added.
+	 */
 	public static void addListener(ListenerButton listener)
 	{
-		//if(!listenerButton.contains(listener))
-			listenerButton.add(listener);
+		listenerButton.add(listener);
 	}
 
+	/**
+	 * Removes a ListenerButton from the listenerButton list.
+     *
+	 * @param listener Listener to be removed.
+	 */
 	public static void removeListener(ListenerButton listener)
 	{
 		listenerButton.remove(listener);
 	}
 
+	/**
+	 * Adds a ListenerUserState to the listenerUserState list.
+     *
+	 * @param listener Listener to be added.
+	 */
 	public static void addListener(ListenerUserState listener)
 	{
-		//if(!listenerUserState.contains(listener))
-			listenerUserState.add(listener);
+		listenerUserState.add(listener);
 	}
 
+	/**
+	 * Removes a ListenerUserState from the listenerUserState list.
+     *
+	 * @param listener Listener to be removed
+	 */
 	public static void removeListener(ListenerUserState listener)
 	{
 		listenerUserState.remove(listener);
 	}
 
+	/**
+	 * Adds a ListenerWindow to the listenerWindow list.
+     *
+	 * @param listener Listener to be added.
+	 */
 	public static void addListener(ListenerWindow listener)
 	{
-		//if(!listenerWindow.contains(listener))
-			listenerWindow.add(listener);
+		listenerWindow.add(listener);
 	}
 
+	/**
+	 * Removes a ListenerWindow to the listenerWindow list.
+     *
+	 * @param listener Listener to be removed
+	 */
 	public static void removeListener(ListenerWindow listener)
 	{
 		listenerWindow.remove(listener);

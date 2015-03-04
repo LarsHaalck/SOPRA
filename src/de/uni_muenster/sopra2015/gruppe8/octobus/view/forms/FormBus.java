@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,6 +12,8 @@ import java.awt.*;
  */
 public class FormBus extends JDialog
 {
+	private ControllerFormBus controllerFormBus;
+
 	private String explanationText = "Bitte geben Sie die Daten des Busses ein.";
 	private JLabel explanation = new JLabel(explanationText);
 	private JPanel explanationPanel = new JPanel();
@@ -73,6 +78,15 @@ public class FormBus extends JDialog
 	public FormBus()
 	{
 		setResizable(false);
+
+		controllerFormBus = new ControllerFormBus(this);
+
+		save.addActionListener(e -> {
+			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE);
+		});
+		cancel.addActionListener(e -> {
+			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_CANCEL);
+		});
 
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
