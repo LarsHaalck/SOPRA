@@ -7,7 +7,7 @@ import java.util.HashSet;
  */
 public class BusStop
 {
-    private int id;
+    private int id;									// database-internal id. is set when object is added to database
     private String name;
     private Tuple<Integer, Integer> location;
     private HashSet<String> stoppingPoints;

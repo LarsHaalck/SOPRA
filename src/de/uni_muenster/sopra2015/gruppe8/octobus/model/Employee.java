@@ -9,6 +9,7 @@ import java.util.HashSet;
  */
 public class Employee
 {
+	private int id;			// database-internal id. is set when object is added to database
     private String name;
     private String firstName;
     private String address;
@@ -160,5 +161,27 @@ public class Employee
 	public boolean isRole(Role role)
 	{
 		return roles.contains(role);
+	}
+
+	public void deleteRole(Role role) {roles.remove(role);}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth)
+	{
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public void setUsername(String username)
+	{
+		this.username = username;
 	}
 }

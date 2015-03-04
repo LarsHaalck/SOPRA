@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class SoldTicket
 {
-	private int id;
+	private int id;		// database-internal id. is set when object is added to database
 	private String name;
 	private Date date;
 	private int price;
@@ -53,5 +53,10 @@ public class SoldTicket
 	public void setPrice(int price)
 	{
 		this.price = price;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 }

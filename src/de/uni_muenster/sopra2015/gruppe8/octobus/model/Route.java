@@ -9,6 +9,7 @@ import java.util.LinkedList;
  */
 public class Route
 {
+	private int id;		// database-internal id. is set when object is added to database
 	private String name;
 	private String note;
 	private LinkedList<Tuple<BusStop,Integer>> stops;
@@ -130,4 +131,13 @@ public class Route
 		return duration;
 	}
 
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 }
