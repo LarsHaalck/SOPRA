@@ -16,10 +16,6 @@ public class FormTour extends FormGeneral
 	private Container c;
 	private int panelCounter;
 
-	private final String FORMTOURSTEP1 = "FormTourStep1";
-	private final String FORMTOURSTEP2 = "FormTourStep2";
-	private final String FORMTOURSTEP3 = "FormTourStep3";
-
 	public FormTour(Frame parent)
 	{
 		super(parent, "Linie erstellen");
@@ -53,9 +49,9 @@ public class FormTour extends FormGeneral
 		cardPanel = new JPanel();
 		cardPanel.setBorder(new EmptyBorder(new Insets(5, 10, 5, 10)));
 		cardPanel.setLayout(new CardLayout());
-		cardPanel.add(new FormTourStep1(), FORMTOURSTEP1);
-		cardPanel.add(new FormTourStep2(), FORMTOURSTEP2);
-		cardPanel.add(new FormTourStep3(), FORMTOURSTEP3);
+		cardPanel.add(new FormTourStep1());
+		cardPanel.add(new FormTourStep2());
+		cardPanel.add(new FormTourStep3());
 
 		backButton = new JButton("Zurück");
 		backButton.setEnabled(false);
