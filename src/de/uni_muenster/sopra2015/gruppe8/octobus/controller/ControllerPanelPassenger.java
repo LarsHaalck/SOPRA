@@ -1,8 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import javax.swing.*;
 
@@ -25,7 +25,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 		switch (emitter)
 		{
 			case PANEL_PASSENGER_LOGIN:
-				ControllerManager.getInstance().informWindowOpen(EmitterWindow.FORM_LOGIN);
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_LOGIN);
 				break;
 			case PANEL_PASSENGER_SEARCH_CONNECTION:
 				System.out.println("Searching Connection");
@@ -42,12 +42,12 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 }

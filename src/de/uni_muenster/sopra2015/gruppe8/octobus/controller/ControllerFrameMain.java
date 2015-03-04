@@ -3,10 +3,10 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -37,13 +37,13 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case LOGGED_IN:
-				ControllerManager.getInstance().clearListeners();
+				ControllerManager.clearListeners();
 				addListeners();
 				PanelEmployee newPanelEmployee = new PanelEmployee();
 				displayContent(newPanelEmployee);
 				break;
 			case LOGGED_OUT:
-				ControllerManager.getInstance().clearListeners();
+				ControllerManager.clearListeners();
 				addListeners();
 				PanelPassenger newPanelPassenger = new PanelPassenger();
 				displayContent(newPanelPassenger);
@@ -54,14 +54,55 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	public void windowOpen(EmitterWindow emitter)
 	{
+		JDialog f;
 		switch (emitter)
 		{
 			case FORM_LOGIN:
-				displayForm(EmitterWindow.FORM_LOGIN);
+				f = new FormLogin(frame);
+				f.setVisible(true);
 				break;
 
 			case FORM_CHANGE_PASSWORD:
-				displayForm(EmitterWindow.FORM_CHANGE_PASSWORD);
+				f = new FormChangePassword(frame);
+				f.setVisible(true);
+				break;
+
+			case FORM_BUS_NEW:
+				f = new FormBus(frame, -1);
+				f.setVisible(true);
+				break;
+
+			case FORM_TICKET_NEW:
+				f = new FormTicket(frame, -1);
+				f.setVisible(true);
+				break;
+
+			case FORM_EMPLOYEE_NEW:
+				f = new FormEmployee(frame, -1);
+				f.setVisible(true);
+				break;
+		}
+	}
+
+	@Override
+	public void windowOpen(EmitterWindow wd, int objectID)
+	{
+		JDialog f;
+
+		switch (wd)
+		{
+			case FORM_BUS_EDIT:
+				f = new FormBus(frame, objectID);
+				f.setVisible(true);
+				break;
+			case FORM_EMPLOYEE_EDIT:
+				f = new FormEmployee(frame, objectID);
+				f.setVisible(true);
+				break;
+			case FORM_TICKET_EDIT:
+				f = new FormTicket(frame, objectID);
+				f.setVisible(true);
+				break;
 		}
 	}
 
@@ -70,30 +111,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	{
 
 	}
-
-	/**
-	 * Displays forms in the FrameMain.
-	 * @param form Form to display.
-	 */
-	private void displayForm(EmitterWindow form)
-	{
-		switch (form)
-		{
-			case FORM_LOGIN:
-				FormLogin d = new FormLogin(frame);
-				d.setVisible(true);
-				break;
-
-			case FORM_CHANGE_PASSWORD:
-				FormChangePassword w = new FormChangePassword(frame);
-				w.setVisible(true);
-				break;
-		}
-	}
-
-	// TODO: Considering this might be used in more than one place,
-	// TODO: putting it in a separate helper class might be appropriate.
-	// Adapted from http://stackoverflow.com/a/5077773/2010258 and http://stackoverflow.com/a/11073097/2010258
 
 	/**
 	 * Displays a container in the FrameMain.
@@ -110,16 +127,16 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton)this);
-		ControllerManager.getInstance().addListener((ListenerUserState)this);
-		ControllerManager.getInstance().addListener((ListenerWindow)this);
+		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerUserState) this);
+		ControllerManager.addListener((ListenerWindow) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton)this);
-		ControllerManager.getInstance().removeListener((ListenerUserState)this);
-		ControllerManager.getInstance().removeListener((ListenerWindow)this);
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerUserState) this);
+		ControllerManager.removeListener((ListenerWindow) this);
 	}
 }

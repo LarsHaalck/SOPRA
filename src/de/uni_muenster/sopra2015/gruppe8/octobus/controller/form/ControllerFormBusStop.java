@@ -3,8 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBusStop;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 /**
  * Created by Lars on 02-Mar-15.
@@ -38,13 +38,13 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	@Override
 	protected  void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerButton)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton)this);
 	}
 
 	private void closeDialog()

@@ -1,4 +1,4 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
+package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
  * Used to describe buttons.
@@ -30,5 +30,17 @@ public enum EmitterButton
 	FORM_EMPLOYEE_CANCEL,
 
 	FORM_TICKET_SAVE,
-	FORM_TICKET_CANCEL
+	FORM_TICKET_CANCEL,
+
+	TAB_BUS_NEW,
+	TAB_BUS_EDIT,
+	TAB_BUS_DELETE,
+
+	TAB_EMPLOYEE_NEW,
+	TAB_EMPLOYEE_EDIT,
+	TAB_EMPLOYEE_DELETE,
+
+	TAB_TICKET_NEW,
+	TAB_TICKET_EDIT,
+	TAB_TICKET_DELETE
 }

@@ -3,9 +3,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 /**
  * Controller for the FormLogin class.
@@ -28,7 +28,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 			case FORM_LOGIN_LOGIN:
 				if (dialog.getUsername().equals("herbert") && dialog.getPassword().equals("octobus"))
 				{
-					ControllerManager.getInstance().informUserStateChanged(EmitterUserState.LOGGED_IN);
+					ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_IN);
 					removeListeners();
 					dialog.dispose();
 				} else
@@ -47,12 +47,12 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerButton)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton)this);
 	}
 }

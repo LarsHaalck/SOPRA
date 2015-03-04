@@ -1,9 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterUserState;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import javax.swing.*;
 
@@ -26,10 +26,10 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 		switch (emitter)
 		{
 			case PANEL_EMPLOYEE_CHANGE_PASSWORD:
-				ControllerManager.getInstance().informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
 				break;
 			case PANEL_EMPLOYEE_LOGOUT:
-				ControllerManager.getInstance().informUserStateChanged(EmitterUserState.LOGGED_OUT);
+				ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_OUT);
 				break;
 		}
 	}
@@ -37,12 +37,12 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 }

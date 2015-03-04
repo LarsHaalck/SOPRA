@@ -1,9 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
-import jdk.nashorn.internal.codegen.Emitter;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -11,37 +9,16 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ControllerManager manager = null;
-	private static ArrayList<ListenerButton> listenerButton = null;
-	private static ArrayList<ListenerUserState> listenerUserState = null;
-	private static ArrayList<ListenerWindow> listenerWindow = null;
-
-	private ControllerManager() { } //Singleton
+	private static ArrayList<ListenerButton> listenerButton = new ArrayList<>();
+	private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
+	private static ArrayList<ListenerWindow> listenerWindow = new ArrayList<>();
 
 	/**
-	 * instantiates ControllerManager instance and all relevant Listener-Lists if not present
-	 * @return controllerManager instance
+	 * Doesn't allow creating a single instance of ControllerManager
 	 */
-	public static ControllerManager getInstance()
+	private ControllerManager()
 	{
-		if (listenerButton == null)
-		{
-			listenerButton = new ArrayList<>();
-		}
-		if (listenerUserState == null)
-		{
-			listenerUserState = new ArrayList<>();
-		}
-		if (listenerWindow == null)
-		{
-			listenerWindow = new ArrayList<>();
-		}
-		if (manager == null)
-		{
-			manager = new ControllerManager();
-		}
 
-		return manager;
 	}
 
 	/**
@@ -50,10 +27,14 @@ public class ControllerManager
 	 */
 	public static void informButtonPressed(EmitterButton emitter)
 	{
-		ArrayList<ListenerButton> list = (ArrayList<ListenerButton>) listenerButton.clone();
+		ArrayList<ListenerButton> list = new ArrayList<>(listenerButton);
 		for (ListenerButton listener : list)
 			listener.buttonPressed(emitter);
 	}
+
+
+	// following functions copy their corresponding ArrayList first, because event triggers could
+	// lead to new listeners, which could lead to infinite loops!!
 
 	/**
 	 * Informs every active ListenerUserState.
@@ -61,21 +42,33 @@ public class ControllerManager
 	 */
 	public static void informUserStateChanged(EmitterUserState emitter)
 	{
-		ArrayList<ListenerUserState> list = (ArrayList<ListenerUserState>) listenerUserState.clone();
+		ArrayList<ListenerUserState> list = new ArrayList<>(listenerUserState);
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
-	// TODO "window" needs to be more precise/ added to glossary
 	/**
-	 * Informs every active ListenerWindow to open a new window.
+	 * Informs every active ListenerWindow to open a new dialog window.
      *
 	 * @param emitter window to open.
 	 */
 	public static void informWindowOpen(EmitterWindow emitter)
 	{
-		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowOpen(emitter);
+	}
+
+	/**
+	 * Informs every active ListenerWindow to open a new window.
+	 *
+	 * @param emitter window to open.
+	 * @param objectID Database-ID that will be needed in the opened window.
+	 */
+	public static void informWindowOpen(EmitterWindow emitter, int objectID)
+	{
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
+		for (ListenerWindow listener : list)
+			listener.windowOpen(emitter, objectID);
 	}
 
 	/**
@@ -85,7 +78,7 @@ public class ControllerManager
 	 */
 	public static void informWindowClose(EmitterWindow emitter)
 	{
-		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowClose(emitter);
 	}
