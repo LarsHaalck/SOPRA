@@ -10,7 +10,7 @@ import java.awt.*;
 /** @author Patricia Schinke
  * lenght of textfield
  */
-public class FormTicket extends JPanel
+public class FormTicket extends FormGeneral
 {
 	private ControllerFormTicket controllerFormTicket;
 
@@ -34,7 +34,10 @@ public class FormTicket extends JPanel
 	private JButton save = new JButton("Speichern");
 	private JButton cancel = new JButton("Abbrechen");
 
-	public FormTicket(){
+	public FormTicket(Frame parent)
+	{
+		super(parent, "Ticket verwalten");
+
 		controllerFormTicket = new ControllerFormTicket(this);
 
 		save.addActionListener(e->
@@ -45,8 +48,6 @@ public class FormTicket extends JPanel
 		{
 			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
 		});
-
-		//setResizable(false);
 
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
@@ -68,5 +69,7 @@ public class FormTicket extends JPanel
 		botttom.setLayout(new FlowLayout());
 		botttom.add(save);
 		botttom.add(cancel);
+
+		pack();
 	}
 }
