@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -136,8 +138,12 @@ public class TabExample extends JPanel
 	class BusTableModel extends AbstractTableModel
 	{
 
-		ImageIcon red = new ImageIcon("resources/red.png");
-		ImageIcon green = new ImageIcon("resources/green.png");
+		BusTableModel()
+		{
+			System.out.println(red.getDescription());
+		}
+		ImageIcon red = new ImageIcon("res/images/red.png");
+		ImageIcon green = new ImageIcon("res/images/green.png");
 
 		private String[] columnNames = {"Name",
 				"Kennzeichen",
