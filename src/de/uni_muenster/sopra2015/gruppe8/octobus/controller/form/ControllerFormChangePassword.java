@@ -39,6 +39,7 @@ public class ControllerFormChangePassword extends Controller implements Listener
 				dialog.illegalChanges(oldPasswordInvalid, newPasswordInvalid, newPasswordCorrectInvalid);
 				if (!oldPasswordInvalid && !newPasswordInvalid && !newPasswordCorrectInvalid)
 				{
+					//TODO neues Passwort abspeichern
 					dialog.dispose();
 					removeListeners();
 					break;
