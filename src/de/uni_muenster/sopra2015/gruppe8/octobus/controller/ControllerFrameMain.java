@@ -68,7 +68,7 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_BUS_NEW:
-				FormBus x = new FormBus(frame);
+				FormBus x = new FormBus(frame, -1);
 				x.setVisible(true);
 				break;
 		}

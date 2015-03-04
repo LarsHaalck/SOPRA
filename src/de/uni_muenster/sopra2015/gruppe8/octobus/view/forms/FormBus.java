@@ -51,14 +51,13 @@ public class FormBus extends FormGeneral
 	private JPanel nextInspectionDuePanel = new JPanel();
 	private JPanel articulatedBusPanel = new JPanel();
 
-	public FormBus(Frame parent)
+	public FormBus(Frame parent, int objectID)
 	{
-		new FormBus(frame, -1);
-	}
-
-	public FormBus(JFrame frame, int objectID)
-	{
-		super(frame, "Bus", true);
+		super(parent, "");
+		if(objectID == -1)
+			setTitle("Bus anlegen");
+		else
+			setTitle("Bus ändern");
 		setResizable(false);
 
 		controllerFormBus = new ControllerFormBus(this, objectID);
@@ -131,7 +130,7 @@ public class FormBus extends FormGeneral
 
 		bottomPanel.setLayout(new FlowLayout());
 		bottomPanel.setPreferredSize(new Dimension(924, 100));
-		bottomPanel.setBorder(new EmptyBorder(new Insets(40,0,40,0)));
+		bottomPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
 
