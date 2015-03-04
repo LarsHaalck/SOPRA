@@ -32,12 +32,12 @@ public class PanelNavigation extends JPanel
 
 		btnChangePassword.addActionListener(e ->
 		{
-			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_CHANGE_PASSWORD);
+			ControllerManager.getInstance().informButtonPressed(EmitterButton.PANEL_EMPLOYEE_CHANGE_PASSWORD);
 		});
 
 		btnLogout.addActionListener(e ->
 		{
-			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT);
+			ControllerManager.getInstance().informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT);
 		});
 	}
 }

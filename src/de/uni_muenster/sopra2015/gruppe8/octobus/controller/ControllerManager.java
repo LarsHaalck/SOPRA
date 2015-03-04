@@ -11,15 +11,33 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ArrayList<ListenerButton> listenerButton;
-	private static ArrayList<ListenerUserState> listenerUserState;
-	private static ArrayList<ListenerWindow> listenerWindow;
+	private static ControllerManager manager = null;
+	private static ArrayList<ListenerButton> listenerButton = null;
+	private static ArrayList<ListenerUserState> listenerUserState = null;
+	private static ArrayList<ListenerWindow> listenerWindow = null;
 
-	static
+	private ControllerManager() { } //Singleton
+
+	public static ControllerManager getInstance()
 	{
-		listenerButton = new ArrayList<>();
-		listenerUserState = new ArrayList<>();
-		listenerWindow = new ArrayList<>();
+		if (listenerButton == null)
+		{
+			listenerButton = new ArrayList<>();
+		}
+		if (listenerUserState == null)
+		{
+			listenerUserState = new ArrayList<>();
+		}
+		if (listenerWindow == null)
+		{
+			listenerWindow = new ArrayList<>();
+		}
+		if (manager == null)
+		{
+			manager = new ControllerManager();
+		}
+
+		return manager;
 	}
 
 	/**

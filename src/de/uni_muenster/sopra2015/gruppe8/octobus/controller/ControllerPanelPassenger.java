@@ -25,7 +25,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 		switch (emitter)
 		{
 			case PANEL_PASSENGER_LOGIN:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_LOGIN);
+				ControllerManager.getInstance().informWindowOpen(EmitterWindow.FORM_LOGIN);
 				break;
 			case PANEL_PASSENGER_SEARCH_CONNECTION:
 				System.out.println("Searching Connection");
@@ -42,12 +42,12 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.getInstance().addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.getInstance().removeListener((ListenerButton) this);
 	}
 }

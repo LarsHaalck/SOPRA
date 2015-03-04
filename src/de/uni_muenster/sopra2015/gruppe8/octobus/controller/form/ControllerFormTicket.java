@@ -39,13 +39,13 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.getInstance().addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.getInstance().removeListener((ListenerButton) this);
 	}
 
 	private void closeDialog()
