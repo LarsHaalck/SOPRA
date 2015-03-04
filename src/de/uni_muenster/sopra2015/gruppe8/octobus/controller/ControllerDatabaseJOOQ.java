@@ -1,13 +1,15 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
-
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+
 import org.jooq.*;
 import org.jooq.impl.*;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
 import java.util.Date;
@@ -26,9 +28,8 @@ public class ControllerDatabaseJOOQ
     FIXME: This needs to use BEGIN and END. Otherwise the statements will take forever!
     FIXME: Cf. https://stackoverflow.com/questions/3852068/sqlite-insert-very-slow
      */
-
     /**
-     * In the future, this method
+     * In the future, this method will create all the trips for a given day
      *
      */
     public void createTours(){
@@ -56,25 +57,21 @@ public class ControllerDatabaseJOOQ
                     .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
                     .where(ROUTES_STARTTIMES.DAYOFWEEK.eq("MONDAY")).fetch();
 
-            LinkedList list = new LinkedList();
+            System.out.println("Starting insert...");
 
+            create.execute("BEGIN");
             for (Record1<Integer> startingTime : startingTimes)
             {
+                create.insertInto(TOURS,
+                        TOURS.TIMESTAMP,
+                        TOURS.ROUTES_ID)
+                        .values(
+                                timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
+                                route.getValue(ROUTES.ROUTES_ID))
+                        .execute();
 
-                InsertQuery i = create.insertQuery(TOURS);
-
-                i.addValue(TOURS.TIMESTAMP, timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60);
-                i.addValue(TOURS.ROUTES_ID, route.getValue(ROUTES.ROUTES_ID));
-                System.out.println(route.getValue(ROUTES.ROUTES_ID));
-
-                System.out.println(i.getSQL());
-
-                list.add(i);
             }
-
-            System.out.println("Executing query...");
-            create.batch(list).execute();
-            System.out.println("Queries exectued!");
+            create.execute("END");
         }
     }
 

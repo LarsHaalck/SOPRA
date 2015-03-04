@@ -27,7 +27,7 @@ public class ControllerMainPanel implements ButtonListener
 				break;
             case "searchConnectionRequest":
                 System.out.println("Searching Connection");
-                new ControllerDatabaseJOOQ().run();
+                new ControllerDatabaseJOOQ().createTours();
                 break;
             case "showTicketsRequest":
                 System.out.println("Show tickets");

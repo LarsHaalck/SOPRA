@@ -85,8 +85,7 @@ public class MainPanel extends JPanel
 
         btnSearchConnection.addActionListener(e -> {
             if (controllerMainPanel != null){
-                ControllerDatabaseJOOQ bla = new ControllerDatabaseJOOQ();
-                bla.run();
+                controllerMainPanel.buttonPressed("searchConnectionRequest");
             }
         });
 
