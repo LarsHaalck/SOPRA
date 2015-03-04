@@ -12,9 +12,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
 public class ControllerFormBus extends Controller implements ListenerButton
 {
 	private FormBus formBus;
+	private int objectID;
 
-	public ControllerFormBus(FormBus formBus){
+	public ControllerFormBus(FormBus formBus, int objectID){
 		super();
+		this.objectID = objectID;
 		this.formBus = formBus;
 	}
 
@@ -47,7 +49,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	}
 	private void closeDialog()
 	{
-		//TODO formBus.dispose();
+		formBus.dispose();
 		removeListeners();
 	}
 }

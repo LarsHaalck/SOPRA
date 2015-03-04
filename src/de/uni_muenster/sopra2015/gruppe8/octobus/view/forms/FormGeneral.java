@@ -8,14 +8,55 @@ import java.awt.*;
  */
 public abstract class FormGeneral extends JDialog
 {
-	private static final int HEIGHT = 924;
-	private static final int WIDHT = 540;
+	private static final int WIDTH = 924;
+	private static final int HEIGHT = 540;
 
-	public FormGeneral(Frame parent, String name)
+	public FormGeneral(Frame parent)
+    {
+        this(parent, "");
+    }
+
+    public FormGeneral(Frame parent, String name)
+    {
+        this(parent, name, true);
+    }
+
+    public FormGeneral(Frame parent, String name, boolean modal)
 	{
-		super(parent, name, true);
-		setPreferredSize(new Dimension(HEIGHT, WIDHT));
-		setLocationRelativeTo(parent);
-		setResizable(false);
+		super(parent, name, modal);
+		setMySettings();
 	}
+
+    public FormGeneral(Dialog parent)
+    {
+        this(parent, "");
+    }
+
+    public FormGeneral(Dialog parent, String name)
+    {
+        this(parent, name, true);
+    }
+
+    public FormGeneral(Dialog parent, String name, boolean modal)
+    {
+        super(parent, name, modal);
+        setMySettings();
+    }
+
+    public FormGeneral(Window parent)
+    {
+        this(parent, "");
+    }
+
+    public FormGeneral(Window parent, String name)
+    {
+        super(parent, name);
+        setMySettings();
+    }
+
+    private void setMySettings(){
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setLocationRelativeTo(this.getParent());
+        setResizable(false);
+    }
 }

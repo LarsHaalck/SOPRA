@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
@@ -57,11 +58,19 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case FORM_LOGIN:
-				displayForm(EmitterWindow.FORM_LOGIN);
+				FormLogin d = new FormLogin(frame);
+				d.setVisible(true);
 				break;
 
 			case FORM_CHANGE_PASSWORD:
-				displayForm(EmitterWindow.FORM_CHANGE_PASSWORD);
+				FormChangePassword w = new FormChangePassword(frame);
+				w.setVisible(true);
+				break;
+
+			case FORM_BUS_NEW:
+				FormBus x = new FormBus(frame, -1);
+				x.setVisible(true);
+				break;
 		}
 	}
 
@@ -71,6 +80,8 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (wd)
 		{
 			case FORM_BUS_EDIT:
+				FormBus w = new FormBus(frame, objectID);
+				w.setVisible(true);
 				break;
 		}
 	}
@@ -81,25 +92,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 
 	}
 
-	/**
-	 * Displays forms in the FrameMain.
-	 * @param form Form to display.
-	 */
-	private void displayForm(EmitterWindow form)
-	{
-		switch (form)
-		{
-			case FORM_LOGIN:
-				FormLogin d = new FormLogin(frame);
-				d.setVisible(true);
-				break;
-
-			case FORM_CHANGE_PASSWORD:
-				FormChangePassword w = new FormChangePassword(frame);
-				w.setVisible(true);
-				break;
-		}
-	}
 
 	// TODO: Considering this might be used in more than one place,
 	// TODO: putting it in a separate helper class might be appropriate.
