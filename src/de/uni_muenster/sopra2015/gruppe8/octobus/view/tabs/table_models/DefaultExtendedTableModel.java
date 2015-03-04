@@ -21,13 +21,13 @@ public class DefaultExtendedTableModel extends ExtendedTableModel
 	}
 
 	@Override
-	public int getShownColumnCount()
+	public int getColumnCount()
 	{
 		return 0;
 	}
 
 	@Override
-	public String getShownColumnName(int columnIndex)
+	public String getColumnName(int columnIndex)
 	{
 		return null;
 	}
@@ -69,7 +69,7 @@ public class DefaultExtendedTableModel extends ExtendedTableModel
 	}
 
 	@Override
-	public int getShownColumnIndex(String column)
+	public int getColumnIndex(String column)
 	{
 		return 0;
 	}

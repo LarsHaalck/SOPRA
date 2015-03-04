@@ -22,7 +22,8 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		super();
 		this.objectID = objectID;
 		this.formBus = formBus;
-		if(objectID != -1){
+		if(objectID != -1)
+		{
 			setBusById(objectID);
 		}
 	}

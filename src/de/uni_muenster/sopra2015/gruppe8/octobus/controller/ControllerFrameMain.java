@@ -5,6 +5,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
@@ -80,8 +81,12 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (wd)
 		{
 			case FORM_BUS_EDIT:
-				FormBus w = new FormBus(frame, objectID);
-				w.setVisible(true);
+				FormBus formBus = new FormBus(frame, objectID);
+				formBus.setVisible(true);
+				break;
+			case FORM_EMPLOYEE_EDIT:
+				FormEmployee formEmployee = new FormEmployee(frame, objectID);
+				formEmployee.setVisible(true);
 				break;
 		}
 	}
