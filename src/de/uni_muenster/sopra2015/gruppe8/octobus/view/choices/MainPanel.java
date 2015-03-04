@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.choices;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabaseJOOQ;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainFrame;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerMainPanel;
 
@@ -84,7 +85,8 @@ public class MainPanel extends JPanel
 
         btnSearchConnection.addActionListener(e -> {
             if (controllerMainPanel != null){
-                controllerMainPanel.buttonPressed("searchConnectionRequest");
+                ControllerDatabaseJOOQ bla = new ControllerDatabaseJOOQ();
+                bla.run();
             }
         });
 

@@ -8,14 +8,12 @@ import org.jooq.*;
 import org.jooq.impl.*;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
 import java.util.Date;
 
 /**
- * JOOQ Controller class for database access.
+ * jOOQ Controller class for database access.
  *
  * @author Michael Biech, Phil Steinhorst
  */
@@ -24,51 +22,60 @@ public class ControllerDatabaseJOOQ
 
 	DSLContext create;
 
-    public void run()
-    {
-		openDB();
+    /*
+    FIXME: This needs to use BEGIN and END. Otherwise the statements will take forever!
+    FIXME: Cf. https://stackoverflow.com/questions/3852068/sqlite-insert-very-slow
+     */
 
-		/*
-		BusStop coesfeld = new BusStop("Coesfelder Kreuz",new Tuple<>(20,40),new HashSet<>(Arrays.asList("A","B","C")), false);
-		BusStop wilhelm = new BusStop("Wilhelmstraße ",new Tuple<>(30,60),new HashSet<>(Arrays.asList("A","B")),true);
+    /**
+     * In the future, this method
+     *
+     */
+    public void createTours(){
 
-		addBusStop(coesfeld);
-		addBusStop(wilhelm); */
+        openDB();
 
-		/* LinkedList<Tuple<BusStop,Integer>> stops = new LinkedList<>();
-		stops.add(new Tuple<>(coesfeld,0));
-		stops.add(new Tuple<>(wilhelm,5));
+        String dayOfWeek = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
+        Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
-		HashMap<DayOfWeek,LinkedList<Integer>> startTimes = new HashMap<>();
-		LinkedList<Integer> startTimesTimes = new LinkedList<>();
-		startTimesTimes.add(480);
-		startTimesTimes.add(600);
-		startTimesTimes.add(720);
+        // FIXME: Shorten this bit!
+        // today
+        Calendar date = new GregorianCalendar();
+        // reset hour, minutes, seconds and millis
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
 
-		startTimes.put(DayOfWeek.MONDAY, startTimesTimes);
-		startTimes.put(DayOfWeek.FRIDAY,startTimesTimes);
+        int timestamp = (int) date.getTime().getTime()/1000;
 
-		Route linie = new Route("Linie Test","Testlinie",stops,false,startTimes);
-		addRoute(linie); */
+        for (Record1<Integer> route : routes)
+        {
 
+            Result<Record1<Integer>> startingTimes = create
+                    .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
+                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq("MONDAY")).fetch();
 
-		/* HashSet<Role> roles = new HashSet<>(Arrays.asList(Role.BUSDRIVER,Role.HR_MANAGER));
+            LinkedList list = new LinkedList();
 
-		Employee klaus = new Employee("Schwackowiak","Herbert","Daniela-Katzenberger-Allee","48149","Münster",
-				new Date(2000000),"0123456789","herbert@octobus.com","herbie","SALZ","HASH","netter Typ!",roles);
+            for (Record1<Integer> startingTime : startingTimes)
+            {
 
-		addEmployee(klaus); */
+                InsertQuery i = create.insertQuery(TOURS);
 
+                i.addValue(TOURS.TIMESTAMP, timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60);
+                i.addValue(TOURS.ROUTES_ID, route.getValue(ROUTES.ROUTES_ID));
+                System.out.println(route.getValue(ROUTES.ROUTES_ID));
 
-		/* Set<String> spoints = new HashSet<>();
-		spoints.add("A");
-		spoints.add("B");
-		spoints.add("C");
+                System.out.println(i.getSQL());
 
-		BusStop teststop = new BusStop("Coesfelder Kreuz",new Tuple<>(20,40),spoints,false);
+                list.add(i);
+            }
 
-		addBusStop(teststop);
-		*/
+            System.out.println("Executing query...");
+            create.batch(list).execute();
+            System.out.println("Queries exectued!");
+        }
     }
 
 	/**
@@ -85,11 +92,13 @@ public class ControllerDatabaseJOOQ
 			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
 		}
+
 		catch (ClassNotFoundException e)
 		{
 			System.out.println("Fehler beim Laden des JDBC-Treibers!");
 			e.printStackTrace();
 		}
+
 		catch (SQLException e)
 		{
 			System.out.println("SQL-Exception");
@@ -102,17 +111,29 @@ public class ControllerDatabaseJOOQ
 	///////////////////////
 
 	/**
-	 * adds a new bus into database.
+	 * Adds a new bus into database
 	 *
-	 * @param bus Bus object to be saved in database.
-	 * @return Database ID of added bus.
+	 * @param bus Bus object to be saved in database
+	 * @return Database ID of added bus
 	 */
 	public int addBus(Bus bus)
 	{
-		BusesRecord newBus = create.insertInto(BUSES, BUSES.LICENCEPLATE, BUSES.NUMBEROFSEATS, BUSES.STANDINGROOM, BUSES.MANUFACTURER,
-				BUSES.MODEL, BUSES.NEXTINSPECTIONDUE, BUSES.ARTICULATEDBUS)
-				.values(bus.getLicencePlate(),bus.getNumberOfSeats(),bus.getStandingRoom(),bus.getManufacturer(),
-						bus.getModel(),(int) bus.getNextInspectionDue().getTime()/1000,(Boolean) bus.isArticulatedBus())
+		BusesRecord newBus = create.insertInto(
+                BUSES,
+                BUSES.LICENCEPLATE,
+                BUSES.NUMBEROFSEATS,
+                BUSES.STANDINGROOM,
+                BUSES.MANUFACTURER,
+				BUSES.MODEL,
+                BUSES.NEXTINSPECTIONDUE,
+                BUSES.ARTICULATEDBUS)
+				.values(bus.getLicencePlate(),
+                        bus.getNumberOfSeats(),
+                        bus.getStandingRoom(),
+                        bus.getManufacturer(),
+						bus.getModel(),
+                        (int) bus.getNextInspectionDue().getTime()/1000,
+                        (Boolean) bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
 				.fetchOne();
 
@@ -120,19 +141,9 @@ public class ControllerDatabaseJOOQ
 	}
 
 	/**
-	 * deletes a bus from database by using its license plate.
+	 * Deletes a bus from database by using its database-internal id
 	 *
-	 * @param plate Contains the unique license plate string of the bus to be deleted.
-	 */
-	public void deleteBus(String plate)
-	{
-		create.delete(BUSES).where(BUSES.LICENCEPLATE.equal(plate)).execute();
-	}
-
-	/**
-	 * deletes a bus from database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the bus to be deleted.
+	 * @param id contains the unique internal ID of the bus to be deleted
 	 */
 	public void deleteBus(int id)
 	{
@@ -140,10 +151,10 @@ public class ControllerDatabaseJOOQ
 	}
 
 	/**
-	 * modifies a bus in database by using its database-internal id.
+	 * Modifies a bus in database by using its database-internal id
 	 *
-	 * @param id Contains the unique internal ID of the bus to be modified.
-	 * @param bus Bus object containing the new properties.
+	 * @param id contains the unique internal ID of the bus to be modified
+	 * @param bus bus object containing the new properties
 	 */
 	public void modifyBus(int id, Bus bus)
 	{
@@ -160,29 +171,9 @@ public class ControllerDatabaseJOOQ
 	}
 
 	/**
-	 * modifies a bus in database by using its license plate string.
+	 * Returns an ArrayList of Bus objects containing all buses stored in database
 	 *
-	 * @param plate Contains the unique lucense plate string of the bus to be modified.
-	 * @param bus Bus object containing the new properties.
-	 */
-	public void modifyBus(String plate, Bus bus)
-	{
-		create.update(BUSES)
-				.set(BUSES.LICENCEPLATE,bus.getLicencePlate())
-				.set(BUSES.NUMBEROFSEATS,bus.getNumberOfSeats())
-				.set(BUSES.STANDINGROOM, bus.getStandingRoom())
-				.set(BUSES.MANUFACTURER,bus.getManufacturer())
-				.set(BUSES.MODEL,bus.getModel())
-				.set(BUSES.NEXTINSPECTIONDUE,(int) bus.getNextInspectionDue().getTime()/1000)
-				.set(BUSES.ARTICULATEDBUS, bus.isArticulatedBus())
-				.where(BUSES.LICENCEPLATE.equal(plate))
-				.execute();
-	}
-
-	/**
-	 * returns an ArrayList of Bus objects containing all buses stored in database.
-	 *
-	 * @return Contains every bus object stored in database.
+	 * @return contains every bus object stored in database
 	 */
 	public ArrayList<Bus> getBuses()
 	{
@@ -205,12 +196,12 @@ public class ControllerDatabaseJOOQ
 		return busList;
 	}
 
-	/**
-	 * Get a single bus object from database.
-	 *
-	 * @param id Unique database-internal ID of requested bus object.
-	 * @return Requested bus object.
-	 */
+    /**
+     * Returns a single bus from the database by using its database-internal id
+     *
+     * @param id the id of the bus which is to be retrieved
+     * @return a bus object from the database
+     */
     public Bus getBus(int id)
     {
 
@@ -233,16 +224,21 @@ public class ControllerDatabaseJOOQ
 	//////////////////////////
 
 	/**
-	 * adds a new bus stop into database.
+	 * Adds a new bus stop to the database
 	 *
-	 * @param bstop Bus stop object to be saved in database.
-	 * @return Database ID of added bus.
+	 * @param bstop BusStop object to be saved in database
+	 * @return database ID of added bus
 	 */
 	public int addBusStop(BusStop bstop)
 	{
-		BusstopsRecord newStop = create.insertInto(BUSSTOPS,BUSSTOPS.NAME,BUSSTOPS.LOCATIONX,BUSSTOPS.LOCATIONY,
+		BusstopsRecord newStop = create.insertInto(
+                BUSSTOPS,BUSSTOPS.NAME,
+                BUSSTOPS.LOCATIONX,
+                BUSSTOPS.LOCATIONY,
 				BUSSTOPS.BARRIERFREE)
-				.values(bstop.getName(), bstop.getLocation().getFirst(), bstop.getLocation().getSecond(),
+				.values(bstop.getName(),
+                        bstop.getLocation().getFirst(),
+                        bstop.getLocation().getSecond(),
 						bstop.isBarrierFree())
 				.returning(BUSSTOPS.BUSSTOPS_ID)
 				.fetchOne();
@@ -251,8 +247,13 @@ public class ControllerDatabaseJOOQ
 
 		for (String s : points)
 		{
-			create.insertInto(BUSSTOPS_STOPPINGPOINTS,BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,BUSSTOPS_STOPPINGPOINTS.NAME)
-				.values(newStop.getBusstopsId(),s)
+			create.insertInto(
+                    BUSSTOPS_STOPPINGPOINTS,
+                    BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
+                    BUSSTOPS_STOPPINGPOINTS.NAME)
+				.values(
+                        newStop.getBusstopsId(),
+                        s)
 				.execute();
 		}
 
@@ -316,36 +317,37 @@ public class ControllerDatabaseJOOQ
 		return busStopList;
 	}
 
-	/**
-	 * Get a single bus stop object from database.
-	 *
-	 * @param id Unique database-internal ID of requested bus stop object.
-	 * @return Requested bus stop object.
-	 */
+    /**
+     * Returns a single bus stop and its stopping points from the database according to its ID
+     *
+     * @param id bus stop to retrieve from the database
+     * @return the requested bus stop as an object
+     */
     public BusStop getBusStop(int id)
     {
         Record busStopRecord = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();		// get all busStops from DB
+        Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(busStopRecord.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
-		Result<Record> stoppingPointsRecord = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
-				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(id)).fetch();
+        HashSet<String> spoints = new HashSet<>();
+        for (Record sp : stoppingPoints)
+        {
+            spoints.add(sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));		//.. and put them into a HashSet
+        }
 
-		HashSet<String> stoppingPoints = new HashSet<>();
-		for(Record s : stoppingPointsRecord)
-		{
-			stoppingPoints.add(s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
-		}
+        BusStop busStop = new BusStop(
+                busStopRecord.getValue(BUSSTOPS.NAME),
+                new Tuple<Integer,Integer>(
+                        busStopRecord.getValue(BUSSTOPS.LOCATIONX),
+                        busStopRecord.getValue(BUSSTOPS.LOCATIONY)
+                ),
+                spoints,
+                busStopRecord.getValue(BUSSTOPS.BARRIERFREE)
+        );
 
-		BusStop busStop = new BusStop(
-				busStopRecord.getValue(BUSSTOPS.NAME),
-				new Tuple<Integer,Integer>(busStopRecord.getValue(BUSSTOPS.LOCATIONX),busStopRecord.getValue(BUSSTOPS.LOCATIONY)),
-				stoppingPoints,
-				busStopRecord.getValue(BUSSTOPS.BARRIERFREE));
-
-		busStop.setId(id);
-		return busStop;
+        return busStop;
 
     }
-
 
 	///////////////////////////
 	// Methods for Employees //
@@ -419,7 +421,7 @@ public class ControllerDatabaseJOOQ
 				.set(EMPLOYEES.ISNETWORK_PLANNER,emp.isRole(Role.NETWORK_PLANNER))
 				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
 				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
-				.set(EMPLOYEES.ISSCHEDULE_MANAGER,emp.isRole(Role.SCHEDULE_MANAGER))
+				.set(EMPLOYEES.ISSCHEDULE_MANAGER, emp.isRole(Role.SCHEDULE_MANAGER))
 				.where(EMPLOYEES.EMPLOYEES_ID.equal(id))
 				.execute();
 	}
@@ -745,7 +747,7 @@ public class ControllerDatabaseJOOQ
 	public int addSoldTicket(SoldTicket sold)
 	{
 		SoldticketsRecord newSold = create.insertInto(SOLDTICKETS, SOLDTICKETS.NAME, SOLDTICKETS.TIMESTAMP, SOLDTICKETS.PRICE)
-			.values(sold.getName(),(int) sold.getDate().getTime()/1000,sold.getPrice())
+			.values(sold.getName(), (int) sold.getDate().getTime() / 1000, sold.getPrice())
 			.returning(SOLDTICKETS.SOLDTICKETS_ID)
 			.fetchOne();
 
@@ -832,7 +834,7 @@ public class ControllerDatabaseJOOQ
 	public int addTickets(Ticket tick)
 	{
 		TicketsRecord newTick = create.insertInto(TICKETS,TICKETS.NAME,TICKETS.PRICE,TICKETS.NUMPASSENGERS,TICKETS.DESCRIPTION)
-				.values(tick.getName(),tick.getPrice(),tick.getNumPassengers(),tick.getDescription())
+				.values(tick.getName(), tick.getPrice(), tick.getNumPassengers(), tick.getDescription())
 				.returning(TICKETS.TICKETS_ID)
 				.fetchOne();
 
