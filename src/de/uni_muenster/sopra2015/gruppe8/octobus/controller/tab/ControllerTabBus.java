@@ -32,7 +32,7 @@ public class ControllerTabBus implements ListenerButton
 			case TAB_BUS_EDIT:
 				//GetBusByID
 				Bus bus = new Bus("Test", 12, 12, "gtest", "test", new Date(), false);
-				ControllerManager.getInstance().informWindowOpen(EmitterWindow.FORM_BUS_EDIT, 1);
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, 1);
 				break;
 
 			case TAB_BUS_NEW:

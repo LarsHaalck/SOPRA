@@ -37,13 +37,13 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case LOGGED_IN:
-				ControllerManager.getInstance().clearListeners();
+				ControllerManager.clearListeners();
 				addListeners();
 				PanelEmployee newPanelEmployee = new PanelEmployee();
 				displayContent(newPanelEmployee);
 				break;
 			case LOGGED_OUT:
-				ControllerManager.getInstance().clearListeners();
+				ControllerManager.clearListeners();
 				addListeners();
 				PanelPassenger newPanelPassenger = new PanelPassenger();
 				displayContent(newPanelPassenger);
@@ -120,16 +120,16 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton) this);
-		ControllerManager.getInstance().addListener((ListenerUserState) this);
-		ControllerManager.getInstance().addListener((ListenerWindow) this);
+		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerUserState) this);
+		ControllerManager.addListener((ListenerWindow) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton) this);
-		ControllerManager.getInstance().removeListener((ListenerUserState) this);
-		ControllerManager.getInstance().removeListener((ListenerWindow) this);
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerUserState) this);
+		ControllerManager.removeListener((ListenerWindow) this);
 	}
 }

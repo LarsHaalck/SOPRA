@@ -49,12 +49,12 @@ public class ControllerFormChangePassword extends Controller implements Listener
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerButton)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton)this);
 	}
 }

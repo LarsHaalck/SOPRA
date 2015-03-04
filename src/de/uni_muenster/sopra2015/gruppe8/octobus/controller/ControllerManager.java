@@ -11,37 +11,23 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ControllerManager manager = null;
 	private static ArrayList<ListenerButton> listenerButton = null;
 	private static ArrayList<ListenerUserState> listenerUserState = null;
 	private static ArrayList<ListenerWindow> listenerWindow = null;
 
-	private ControllerManager() { } //Singleton
+	static
+	{
+		listenerButton = new ArrayList<>();
+		listenerUserState = new ArrayList<>();
+		listenerWindow = new ArrayList<>();
+	}
 
 	/**
-	 * instantiates ControllerManager instance and all relevant Listener-Lists if not present
-	 * @return controllerManager instance
+	 * Doesn't allow creating a single instance of ControllerManager
 	 */
-	public static ControllerManager getInstance()
+	private ControllerManager()
 	{
-		if (listenerButton == null)
-		{
-			listenerButton = new ArrayList<>();
-		}
-		if (listenerUserState == null)
-		{
-			listenerUserState = new ArrayList<>();
-		}
-		if (listenerWindow == null)
-		{
-			listenerWindow = new ArrayList<>();
-		}
-		if (manager == null)
-		{
-			manager = new ControllerManager();
-		}
 
-		return manager;
 	}
 
 	/**
