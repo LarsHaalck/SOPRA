@@ -37,13 +37,13 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 	private void closeDialog()
 	{

@@ -11,37 +11,23 @@ import java.util.ArrayList;
  */
 public class ControllerManager
 {
-	private static ControllerManager manager = null;
 	private static ArrayList<ListenerButton> listenerButton = null;
 	private static ArrayList<ListenerUserState> listenerUserState = null;
 	private static ArrayList<ListenerWindow> listenerWindow = null;
 
-	private ControllerManager() { } //Singleton
+	static
+	{
+		listenerButton = new ArrayList<>();
+		listenerUserState = new ArrayList<>();
+		listenerWindow = new ArrayList<>();
+	}
 
 	/**
-	 * instantiates ControllerManager instance and all relevant Listener-Lists if not present
-	 * @return controllerManager instance
+	 * Doesn't allow creating a single instance of ControllerManager
 	 */
-	public static ControllerManager getInstance()
+	private ControllerManager()
 	{
-		if (listenerButton == null)
-		{
-			listenerButton = new ArrayList<>();
-		}
-		if (listenerUserState == null)
-		{
-			listenerUserState = new ArrayList<>();
-		}
-		if (listenerWindow == null)
-		{
-			listenerWindow = new ArrayList<>();
-		}
-		if (manager == null)
-		{
-			manager = new ControllerManager();
-		}
 
-		return manager;
 	}
 
 	/**
@@ -76,6 +62,19 @@ public class ControllerManager
 		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
 		for (ListenerWindow listener : list)
 			listener.windowOpen(emitter);
+	}
+
+	/**
+	 * Informs every active ListenerWindow to open a new window.
+	 *
+	 * @param emitter window to open.
+	 * @param objectID Database-ID that will be needed in the opened window.
+	 */
+	public static void informWindowOpen(EmitterWindow emitter, int objectID)
+	{
+		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		for (ListenerWindow listener : list)
+			listener.windowOpen(emitter, objectID);
 	}
 
 	/**
