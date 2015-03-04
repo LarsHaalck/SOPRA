@@ -4,6 +4,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormE
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
@@ -11,7 +14,7 @@ import java.awt.*;
  *         lenght of textfield
  *         zip an city
  */
-public class FormEmployee extends JDialog
+public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
@@ -19,10 +22,8 @@ public class FormEmployee extends JDialog
 	private String explanationText = "Bitte geben Sie die Daten des Mitarbeiters ein.";
 	private JLabel explanation = new JLabel(explanationText);
 	private JPanel rightPanel = new JPanel();
-	private JPanel leftPanel = new JPanel();
-	private JPanel topPanel = new JPanel();
+	private JPanel midPanel = new JPanel();
 	private JPanel bottomPanel = new JPanel();
-	private JPanel leftPanel1 = new JPanel();
 
 	private JButton save = new JButton("Speichern");
 	private JButton cancel = new JButton("Abbrechen");
@@ -47,18 +48,26 @@ public class FormEmployee extends JDialog
 	private JTextArea remarkText = new JTextArea();
 	private JTextField usernameText = new JTextField();
 
-	private JPanel picturePanel = new JPanel();
 	private JLabel roleLabel = new JLabel("Rollen:");
 	private JPanel rolePanel = new JPanel();
 
-	private JToggleButton schedulemanager = new JToggleButton("Einsatzplaner");
-	private JToggleButton networkplaner = new JToggleButton("Netzpaner");
-	private JToggleButton busdriver = new JToggleButton("Busfahrer");
-	private JToggleButton ticketplaner = new JToggleButton("Fahrkartenplaner");
-	private JToggleButton hrmanager = new JToggleButton("Personalleiter");
+	private JLabel schedulemanager = new JLabel("Einsatzplaner");
+	private JLabel networkplaner = new JLabel("Netzpaner");
+	private JLabel busdriver = new JLabel("Busfahrer");
+	private JLabel ticketplaner = new JLabel("Fahrkartenplaner");
+	private JLabel hrmanager = new JLabel("Personalleiter");
 
-	public FormEmployee()
+	private JCheckBox schedulemanagerBox = new JCheckBox();
+	private JCheckBox networkplanerBox = new JCheckBox();
+	private JCheckBox busdriverBox = new JCheckBox();
+	private JCheckBox ticketplanerBox = new JCheckBox();
+	private JCheckBox hrmanagerBox = new JCheckBox();
+
+
+	public FormEmployee(Frame parent)
 	{
+		super(parent, "Mitarbeiter verwalten");
+
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		controllerFormEmployee = new ControllerFormEmployee(this);
 
@@ -72,57 +81,59 @@ public class FormEmployee extends JDialog
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(topPanel);
-		add(bottomPanel);
+		setLayout(new BorderLayout());
+		add(explanationPanel, BorderLayout.NORTH);
+		add(midPanel, BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);
 
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-		topPanel.add(leftPanel1);
-		topPanel.add(rightPanel);
-
-		leftPanel1.setLayout(new BoxLayout(leftPanel1, BoxLayout.Y_AXIS));
-		leftPanel1.add(explanationPanel);
 		explanationPanel.add(explanation);
-		leftPanel1.add(leftPanel);
 
-		leftPanel.setLayout(new GridLayout(9, 2));
-		leftPanel.add(lastName);
-		leftPanel.add(lastNameText);
-		leftPanel.add(firstName);
-		leftPanel.add(firstNameText);
-		leftPanel.add(address);
-		leftPanel.add(addressText);
-		leftPanel.add(zip);
-		leftPanel.add(zipText);
-		leftPanel.add(city);
-		leftPanel.add(cityText);
-		leftPanel.add(date);
-		leftPanel.add(dateText);
-		leftPanel.add(phone);
-		leftPanel.add(phoneText);
-		leftPanel.add(remark);
-		leftPanel.add(remarkText);
-		leftPanel.add(username);
-		leftPanel.add(usernameText);
+		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
 
+		midPanel.setLayout(new GridLayout(9, 2));
+		midPanel.add(lastName);
+		midPanel.add(lastNameText);
+		midPanel.add(firstName);
+		midPanel.add(firstNameText);
+		midPanel.add(address);
+		midPanel.add(addressText);
+		midPanel.add(zip);
+		midPanel.add(zipText);
+		midPanel.add(city);
+		midPanel.add(cityText);
+		midPanel.add(date);
+		midPanel.add(dateText);
+		midPanel.add(phone);
+		midPanel.add(phoneText);
+		midPanel.add(remark);
+		midPanel.add(remarkText);
+		midPanel.add(username);
+		midPanel.add(usernameText);
+
+		add(rightPanel, BorderLayout.EAST);
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.add(picturePanel);
 		rightPanel.add(roleLabel);
 		rightPanel.add(rolePanel);
-		rolePanel.setLayout(new BoxLayout(rolePanel, BoxLayout.Y_AXIS));
+
+		rolePanel.setLayout(new GridLayout(5,2));
+		Border border = rolePanel.getBorder();
+		Border myBorder = new LineBorder(Color.black, 1);
+		rolePanel.setBorder(new CompoundBorder(border, myBorder));
 		rolePanel.add(schedulemanager);
+		rolePanel.add(schedulemanagerBox);
 		rolePanel.add(networkplaner);
+		rolePanel.add(networkplanerBox);
 		rolePanel.add(busdriver);
+		rolePanel.add(busdriverBox);
 		rolePanel.add(ticketplaner);
+		rolePanel.add(ticketplanerBox);
 		rolePanel.add(hrmanager);
+		rolePanel.add(hrmanagerBox);
 
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
-		setResizable(false);
+
 		pack();
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
 	}
 }
