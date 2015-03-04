@@ -27,10 +27,14 @@ public class ControllerManager
 	 */
 	public static void informButtonPressed(EmitterButton emitter)
 	{
-		ArrayList<ListenerButton> list = (ArrayList<ListenerButton>) listenerButton.clone();
+		ArrayList<ListenerButton> list = new ArrayList<>(listenerButton);
 		for (ListenerButton listener : list)
 			listener.buttonPressed(emitter);
 	}
+
+
+	// following functions copy their corresponding ArrayList first, because event triggers could
+	// lead to new listeners, which could lead to infinite loops!!
 
 	/**
 	 * Informs every active ListenerUserState.
@@ -38,7 +42,7 @@ public class ControllerManager
 	 */
 	public static void informUserStateChanged(EmitterUserState emitter)
 	{
-		ArrayList<ListenerUserState> list = (ArrayList<ListenerUserState>) listenerUserState.clone();
+		ArrayList<ListenerUserState> list = new ArrayList<>(listenerUserState);
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
@@ -50,7 +54,7 @@ public class ControllerManager
 	 */
 	public static void informWindowOpen(EmitterWindow emitter)
 	{
-		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowOpen(emitter);
 	}
@@ -63,7 +67,7 @@ public class ControllerManager
 	 */
 	public static void informWindowOpen(EmitterWindow emitter, int objectID)
 	{
-		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowOpen(emitter, objectID);
 	}
@@ -75,7 +79,7 @@ public class ControllerManager
 	 */
 	public static void informWindowClose(EmitterWindow emitter)
 	{
-		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowClose(emitter);
 	}
