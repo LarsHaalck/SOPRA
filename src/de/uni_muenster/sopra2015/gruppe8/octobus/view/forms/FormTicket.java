@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormT
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 
@@ -19,7 +20,7 @@ public class FormTicket extends FormGeneral
 	private JPanel explanationPanel = new JPanel();
 
 	private JPanel mid = new JPanel();
-	private JPanel botttom = new JPanel();
+	private JPanel bottom = new JPanel();
 
 	private JLabel name = new JLabel("Name");
 	private JLabel price = new JLabel("Preis");
@@ -31,8 +32,17 @@ public class FormTicket extends FormGeneral
 	private JTextField numPassengersText = new JTextField();
 	private JTextArea descriptionText = new JTextArea();
 
+	private JPanel namePanel = new JPanel();
+	private JPanel pricePanel = new JPanel();
+	private JPanel numPassengersPanel = new JPanel();
+	private JPanel descriptionPanel = new JPanel();
+
 	private JButton save = new JButton("Speichern");
 	private JButton cancel = new JButton("Abbrechen");
+
+	private int textHeight = 25;
+	private int areaHeight = 50;
+	private int textWidth = 150;
 
 	public FormTicket(Frame parent)
 	{
@@ -52,24 +62,85 @@ public class FormTicket extends FormGeneral
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
 		add(mid, BorderLayout.CENTER);
-		add(botttom, BorderLayout.SOUTH);
+		add(bottom, BorderLayout.SOUTH);
 
+		explanationPanel.setPreferredSize(new Dimension(924, 100));
+		explanationPanel.setBorder(new EmptyBorder(new Insets(40,0,40,0)));
 		explanationPanel.add(explanation);
 
-		mid.setLayout(new GridLayout(4,2));
-		mid.add(name);
-		mid.add(nameText);
-		mid.add(price);
-		mid.add(priceText);
-		mid.add(numPassengers);
-		mid.add(numPassengersText);
-		mid.add(description);
-		mid.add(descriptionText);
+		mid.setLayout(new BoxLayout(mid, BoxLayout.Y_AXIS));
+		mid.add(namePanel);
+		namePanel.setLayout(new FlowLayout());
+		mid.add(pricePanel);
+		pricePanel.setLayout(new FlowLayout());
+		mid.add(numPassengersPanel);
+		numPassengersPanel.setLayout(new FlowLayout());
+		mid.add(descriptionPanel);
+		descriptionPanel.setLayout(new FlowLayout());
 
-		botttom.setLayout(new FlowLayout());
-		botttom.add(save);
-		botttom.add(cancel);
+		namePanel.add(name);
+		namePanel.add(nameText);
+		pricePanel.add(price);
+		pricePanel.add(priceText);
+		numPassengersPanel.add(numPassengers);
+		numPassengersPanel.add(numPassengersText);
+		descriptionPanel.add(description);
+		descriptionPanel.add(descriptionText);
+
+		name.setPreferredSize(new Dimension(textWidth, textHeight));
+		nameText.setPreferredSize(new Dimension(textWidth, textHeight));
+		price.setPreferredSize(new Dimension(textWidth, textHeight));
+		priceText.setPreferredSize(new Dimension(textWidth, textHeight));
+		numPassengers.setPreferredSize(new Dimension(textWidth, textHeight));
+		numPassengersText.setPreferredSize(new Dimension(textWidth, textHeight));
+		description.setPreferredSize(new Dimension(textWidth, textHeight));
+		descriptionText.setPreferredSize(new Dimension(textWidth, areaHeight));
+
+		bottom.setLayout(new FlowLayout());
+		bottom.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		bottom.setPreferredSize(new Dimension(924, 100));
+		bottom.add(save);
+		bottom.add(cancel);
 
 		pack();
+	}
+	public String getNameText()
+	{
+		return nameText.getText();
+	}
+
+	public void setNameText(String text)
+	{
+		this.nameText.setText(text);
+	}
+
+	public String getPriceText()
+	{
+		return priceText.getText();
+	}
+
+	public void setPriceText(String text)
+	{
+		this.priceText.setText(text);
+	}
+
+	public String getDescriptionText()
+	{
+		return descriptionText.getText();
+	}
+
+	public void setDescriptionText(String text)
+	{
+		this.descriptionText.setText(text);
+	}
+
+	public String getNumPassengersText()
+	{
+		return numPassengersText.getText();
+	}
+
+	public void setNumPassengersText(String text)
+	{
+		this.numPassengersText.setText(text);
 	}
 }

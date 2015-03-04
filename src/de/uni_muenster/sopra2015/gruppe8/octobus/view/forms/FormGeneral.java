@@ -8,8 +8,8 @@ import java.awt.*;
  */
 public abstract class FormGeneral extends JDialog
 {
-	private static final int WIDTH = 924;
-	private static final int HEIGHT = 540;
+	public static final int WIDTH = 924;
+	public static final int HEIGHT = 540;
 
 	public FormGeneral(Frame parent)
     {
@@ -56,7 +56,7 @@ public abstract class FormGeneral extends JDialog
 
     private void setMySettings(){
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setLocationRelativeTo(this.getParent());
+        setLocationRelativeTo(null);
         setResizable(false);
     }
 }
