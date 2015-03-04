@@ -5,7 +5,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Patricia Schinke
@@ -30,13 +33,21 @@ public class FormBusStop extends FormGeneral
 
 	private JTextField nameText = new JTextField();
 	private JTextField locationText = new JTextField();
-	private JList stoppingPointsText = new JList(); //??
 	private JCheckBox barrierFreeText = new JCheckBox();
 
 	private JPanel namePanel = new JPanel();
 	private JPanel locationPanel = new JPanel();
 	private JPanel stoppingPointsPanel = new JPanel();
 	private JPanel barrierFreePanel = new JPanel();
+
+	private DefaultListModel listModel = new DefaultListModel<>();
+	private JList list = new JList(listModel);
+	private JPanel listName = new JPanel();
+	private JPanel listPanel = new JPanel();
+	private JPanel listButtons = new JPanel();
+	private JButton listAdd = new JButton("Hinzufügen");
+	private JButton listEdit = new JButton("Bearbeiten");
+	private JButton listDelete = new JButton("Entfernen");
 
 	private JButton save = new JButton("Speichern");
 	private JButton cancel = new JButton("Abbrechen");
@@ -71,19 +82,17 @@ public class FormBusStop extends FormGeneral
 		mid.setLayout(new BoxLayout(mid, BoxLayout.Y_AXIS));
 		mid.add(namePanel);
 		mid.add(locationPanel);
-		mid.add(stoppingPointsPanel);
 		mid.add(barrierFreePanel);
+		mid.add(stoppingPointsPanel);
+
 		namePanel.setLayout(new FlowLayout());
 		locationPanel.setLayout(new FlowLayout());
-		stoppingPointsPanel.setLayout(new FlowLayout());
 		barrierFreePanel.setLayout(new FlowLayout());
 
 		namePanel.add(name);
 		namePanel.add(nameText);
 		locationPanel.add(location);
 		locationPanel.add(locationText);
-		stoppingPointsPanel.add(stoppingPoints);
-		stoppingPointsPanel.add(stoppingPointsText);
 		barrierFreePanel.add(barrierFree);
 		barrierFreePanel.add(barrierFreeText);
 
@@ -91,10 +100,55 @@ public class FormBusStop extends FormGeneral
 		nameText.setPreferredSize(new Dimension(textWidth, textHeight));
 		location.setPreferredSize(new Dimension(textWidth, textHeight));
 		locationText.setPreferredSize(new Dimension(textWidth, textHeight));
-		stoppingPoints.setPreferredSize(new Dimension(textWidth, textHeight));
-		stoppingPointsText.setPreferredSize(new Dimension(textWidth, textHeight));
 		barrierFree.setPreferredSize(new Dimension(textWidth, textHeight));
 		barrierFreeText.setPreferredSize(new Dimension(textWidth, textHeight));
+
+		stoppingPointsPanel.setLayout(new BorderLayout());
+		stoppingPointsPanel.add(listName, BorderLayout.NORTH);
+		stoppingPointsPanel.add(listPanel, BorderLayout.CENTER);
+		stoppingPointsPanel.add(listButtons, BorderLayout.SOUTH);
+
+		listName.setLayout(new FlowLayout());
+		listName.add(stoppingPoints);
+
+		listPanel.add(new JScrollPane(list));
+
+		listButtons.setLayout(new FlowLayout());
+
+		listButtons.add(listAdd);
+		listAdd.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				String text = JOptionPane.showInputDialog(null, "Geben Sie einen neuen HaltePunkt ein:", "Neuer Haltepunkt", JOptionPane.PLAIN_MESSAGE);
+				listModel.addElement(text);
+			}
+		});
+
+		listButtons.add(listEdit);
+		listEdit.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = list.getSelectedIndex();
+				listModel.remove(index);
+				String text = JOptionPane.showInputDialog(null, "Bearbeiten Sie die Haltestelle:", "Haltepunkt bearbeiten", JOptionPane.PLAIN_MESSAGE);
+				listModel.add(index, text);
+			}
+		});
+
+		listButtons.add(listDelete);
+		listDelete.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = list.getSelectedIndex();
+				listModel.remove(index);
+			}
+		});
 
 		bottom.setLayout(new BorderLayout());
 		bottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
