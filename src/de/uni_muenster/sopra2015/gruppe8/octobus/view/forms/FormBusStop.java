@@ -32,13 +32,19 @@ public class FormBusStop extends FormGeneral
 	private JLabel barrierFree = new JLabel("Barrierefrei");
 
 	private JTextField nameText = new JTextField();
-	private JTextField locationText = new JTextField();
 	private JCheckBox barrierFreeText = new JCheckBox();
 
 	private JPanel namePanel = new JPanel();
 	private JPanel locationPanel = new JPanel();
 	private JPanel stoppingPointsPanel = new JPanel();
 	private JPanel barrierFreePanel = new JPanel();
+	private JPanel locationText = new JPanel();
+
+	private JLabel intX = new JLabel("X:");
+	private JLabel intY = new JLabel("Y:");
+
+	private JTextField intXText = new JTextField();
+	private JTextField intYText = new JTextField();
 
 	private DefaultListModel listModel = new DefaultListModel<>();
 	private JList list = new JList(listModel);
@@ -102,6 +108,12 @@ public class FormBusStop extends FormGeneral
 		locationText.setPreferredSize(new Dimension(textWidth, textHeight));
 		barrierFree.setPreferredSize(new Dimension(textWidth, textHeight));
 		barrierFreeText.setPreferredSize(new Dimension(textWidth, textHeight));
+
+		locationText.setLayout(new FlowLayout());
+		locationText.add(intX);
+		locationText.add(intXText);
+		locationText.add(intY);
+		locationText.add(intYText);
 
 		stoppingPointsPanel.setLayout(new BorderLayout());
 		stoppingPointsPanel.add(listName, BorderLayout.NORTH);
