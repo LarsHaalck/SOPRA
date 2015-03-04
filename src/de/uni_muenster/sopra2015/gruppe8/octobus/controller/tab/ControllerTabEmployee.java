@@ -16,7 +16,27 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 
 	public ControllerTabEmployee(TabEmployee tabEmployee)
 	{
+		super();
 		this.tabEmployee = tabEmployee;
+	}
+
+	@Override
+	public void buttonPressed(EmitterButton btn)
+	{
+		switch(btn)
+		{
+			case TAB_EMPLOYEE_NEW:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_NEW);
+				break;
+
+			case TAB_EMPLOYEE_EDIT:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, tabEmployee.getSelectedID());
+				break;
+
+			case TAB_EMPLOYEE_DELETE:
+				//TODO: Delete it
+				break;
+		}
 	}
 
 	@Override
@@ -31,23 +51,5 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 		ControllerManager.addListener((ListenerButton)this);
 	}
 
-	@Override
-	public void buttonPressed(EmitterButton btn)
-	{
-		switch(btn)
-		{
-			case TAB_EMPLOYEE_NEW:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_NEW);
-				break;
 
-			case TAB_EMPLOYEE_EDIT:
-				System.out.println(tabEmployee.getSelectedID()+"");
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, tabEmployee.getSelectedID());
-				break;
-
-			case TAB_EMPLOYEE_DELETE:
-				//TODO: Delete it
-				break;
-		}
-	}
 }

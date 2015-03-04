@@ -86,12 +86,17 @@ public class FormEmployee extends FormGeneral
 	private int textWidth = 150;
 	private int boxWidth = 50;
 
-	public FormEmployee(Frame parent)
+	public FormEmployee(Frame parent, int objectID)
 	{
-		super(parent, "Mitarbeiter verwalten");
+		//super(parent, "Mitarbeiter verwalten");
+		super(parent, "");
+		if(objectID == -1)
+			setTitle("Mitarbeiter anlegen");
+		else
+			setTitle("Mitarbeiter ändern");
 
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		controllerFormEmployee = new ControllerFormEmployee(this);
+		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
 		//Add events to buttons
 		save.addActionListener(e->
@@ -204,6 +209,8 @@ public class FormEmployee extends FormGeneral
 		bottomPanel.setPreferredSize(new Dimension(924, 100));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+
+		controllerFormEmployee.insertValuesIntoForm();
 
 		pack();
 	}
