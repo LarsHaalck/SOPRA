@@ -118,11 +118,4 @@ public class FormTour extends FormGeneral
 	{
 		nextButton.setEnabled(b);
 	}
-
-	public static void main(String[] args)
-	{
-		FormTour fenster = new FormTour(null);
-		fenster.setLocationRelativeTo(null);
-		fenster.setVisible(true);
-	}
 }
