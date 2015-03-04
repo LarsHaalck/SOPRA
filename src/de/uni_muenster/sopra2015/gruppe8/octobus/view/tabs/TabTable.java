@@ -132,7 +132,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	 */
 	private void newFilter()
 	{
-		if(table.getRowCount() <= 0)
+		if(model.getRowCount() <= 0)
 			return;
 
 		RowFilter<TM, Object> rf = null;
