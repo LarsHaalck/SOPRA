@@ -112,11 +112,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 
 	}
 
-
-	// TODO: Considering this might be used in more than one place,
-	// TODO: putting it in a separate helper class might be appropriate.
-	// Adapted from http://stackoverflow.com/a/5077773/2010258 and http://stackoverflow.com/a/11073097/2010258
-
 	/**
 	 * Displays a container in the FrameMain.
 	 * @param container Container to be displayed.
