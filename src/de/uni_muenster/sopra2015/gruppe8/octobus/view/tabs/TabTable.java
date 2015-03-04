@@ -20,24 +20,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	protected JLabel lbFilter = new JLabel("Filter-Text:");
 	protected JComboBox<String> cbFilter;
 	protected TableRowSorter<TM> sorter;
-	private TM model;
-
-	public boolean isRefineable()
-	{
-		return isRefineable;
-	}
-
-	public boolean isEnableMultiFilter()
-	{
-		return enableMultiFilter;
-	}
-
-	private boolean isRefineable = true;
-	private boolean enableMultiFilter = false;
 	protected int selectedRow = -1;
 	protected int selectedID = -1;
+	private TM model;
+	private boolean isRefineable = true;
+	private boolean enableMultiFilter = false;
 	private int filterColumn = 0;
-
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
 	{
 		this.isRefineable = isRefineable;
@@ -123,6 +111,15 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 	}
 
+	public boolean isRefineable()
+	{
+		return isRefineable;
+	}
+
+	public boolean isEnableMultiFilter()
+	{
+		return enableMultiFilter;
+	}
 
 	public int getSelectedID()
 	{
@@ -135,7 +132,11 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	 */
 	private void newFilter()
 	{
+		if(table.getRowCount() <= 0)
+			return;
+
 		RowFilter<TM, Object> rf = null;
+
 		if(enableMultiFilter && ((String)cbFilter.getSelectedItem()).equals("alle"))
 		{
 			int[] ids = ((TM)model).getRefineableColumnsIDs();
