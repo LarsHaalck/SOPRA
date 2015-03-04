@@ -79,6 +79,19 @@ public class ControllerManager
 	}
 
 	/**
+	 * Informs every active ListenerWindow to open a new window.
+	 *
+	 * @param emitter window to open.
+	 * @param objectID Database-ID that will be needed in the opened window.
+	 */
+	public static void informWindowOpen(EmitterWindow emitter, int objectID)
+	{
+		ArrayList<ListenerWindow> list = (ArrayList<ListenerWindow>) listenerWindow.clone();
+		for (ListenerWindow listener : list)
+			listener.windowOpen(emitter, objectID);
+	}
+
+	/**
 	 * Informs every active ListenerWindow to close a certain window.
      *
 	 * @param emitter window to be closed.

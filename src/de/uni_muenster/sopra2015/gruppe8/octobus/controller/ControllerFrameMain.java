@@ -66,6 +66,16 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	}
 
 	@Override
+	public void windowOpen(EmitterWindow wd, int objectID)
+	{
+		switch (wd)
+		{
+			case FORM_BUS_EDIT:
+				break;
+		}
+	}
+
+	@Override
 	public void windowClose(EmitterWindow emitter)
 	{
 
@@ -110,16 +120,16 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.getInstance().addListener((ListenerButton)this);
-		ControllerManager.getInstance().addListener((ListenerUserState)this);
-		ControllerManager.getInstance().addListener((ListenerWindow)this);
+		ControllerManager.getInstance().addListener((ListenerButton) this);
+		ControllerManager.getInstance().addListener((ListenerUserState) this);
+		ControllerManager.getInstance().addListener((ListenerWindow) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.getInstance().removeListener((ListenerButton)this);
-		ControllerManager.getInstance().removeListener((ListenerUserState)this);
-		ControllerManager.getInstance().removeListener((ListenerWindow)this);
+		ControllerManager.getInstance().removeListener((ListenerButton) this);
+		ControllerManager.getInstance().removeListener((ListenerUserState) this);
+		ControllerManager.getInstance().removeListener((ListenerWindow) this);
 	}
 }

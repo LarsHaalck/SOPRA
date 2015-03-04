@@ -11,6 +11,13 @@ public interface ListenerWindow
 	 */
 	public void windowOpen(EmitterWindow wd);
 
+	/**
+	 * Creates a new window.
+	 * @param wd Window to be created
+	 * @param objectID Database-ID of an object that will be used in window.
+	 */
+	public void windowOpen(EmitterWindow wd, int objectID);
+
 
 	/**
 	 * Closes an existing window.

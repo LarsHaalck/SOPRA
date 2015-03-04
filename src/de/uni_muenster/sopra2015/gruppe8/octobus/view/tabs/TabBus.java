@@ -2,6 +2,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
 import javax.swing.*;
 import java.awt.*;
+
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 
 /**
@@ -13,9 +15,13 @@ public class TabBus extends TabTable<TableModelBus>
 	private JButton btnEdit;
 	private JButton btnNew;
 
+	private ControllerTabBus controllerTabBus;
+
 	public TabBus()
 	{
 		super(TableModelBus.class, true, true);
+
+		controllerTabBus = new ControllerTabBus(this);
 
 		setLayout(new BorderLayout(5,5));
 
