@@ -28,7 +28,7 @@ public class TabBus extends TabTable<TableModelBus>
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			if(JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+			if(getSelectedID() != -1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
 					== JOptionPane.YES_OPTION)
 			{
 				System.out.println("Delete pressed");
