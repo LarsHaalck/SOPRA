@@ -2,9 +2,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabTicket;
 
 /**

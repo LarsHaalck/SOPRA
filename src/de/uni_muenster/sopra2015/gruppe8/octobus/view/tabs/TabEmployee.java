@@ -1,8 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelEmployee;
 
 import javax.swing.*;

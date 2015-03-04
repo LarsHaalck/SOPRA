@@ -4,7 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
 import java.awt.*;
 

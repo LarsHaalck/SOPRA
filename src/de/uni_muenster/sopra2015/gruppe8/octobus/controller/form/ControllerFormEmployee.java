@@ -5,8 +5,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Role;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import java.util.Date;
 import java.util.HashSet;

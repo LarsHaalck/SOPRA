@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassenger;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
 import java.awt.*;

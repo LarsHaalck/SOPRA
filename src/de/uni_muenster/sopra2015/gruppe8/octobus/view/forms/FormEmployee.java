@@ -1,8 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -37,9 +36,9 @@ public class FormEmployee extends FormGeneral
 	private JLabel city = new JLabel("Ort");
 	private JLabel date = new JLabel("Geburtsdatum");
 	private JLabel phone = new JLabel("Telefon");
-	private JLabel mail = new JLabel("E-Mail");
 	private JLabel remark = new JLabel("Bemerkung");
 	private JLabel username = new JLabel("Benutzername");
+	private JLabel mail = new JLabel("Mail-Adresse");
 
 	private JTextField firstNameText = new JTextField();
 	private JTextField lastNameText = new JTextField();

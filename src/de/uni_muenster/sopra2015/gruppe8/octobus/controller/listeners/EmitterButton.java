@@ -1,4 +1,4 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners;
+package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
  * Used to describe buttons.
