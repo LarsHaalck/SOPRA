@@ -1,13 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 
@@ -19,6 +12,7 @@ public class TabBuses extends TabTable<TableModelBus>
 	private JButton btnDelete;
 	private JButton btnEdit;
 	private JButton btnNew;
+
 	public TabBuses()
 	{
 		super(TableModelBus.class, true, true);

@@ -44,14 +44,14 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		//TODO: Check this! Could we get problems?
 		try
 		{
-			model = type.newInstance();
+			model = (TM)type.newInstance();
 		} catch (Exception e)
 		{
 			model = new DefaultExtendedTableModel();
 		}
 
 		sorter = new TableRowSorter<>((TM)model);
-		table = new JTable(model);
+		table = new JTable((TM)model);
 		table.setRowSorter(sorter);
 		table.setRowHeight(19);
 		//Only allow one selection
@@ -72,7 +72,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 				}
 		);
 
-		cbFilter = new JComboBox<>(model.getRefineableColumns());
+		cbFilter = new JComboBox<>(((TM)model).getRefineableColumns());
 
 		if(isRefineable)
 		{
@@ -80,11 +80,11 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 			if(enableMultifilter) //multi-filter should only work, if filters are generally enabled
 			{
 				cbFilter.addItem("alle");
-				cbFilter.setSelectedIndex(model.getRefineableColumns().length);
+				cbFilter.setSelectedIndex(((TM)model).getRefineableColumns().length);
 			}
 
 			cbFilter.addActionListener(e -> {
-				filterColumn = model.getColumnIndex((String) cbFilter.getSelectedItem());
+				filterColumn = ((TM)model).getColumnIndex((String) cbFilter.getSelectedItem());
 				newFilter();
 			});
 
@@ -126,7 +126,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		RowFilter<TM, Object> rf = null;
 		if(enableMultiFilter && ((String)cbFilter.getSelectedItem()).equals("alle"))
 		{
-			int[] ids = model.getRefineableColumnsIDs();
+			int[] ids = ((TM)model).getRefineableColumnsIDs();
 			ArrayList<RowFilter<TM, Object>> filters = new ArrayList<>(ids.length); //one filter for every column
 			for(int i = 0; i < ids.length; i++)
 			{
