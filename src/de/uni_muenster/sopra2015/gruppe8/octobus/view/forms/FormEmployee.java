@@ -54,9 +54,7 @@ public class FormEmployee extends JDialog
 
 	public FormEmployee()
 	{
-		setResizable(false);
-
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		add(topPanel);
 		add(bottomPanel);
 
@@ -103,6 +101,17 @@ public class FormEmployee extends JDialog
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+	public static void main(String[] args)
+	{
+		FormEmployee test = new FormEmployee();
+
 	}
 
 }
