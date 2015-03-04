@@ -3,10 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.*;
 
 import java.awt.*;
@@ -72,6 +69,11 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				FormBus x = new FormBus(frame, -1);
 				x.setVisible(true);
 				break;
+
+			case FORM_TICKET_NEW:
+				FormTicket y = new FormTicket(frame, -1);
+				y.setVisible(true);
+				break;
 		}
 	}
 
@@ -87,6 +89,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 			case FORM_EMPLOYEE_EDIT:
 				FormEmployee formEmployee = new FormEmployee(frame, objectID);
 				formEmployee.setVisible(true);
+				break;
+			case FORM_TICKET_EDIT:
+				FormTicket y = new FormTicket(frame, objectID);
+				y.setVisible(true);
 				break;
 		}
 	}
