@@ -10,7 +10,7 @@ import java.awt.*;
  * @author Patricia Schinke
  * lenght of textfield
  */
-public class FormBusStop extends JPanel
+public class FormBusStop extends JDialog
 {
 	private ControllerFormBusStop controllerFormBusStop;
 
@@ -36,6 +36,8 @@ public class FormBusStop extends JPanel
 
 	public FormBusStop()
 	{
+		setResizable(false);
+
 		controllerFormBusStop = new ControllerFormBusStop(this);
 
 		setLayout(new BorderLayout());

@@ -46,6 +46,8 @@ public class FormTicket extends JPanel
 			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
 		});
 
+		//setResizable(false);
+
 		setLayout(new BorderLayout());
 		add(explanationPanel, BorderLayout.NORTH);
 		add(mid, BorderLayout.CENTER);

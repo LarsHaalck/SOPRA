@@ -11,7 +11,7 @@ import java.awt.*;
  *         lenght of textfield
  *         zip an city
  */
-public class FormEmployee extends JPanel
+public class FormEmployee extends JDialog
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
@@ -59,6 +59,7 @@ public class FormEmployee extends JPanel
 
 	public FormEmployee()
 	{
+		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		controllerFormEmployee = new ControllerFormEmployee(this);
 
 		//Add events to buttons
@@ -118,6 +119,10 @@ public class FormEmployee extends JPanel
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		bottomPanel.add(save);
 		bottomPanel.add(cancel);
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
 	}
-
 }
