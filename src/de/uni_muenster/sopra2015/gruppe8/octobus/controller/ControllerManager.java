@@ -46,9 +46,8 @@ public class ControllerManager
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
-	// TODO "window" needs to be more precise/added to glossary
 	/**
-	 * Informs every active ListenerWindow to open a new window.
+	 * Informs every active ListenerWindow to open a new dialog window.
      *
 	 * @param emitter window to open.
 	 */
