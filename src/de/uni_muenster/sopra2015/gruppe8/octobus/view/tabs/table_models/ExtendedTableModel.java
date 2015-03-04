@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 /**
@@ -7,9 +8,19 @@ import javax.swing.table.TableModel;
  */
 public abstract class ExtendedTableModel implements TableModel
 {
-	public abstract String[] getRefineableColumns();
-	//public abstract int getColumnIndex(String column);
+	protected String[] columnNames;
+	protected Object[][] data;
 
+	/**
+	 * Returns all refineable columns.
+	 * @return String array with names of refineable columns.
+	 */
+	public abstract String[] getRefineableColumns();
+
+	/**
+	 * Returns all ids of refineable columns.
+	 * @return int array with ids of refineable columns.
+	 */
 	public int[] getRefineableColumnsIDs()
 	{
 		int[] ids = new int[getRefineableColumns().length];
@@ -19,15 +30,39 @@ public abstract class ExtendedTableModel implements TableModel
 		return ids;
 	}
 
+	/**
+	 * Returns count of all existing columns.
+	 * @return number of columns.
+	 */
 	public int getColumnCount()
 	{
 		return getShownColumnCount() + 1;
 	}
 
-	public abstract int getShownColumnCount();
+	/**
+	 * Return count of all visible columns.
+	 * @return number of columns.
+	 */
+	public int getShownColumnCount()
+	{
+		return columnNames.length;
+	}
 
-	public abstract String getShownColumnName(int columnIndex);
+	/**
+	 * Returns name of a shown column by index.
+	 * @param columnIndex Index of requested column-name.
+	 * @return name corresponding to index.
+	 */
+	public String getShownColumnName(int columnIndex)
+	{
+		return columnNames[columnIndex];
+	}
 
+	/**
+	 * Returns name of a column by index (also id)
+	 * @param columnIndex Index of requested column-name.
+	 * @return name corresponding to index.
+	 */
 	public String getColumnName(int columnIndex)
 	{
 		if(columnIndex == 0)
@@ -37,10 +72,75 @@ public abstract class ExtendedTableModel implements TableModel
 		return getShownColumnName(columnIndex - 1);
 	}
 
-	public abstract int getShownColumnIndex(String column);
+	/**
+	 * Returns index for a shown column-name.
+	 * @param column column name.
+	 * @return index-id
+	 */
+	public int getShownColumnIndex(String column)
+	{
+		for(int i=0; i<columnNames.length; i++)
+			if(column.equals(columnNames[i]))
+				return i;
+		return 0;
+	}
 
+	/**
+	 * Return total index for a column-name (also id).
+	 * @param column column name.
+	 * @return index-id.
+	 */
 	public int getColumnIndex(String column)
 	{
 		return getShownColumnIndex(column) + 1;
+	}
+
+	/**
+	 * Returns always false, we don't want to let user edit table
+	 */
+	public boolean isCellEditable(int rowIndex, int columnIndex)
+	{
+		return false;
+	}
+
+	/*
+	 * JTable uses this method to determine the default renderer/
+	 * editor for each cell.  If we didn't implement this method,
+	 * then the last column would contain text ("true"/"false"),
+	 * rather than a check box.
+	 */
+	public Class getColumnClass(int column)
+	{
+		return getValueAt(0, column).getClass();
+	}
+
+	@Override
+	public int getRowCount()
+	{
+		return data.length;
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex)
+	{
+		return data[rowIndex][columnIndex];
+	}
+
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+	{
+
+	}
+
+	@Override
+	public void addTableModelListener(TableModelListener l)
+	{
+
+	}
+
+	@Override
+	public void removeTableModelListener(TableModelListener l)
+	{
+
 	}
 }
