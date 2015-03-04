@@ -6,9 +6,9 @@ import java.awt.*;
 /**
  * Created by Jonas on 04.03.2015.
  */
-public abstract class FormGenerel extends JDialog
+public abstract class FormGeneral extends JDialog
 {
-	public FormGenerel(Frame parent, String name)
+	public FormGeneral(Frame parent, String name)
 	{
 		super(parent, name, true);
 		setPreferredSize(new Dimension(924, 540));
