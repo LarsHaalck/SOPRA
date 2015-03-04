@@ -7,13 +7,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableMod
 /**
  * @author Michael Biech
  */
-public class TabBuses extends TabTable<TableModelBus>
+public class TabBus extends TabTable<TableModelBus>
 {
 	private JButton btnDelete;
 	private JButton btnEdit;
 	private JButton btnNew;
 
-	public TabBuses()
+	public TabBus()
 	{
 		super(TableModelBus.class, true, true);
 
