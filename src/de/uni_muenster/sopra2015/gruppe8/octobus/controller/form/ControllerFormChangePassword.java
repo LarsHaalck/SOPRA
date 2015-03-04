@@ -34,7 +34,6 @@ public class ControllerFormChangePassword extends Controller implements Listener
 				break;
 
 			case FORM_CHANGE_PASSWORD_SAVE:
-				//TODO:Save
 				boolean oldPasswordInvalid = false; // TODO prüfe ob Passwort korrekt
 				boolean newPasswordInvalid = (dialog.getNewPassword().length() < 8);
 				boolean newPasswordCorrectInvalid = (!dialog.getNewPasswordCorrect().equals(dialog.getNewPassword()));
@@ -42,6 +41,7 @@ public class ControllerFormChangePassword extends Controller implements Listener
 				dialog.illegalChanges(oldPasswordInvalid, newPasswordInvalid, newPasswordCorrectInvalid);
 				if (!oldPasswordInvalid && !newPasswordInvalid && !newPasswordCorrectInvalid)
 				{
+					//TODO neues Passwort abspeichern
 					dialog.dispose();
 					removeListeners();
 					break;
