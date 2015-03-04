@@ -96,12 +96,11 @@ public class FormBusStop extends FormGeneral
 		barrierFree.setPreferredSize(new Dimension(textWidth, textHeight));
 		barrierFreeText.setPreferredSize(new Dimension(textWidth, textHeight));
 
-		bottom.setLayout(new FlowLayout());
-		bottom.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		bottom.setLayout(new BorderLayout());
+		bottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
 		bottom.setPreferredSize(new Dimension(924, 100));
-		bottom.add(save);
-		bottom.add(cancel);
-
+		bottom.add(cancel, BorderLayout.WEST);
+		bottom.add(save, BorderLayout.EAST);
 		pack();
 	}
 }

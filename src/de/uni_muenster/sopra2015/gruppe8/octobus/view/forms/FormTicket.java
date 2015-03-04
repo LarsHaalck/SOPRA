@@ -92,6 +92,8 @@ public class FormTicket extends FormGeneral
 		descriptionPanel.add(description);
 		descriptionPanel.add(descriptionText);
 
+		descriptionPanel.add(new JScrollPane(descriptionText));
+
 		name.setPreferredSize(new Dimension(textWidth, textHeight));
 		nameText.setPreferredSize(new Dimension(textWidth, textHeight));
 		price.setPreferredSize(new Dimension(textWidth, textHeight));
@@ -101,14 +103,15 @@ public class FormTicket extends FormGeneral
 		description.setPreferredSize(new Dimension(textWidth, textHeight));
 		descriptionText.setPreferredSize(new Dimension(textWidth, areaHeight));
 
-		bottom.setLayout(new FlowLayout());
-		bottom.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		bottom.setLayout(new BorderLayout());
+		bottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
 		bottom.setPreferredSize(new Dimension(924, 100));
-		bottom.add(save);
-		bottom.add(cancel);
+		bottom.add(cancel, BorderLayout.WEST);
+		bottom.add(save, BorderLayout.EAST);
 
 		pack();
 	}
+
 	public String getNameText()
 	{
 		return nameText.getText();

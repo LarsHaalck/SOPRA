@@ -9,7 +9,6 @@ import java.awt.*;
 
 /**
  * @author Patricia Schinke
- *         lenght of textfield
  */
 public class FormBus extends FormGeneral
 {
@@ -52,7 +51,7 @@ public class FormBus extends FormGeneral
 	private JPanel articulatedBusPanel = new JPanel();
 
 	private int textHeight = 25;
-	private int textWidth = 150;
+	private int textWidth = 200;
 
 	public FormBus(Frame parent, int objectID)
 	{
@@ -131,11 +130,11 @@ public class FormBus extends FormGeneral
 		nextInspectionDueText.setPreferredSize(new Dimension(textWidth, textHeight));
 		articulatedBusText.setPreferredSize(new Dimension(textWidth, textHeight));
 
-		bottomPanel.setLayout(new FlowLayout());
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
 		bottomPanel.setPreferredSize(new Dimension(924, 100));
-		bottomPanel.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
-		bottomPanel.add(save);
-		bottomPanel.add(cancel);
+		bottomPanel.add(cancel, BorderLayout.WEST);
+		bottomPanel.add(save, BorderLayout.EAST);
 
 		controllerFormBus.insertValuesIntoForm();
 

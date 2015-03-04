@@ -223,12 +223,6 @@ public class FormEmployee extends FormGeneral
 
 		pack();
 	}
-	public static void main(String[] args)
-	{
-		FormEmployee test = new FormEmployee(null);
-		test.setLocationRelativeTo(null);
-		test.setVisible(true);
-	}
 
 	public String getFirstNameText()
 	{
