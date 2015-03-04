@@ -56,7 +56,7 @@ public abstract class FormGeneral extends JDialog
 
     private void setMySettings(){
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setLocationRelativeTo(this.getParent());
+        setLocationRelativeTo(null);
         setResizable(false);
     }
 }
