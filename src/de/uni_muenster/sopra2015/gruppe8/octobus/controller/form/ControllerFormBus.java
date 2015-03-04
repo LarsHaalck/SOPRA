@@ -49,7 +49,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	}
 	private void closeDialog()
 	{
-		//TODO formBus.dispose();
+		formBus.dispose();
 		removeListeners();
 	}
 }
