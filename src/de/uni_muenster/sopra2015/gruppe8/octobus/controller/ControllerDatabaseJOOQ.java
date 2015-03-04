@@ -22,8 +22,6 @@ import java.util.Date;
 public class ControllerDatabaseJOOQ
 {
 
-	final String URL = "jdbc:sqlite:test.db";
-	Connection conn;
 	DSLContext create;
 
     public void run()
@@ -80,8 +78,11 @@ public class ControllerDatabaseJOOQ
 	{
 		try
 		{
+            String url = "jdbc:sqlite:test.db";
+            Connection conn;
+
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection(URL);
+			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
 		}
 		catch (ClassNotFoundException e)
@@ -204,6 +205,22 @@ public class ControllerDatabaseJOOQ
 		return busList;
 	}
 
+    public Bus getBus(int id)
+    {
+
+        Record busRecord = create.select().from(BUSES).where(BUSES.BUSES_ID.eq(id)).fetchOne();
+
+        Bus bus = new Bus(
+                busRecord.getValue(BUSES.LICENCEPLATE),
+                busRecord.getValue(BUSES.NUMBEROFSEATS),
+                busRecord.getValue(BUSES.STANDINGROOM),
+                busRecord.getValue(BUSES.MANUFACTURER),
+                busRecord.getValue(BUSES.MODEL),
+                new Date(busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+                busRecord.getValue(BUSES.ARTICULATEDBUS));
+        return bus;
+    }
+
 	//////////////////////////
 	// Methods for BusStops //
 	//////////////////////////
@@ -291,6 +308,11 @@ public class ControllerDatabaseJOOQ
 		}
 		return busStopList;
 	}
+
+    public BusStop getBusStop(int id)
+    {
+        Record busStopRecord = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();		// get all busStops from DB
+    }
 
 
 	///////////////////////////
