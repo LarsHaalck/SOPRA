@@ -18,6 +18,10 @@ public class ControllerManager
 
 	private ControllerManager() { } //Singleton
 
+	/**
+	 * instantiates ControllerManager instance and all relevant Listener-Lists if not present
+	 * @return controllerManager instance
+	 */
 	public static ControllerManager getInstance()
 	{
 		if (listenerButton == null)
