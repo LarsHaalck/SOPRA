@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -53,26 +54,32 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	public void windowOpen(EmitterWindow emitter)
 	{
+		JDialog f;
 		switch (emitter)
 		{
 			case FORM_LOGIN:
-				FormLogin d = new FormLogin(frame);
-				d.setVisible(true);
+				f = new FormLogin(frame);
+				f.setVisible(true);
 				break;
 
 			case FORM_CHANGE_PASSWORD:
-				FormChangePassword w = new FormChangePassword(frame);
-				w.setVisible(true);
+				f = new FormChangePassword(frame);
+				f.setVisible(true);
 				break;
 
 			case FORM_BUS_NEW:
-				FormBus x = new FormBus(frame, -1);
-				x.setVisible(true);
+				f = new FormBus(frame, -1);
+				f.setVisible(true);
 				break;
 
 			case FORM_TICKET_NEW:
-				FormTicket y = new FormTicket(frame, -1);
-				y.setVisible(true);
+				f = new FormTicket(frame, -1);
+				f.setVisible(true);
+				break;
+
+			case FORM_EMPLOYEE_NEW:
+				f = new FormEmployee(frame, -1);
+				f.setVisible(true);
 				break;
 		}
 	}
@@ -80,19 +87,21 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	public void windowOpen(EmitterWindow wd, int objectID)
 	{
+		JDialog f;
+
 		switch (wd)
 		{
 			case FORM_BUS_EDIT:
-				FormBus formBus = new FormBus(frame, objectID);
-				formBus.setVisible(true);
+				f = new FormBus(frame, objectID);
+				f.setVisible(true);
 				break;
 			case FORM_EMPLOYEE_EDIT:
-				FormEmployee formEmployee = new FormEmployee(frame, objectID);
-				formEmployee.setVisible(true);
+				f = new FormEmployee(frame, objectID);
+				f.setVisible(true);
 				break;
 			case FORM_TICKET_EDIT:
-				FormTicket y = new FormTicket(frame, objectID);
-				y.setVisible(true);
+				f = new FormTicket(frame, objectID);
+				f.setVisible(true);
 				break;
 		}
 	}
