@@ -22,7 +22,7 @@ public class TabTicket extends TabTable<TableModelTicket>
 	{
 		super(TableModelTicket.class, true, false);
 
-		controllerTabTicket = new ControllerTabTicket();
+		controllerTabTicket = new ControllerTabTicket(this);
 
 		setLayout(new BorderLayout(5,5));
 		btnDelete = new JButton("Löschen");

@@ -44,9 +44,14 @@ public class FormTicket extends FormGeneral
 	private int areaHeight = 50;
 	private int textWidth = 150;
 
-	public FormTicket(Frame parent)
+	public FormTicket(Frame parent, int objectID)
 	{
-		super(parent, "Ticket verwalten");
+		//super(parent, "Mitarbeiter verwalten");
+		super(parent, "");
+		if(objectID == -1)
+			setTitle("Mitarbeiter anlegen");
+		else
+			setTitle("Mitarbeiter ändern");
 
 		controllerFormTicket = new ControllerFormTicket(this);
 
