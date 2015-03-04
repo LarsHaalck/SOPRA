@@ -39,11 +39,17 @@ public class FormBus extends JDialog
 	private JTextField nextInspectionDueText = new JTextField();
 	private JToggleButton articulatedBusText = new JToggleButton();
 
-	public FormBus()
+	public FormBus(JFrame frame)
 	{
+		new FormBus(frame, -1);
+	}
+
+	public FormBus(JFrame frame, int objectID)
+	{
+		super(frame, "Bus", true);
 		setResizable(false);
 
-		controllerFormBus = new ControllerFormBus(this);
+		controllerFormBus = new ControllerFormBus(this, objectID);
 
 		save.addActionListener(e -> {
 			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE);

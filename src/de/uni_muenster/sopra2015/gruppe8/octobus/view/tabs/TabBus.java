@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 
 /**
@@ -27,17 +28,22 @@ public class TabBus extends TabTable<TableModelBus>
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			//Do delete stuff
+			if(JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+					== JOptionPane.YES_OPTION)
+			{
+				System.out.println("Delete pressed");
+				controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_DELETE);
+			}
 		});
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			//Do edit stuff
+			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_EDIT);
 		});
 
 		btnNew = new JButton("Neu");
 		btnNew.addActionListener(e-> {
-			//Do new stuff
+			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_NEW);
 		});
 
 		if(super.isRefineable())

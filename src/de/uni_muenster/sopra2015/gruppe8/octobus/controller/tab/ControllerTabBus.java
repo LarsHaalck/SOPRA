@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ListenerButton;
@@ -10,14 +10,15 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBus;
 import java.util.Date;
 
 /**
- *
+ * Controller for TabBus-class
  */
-public class ControllerTabBus implements ListenerButton
+public class ControllerTabBus extends Controller implements ListenerButton
 {
 	private TabBus tabBus;
 
 	public ControllerTabBus(TabBus tabBus)
 	{
+		super();
 		this.tabBus = tabBus;
 	}
 
@@ -31,13 +32,24 @@ public class ControllerTabBus implements ListenerButton
 
 			case TAB_BUS_EDIT:
 				//GetBusByID
-				Bus bus = new Bus("Test", 12, 12, "gtest", "test", new Date(), false);
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, 1);
 				break;
 
 			case TAB_BUS_NEW:
-
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_NEW);
 				break;
 		}
+	}
+
+	@Override
+	protected void addListeners()
+	{
+		ControllerManager.addListener((ListenerButton)this);
+	}
+
+	@Override
+	protected void removeListeners()
+	{
+		ControllerManager.addListener((ListenerButton)this);
 	}
 }
