@@ -7,7 +7,7 @@ public class TableModelEmployee extends ExtendedTableModel
 	private String[] columnNames;
 
 	private Object[][] data = {
-			{"Schwakowiak", "Herbert", "Daniela-Katzenberger-Allee 42c", 45894, "Gelsenkirchen-Buer",
+			{1, "Schwakowiak", "Herbert", "Daniela-Katzenberger-Allee 42c", 45894, "Gelsenkirchen-Buer",
 					"02.03.1975", "0190 / 666 666", "herbi.schwak@mail.de", "h_schwak"}
 	};
 
@@ -26,13 +26,13 @@ public class TableModelEmployee extends ExtendedTableModel
 	}
 
 	@Override
-	public int getColumnCount()
+	public int getShownColumnCount()
 	{
 		return columnNames.length;
 	}
 
 	@Override
-	public String getColumnName(int columnIndex)
+	public String getShownColumnName(int columnIndex)
 	{
 		return columnNames[columnIndex];
 	}
@@ -87,7 +87,7 @@ public class TableModelEmployee extends ExtendedTableModel
 	}
 
 	@Override
-	public int getColumnIndex(String column)
+	public int getShownColumnIndex(String column)
 	{
 		for(int i=0; i<columnNames.length; i++)
 			if(column.equals(columnNames[i]))
