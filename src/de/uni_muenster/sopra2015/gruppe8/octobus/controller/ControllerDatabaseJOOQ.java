@@ -281,6 +281,8 @@ public class ControllerDatabaseJOOQ
 				.set(BUSSTOPS.LOCATIONY, bstop.getLocation().getSecond())
 				.set(BUSSTOPS.BARRIERFREE, bstop.isBarrierFree())
 				.execute();
+
+		// TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren!
 	}
 
 	/**
@@ -341,7 +343,7 @@ public class ControllerDatabaseJOOQ
                 spoints,
                 busStopRecord.getValue(BUSSTOPS.BARRIERFREE)
         );
-
+		busStop.setId(id);
         return busStop;
 
     }
@@ -378,6 +380,7 @@ public class ControllerDatabaseJOOQ
 	 *
 	 * @param username Contains the unique user name of the employee to be deleted.
 	 */
+	@Deprecated
 	public void deleteEmployee(String username)
 	{
 		create.delete(EMPLOYEES).where(EMPLOYEES.USERNAME.equal(username)).execute();
@@ -429,6 +432,7 @@ public class ControllerDatabaseJOOQ
 	 * @param username Contains the unique user name of the employee to be modified.
 	 * @param emp Employee object containing the new properties.
 	 */
+	@Deprecated
 	public void modifyEmployee(String username, Employee emp)
 	{
 		create.update(EMPLOYEES)
