@@ -13,13 +13,14 @@ public class FormTourStep1 extends JPanel
 {
 	private JTable busStopCurrent, busStopAvailable;
 	private BasicArrowButton add, delete, up, down;
-	private Box boxMain, boxTop, boxButtonLeft, boxButtonRight;
+	private Box boxMain, boxTop;
 	private DefaultTableModel model_1,model_2;
-	private String[][] rowdata;
-	private JLabel name, nightLine;
+	private String[][] rowdata_busStopCurrent, rowdata_busStopAvailable;
+	private JLabel name;
 	private JCheckBox nightLineClick;
-	private JPanel topPanel;
+	private JPanel bottomPanel, space;
 	private JTextField nameTour;
+	private JScrollPane t1, t2;
 
 	public FormTourStep1()
 	{
@@ -28,8 +29,7 @@ public class FormTourStep1 extends JPanel
 
 		name = new JLabel("Name der Linie");
 		nameTour = new JTextField(20);
-		nightLineClick = new JCheckBox();
-		nightLine = new JLabel("Nachtlinie");
+		nightLineClick = new JCheckBox("Nachtlinie");
 
 		boxTop = new Box(BoxLayout.X_AXIS);
 		boxTop.setBorder(new EmptyBorder(new Insets(5, 10, 10, 10)));
@@ -39,57 +39,73 @@ public class FormTourStep1 extends JPanel
 		boxTop.add(nameTour);
 		boxTop.add(Box.createHorizontalStrut(500));
 		boxTop.add(nightLineClick);
-		boxTop.add(Box.createHorizontalStrut(5));
-		boxTop.add(nightLine);
 		boxTop.add(Box.createHorizontalStrut(30));
 
 		add(boxTop, BorderLayout.NORTH);
 
+		//-------------------------------------
+
+		bottomPanel = new JPanel();
+		bottomPanel.setLayout(new GridBagLayout());
+		GridBagConstraints cb = new GridBagConstraints();
+
+
+		GridBagConstraints cButton = new GridBagConstraints();
+		GridBagConstraints cTable = new GridBagConstraints();
+
+		cButton.ipadx = 20;
+		cButton.ipady = 20;
+
+		cTable.gridheight = 4;
+
 		up = new BasicArrowButton(BasicArrowButton.NORTH);
+		cButton.gridx = 0;
+		cButton.gridy = 1;
+		cButton.insets = new Insets(130, 0, 5, 50);
+		bottomPanel.add(up, cButton);
+
 		down = new BasicArrowButton(BasicArrowButton.SOUTH);
+		cButton.gridx = 0;
+		cButton.gridy = 2;
+		cButton.insets = new Insets(5, 0, 5, 50);
+		bottomPanel.add(down, cButton);
 
-		boxButtonLeft = new Box(BoxLayout.Y_AXIS);
-		boxButtonLeft.add(Box.createHorizontalStrut(90));
-		boxButtonLeft.add(Box.createVerticalStrut(140));
-		boxButtonLeft.add(up);
-		boxButtonLeft.add(Box.createVerticalStrut(30));
-		boxButtonLeft.add(down);
-		boxButtonLeft.add(Box.createVerticalStrut(140));
-
-		model_1 = new DefaultTableModel(rowdata, new String[] {"Haltestelle"});
+		model_1 = new DefaultTableModel(rowdata_busStopCurrent, new String[] {"Haltestelle"});
 		busStopCurrent = new JTable(model_1);
-		//TODO Table
+		busStopCurrent.setFillsViewportHeight(true);
+		t1 = new JScrollPane(busStopCurrent);
+		t1.setPreferredSize(new Dimension(250, 400));
+		cTable.gridx = 1;
+		cTable.gridy = 0;
+		bottomPanel.add(t1, cTable);
 
 		add = new BasicArrowButton(BasicArrowButton.WEST);
+		cButton.gridx = 2;
+		cButton.gridy = 1;
+		cButton.insets = new Insets(135, 50, 20, 50);
+		bottomPanel.add(add, cButton);
+
 		delete = new BasicArrowButton(BasicArrowButton.EAST);
+		cButton.gridx = 2;
+		cButton.gridy = 2;
+		cButton.insets = new Insets(20, 50, 5, 50);
+		bottomPanel.add(delete, cButton);
 
-		boxButtonRight = new Box(BoxLayout.Y_AXIS);
-		boxButtonRight.add(Box.createHorizontalStrut(100));
-		boxButtonRight.add(Box.createVerticalStrut(140));
-		boxButtonRight.add(add);
-		boxButtonRight.add(Box.createVerticalStrut(30));
-		boxButtonRight.add(delete);
-		boxButtonRight.add(Box.createVerticalStrut(140));
-
-		model_2 = new DefaultTableModel(rowdata, new String[] {"Haltestelle"});
+		model_2 = new DefaultTableModel(rowdata_busStopAvailable, new String[] {"Haltestelle"});
 		busStopAvailable = new JTable(model_2);
-		busStopCurrent.setSize(new Dimension(300, 300));
-		model_2.addRow(new String[]{"bla"});
-		//TODO Table
+		busStopAvailable.setFillsViewportHeight(true);
+		t2 = new JScrollPane(busStopAvailable);
+		t2.setPreferredSize(new Dimension(250, 400));
+		cTable.gridx = 3;
+		cTable.gridy = 0;
+		bottomPanel.add(t2, cTable);
 
-		boxMain = new Box(BoxLayout.X_AXIS);
-		boxMain.add(boxButtonLeft);
-		boxMain.add(Box.createHorizontalStrut(60));
-		boxMain.add(new JScrollPane(busStopCurrent));
-		boxMain.add(boxButtonRight);
-		boxMain.add(Box.createHorizontalStrut(60));
-		boxMain.add(new JScrollPane(busStopAvailable));
+		space = new JPanel();
+		space.setPreferredSize(new Dimension(40, 10));
+		cTable.gridx = 4;
+		cTable.gridy = 0;
+		bottomPanel.add(space, cTable);
 
-
-		add(boxMain, BorderLayout.CENTER);
-
-
-
-
+		add(bottomPanel, BorderLayout.CENTER);
 	}
 }
