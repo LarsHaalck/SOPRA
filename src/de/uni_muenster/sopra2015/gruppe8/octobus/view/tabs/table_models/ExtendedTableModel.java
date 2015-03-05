@@ -116,4 +116,9 @@ public abstract class ExtendedTableModel implements TableModel
 	{
 
 	}
+
+	public void setData(Object[][] data)
+	{
+		this.data = data;
+	}
 }
