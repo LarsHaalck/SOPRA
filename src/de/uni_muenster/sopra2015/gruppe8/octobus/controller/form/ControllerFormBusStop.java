@@ -107,8 +107,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	private void closeDialog()
 	{
-		//TODO: dispose it when its really a dialog
-		//dialog.dispose();
+		dialog.dispose();
 		removeListeners();
 	}
 }

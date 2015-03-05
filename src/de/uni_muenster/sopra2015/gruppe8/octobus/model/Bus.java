@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public class Bus
 {
+	private int id;					// database-internal id. is set when object is added to database
 	private String licencePlate;
 	private int numberOfSeats;
 	private int standingRoom;
@@ -15,7 +16,8 @@ public class Bus
 	private Date nextInspectionDue;
 	private boolean articulatedBus;
 
-	public Bus(String licencePlate, int numberOfSeats, int standingRoom, String manufacturer, String model, Date nextInspectionDue, boolean articulatedBus)
+	public Bus(String licencePlate, int numberOfSeats, int standingRoom, String manufacturer, String model,
+			   Date nextInspectionDue, boolean articulatedBus)
 	{
 		this.licencePlate = licencePlate;
 		this.numberOfSeats = numberOfSeats;
@@ -89,5 +91,20 @@ public class Bus
 	public void setArticulatedBus(boolean articulatedBus)
 	{
 		this.articulatedBus = articulatedBus;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public void setLicencePlate(String licencePlate)
+	{
+		this.licencePlate = licencePlate;
 	}
 }

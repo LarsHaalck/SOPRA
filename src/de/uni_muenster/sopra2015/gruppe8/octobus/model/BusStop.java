@@ -1,19 +1,19 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
-import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Created by Michael Biech on 27.02.15
  */
 public class BusStop
 {
-	private int id;
+	private int id;									// database-internal id. is set when object is added to database
 	private String name;
 	private Tuple<Integer, Integer> location;
-	private Set<String> stoppingPoints;
+	private HashSet<String> stoppingPoints;
 	private boolean barrierFree;
 
-	public BusStop(String name, Tuple<Integer, Integer> location, Set<String> stoppingPoints, boolean barrierFree)
+	public BusStop(String name, Tuple<Integer, Integer> location, HashSet<String> stoppingPoints, boolean barrierFree)
 	{
 		this.name = name;
 		this.location = location;
@@ -41,12 +41,12 @@ public class BusStop
 		this.location = location;
 	}
 
-	public Set<String> getStoppingPoints()
+	public HashSet<String> getStoppingPoints()
 	{
 		return stoppingPoints;
 	}
 
-	public void setStoppingPoints(Set<String> stoppingPoints)
+	public void setStoppingPoints(HashSet<String> stoppingPoints)
 	{
 		this.stoppingPoints = stoppingPoints;
 	}

@@ -5,7 +5,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
  */
 public class Ticket
 {
-	private int id;
+	private int id;			// database-internal id. is set when object is added to database
 	private String name;
 	private int price;
 	private int numPassengers;
@@ -63,5 +63,10 @@ public class Ticket
 	public int getId()
 	{
 		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 }

@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Jonas on 04.03.2015.
+ * General class with features all forms inherit.
  */
 public abstract class FormGeneral extends JDialog
 {
-	public static final int WIDTH = 924;
-	public static final int HEIGHT = 540;
+	public final int WIDTH = 924;
+	public final int HEIGHT = 540;
 
 	public FormGeneral(Frame parent)
     {
@@ -54,9 +54,23 @@ public abstract class FormGeneral extends JDialog
         setMySettings();
     }
 
-    private void setMySettings(){
+	//TODO
+	/**
+	 *
+	 */
+	private void setMySettings(){
         setSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
         setResizable(false);
     }
+
+	/**
+	 * Displays an error dialog.
+	 * @param error Error to be displayed.
+	 */
+	public void showErrorForm(String error)
+	{
+		JOptionPane.showMessageDialog(this, error, "Fehler", JOptionPane.ERROR_MESSAGE);
+	}
+
 }

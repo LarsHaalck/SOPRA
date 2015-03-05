@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public class Tour
 {
+	private int id;			// database-internal id. is set when object is added to database
 	private Date date;
 	private Route route;
 	private Bus bus;
@@ -58,5 +59,15 @@ public class Tour
 	public void setDriver(Employee driver)
 	{
 		this.driver = driver;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 }
