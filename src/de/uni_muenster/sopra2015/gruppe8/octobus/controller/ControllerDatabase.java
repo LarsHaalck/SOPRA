@@ -460,6 +460,7 @@ public class ControllerDatabase
 					rec.getValue(EMPLOYEES.SALT),
 					rec.getValue(EMPLOYEES.NOTE),
 					roles);
+			emp.setId(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
 			empList.add(emp);
 		}
 		return empList;
