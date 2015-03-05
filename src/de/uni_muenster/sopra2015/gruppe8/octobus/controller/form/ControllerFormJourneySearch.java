@@ -10,7 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormJourneySearch;
 
-import javax.swing.event.ListSelectionListener;
+import java.text.Normalizer;
 import java.util.HashSet;
 
 
@@ -26,28 +26,36 @@ public class ControllerFormJourneySearch extends Controller implements ListenerB
     private BusStop origin;
     private BusStop destination;
 
+    public ControllerFormJourneySearch(FormJourneySearch journeyDialog)
+    {
+        this.journeyDialog = journeyDialog;
+    }
+
     @Override
     public void buttonPressed(EmitterButton emitter) {
 
         switch (emitter)
         {
-            case FORM_SEARCH_SEARCH:
+            case FORM_JOURNEY_SEARCH_SEARCH:
+                //TODO: Functionality to look for Journeys
                 //Don't do anything yet.
-                journeyDialog.getRightParentGridPanel().setVisible(true);
-                return;
-            case FORM_SEARCH_EARLIER:
+                journeyDialog.modifyRightGridPanel();
+                //journeyDialog.getRightParentGridPanel().revalidate();
+                //journeyDialog.getRightParentGridPanel().repaint();
+                break;
+            case FORM_JOURNEY_SEARCH_EARLIER:
                 //Look for earlier Journeys and add them to the table
-                return;
-            case FORM_SEARCH_FIRST:
+                break;
+            case FORM_JOURNEY_SEARCH_FIRST:
                 //Look for the first Journey and add it to the table
                 //night != true
-                return;
-            case FORM_SEARCH_LATER:
+                break;
+            case FORM_JOURNEY_SEARCH_LATER:
                 //Look for later Journeys and add them to the table
-                return;
-            case FORM_SEARCH_LAST:
+                break;
+            case FORM_JOURNEY_SEARCH_LAST:
                 //Look for the last Journey and add it to the table
-                return;
+                break;
 
         }
 
@@ -93,7 +101,16 @@ public class ControllerFormJourneySearch extends Controller implements ListenerB
         switch(emitter)
         {
             case FORM_JOURNEY_SEARCH_RESULT:
+                int index = journeyDialog.getJourneySearchResultTable().getSelectionModel().getLeadSelectionIndex();
+                int length = journeyDialog.getJourneySearchResultTable().getColumnCount();
+                String[] journeyData = new String[length];
+                for (int i = 0; i < length; i++) {
+                    journeyData[i] = (String) journeyDialog.getJourneySearchResultTable().getValueAt(index, i);
+                }
+                journeyDialog.displayInformationInBox(journeyData);
                 break;
         }
     }
+
+
 }
