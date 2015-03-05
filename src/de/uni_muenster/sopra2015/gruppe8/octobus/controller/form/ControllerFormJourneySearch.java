@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTab
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Triple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormJourneySearch;
 
@@ -78,8 +79,8 @@ public class ControllerFormJourneySearch extends Controller implements ListenerB
      * @return the BusStop
      * @throws IllegalArgumentException if no such BusStop can be found
      */
-    private BusStop getBusStop(String name) throws IllegalArgumentException {
-        return new BusStop(name, new Tuple<>(1, 1), new HashSet<String>(), true);
+    private BusStop getBusStop(String name) {
+		return null;
     }
 
 
