@@ -68,7 +68,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			formEmployee.setAddressText(employee.getAddress());
 			formEmployee.setZipText(employee.getZipCode());
 			formEmployee.setCityText(employee.getCity());
-			formEmployee.setDateText(employee.getBirthDate().toString());
+			formEmployee.setDateText(employee.getDateOfBirth().toString());
 			formEmployee.setPhoneText(employee.getPhone());
 			formEmployee.setUsernameText(employee.getUsername());
 			formEmployee.setRemarkText(employee.getNote());
