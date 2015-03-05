@@ -24,59 +24,12 @@ public class ControllerDatabaseJOOQ
 
 	DSLContext create;
 
-    /*
-    FIXME: This needs to use BEGIN and END. Otherwise the statements will take forever!
-    FIXME: Cf. https://stackoverflow.com/questions/3852068/sqlite-insert-very-slow
-     */
-    /**
-     * In the future, this method will create all the trips for a given day
-     *
-     */
-    public void createTours(){
-
+    public ControllerDatabaseJOOQ(){
         openDB();
-
-        String dayOfWeek = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
-        Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
-
-        // FIXME: Shorten this bit!
-        // today
-        Calendar date = new GregorianCalendar();
-        // reset hour, minutes, seconds and millis
-        date.set(Calendar.HOUR_OF_DAY, 0);
-        date.set(Calendar.MINUTE, 0);
-        date.set(Calendar.SECOND, 0);
-        date.set(Calendar.MILLISECOND, 0);
-
-        int timestamp = (int) date.getTime().getTime()/1000;
-
-        for (Record1<Integer> route : routes)
-        {
-
-            Result<Record1<Integer>> startingTimes = create
-                    .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
-                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq("MONDAY")).fetch();
-
-            System.out.println("Starting insert...");
-
-            create.execute("BEGIN");
-            for (Record1<Integer> startingTime : startingTimes)
-            {
-                create.insertInto(TOURS,
-                        TOURS.TIMESTAMP,
-                        TOURS.ROUTES_ID)
-                        .values(
-                                timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
-                                route.getValue(ROUTES.ROUTES_ID))
-                        .execute();
-
-            }
-            create.execute("END");
-        }
     }
 
 	/**
-	 * Initialize database.
+	 * Initialize database for use inside this class
 	 */
 	public void openDB()
 	{
@@ -276,8 +229,8 @@ public class ControllerDatabaseJOOQ
 	public void modifyBusStop(int id, BusStop bstop)
 	{
 		create.update(BUSSTOPS)
-				.set(BUSSTOPS.NAME,bstop.getName())
-				.set(BUSSTOPS.LOCATIONX,bstop.getLocation().getFirst())
+				.set(BUSSTOPS.NAME, bstop.getName())
+				.set(BUSSTOPS.LOCATIONX, bstop.getLocation().getFirst())
 				.set(BUSSTOPS.LOCATIONY, bstop.getLocation().getSecond())
 				.set(BUSSTOPS.BARRIERFREE, bstop.isBarrierFree())
 				.execute();
@@ -360,14 +313,40 @@ public class ControllerDatabaseJOOQ
 	 */
 	public int addEmployee(Employee emp)
 	{
-		EmployeesRecord newEmp = create.insertInto(EMPLOYEES, EMPLOYEES.NAME, EMPLOYEES.FIRSTNAME, EMPLOYEES.ADDRESS, EMPLOYEES.ZIPCODE,
-				EMPLOYEES.CITY, EMPLOYEES.DATEOFBIRTH, EMPLOYEES.PHONE, EMPLOYEES.EMAIL, EMPLOYEES.USERNAME,
-				EMPLOYEES.SALT, EMPLOYEES.PASSWORD, EMPLOYEES.NOTE, EMPLOYEES.ISBUSDRIVER, EMPLOYEES.ISNETWORK_PLANNER,
-				EMPLOYEES.ISTICKET_PLANNER, EMPLOYEES.ISHR_MANAGER, EMPLOYEES.ISSCHEDULE_MANAGER)
-				.values(emp.getName(),emp.getFirstName(),emp.getAddress(),emp.getZipCode(),emp.getCity(),
-						(int) emp.getDateOfBirth().getTime(),emp.getPhone(),emp.getEmail(),emp.getUsername(),
-						emp.getSalt(),emp.getPassword(),emp.getNote(),emp.isRole(Role.BUSDRIVER),
-						emp.isRole(Role.NETWORK_PLANNER),emp.isRole(Role.TICKET_PLANNER),emp.isRole(Role.HR_MANAGER),
+		EmployeesRecord newEmp = create.insertInto(EMPLOYEES,
+                EMPLOYEES.NAME,
+                EMPLOYEES.FIRSTNAME,
+                EMPLOYEES.ADDRESS,
+                EMPLOYEES.ZIPCODE,
+				EMPLOYEES.CITY,
+                EMPLOYEES.DATEOFBIRTH,
+                EMPLOYEES.PHONE,
+                EMPLOYEES.EMAIL,
+                EMPLOYEES.USERNAME,
+				EMPLOYEES.SALT,
+                EMPLOYEES.PASSWORD,
+                EMPLOYEES.NOTE,
+                EMPLOYEES.ISBUSDRIVER,
+                EMPLOYEES.ISNETWORK_PLANNER,
+				EMPLOYEES.ISTICKET_PLANNER,
+                EMPLOYEES.ISHR_MANAGER,
+                EMPLOYEES.ISSCHEDULE_MANAGER)
+				.values(emp.getName(),
+                        emp.getFirstName(),
+                        emp.getAddress(),
+                        emp.getZipCode(),
+                        emp.getCity(),
+						(int) emp.getDateOfBirth().getTime(),
+                        emp.getPhone(),
+                        emp.getEmail(),
+                        emp.getUsername(),
+						emp.getSalt(),
+                        emp.getPassword(),
+                        emp.getNote(),
+                        emp.isRole(Role.BUSDRIVER),
+						emp.isRole(Role.NETWORK_PLANNER),
+                        emp.isRole(Role.TICKET_PLANNER),
+                        emp.isRole(Role.HR_MANAGER),
 						emp.isRole(Role.SCHEDULE_MANAGER))
 				.returning(EMPLOYEES.EMPLOYEES_ID)
 				.fetchOne();
@@ -555,17 +534,26 @@ public class ControllerDatabaseJOOQ
 	 */
 	public int addRoute(Route r)
 	{
-		RoutesRecord newRoute = create.insertInto(ROUTES,ROUTES.NAME,ROUTES.NOTE,ROUTES.NIGHT)
-				.values(r.getName(),r.getNote(),(Boolean) r.isNight())
+		RoutesRecord newRoute = create.insertInto(ROUTES,
+                ROUTES.NAME,
+                ROUTES.NOTE,
+                ROUTES.NIGHT)
+				.values(r.getName(),
+                        r.getNote(),
+                        (Boolean) r.isNight())
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
 		LinkedList<Tuple<BusStop,Integer>>  stops = r.getStops();
 		for (Tuple<BusStop,Integer> pair : stops)
 		{
-			create.insertInto(ROUTES_STOPS, ROUTES_STOPS.ROUTES_ID, ROUTES_STOPS.BUSSTOPS_ID,
+			create.insertInto(ROUTES_STOPS,
+                    ROUTES_STOPS.ROUTES_ID,
+                    ROUTES_STOPS.BUSSTOPS_ID,
 					ROUTES_STOPS.TIMETOPREVIOUS)
-					.values(newRoute.getRoutesId(), pair.getFirst().getId(), pair.getSecond())
+					.values(newRoute.getRoutesId(),
+                            pair.getFirst().getId(),
+                            pair.getSecond())
 					.execute();
 		}
 
@@ -574,9 +562,13 @@ public class ControllerDatabaseJOOQ
 		{
 			for (Integer time : times.get(day))
 			{
-				create.insertInto(ROUTES_STARTTIMES,ROUTES_STARTTIMES.ROUTES_ID,ROUTES_STARTTIMES.DAYOFWEEK,
-					ROUTES_STARTTIMES.STARTTIME)
-					.values(newRoute.getRoutesId(), day.toString(), time)
+				create.insertInto(ROUTES_STARTTIMES,
+                        ROUTES_STARTTIMES.ROUTES_ID,
+                        ROUTES_STARTTIMES.DAYOFWEEK,
+                        ROUTES_STARTTIMES.STARTTIME)
+					.values(newRoute.getRoutesId(),
+                            day.toString(),
+                            time)
 					.execute();
 			}
 		}
@@ -747,8 +739,13 @@ public class ControllerDatabaseJOOQ
 	 */
 	public int addSoldTicket(SoldTicket sold)
 	{
-		SoldticketsRecord newSold = create.insertInto(SOLDTICKETS, SOLDTICKETS.NAME, SOLDTICKETS.TIMESTAMP, SOLDTICKETS.PRICE)
-			.values(sold.getName(), (int) sold.getDate().getTime() / 1000, sold.getPrice())
+		SoldticketsRecord newSold = create.insertInto(SOLDTICKETS,
+                SOLDTICKETS.NAME,
+                SOLDTICKETS.TIMESTAMP,
+                SOLDTICKETS.PRICE)
+			.values(sold.getName(),
+                    (int) sold.getDate().getTime() / 1000,
+                    sold.getPrice())
 			.returning(SOLDTICKETS.SOLDTICKETS_ID)
 			.fetchOne();
 
@@ -834,8 +831,15 @@ public class ControllerDatabaseJOOQ
 	 */
 	public int addTickets(Ticket tick)
 	{
-		TicketsRecord newTick = create.insertInto(TICKETS,TICKETS.NAME,TICKETS.PRICE,TICKETS.NUMPASSENGERS,TICKETS.DESCRIPTION)
-				.values(tick.getName(), tick.getPrice(), tick.getNumPassengers(), tick.getDescription())
+		TicketsRecord newTick = create.insertInto(TICKETS,
+                TICKETS.NAME,
+                TICKETS.PRICE,
+                TICKETS.NUMPASSENGERS,
+                TICKETS.DESCRIPTION)
+				.values(tick.getName(),
+                        tick.getPrice(),
+                        tick.getNumPassengers(),
+                        tick.getDescription())
 				.returning(TICKETS.TICKETS_ID)
 				.fetchOne();
 
@@ -917,4 +921,48 @@ public class ControllerDatabaseJOOQ
 	////////////////////////
 
 	// TODO: Implementieren!
+
+    /**
+     * In the future, this method will create all the trips for a given day
+     */
+    public void createTours(Date date){
+
+        Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
+
+        // Modify given date to represent midnight
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        // Reset hour, minutes, seconds and milliseconds
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
+
+        int timestamp = (int) (calendar.getTimeInMillis()/1000);
+
+        create.execute("BEGIN");
+
+        for (Record1<Integer> route : routes)
+        {
+            Result<Record1<Integer>> startingTimes = create
+                    .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
+                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek)).fetch();
+
+            for (Record1<Integer> startingTime : startingTimes)
+            {
+
+                create.insertInto(TOURS,
+                        TOURS.TIMESTAMP,
+                        TOURS.ROUTES_ID)
+                        .values(
+                                timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
+                                route.getValue(ROUTES.ROUTES_ID))
+                        .execute();
+            }
+
+            create.execute("END");
+        }
+    }
 }
