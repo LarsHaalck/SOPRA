@@ -15,34 +15,34 @@ public class FormTicket extends FormGeneral
 {
 	private ControllerFormTicket controllerFormTicket;
 
-	private String explanationText = "Bitte geben Sie die Daten des Tickets ein.";
-	private JLabel explanation = new JLabel(explanationText);
-	private JPanel explanationPanel = new JPanel();
+	private String strExplanation = "Bitte geben Sie die Daten des Tickets ein.";
+	private JLabel lbExplanation = new JLabel(strExplanation);
+	private JPanel plExplanation = new JPanel();
 
-	private JPanel mid = new JPanel();
-	private JPanel bottom = new JPanel();
+	private JPanel plMid = new JPanel();
+	private JPanel plBottom = new JPanel();
 
-	private JLabel name = new JLabel("Name");
-	private JLabel price = new JLabel("Preis");
-	private JLabel numPassengers = new JLabel("Anzahl Fahrgäste");
-	private JLabel description = new JLabel("Beschreibung");
+	private JLabel lbName = new JLabel("Name");
+	private JLabel lbPrice = new JLabel("Preis");
+	private JLabel lbNumPassengers = new JLabel("Anzahl Fahrgäste");
+	private JLabel lbDescription = new JLabel("Beschreibung");
 
-	private JTextField nameText = new JTextField();
-	private JTextField priceText = new JTextField();
-	private JTextField numPassengersText = new JTextField();
-	private JTextArea descriptionText = new JTextArea();
+	private JTextField tfName = new JTextField();
+	private JTextField tfPrice = new JTextField();
+	private JTextField tfNumPassengers = new JTextField();
+	private JTextArea taDescription = new JTextArea();
 
-	private JPanel namePanel = new JPanel();
-	private JPanel pricePanel = new JPanel();
-	private JPanel numPassengersPanel = new JPanel();
-	private JPanel descriptionPanel = new JPanel();
+	private JPanel plName = new JPanel();
+	private JPanel plPrice = new JPanel();
+	private JPanel plNumPassengers = new JPanel();
+	private JPanel plDescription = new JPanel();
 
-	private JButton save = new JButton("Speichern");
-	private JButton cancel = new JButton("Abbrechen");
+	private JButton btSave = new JButton("Speichern");
+	private JButton btCancel = new JButton("Abbrechen");
 
-	private int textHeight = 25;
-	private int areaHeight = 50;
-	private int textWidth = 150;
+	private int iTextHeight = 25;
+	private int iAreaHeight = 50;
+	private int iTextWidth = 150;
 
 	public FormTicket(Frame parent, int objectID)
 	{
@@ -54,100 +54,100 @@ public class FormTicket extends FormGeneral
 
 		controllerFormTicket = new ControllerFormTicket(this);
 
-		save.addActionListener(e->
+		btSave.addActionListener(e ->
 		{
 			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE);
 		});
-		cancel.addActionListener(e->
+		btCancel.addActionListener(e ->
 		{
 			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
 		});
 
 		setLayout(new BorderLayout());
-		add(explanationPanel, BorderLayout.NORTH);
-		add(mid, BorderLayout.CENTER);
-		add(bottom, BorderLayout.SOUTH);
+		add(plExplanation, BorderLayout.NORTH);
+		add(plMid, BorderLayout.CENTER);
+		add(plBottom, BorderLayout.SOUTH);
 
-		explanationPanel.setPreferredSize(new Dimension(924, 100));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(40,0,40,0)));
-		explanationPanel.add(explanation);
+		plExplanation.setPreferredSize(new Dimension(924, 100));
+		plExplanation.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		plExplanation.add(lbExplanation);
 
-		mid.setLayout(new BoxLayout(mid, BoxLayout.Y_AXIS));
-		mid.add(namePanel);
-		namePanel.setLayout(new FlowLayout());
-		mid.add(pricePanel);
-		pricePanel.setLayout(new FlowLayout());
-		mid.add(numPassengersPanel);
-		numPassengersPanel.setLayout(new FlowLayout());
-		mid.add(descriptionPanel);
-		descriptionPanel.setLayout(new FlowLayout());
+		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
+		plMid.add(plName);
+		plName.setLayout(new FlowLayout());
+		plMid.add(plPrice);
+		plPrice.setLayout(new FlowLayout());
+		plMid.add(plNumPassengers);
+		plNumPassengers.setLayout(new FlowLayout());
+		plMid.add(plDescription);
+		plDescription.setLayout(new FlowLayout());
 
-		namePanel.add(name);
-		namePanel.add(nameText);
-		pricePanel.add(price);
-		pricePanel.add(priceText);
-		numPassengersPanel.add(numPassengers);
-		numPassengersPanel.add(numPassengersText);
-		descriptionPanel.add(description);
+		plName.add(lbName);
+		plName.add(tfName);
+		plPrice.add(lbPrice);
+		plPrice.add(tfPrice);
+		plNumPassengers.add(lbNumPassengers);
+		plNumPassengers.add(tfNumPassengers);
+		plDescription.add(lbDescription);
 
-		JScrollPane scrollPane = new JScrollPane(descriptionText);
-		descriptionPanel.add(scrollPane);
-		scrollPane.setPreferredSize(new Dimension(textWidth, areaHeight));
+		JScrollPane scrollPane = new JScrollPane(taDescription);
+		plDescription.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(iTextWidth, iAreaHeight));
 
-		name.setPreferredSize(new Dimension(textWidth, textHeight));
-		nameText.setPreferredSize(new Dimension(textWidth, textHeight));
-		price.setPreferredSize(new Dimension(textWidth, textHeight));
-		priceText.setPreferredSize(new Dimension(textWidth, textHeight));
-		numPassengers.setPreferredSize(new Dimension(textWidth, textHeight));
-		numPassengersText.setPreferredSize(new Dimension(textWidth, textHeight));
-		description.setPreferredSize(new Dimension(textWidth, textHeight));
+		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbPrice.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfPrice.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbNumPassengers.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfNumPassengers.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbDescription.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
-		bottom.setLayout(new BorderLayout());
-		bottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		bottom.setPreferredSize(new Dimension(924, 100));
-		bottom.add(cancel, BorderLayout.WEST);
-		bottom.add(save, BorderLayout.EAST);
+		plBottom.setLayout(new BorderLayout());
+		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
+		plBottom.setPreferredSize(new Dimension(924, 100));
+		plBottom.add(btCancel, BorderLayout.WEST);
+		plBottom.add(btSave, BorderLayout.EAST);
 
 		pack();
 	}
 
-	public String getNameText()
+	public String getTfName()
 	{
-		return nameText.getText();
+		return tfName.getText();
 	}
 
-	public void setNameText(String text)
+	public void setTfName(String text)
 	{
-		this.nameText.setText(text);
+		this.tfName.setText(text);
 	}
 
-	public String getPriceText()
+	public String getTfPrice()
 	{
-		return priceText.getText();
+		return tfPrice.getText();
 	}
 
-	public void setPriceText(String text)
+	public void setTfPrice(String text)
 	{
-		this.priceText.setText(text);
+		this.tfPrice.setText(text);
 	}
 
-	public String getDescriptionText()
+	public String getTaDescription()
 	{
-		return descriptionText.getText();
+		return taDescription.getText();
 	}
 
-	public void setDescriptionText(String text)
+	public void setTaDescription(String text)
 	{
-		this.descriptionText.setText(text);
+		this.taDescription.setText(text);
 	}
 
-	public String getNumPassengersText()
+	public String getTfNumPassengers()
 	{
-		return numPassengersText.getText();
+		return tfNumPassengers.getText();
 	}
 
-	public void setNumPassengersText(String text)
+	public void setTfNumPassengers(String text)
 	{
-		this.numPassengersText.setText(text);
+		this.tfNumPassengers.setText(text);
 	}
 }
