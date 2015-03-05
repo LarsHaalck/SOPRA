@@ -14,7 +14,7 @@ public class FormBus extends FormGeneral
 {
 	private ControllerFormBus controllerFormBus;
 
-	/**
+	/*
 	 * at the top of the form is an explanation what you should do
 	 */
 	private String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
@@ -26,7 +26,7 @@ public class FormBus extends FormGeneral
 	private JPanel plLeft = new JPanel();
 	private JPanel plRight = new JPanel();
 
-	/**
+	/*
 	 * every input has an own label, inputfield and panel
 	 */
 	private JLabel lbLicencePlate = new JLabel("Kennzeichen");
@@ -52,7 +52,7 @@ public class FormBus extends FormGeneral
 	private JPanel plNextInspectionDue = new JPanel();
 	private JPanel plArticulatedBus = new JPanel();
 
-	/**
+	/*
 	 * the buttons for save and cancel
 	 */
 	private JButton btSave = new JButton("Speichern");

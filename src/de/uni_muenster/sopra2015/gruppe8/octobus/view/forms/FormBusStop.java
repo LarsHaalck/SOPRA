@@ -24,14 +24,14 @@ public class FormBusStop extends FormGeneral
 	private JPanel plUpperMid = new JPanel();
 	private JPanel plEmpty = new JPanel();
 
-	/**
+	/*
 	 * at the top of the form is an explanation what you should do
 	 */
 	private String strExplanation = "Bitte geben Sie die Daten der Bushaltestelle ein.";
 	private JLabel lbExplanation = new JLabel(strExplanation);
 	private JPanel plExplanation = new JPanel();
 
-	/**
+	/*
 	 * every input has an own label, inputfield and panel
 	 */
 	private JLabel lbName = new JLabel("Name");
@@ -47,7 +47,7 @@ public class FormBusStop extends FormGeneral
 	private JPanel plBarrierFree = new JPanel();
 	private JPanel plLocationTextFields = new JPanel();
 
-	/**
+	/*
 	 * location has two textfields
 	 */
 	private JLabel lbLocationX = new JLabel("X:");
@@ -65,7 +65,7 @@ public class FormBusStop extends FormGeneral
 	private JButton btListEdit = new JButton("Bearbeiten");
 	private JButton btListDelete = new JButton("Entfernen");
 
-	/**
+	/*
 	 * the buttons for save and cancel
 	 */
 	private JButton btSave = new JButton("Speichern");

@@ -14,7 +14,7 @@ public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
-	/**
+	/*
 	 * at the top of the form is an explanation what you should do
 	 */
 	private JPanel plExplanation = new JPanel();
@@ -24,7 +24,7 @@ public class FormEmployee extends FormGeneral
 	private JPanel plMid = new JPanel();
 	private JPanel plBottom = new JPanel();
 
-	/**
+	/*
 	 * every input has an own label, inputfield and panel
 	 */
 	private JLabel lbName = new JLabel("Name");
@@ -61,7 +61,7 @@ public class FormEmployee extends FormGeneral
 	private JPanel plUsername = new JPanel();
 	private JPanel plRemarkText = new JPanel();
 
-	/**
+	/*
 	 * we have a panel with checkboxes for  the roles
 	 */
 	private JLabel lbRole = new JLabel("Rollen:");
@@ -72,7 +72,7 @@ public class FormEmployee extends FormGeneral
 	private JCheckBox cbTicketPlaner = new JCheckBox("Fahrartenplaner");
 	private JCheckBox cbHRManager = new JCheckBox("Personalleiter");
 
-	/**
+	/*
 	 * the buttons for save and cancel
 	 */
 	private JButton btSave = new JButton("Speichern");
@@ -152,7 +152,7 @@ public class FormEmployee extends FormGeneral
 		plRemarkText.add(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(iTextWidth, iAreaHeight));
 
-		/**
+		/*
 		 * we have to set the preferred size for the labels and textfields
 		 */
 		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
@@ -188,7 +188,7 @@ public class FormEmployee extends FormGeneral
 		plRight.add(cbTicketPlaner);
 		plRight.add(cbHRManager);
 
-		/**
+		/*
 		 * and we have to set the preferred size for the checkboxes
 		 */
 		cbScheduleManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
