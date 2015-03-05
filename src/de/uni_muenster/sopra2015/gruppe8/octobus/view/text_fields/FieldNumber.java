@@ -40,7 +40,19 @@ public class FieldNumber extends FieldText
 
 	public int getNumber()
 	{
-		return Integer.parseInt(this.getText());
+		if(this.getText().length() == 0)
+			return -1;
+		else
+		{
+			try
+			{
+				return Integer.parseInt(this.getText());
+			} catch(Exception e)
+			{
+				System.out.println("Exception in FieldNumber parse");
+				return -1;
+			}
+		}
 	}
 
 	public void setNumber(int number)
