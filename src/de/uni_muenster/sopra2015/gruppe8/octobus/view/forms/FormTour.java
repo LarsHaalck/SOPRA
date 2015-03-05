@@ -61,7 +61,6 @@ public class FormTour extends FormGeneral
 		cardPanel.setLayout(new CardLayout());
 		cardPanel.add(new FormTourStep1());
 		cardPanel.add(new FormTourStep2());
-		cardPanel.add(new FormTourStep3());
 
 		backButton = new JButton("Zurück");
 		backButton.setEnabled(false);
