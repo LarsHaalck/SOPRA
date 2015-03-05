@@ -50,18 +50,6 @@ public class FieldNumber extends FieldText
 		this.setText(Integer.toString(number));
 	}
 
-	@Override
-	@Deprecated
-	public String getText()
-	{
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public void setText(String text)
-	{
-		return;
-	}
+	//TODO: setText() getText() Overrides
 
 }
