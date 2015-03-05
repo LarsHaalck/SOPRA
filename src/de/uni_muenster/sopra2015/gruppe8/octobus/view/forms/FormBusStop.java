@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,10 +20,16 @@ public class FormBusStop extends FormGeneral
 	private JPanel plMid = new JPanel();
 	private JPanel plBottom = new JPanel();
 
+	/**
+	 * at the top of the form is an explanation what you should do
+	 */
 	private String strExplanation = "Bitte geben Sie die Daten der Bushaltestelle ein.";
 	private JLabel lbExplanation = new JLabel(strExplanation);
 	private JPanel plExplanation = new JPanel();
 
+	/**
+	 * every input has an own label, inputfield and panel
+	 */
 	private JLabel lbName = new JLabel("Name");
 	private JLabel lbLocation = new JLabel("Ort");
 	private JLabel lbStoppingPoints = new JLabel("Haltepunkte");
@@ -37,8 +44,11 @@ public class FormBusStop extends FormGeneral
 	private JPanel plBarrierFree = new JPanel();
 	private JPanel plLocationTextFields = new JPanel();
 
-	private JLabel iLocationX = new JLabel("X:");
-	private JLabel iLocationY = new JLabel("Y:");
+	/**
+	 * location has two textfields
+	 */
+	private JLabel lbLocationX = new JLabel("X:");
+	private JLabel lbLocationY = new JLabel("Y:");
 
 	private JTextField tfLocationX = new JTextField();
 	private JTextField tfLocationY = new JTextField();
@@ -52,11 +62,15 @@ public class FormBusStop extends FormGeneral
 	private JButton btListEdit = new JButton("Bearbeiten");
 	private JButton btListDelete = new JButton("Entfernen");
 
+	/**
+	 * the buttons for save and cancel
+	 */
 	private JButton btSave = new JButton("Speichern");
 	private JButton btCancel = new JButton("Abbrechen");
 
 	private int iTextHeight = 25;
 	private int iTextWidth = 150;
+	private int iSmalltextWidth = 50;
 
 	public FormBusStop(Frame parent, int objectID)
 	{
@@ -111,10 +125,13 @@ public class FormBusStop extends FormGeneral
 		cbBarrierFree.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
 		plLocationTextFields.setLayout(new FlowLayout());
-		plLocationTextFields.add(iLocationX);
+		plLocationTextFields.add(lbLocationX);
 		plLocationTextFields.add(tfLocationX);
-		plLocationTextFields.add(iLocationY);
+		plLocationTextFields.add(lbLocationY);
 		plLocationTextFields.add(tfLocationY);
+
+		tfLocationX.setPreferredSize(new Dimension(iSmalltextWidth, iTextHeight));
+		tfLocationY.setPreferredSize(new Dimension(iSmalltextWidth, iTextHeight));
 
 		plStoppingPoints.setLayout(new BorderLayout());
 		plStoppingPoints.add(plListName, BorderLayout.NORTH);
@@ -189,5 +206,59 @@ public class FormBusStop extends FormGeneral
 	public void removeStopPoint(int index)
 	{
 		lmStoppingPoints.remove(index);
+	}
+	public String getNameBusStop()
+	{
+		return tfName.getText();
+	}
+
+	public void setNameBusStop(String text)
+	{
+		this.tfName.setText(text);
+	}
+
+	public int getLocationX()
+	{
+		return Integer.parseInt(tfLocationX.getText());
+	}
+
+	public int getLocationY()
+	{
+		return Integer.parseInt(tfLocationY.getText());
+	}
+
+	public void setLocationX(int x)
+	{
+		tfLocationX.setText(""+x);
+	}
+
+	public void setLocationY(int y)
+	{
+		tfLocationY.setText(""+y);
+	}
+
+	public void setLocationBusStop(JPanel plLocation)
+	{
+		this.plLocation = plLocation;
+	}
+
+	public JPanel getStoppingPoints()
+	{
+		return plStoppingPoints;
+	}
+
+	public void setStoppingPoints(JPanel plStoppingPoints)
+	{
+		this.plStoppingPoints = plStoppingPoints;
+	}
+
+	public boolean getBarrierFree()
+	{
+		return cbBarrierFree.isSelected();
+	}
+
+	public void setBarrierFree(boolean state)
+	{
+		this.cbBarrierFree.setSelected(state);
 	}
 }
