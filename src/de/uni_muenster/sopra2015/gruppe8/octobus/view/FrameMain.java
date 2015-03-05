@@ -19,9 +19,6 @@ public class FrameMain extends JFrame
 		super("OctoBUS");
 
 		controllerFrameMain = new ControllerFrameMain(this);
-		PanelPassenger panelPassenger = new PanelPassenger();
-
-		controllerFrameMain.displayContent(panelPassenger);
 
 		////////////////////////////////////////////////
 		// Anything below this line is just GUI stuff //
@@ -44,6 +41,10 @@ public class FrameMain extends JFrame
 		{
 			e.printStackTrace();
 		}
+
+		PanelPassenger panelPassenger = new PanelPassenger();
+
+		controllerFrameMain.displayContent(panelPassenger);
 
 		setResizable(false);
 		// Make sure we don't lose any space to window decorations
