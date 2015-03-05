@@ -155,8 +155,9 @@ public class ControllerDatabase
 					rec.getValue(BUSES.STANDINGROOM),
 					rec.getValue(BUSES.MANUFACTURER),
 					rec.getValue(BUSES.MODEL),
-					new Date(rec.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+					new Date((long) rec.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
 					rec.getValue(BUSES.ARTICULATEDBUS));
+            bus.setId(rec.getValue(BUSES.BUSES_ID));
 			busList.add(bus);
 		}
 		return busList;
