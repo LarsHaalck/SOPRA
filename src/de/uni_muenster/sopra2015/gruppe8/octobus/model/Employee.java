@@ -9,22 +9,23 @@ import java.util.HashSet;
  */
 public class Employee
 {
+	private int id;			// database-internal id. is set when object is added to database
 	private String name;
 	private String firstName;
 	private String address;
 	private String zipCode;
 	private String city;
-	private Date birthDate;
+	private Date dateOfBirth;
 	private String phone;
-	private String mail;
+	private String email;
 	private String username;
 	private String password;
 	private String salt;
 	private String note;
 	private HashSet<Role> roles;
 
-	public Employee(String name, String firstName, String address, String zipCode, String city, Date birthDate,
-					String phone, String mail, String username, String password, String salt, String note, HashSet<Role> roles)
+	public Employee(String name, String firstName, String address, String zipCode, String city, Date dateOfBirth,
+					String phone, String email, String username, String password, String salt, String note, HashSet<Role> roles)
 	{
 		this.name = name;
 		this.firstName = firstName;
@@ -32,9 +33,9 @@ public class Employee
 		this.zipCode = zipCode;
 
 		this.city = city;
-		this.birthDate = birthDate;
+		this.dateOfBirth = dateOfBirth;
 		this.phone = phone;
-		this.mail = mail;
+		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
@@ -92,9 +93,9 @@ public class Employee
 		this.city = city;
 	}
 
-	public Date getBirthDate()
+	public Date getDateOfBirth()
 	{
-		return birthDate;
+		return dateOfBirth;
 	}
 
 	public String getPhone()
@@ -107,14 +108,14 @@ public class Employee
 		this.phone = phone;
 	}
 
-	public String getMail()
+	public String getEmail()
 	{
-		return mail;
+		return email;
 	}
 
-	public void setMail(String mail)
+	public void setEmail(String email)
 	{
-		this.mail = mail;
+		this.email = email;
 	}
 
 	public String getUsername()
@@ -160,5 +161,27 @@ public class Employee
 	public boolean isRole(Role role)
 	{
 		return roles.contains(role);
+	}
+
+	public void deleteRole(Role role) {roles.remove(role);}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth)
+	{
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public void setUsername(String username)
+	{
+		this.username = username;
 	}
 }
