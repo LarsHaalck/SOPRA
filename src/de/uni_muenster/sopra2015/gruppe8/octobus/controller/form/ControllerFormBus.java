@@ -6,10 +6,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * Created by Lars on 02-Mar-15.
@@ -90,7 +93,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		int standingRoom = parseInt(formBus.getStandingRoom());
 		String manufacturer = formBus.getManufacturer();
 		String model = formBus.getModel();
-		Date nextInspectionDue = null;
+		Date nextInspectionDue = parseDate(formBus.getNextInspectionDue());
 		boolean articulatedBus = formBus.getArticulatedBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();

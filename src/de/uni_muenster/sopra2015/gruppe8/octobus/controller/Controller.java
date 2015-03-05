@@ -1,6 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Abstract Controller to ensure that each controller will add itself to the ControllerManager with its constructor
@@ -41,6 +44,12 @@ public abstract class Controller
 		}
 	}
 
+	/**
+	 * Helper-methods. Implode all error-strings into one.
+	 * String is seperated by new lines.
+	 * @param errors List of all error-strings.
+	 * @return String with all error-strings.
+	 */
 	protected String errorListToString(ArrayList<String> errors)
 	{
 		StringBuilder builder = new StringBuilder();
@@ -52,4 +61,23 @@ public abstract class Controller
 		return builder.toString();
 	}
 
+
+	/**
+	 * Parses string into date
+	 * @param s String to parse.
+	 * @return Date.
+	 */
+	protected Date parseDate(String s)
+	{
+		try
+		{
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d.M.Y", Locale.GERMANY);
+			Date d = simpleDateFormat.parse(s);
+			return d;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
 }
