@@ -18,20 +18,15 @@ public class FormTicket extends FormGeneral
 {
 	private ControllerFormTicket controllerFormTicket;
 
-	/*
-	 * at the top of the form is an explanation what you should do
-	 */
-	private String strExplanation = "Bitte geben Sie die Daten des Tickets ein.";
-	private JLabel lbExplanation = new JLabel(strExplanation);
 
 	/*
 	 * every input has an own label, inputfield and panel
 	 */
 
-	private JTextField tfName = new JTextField();
-	private JTextField tfPrice = new JTextField();
-	private JTextField tfNumPassengers = new JTextField();
-	private JTextArea taDescription = new JTextArea();
+	private JTextField tfName;
+	private JTextField tfPrice;
+	private JTextField tfNumPassengers;
+	private JTextArea taDescription;
 
 	/*
 	 * the buttons for save and cancel
@@ -118,6 +113,7 @@ public class FormTicket extends FormGeneral
 
 		cstTextField.ipady=50;
 		cstTextField.gridy = 4;
+		taDescription = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(taDescription);
 		add(scrollPane, cstTextField);
 

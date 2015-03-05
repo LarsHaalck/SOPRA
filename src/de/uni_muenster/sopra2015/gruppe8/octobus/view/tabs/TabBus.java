@@ -63,6 +63,7 @@ public class TabBus extends TabTable<TableModelBus>
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
 
+		controllerTabBus.fillTable();
 		setVisible(true);
 	}
 

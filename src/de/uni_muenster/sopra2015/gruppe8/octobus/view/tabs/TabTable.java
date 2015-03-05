@@ -182,4 +182,9 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	}
 
 	protected abstract void editEntry();
+
+	public void fillTable(Object[][] data)
+	{
+		model.setData(data);
+	}
 }

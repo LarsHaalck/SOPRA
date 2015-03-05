@@ -9,7 +9,7 @@ public enum ColumnsBus
 	LICENCE_PLATE,
 	MANUFACTURER,
 	MODEL,
-	TYPE,
+	ARTICULATED_BUS,
 	NUMBER_OF_SEATS,
 	STANDING_ROOM,
 	NEXT_INSPECTION;
@@ -25,8 +25,8 @@ public enum ColumnsBus
 				return "Hersteller";
 			case MODEL:
 				return "Modell";
-			case TYPE:
-				return "Typ";
+			case ARTICULATED_BUS:
+				return "Gelenkbus";
 			case NUMBER_OF_SEATS:
 				return "Sitzplätze";
 			case STANDING_ROOM:
