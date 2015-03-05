@@ -38,10 +38,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			if(getSelectedID() == -1)
-				JOptionPane.showMessageDialog(this, "Um eine Haltestelle zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-			else
-				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_EDIT);
+			editEntry();
 		});
 
 		btnNew = new JButton("Neu");
@@ -67,5 +64,14 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		add(plButtons, BorderLayout.PAGE_END);
 
 		setVisible(true);
+	}
+
+	@Override
+	protected void editEntry()
+	{
+		if(getSelectedID() == -1)
+			JOptionPane.showMessageDialog(this, "Um eine Haltestelle zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		else
+			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_EDIT);
 	}
 }

@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
@@ -65,6 +67,15 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 					}
 				}
 		);
+		table.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if(e.getClickCount() == 2)
+					editEntry();
+			}
+		});
 
 		cbFilter = new JComboBox<>(((TM)model).getRefineableColumns());
 
@@ -168,4 +179,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		}
 		sorter.setRowFilter(rf);
 	}
+
+	protected abstract void editEntry();
 }

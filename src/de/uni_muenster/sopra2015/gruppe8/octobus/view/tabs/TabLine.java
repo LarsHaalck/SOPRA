@@ -39,10 +39,7 @@ public class TabLine extends TabTable<TableModelLine>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			if(getSelectedID() == -1)
-				JOptionPane.showMessageDialog(this, "Um eine Linie zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-			else
-				controllerTabRoute.buttonPressed(EmitterButton.TAB_LINE_EDIT);
+			editEntry();
 		});
 
 		btnNew = new JButton("Neu");
@@ -68,5 +65,14 @@ public class TabLine extends TabTable<TableModelLine>
 		add(plButtons, BorderLayout.PAGE_END);
 
 		setVisible(true);
+	}
+
+	@Override
+	protected void editEntry()
+	{
+		if(getSelectedID() == -1)
+			JOptionPane.showMessageDialog(this, "Um eine Linie zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		else
+			controllerTabRoute.buttonPressed(EmitterButton.TAB_LINE_EDIT);
 	}
 }
