@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
 
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -100,4 +102,13 @@ public class FieldDate extends FieldText
 		this.setText(df.format(date));
 	}
 
+    public void setRedBorder(boolean toggle)
+    {
+        if(toogle)
+        {
+            this.setBorder(BorderFactory.createLineBorder(Color.red));
+        }
+        else
+            this.setBorder(null);
+    }
 }
