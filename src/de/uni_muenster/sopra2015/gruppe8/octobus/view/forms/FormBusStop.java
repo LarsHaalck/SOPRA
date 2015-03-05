@@ -19,22 +19,17 @@ public class FormBusStop extends FormGeneral
 {
 	private ControllerFormBusStop controllerFormBusStop;
 
-	private JPanel plMid = new JPanel();
-	private JPanel plBottom = new JPanel();
-	private JPanel plUpperMid = new JPanel();
-	private JPanel plEmpty = new JPanel();
-
 	/*
 	 * at the top of the form is an explanation what you should do
 	 */
+
 	private String strExplanation = "Bitte geben Sie die Daten der Bushaltestelle ein.";
 	private JLabel lbExplanation = new JLabel(strExplanation);
 	private JPanel plExplanation = new JPanel();
-
 	/*
 	 * every input has an own label, inputfield and panel
 	 */
-	private JLabel lbName = new JLabel("Name");
+	private JLabel lbName;
 	private JLabel lbLocation = new JLabel("Ort");
 	private JLabel lbStoppingPoints = new JLabel("Haltepunkte");
 
@@ -79,6 +74,10 @@ public class FormBusStop extends FormGeneral
 	public FormBusStop(Frame parent, int objectID)
 	{
 		super(parent, "");
+		//TODO hässlich
+		//overwriting default size
+		setPreferredSize(new Dimension(400, 540));
+
 		if(objectID == -1)
 			setTitle("Bushaltestelle anlegen");
 		else
@@ -87,62 +86,56 @@ public class FormBusStop extends FormGeneral
 		controllerFormBusStop = new ControllerFormBusStop(this, objectID);
 
 		setLayout(new BorderLayout());
-		add(plExplanation, BorderLayout.NORTH);
-		add(plMid, BorderLayout.CENTER);
-		add(plBottom, BorderLayout.SOUTH);
 
-		plExplanation.setPreferredSize(new Dimension(924, 100));
-		plExplanation.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		//Panel with title
+		plExplanation.setPreferredSize(new Dimension(0, 60));
+		plExplanation.setBorder(new EmptyBorder(new Insets(10, 0, 40, 0)));
 		plExplanation.add(lbExplanation);
 
-		btSave.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
-		});
-		btCancel.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
-		});
-
+		//Panel containing input form and stopping points
+		JPanel plMid = new JPanel();
 		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
-		plMid.add(plUpperMid);
-		plMid.add(plStoppingPoints);
 
+		//Panel containing input form
+		JPanel plUpperMid = new JPanel();
 		plUpperMid.setLayout(new GridBagLayout());
 		GridBagConstraints cstLabel = new GridBagConstraints();
 		GridBagConstraints cstTextfield = new GridBagConstraints();
 
 		cstLabel.gridx=0;
 		cstLabel.gridy=0;
-		plUpperMid.add(lbName,cstLabel);
+		lbName = new JLabel("Name");
+		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		plUpperMid.add(lbName, cstLabel);
+
 		cstTextfield.gridx=1;
 		cstTextfield.gridy=0;
-		plUpperMid.add(tfName, cstTextfield);
-		cstLabel.gridy=1;
-		plUpperMid.add(lbLocation, cstLabel);
-		cstTextfield.gridy=1;
-		plUpperMid.add(plLocationTextFields, cstTextfield);
-		cstTextfield.gridy=2;
-		plUpperMid.add(cbBarrierFree, cstTextfield);
-
-		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		plUpperMid.add(tfName, cstTextfield);
+
+		cstLabel.gridy=1;
 		lbLocation.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		plUpperMid.add(lbLocation, cstLabel);
+
+		cstTextfield.gridy=1;
 		plLocationTextFields.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbBarrierFree.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+
+		tfLocationX.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
+		tfLocationY.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
 
 		plLocationTextFields.add(lbLocationX);
 		plLocationTextFields.add(tfLocationX);
 		plLocationTextFields.add(lbLocationY);
 		plLocationTextFields.add(tfLocationY);
 
-		tfLocationX.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
-		tfLocationY.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
+		plUpperMid.add(plLocationTextFields, cstTextfield);
 
+		cstTextfield.gridy=2;
+		cbBarrierFree.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		plUpperMid.add(cbBarrierFree, cstTextfield);
+
+		//Panel for stopping points
 		plStoppingPoints.setLayout(new BorderLayout());
-		plStoppingPoints.add(plListName, BorderLayout.NORTH);
-		plStoppingPoints.add(plList, BorderLayout.CENTER);
-		plStoppingPoints.add(plListButtons, BorderLayout.SOUTH);
 
 		plListName.setLayout(new FlowLayout());
 		plListName.add(lbStoppingPoints);
@@ -156,6 +149,7 @@ public class FormBusStop extends FormGeneral
 					controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
 			}
 		});
+
 		plList.add(new JScrollPane(lStoppingPoints));
 
 		plListButtons.setLayout(new FlowLayout());
@@ -175,12 +169,35 @@ public class FormBusStop extends FormGeneral
 			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT);
 		});
 
+		plStoppingPoints.add(plListName, BorderLayout.NORTH);
+		plStoppingPoints.add(plList, BorderLayout.CENTER);
+		plStoppingPoints.add(plListButtons, BorderLayout.SOUTH);
+
+		plMid.add(plUpperMid);
+		plMid.add(plStoppingPoints);
+
+		//Panel for save/cancel buttons
+		JPanel plBottom = new JPanel();
 		plBottom.setLayout(new BorderLayout());
 		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		plBottom.setPreferredSize(new Dimension(924, 100));
+		plBottom.setPreferredSize(new Dimension(0, 100));
+		btSave.addActionListener(e ->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
+		});
+		btCancel.addActionListener(e ->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
+		});
 		plBottom.add(btCancel, BorderLayout.WEST);
 		plBottom.add(btSave, BorderLayout.EAST);
+
+		add(plExplanation, BorderLayout.NORTH);
+		add(plMid, BorderLayout.CENTER);
+		add(plBottom, BorderLayout.SOUTH);
+
 		pack();
+		setLocationRelativeTo(null);
 	}
 
 	public String showNewStoppingPointDialog()
