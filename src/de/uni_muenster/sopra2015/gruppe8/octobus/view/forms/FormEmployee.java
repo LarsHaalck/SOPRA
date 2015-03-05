@@ -18,6 +18,9 @@ public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
+	/**
+	 * at the top of the form is an explanation what you should do
+	 */
 	private JPanel plExplanation = new JPanel();
 	private String strExplanation = "Bitte geben Sie die Daten des Mitarbeiters ein.";
 	private JLabel lbExplanation = new JLabel(strExplanation);
@@ -25,9 +28,9 @@ public class FormEmployee extends FormGeneral
 	private JPanel plMid = new JPanel();
 	private JPanel plBottom = new JPanel();
 
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
-
+	/**
+	 * every input has an own label, inputfield and panel
+	 */
 	private JLabel lbName = new JLabel("Name");
 	private JLabel lbFirstName = new JLabel("Vorname");
 	private JLabel lbAddress = new JLabel("Adresse");
@@ -62,6 +65,9 @@ public class FormEmployee extends FormGeneral
 	private JPanel plUsername = new JPanel();
 	private JPanel plRemarkText = new JPanel();
 
+	/**
+	 * we have a panel with checkboxes for  the roles
+	 */
 	private JLabel lbRole = new JLabel("Rollen:");
 
 	private JLabel lbScheduleManager = new JLabel("Einsatzplaner");
@@ -81,6 +87,12 @@ public class FormEmployee extends FormGeneral
 	private JPanel plBusDriver = new JPanel();
 	private JPanel plTicketPlaner = new JPanel();
 	private JPanel plHRManager = new JPanel();
+
+	/**
+	 * the buttons for save and cancel
+	 */
+	private JButton btSave = new JButton("Speichern");
+	private JButton btCancel = new JButton("Abbrechen");
 
 	private int iTextHeight = 25;
 	private int iAreaHeight = 50;
@@ -224,142 +236,142 @@ public class FormEmployee extends FormGeneral
 		pack();
 	}
 
-	public String getTfFirstName()
+	public String getFirstName()
 	{
 		return tfFirstName.getText();
 	}
 
-	public void setTfFirstName(String text)
+	public void setFirstName(String text)
 	{
 		this.tfFirstName.setText(text);
 	}
 
-	public String getTfName()
+	public String getLastName()
 	{
 		return tfName.getText();
 	}
 
-	public void setTfName(String text)
+	public void setLastName(String text)
 	{
 		this.tfName.setText(text);
 	}
 
-	public String getTfAddress()
+	public String getAddress()
 	{
 		return tfAddress.getText();
 	}
 
-	public void setTfAddress(String text)
+	public void setAddress(String text)
 	{
 		this.tfAddress.setText(text);
 	}
 
-	public String getTfZipCode()
+	public String getZipCode()
 	{
 		return tfZipCode.getText();
 	}
 
-	public void setTfZipCode(String text)
+	public void setZipCode(String text)
 	{
 		this.tfZipCode.setText(text);
 	}
 
-	public String getTfCity()
+	public String getCity()
 	{
 		return tfCity.getText();
 	}
 
-	public void setTfCity(String text)
+	public void setCity(String text)
 	{
 		this.tfCity.setText(text);
 	}
 
-	public String getTfBirthDate()
+	public String getBirthDate()
 	{
 		return tfBirthDate.getText();
 	}
 
-	public void setTfBirthDate(String text)
+	public void setBirthDate(String text)
 	{
 		this.tfBirthDate.setText(text);
 	}
 
-	public String getTfPhone()
+	public String getPhone()
 	{
 		return tfPhone.getText();
 	}
 
-	public void setTfPhone(String text)
+	public void setPhone(String text)
 	{
 		this.tfPhone.setText(text);
 	}
 
-	public String getTfNote()
+	public String getNote()
 	{
 		return tfNote.getText();
 	}
 
-	public void setTfNote(String text)
+	public void setNote(String text)
 	{
 		this.tfNote.setText(text);
 	}
 
-	public String getTfUsername()
+	public String getUsername()
 	{
 		return tfUsername.getText();
 	}
 
-	public void setTfUsername(String text)
+	public void setUsername(String text)
 	{
 		this.tfUsername.setText(text);
 	}
 
-	public boolean getCbScheduleManager()
+	public boolean getScheduleManager()
 	{
 		return cbScheduleManager.isSelected();
 	}
 
-	public void setCbScheduleManager(boolean state)
+	public void setScheduleManager(boolean state)
 	{
 		this.cbScheduleManager.setSelected(state);
 	}
 
-	public boolean getCbNetworkPlaner()
+	public boolean getNetworkPlaner()
 	{
 		return cbNetworkPlaner.isSelected();
 	}
 
-	public void setCbNetworkPlaner(boolean state)
+	public void setNetworkPlaner(boolean state)
 	{
 		this.cbNetworkPlaner.setSelected(state);
 	}
 
-	public boolean getCbBusDriver()
+	public boolean getBusDriver()
 	{
 		return cbBusDriver.isSelected();
 	}
 
-	public void setCbBusDriver(boolean state)
+	public void setBusDriver(boolean state)
 	{
 		this.cbBusDriver.setSelected(state);
 	}
 
-	public boolean getCbTicketPlaner()
+	public boolean getTicketPlaner()
 	{
 		return cbTicketPlaner.isSelected();
 	}
 
-	public void setCbTicketPlaner(boolean state)
+	public void setTicketPlaner(boolean state)
 	{
 		this.cbTicketPlaner.setSelected(state);
 	}
 
-	public boolean getCbHRManager()
+	public boolean getHRManager()
 	{
 		return cbHRManager.isSelected();
 	}
 
-	public void setCbHRManager(boolean state)
+	public void setHRManager(boolean state)
 	{
 		this.cbHRManager.isSelected();
 	}
