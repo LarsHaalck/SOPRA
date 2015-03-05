@@ -32,18 +32,11 @@ public class FieldDate extends FieldText
 			}
 		});
 
-		getDate();
-
 	}
 
 	private boolean isValidDate()
 	{
-		int year, month, day;
-		String input = this.getText();
-
-		Pattern p = Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})");
-		Matcher m = p.matcher(input);
-		if (m.matches())
+		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(this.getText()).matches()) //regex for date
 			return true;
 		else
 			return false;
@@ -73,7 +66,7 @@ public class FieldDate extends FieldText
 			boolean isLeapYear = ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0));
 			switch (month)
 			{
-				/*case 1:
+				/*case 1: //should be unnecessary
 				case 3:
 				case 5:
 				case 7:
