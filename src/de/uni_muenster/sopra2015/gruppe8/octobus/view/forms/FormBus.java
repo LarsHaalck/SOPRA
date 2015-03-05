@@ -2,68 +2,37 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldDate;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldNumber;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * @author Patricia Schinke
+ * Form used for adding and editing buses.
  */
 public class FormBus extends FormGeneral
 {
 	private ControllerFormBus controllerFormBus;
 
-	/*
-	 * at the top of the form is an explanation what you should do
-	 */
-	private String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
-	private JLabel lbExplanation = new JLabel(strExplanation);
-	private JPanel plExplanation = new JPanel();
-
-	private JPanel plMid = new JPanel();
-	private JPanel plBottom = new JPanel();
-	private JPanel plLeft = new JPanel();
-	private JPanel plRight = new JPanel();
-
-	/*
-	 * every input has an own label, inputfield and panel
-	 */
-	private JLabel lbLicencePlate = new JLabel("Kennzeichen");
-	private JLabel lbNumberOfSeats = new JLabel("Anzahl Sitzplätze");
-	private JLabel lbStandingRoom = new JLabel("Anzahl Stehplätze");
-	private JLabel lbManufacturer = new JLabel("Hersteller");
-	private JLabel lbModel = new JLabel("Modell");
-	private JLabel lbNextInspectionDue = new JLabel("Nächste Inspektion");
-
-	private JTextField tfLicencePlate = new JTextField();
-	private JTextField tfNumberOfSeats = new JTextField();
-	private JTextField tfStandingRoom = new JTextField();
-	private JTextField tfManufacturer = new JTextField();
-	private JTextField tfModel = new JTextField();
-	private JTextField tfNextInspectionDue = new JTextField();
+	private FieldText tfLicencePlate;
+	private FieldNumber tfNumberOfSeats;
+	private FieldNumber tfStandingRoom;
+	private FieldText tfManufacturer;
+	private FieldText tfModel;
+	private FieldDate tfNextInspectionDue;
 	private JCheckBox cbArticulatedBus = new JCheckBox("Bus mit Gelenk");
-
-	private JPanel plLicencePlate = new JPanel();
-	private JPanel plNumberOfSeats = new JPanel();
-	private JPanel plStandingRoom = new JPanel();
-	private JPanel plManufacturer = new JPanel();
-	private JPanel plModel = new JPanel();
-	private JPanel plNextInspectionDue = new JPanel();
-	private JPanel plArticulatedBus = new JPanel();
-
-	/*
-	 * the buttons for save and cancel
-	 */
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
-
-	private int iTextHeight = 25;
-	private int iTextWidth = 200;
+	private JButton btSave;
+	private JButton btCancel;
 
 	public FormBus(Frame parent, int objectID)
 	{
 		super(parent, "");
+
+		getRootPane().setBorder(new EmptyBorder(10,10,10,10));
+
 		if(objectID == -1)
 			setTitle("Bus anlegen");
 		else
@@ -71,80 +40,109 @@ public class FormBus extends FormGeneral
 		setResizable(false);
 
 		controllerFormBus = new ControllerFormBus(this, objectID);
-		plMid.setBorder(new EmptyBorder(new Insets(0, 100, 0, 100)));
-		
+
+		btSave = new JButton("Speichern");
 		btSave.addActionListener(e -> {
 			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE);
 		});
+		btCancel = new JButton("Abbrechen");
 		btCancel.addActionListener(e -> {
 			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_CANCEL);
 		});
 
-		setLayout(new BorderLayout());
-		add(plExplanation, BorderLayout.NORTH);
-		add(plMid, BorderLayout.CENTER);
-		add(plBottom, BorderLayout.SOUTH);
-		add(plRight, BorderLayout.EAST);
-		add(plLeft, BorderLayout.WEST);
+		setLayout(new GridBagLayout());
+		GridBagConstraints cstLabel = new GridBagConstraints();
+		GridBagConstraints cstTextField = new GridBagConstraints();
 
-		plExplanation.setPreferredSize(new Dimension(924, 100));
-		plExplanation.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
-		plExplanation.add(lbExplanation);
+		//general constraints
+		cstTextField.fill = GridBagConstraints.HORIZONTAL;
+		cstLabel.ipadx = 20;
+		cstLabel.ipady = 20;
+		cstLabel.anchor = GridBagConstraints.LINE_START;
 
-		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
-		plMid.add(plLicencePlate);
-		plLicencePlate.setLayout(new FlowLayout());
-		plMid.add(plNumberOfSeats);
-		plNumberOfSeats.setLayout(new FlowLayout());
-		plMid.add(plStandingRoom);
-		plStandingRoom.setLayout(new FlowLayout());
-		plMid.add(plManufacturer);
-		plManufacturer.setLayout(new FlowLayout());
-		plMid.add(plModel);
-		plModel.setLayout(new FlowLayout());
-		plMid.add(plNextInspectionDue);
-		plNextInspectionDue.setLayout(new FlowLayout());
-		plMid.add(plArticulatedBus);
-		plArticulatedBus.setLayout(new FlowLayout());
+		cstLabel.gridwidth = 4;
+		cstLabel.gridx = 0;
+		cstLabel.gridy = 0;
+		String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
+		JLabel lbExplanation = new JLabel(strExplanation);
+		add(lbExplanation, cstLabel);
 
-		plLicencePlate.add(lbLicencePlate);
-		plLicencePlate.add(tfLicencePlate);
-		plNumberOfSeats.add(lbNumberOfSeats);
-		plNumberOfSeats.add(tfNumberOfSeats);
-		plStandingRoom.add(lbStandingRoom);
-		plStandingRoom.add(tfStandingRoom);
-		plManufacturer.add(lbManufacturer);
-		plManufacturer.add(tfManufacturer);
-		plModel.add(lbModel);
-		plModel.add(tfModel);
-		plNextInspectionDue.add(lbNextInspectionDue);
-		plNextInspectionDue.add(tfNextInspectionDue);
-		plArticulatedBus.add(cbArticulatedBus);
+		cstLabel.gridwidth = 2;
+		cstLabel.gridx = 0;
+		cstLabel.gridy = 1;
+		JLabel lbLicencePlate = new JLabel("Kennzeichen");
+		add(lbLicencePlate, cstLabel);
 
-		lbLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbNumberOfSeats.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbStandingRoom.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbManufacturer.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbModel.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbNextInspectionDue.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cstTextField.gridwidth = 2;
+		cstTextField.gridx = 2;
+		cstTextField.gridy = 1;
+		tfLicencePlate = new FieldText(10);
+		add(tfLicencePlate, cstTextField);
 
-		tfLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfNumberOfSeats.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfStandingRoom.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfManufacturer.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfModel.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfNextInspectionDue.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbArticulatedBus.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cstLabel.gridy = 2;
+		JLabel lbNumberOfSeats = new JLabel("Anzahl Sitzplätze");
+		add(lbNumberOfSeats, cstLabel);
 
-		plBottom.setLayout(new BorderLayout());
-		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		plBottom.setPreferredSize(new Dimension(924, 100));
-		plBottom.add(btCancel, BorderLayout.WEST);
-		plBottom.add(btSave, BorderLayout.EAST);
+		cstTextField.gridy = 2;
+		//TODO 3 seats
+		tfNumberOfSeats = new FieldNumber();
+		add(tfNumberOfSeats, cstTextField);
 
-		controllerFormBus.insertValuesIntoForm();
+		cstLabel.gridy = 3;
+		JLabel lbStandingRoom = new JLabel("Anzahl Stehplätze");
+		add(lbStandingRoom, cstLabel);
+
+		cstTextField.gridy = 3;
+		//TODO 3
+		tfStandingRoom = new FieldNumber();
+		add(tfStandingRoom, cstTextField);
+
+		cstLabel.gridy = 4;
+		JLabel lbManufacturer = new JLabel("Hersteller");
+		add(lbManufacturer, cstLabel);
+
+		cstTextField.gridy = 4;
+		tfManufacturer = new FieldText();
+		add(tfManufacturer, cstTextField);
+
+		cstLabel.gridy = 5;
+		JLabel lbModel = new JLabel("Modell");
+		add(lbModel, cstLabel);
+
+		cstTextField.gridy = 5;
+		tfModel = new FieldText();
+		add(tfModel, cstTextField);
+
+		cstLabel.gridy = 6;
+		JLabel lbNextInspectionDue = new JLabel("Nächste Inspektion");
+		add(lbNextInspectionDue, cstLabel);
+
+		cstTextField.gridy = 6;
+		tfNextInspectionDue = new FieldDate();
+		add(tfNextInspectionDue, cstTextField);
+
+		cstTextField.gridwidth = 2;
+		cstTextField.gridy = 7;
+		add(cbArticulatedBus, cstTextField);
+
+		GridBagConstraints cstButton = new GridBagConstraints();
+		cstButton.gridwidth = 1;
+
+		cstButton.gridx = 0;
+		cstButton.gridy = 8;
+		cstButton.anchor = GridBagConstraints.LAST_LINE_START;
+		add(btCancel, cstButton);
+
+		cstButton.gridx = 3;
+		cstButton.gridy = 8;
+		cstButton.anchor = GridBagConstraints.LAST_LINE_END;
+		add(btSave, cstButton);
 
 		pack();
+
+		setLocationRelativeTo(null);
+
+		controllerFormBus.insertValuesIntoForm();
 	}
 
 	public String getLicencePlate()
