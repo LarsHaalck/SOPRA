@@ -61,13 +61,13 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	{
 		if(objectID != -1)
 		{
-			formBus.setLicencePlateText(bus.getLicencePlate());
-			formBus.setNumberOfSeatsText("" + bus.getNumberOfSeats());
-			formBus.setStandingRoomText("" + bus.getStandingRoom());
-			formBus.setManufacturerText(bus.getManufacturer());
-			formBus.setModelText(bus.getModel());
-			formBus.setNextInspectionDueText("" + bus.getNextInspectionDue());
-			formBus.setArticulatedBusText(bus.isArticulatedBus());
+			formBus.setLicencePlate(bus.getLicencePlate());
+			formBus.setNumberOfSeats("" + bus.getNumberOfSeats());
+			formBus.setStandingRoom("" + bus.getStandingRoom());
+			formBus.setManufacturer(bus.getManufacturer());
+			formBus.setModel(bus.getModel());
+			formBus.setNextInspectionDue("" + bus.getNextInspectionDue());
+			formBus.setArticulatedBus(bus.isArticulatedBus());
 		}
 	}
 

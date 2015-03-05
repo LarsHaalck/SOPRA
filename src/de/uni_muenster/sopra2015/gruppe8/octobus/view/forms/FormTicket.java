@@ -120,42 +120,42 @@ public class FormTicket extends FormGeneral
 		pack();
 	}
 
-	public String getTfName()
+	public String getNameTicket()
 	{
 		return tfName.getText();
 	}
 
-	public void setTfName(String text)
+	public void setNameTicket(String text)
 	{
 		this.tfName.setText(text);
 	}
 
-	public String getTfPrice()
+	public String getPrice()
 	{
 		return tfPrice.getText();
 	}
 
-	public void setTfPrice(String text)
+	public void setPrice(String text)
 	{
 		this.tfPrice.setText(text);
 	}
 
-	public String getTaDescription()
+	public String getDescription()
 	{
 		return taDescription.getText();
 	}
 
-	public void setTaDescription(String text)
+	public void setDescription(String text)
 	{
 		this.taDescription.setText(text);
 	}
 
-	public String getTfNumPassengers()
+	public String getNumPassengers()
 	{
 		return tfNumPassengers.getText();
 	}
 
-	public void setTfNumPassengers(String text)
+	public void setNumPassengers(String text)
 	{
 		this.tfNumPassengers.setText(text);
 	}

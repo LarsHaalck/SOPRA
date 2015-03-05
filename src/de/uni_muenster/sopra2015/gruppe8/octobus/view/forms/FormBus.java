@@ -14,6 +14,9 @@ public class FormBus extends FormGeneral
 {
 	private ControllerFormBus controllerFormBus;
 
+	/**
+	 * at the top of the form is an explanation what you should do
+	 */
 	private String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
 	private JLabel lbExplanation = new JLabel(strExplanation);
 	private JPanel plExplanation = new JPanel();
@@ -23,9 +26,9 @@ public class FormBus extends FormGeneral
 	private JPanel plLeft = new JPanel();
 	private JPanel plRight = new JPanel();
 
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
-
+	/**
+	 * every input has an own label, inputfield and panel
+	 */
 	private JLabel lbLicencePlate = new JLabel("Kennzeichen");
 	private JLabel lbNumberOfSeats = new JLabel("Anzahl Sitzplätze");
 	private JLabel lbStandingRoom = new JLabel("Anzahl Stehplätze");
@@ -49,6 +52,12 @@ public class FormBus extends FormGeneral
 	private JPanel plModel = new JPanel();
 	private JPanel plNextInspectionDue = new JPanel();
 	private JPanel plArticulatedBus = new JPanel();
+
+	/**
+	 * the buttons for save and cancel
+	 */
+	private JButton btSave = new JButton("Speichern");
+	private JButton btCancel = new JButton("Abbrechen");
 
 	private int iTextHeight = 25;
 	private int iTextWidth = 200;
@@ -141,72 +150,72 @@ public class FormBus extends FormGeneral
 		pack();
 	}
 
-	public String getTfLicencePlate() //nicht mehr wirklich getter
+	public String getLicencePlate()
 	{
 		return tfLicencePlate.getText();
 	}
 
-	public String getTfNumberOfSeats()
+	public String getNumberOfSeats()
 	{
 		return tfNumberOfSeats.getText();
 	}
 
-	public String getTfStandingRoom()
+	public String getStandingRoom()
 	{
 		return tfStandingRoom.getText();
 	}
 
-	public String getTfManufacturer()
+	public String getManufacturer()
 	{
 		return tfManufacturer.getText();
 	}
 
-	public String getTfModel()
+	public String getModel()
 	{
 		return tfModel.getText();
 	}
 
-	public String getTfNextInspectionDue()
+	public String getNextInspectionDue()
 	{
 		return tfNextInspectionDue.getText();
 	}
 
-	public boolean getCbArticulatedBus()
+	public boolean getArticulatedBus()
 	{
 		return cbArticulatedBus.isSelected();
 	}
 
-	public void setTfLicencePlate(String text)
+	public void setLicencePlate(String text)
 	{
 		this.tfLicencePlate.setText(text);
 	}
 
-	public void setTfNumberOfSeats(String text)
+	public void setNumberOfSeats(String text)
 	{
 		this.tfNumberOfSeats.setText(text);
 	}
 
-	public void setTfStandingRoom(String text)
+	public void setStandingRoom(String text)
 	{
 		this.tfStandingRoom.setText(text);
 	}
 
-	public void setTfManufacturer(String text)
+	public void setManufacturer(String text)
 	{
 		this.tfManufacturer.setText(text);
 	}
 
-	public void setTfModel(String text)
+	public void setModel(String text)
 	{
 		this.tfModel.setText(text);
 	}
 
-	public void setTfNextInspectionDue(String text)
+	public void setNextInspectionDue(String text)
 	{
 		this.tfNextInspectionDue.setText(text);
 	}
 
-	public void setCbArticulatedBus(Boolean state)
+	public void setArticulatedBus(Boolean state)
 	{
 		this.cbArticulatedBus.setSelected(state);
 	}
