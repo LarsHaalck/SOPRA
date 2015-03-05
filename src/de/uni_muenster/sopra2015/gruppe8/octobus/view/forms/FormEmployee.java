@@ -4,15 +4,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormE
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
  * @author Patricia Schinke
- *         lenght of textfield
  */
 public class FormEmployee extends FormGeneral
 {
@@ -70,23 +66,11 @@ public class FormEmployee extends FormGeneral
 	 */
 	private JLabel lbRole = new JLabel("Rollen:");
 
-	private JLabel lbScheduleManager = new JLabel("Einsatzplaner");
-	private JLabel lbNetworkPlaner = new JLabel("Netzpaner");
-	private JLabel lbBusDriver = new JLabel("Busfahrer");
-	private JLabel lbTicketPlaner = new JLabel("Fahrkartenplaner");
-	private JLabel lbHRManager = new JLabel("Personalleiter");
-
-	private JCheckBox cbScheduleManager = new JCheckBox();
-	private JCheckBox cbNetworkPlaner = new JCheckBox();
-	private JCheckBox cbBusDriver = new JCheckBox();
-	private JCheckBox cbTicketPlaner = new JCheckBox();
-	private JCheckBox cbHRManager = new JCheckBox();
-
-	private JPanel plScheduleManager = new JPanel();
-	private JPanel plNetworkPlaner = new JPanel();
-	private JPanel plBusDriver = new JPanel();
-	private JPanel plTicketPlaner = new JPanel();
-	private JPanel plHRManager = new JPanel();
+	private JCheckBox cbScheduleManager = new JCheckBox("Einsatzplaner");
+	private JCheckBox cbNetworkPlaner = new JCheckBox("Netzpaner");
+	private JCheckBox cbBusDriver = new JCheckBox("Busfahrer");
+	private JCheckBox cbTicketPlaner = new JCheckBox("Fahrartenplaner");
+	private JCheckBox cbHRManager = new JCheckBox("Personalleiter");
 
 	/**
 	 * the buttons for save and cancel
@@ -97,7 +81,6 @@ public class FormEmployee extends FormGeneral
 	private int iTextHeight = 25;
 	private int iAreaHeight = 50;
 	private int iTextWidth = 150;
-	private int iBoxWidth = 50;
 
 	public FormEmployee(Frame parent, int objectID)
 	{
@@ -169,6 +152,9 @@ public class FormEmployee extends FormGeneral
 		plRemarkText.add(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(iTextWidth, iAreaHeight));
 
+		/**
+		 * we have to set the preferred size for the labels and textfields
+		 */
 		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		lbFirstName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
@@ -192,38 +178,24 @@ public class FormEmployee extends FormGeneral
 		add(plRight, BorderLayout.EAST);
 		plRight.setLayout(new BoxLayout(plRight, BoxLayout.Y_AXIS));
 		plRight.add(lbRole);
-		plRight.setBorder(new EmptyBorder(new Insets(0, 50, 0, 50)));
+		lbRole.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbRole.setHorizontalAlignment(JLabel.LEFT);
 
-		Border border = plRight.getBorder();
-		Border myBorder = new LineBorder(Color.black, 1);
-		plRight.setBorder(new CompoundBorder(border, myBorder));
-		plRight.add(plScheduleManager);
-		plRight.add(plNetworkPlaner);
-		plRight.add(plBusDriver);
-		plRight.add(plTicketPlaner);
-		plRight.add(plHRManager);
+		plRight.setBorder(new EmptyBorder(new Insets(100, 0, 100, 100)));
+		plRight.add(cbScheduleManager);
+		plRight.add(cbNetworkPlaner);
+		plRight.add(cbBusDriver);
+		plRight.add(cbTicketPlaner);
+		plRight.add(cbHRManager);
 
-		plScheduleManager.add(lbScheduleManager);
-		plScheduleManager.add(cbScheduleManager);
-		plNetworkPlaner.add(lbNetworkPlaner);
-		plNetworkPlaner.add(cbNetworkPlaner);
-		plBusDriver.add(lbBusDriver);
-		plBusDriver.add(cbBusDriver);
-		plTicketPlaner.add(lbTicketPlaner);
-		plTicketPlaner.add(cbTicketPlaner);
-		plHRManager.add(lbHRManager);
-		plHRManager.add(cbHRManager);
-
-		lbScheduleManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbScheduleManager.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
-		lbNetworkPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbNetworkPlaner.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
-		lbBusDriver.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbBusDriver.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
-		lbTicketPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbTicketPlaner.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
-		lbHRManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbHRManager.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
+		/**
+		 * and we have to set the preferred size for the checkboxes
+		 */
+		cbScheduleManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbNetworkPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbBusDriver.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbTicketPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbHRManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
 		plBottom.setLayout(new BorderLayout());
 		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
