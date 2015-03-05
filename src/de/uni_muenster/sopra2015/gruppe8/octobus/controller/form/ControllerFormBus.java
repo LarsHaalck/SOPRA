@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
@@ -19,17 +20,19 @@ import java.util.Locale;
  */
 public class ControllerFormBus extends Controller implements ListenerButton
 {
+	private ControllerDatabase controllerDatabase;
 	private FormBus formBus;
 	private int objectID;
 	private Bus bus;
 
 	public ControllerFormBus(FormBus formBus, int objectID){
 		super();
+		controllerDatabase = ControllerDatabase.getInstance();
 		this.objectID = objectID;
 		this.formBus = formBus;
 		if(objectID != -1)
 		{
-			setBusById(objectID);
+			setBusById();
 		}
 	}
 
@@ -58,10 +61,9 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	 * Fetch a Bus object from the DB.
 	 * @param id Bus-ID.
 	 */
-	private void setBusById(int id)
+	private void setBusById()
 	{
-		//TODO db request
-		bus = new Bus("TestNummernschild", 42, 32, "Ich", "cooler Bus", new Date(2015,5,29),true);
+		bus = controllerDatabase.getBus(objectID);
 	}
 
 	/**
@@ -134,11 +136,11 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			//TODO Update into databse
 			return true;
 		}
-		//Datenbank.updateBus(Bus-Objekt, id)
 	}
 
 	private boolean saveToDB()
 	{
+		controllerDatabase.modifyBus(bus);
 		return true;
 	}
 
