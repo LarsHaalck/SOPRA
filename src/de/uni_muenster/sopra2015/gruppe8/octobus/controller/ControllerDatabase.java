@@ -157,6 +157,7 @@ public class ControllerDatabase
 					rec.getValue(BUSES.MODEL),
 					new Date(rec.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
 					rec.getValue(BUSES.ARTICULATEDBUS));
+            System.out.println((long) rec.getValue(BUSES.NEXTINSPECTIONDUE) * 1000);
             bus.setId(rec.getValue(BUSES.BUSES_ID));
 			busList.add(bus);
 		}
