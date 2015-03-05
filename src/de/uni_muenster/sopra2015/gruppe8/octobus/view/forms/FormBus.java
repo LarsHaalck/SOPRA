@@ -14,44 +14,44 @@ public class FormBus extends FormGeneral
 {
 	private ControllerFormBus controllerFormBus;
 
-	private String explanationText = "Bitte geben Sie die Daten des Busses ein.";
-	private JLabel explanation = new JLabel(explanationText);
-	private JPanel explanationPanel = new JPanel();
+	private String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
+	private JLabel lbExplanation = new JLabel(strExplanation);
+	private JPanel plExplanation = new JPanel();
 
-	private JPanel midPanel = new JPanel();
-	private JPanel bottomPanel = new JPanel();
-	private JPanel leftPanel = new JPanel();
-	private JPanel rightPanel = new JPanel();
+	private JPanel plMid = new JPanel();
+	private JPanel plBottom = new JPanel();
+	private JPanel plLeft = new JPanel();
+	private JPanel plRight = new JPanel();
 
-	private JButton save = new JButton("Speichern");
-	private JButton cancel = new JButton("Abbrechen");
+	private JButton btSave = new JButton("Speichern");
+	private JButton btCancel = new JButton("Abbrechen");
 
-	private JLabel licencePlate = new JLabel("Kennzeichen");
-	private JLabel numberOfSeats = new JLabel("Anzahl Sitzplätze");
-	private JLabel standingRoom = new JLabel("Anzahl Stehplätze");
-	private JLabel manufacturer = new JLabel("Hersteller");
-	private JLabel model = new JLabel("Modell");
-	private JLabel nextInspectionDue = new JLabel("Nächste Inspektion");
-	private JLabel articulatedBus = new JLabel("Beweglicher Bus");
+	private JLabel lbLicencePlate = new JLabel("Kennzeichen");
+	private JLabel lbNumberOfSeats = new JLabel("Anzahl Sitzplätze");
+	private JLabel lbStandingRoom = new JLabel("Anzahl Stehplätze");
+	private JLabel lbManufacturer = new JLabel("Hersteller");
+	private JLabel lbModel = new JLabel("Modell");
+	private JLabel lbNextInspectionDue = new JLabel("Nächste Inspektion");
+	private JLabel lbArticulatedBus = new JLabel("Bus mit Gelenk");
 
-	private JTextField licencePlateText = new JTextField();
-	private JTextField numberOfSeatsText = new JTextField();
-	private JTextField standingRoomText = new JTextField();
-	private JTextField manufacturerText = new JTextField();
-	private JTextField modelText = new JTextField();
-	private JTextField nextInspectionDueText = new JTextField();
-	private JCheckBox articulatedBusText = new JCheckBox();
+	private JTextField tfLicencePlate = new JTextField();
+	private JTextField tfNumberOfSeats = new JTextField();
+	private JTextField tfStandingRoom = new JTextField();
+	private JTextField tfManufacturer = new JTextField();
+	private JTextField tfModel = new JTextField();
+	private JTextField tfNextInspectionDue = new JTextField();
+	private JCheckBox cbArticulatedBus = new JCheckBox();
 
-	private JPanel licencePlatePanel = new JPanel();
-	private JPanel numberOfSeatsPanel = new JPanel();
-	private JPanel standingRoomPanel = new JPanel();
-	private JPanel manufacturerPanel = new JPanel();
-	private JPanel modelPanel = new JPanel();
-	private JPanel nextInspectionDuePanel = new JPanel();
-	private JPanel articulatedBusPanel = new JPanel();
+	private JPanel plLicencePlate = new JPanel();
+	private JPanel plNumberOfSeats = new JPanel();
+	private JPanel plStandingRoom = new JPanel();
+	private JPanel plManufacturer = new JPanel();
+	private JPanel plModel = new JPanel();
+	private JPanel plNextInspectionDue = new JPanel();
+	private JPanel plArticulatedBus = new JPanel();
 
-	private int textHeight = 25;
-	private int textWidth = 200;
+	private int iTextHeight = 25;
+	private int iTextWidth = 200;
 
 	public FormBus(Frame parent, int objectID)
 	{
@@ -63,152 +63,152 @@ public class FormBus extends FormGeneral
 		setResizable(false);
 
 		controllerFormBus = new ControllerFormBus(this, objectID);
-		midPanel.setBorder(new EmptyBorder(new Insets(0, 100, 0, 100)));
+		plMid.setBorder(new EmptyBorder(new Insets(0, 100, 0, 100)));
 		
-		save.addActionListener(e -> {
+		btSave.addActionListener(e -> {
 			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE);
 		});
-		cancel.addActionListener(e -> {
+		btCancel.addActionListener(e -> {
 			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_CANCEL);
 		});
 
 		setLayout(new BorderLayout());
-		add(explanationPanel, BorderLayout.NORTH);
-		add(midPanel, BorderLayout.CENTER);
-		add(bottomPanel, BorderLayout.SOUTH);
-		add(rightPanel, BorderLayout.EAST);
-		add(leftPanel, BorderLayout.WEST);
+		add(plExplanation, BorderLayout.NORTH);
+		add(plMid, BorderLayout.CENTER);
+		add(plBottom, BorderLayout.SOUTH);
+		add(plRight, BorderLayout.EAST);
+		add(plLeft, BorderLayout.WEST);
 
-		explanationPanel.setPreferredSize(new Dimension(924, 100));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(40,0,40,0)));
-		explanationPanel.add(explanation);
+		plExplanation.setPreferredSize(new Dimension(924, 100));
+		plExplanation.setBorder(new EmptyBorder(new Insets(40, 0, 40, 0)));
+		plExplanation.add(lbExplanation);
 
-		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.Y_AXIS));
-		midPanel.add(licencePlatePanel);
-		licencePlatePanel.setLayout(new FlowLayout());
-		midPanel.add(numberOfSeatsPanel);
-		numberOfSeatsPanel.setLayout(new FlowLayout());
-		midPanel.add(standingRoomPanel);
-		standingRoomPanel.setLayout(new FlowLayout());
-		midPanel.add(manufacturerPanel);
-		manufacturerPanel.setLayout(new FlowLayout());
-		midPanel.add(modelPanel);
-		modelPanel.setLayout(new FlowLayout());
-		midPanel.add(nextInspectionDuePanel);
-		nextInspectionDuePanel.setLayout(new FlowLayout());
-		midPanel.add(articulatedBusPanel);
-		articulatedBusPanel.setLayout(new FlowLayout());
+		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
+		plMid.add(plLicencePlate);
+		plLicencePlate.setLayout(new FlowLayout());
+		plMid.add(plNumberOfSeats);
+		plNumberOfSeats.setLayout(new FlowLayout());
+		plMid.add(plStandingRoom);
+		plStandingRoom.setLayout(new FlowLayout());
+		plMid.add(plManufacturer);
+		plManufacturer.setLayout(new FlowLayout());
+		plMid.add(plModel);
+		plModel.setLayout(new FlowLayout());
+		plMid.add(plNextInspectionDue);
+		plNextInspectionDue.setLayout(new FlowLayout());
+		plMid.add(plArticulatedBus);
+		plArticulatedBus.setLayout(new FlowLayout());
 
-		licencePlatePanel.add(licencePlate);
-		licencePlatePanel.add(licencePlateText);
-		numberOfSeatsPanel.add(numberOfSeats);
-		numberOfSeatsPanel.add(numberOfSeatsText);
-		standingRoomPanel.add(standingRoom);
-		standingRoomPanel.add(standingRoomText);
-		manufacturerPanel.add(manufacturer);
-		manufacturerPanel.add(manufacturerText);
-		modelPanel.add(model);
-		modelPanel.add(modelText);
-		nextInspectionDuePanel.add(nextInspectionDue);
-		nextInspectionDuePanel.add(nextInspectionDueText);
-		articulatedBusPanel.add(articulatedBus);
-		articulatedBusPanel.add(articulatedBusText);
+		plLicencePlate.add(lbLicencePlate);
+		plLicencePlate.add(tfLicencePlate);
+		plNumberOfSeats.add(lbNumberOfSeats);
+		plNumberOfSeats.add(tfNumberOfSeats);
+		plStandingRoom.add(lbStandingRoom);
+		plStandingRoom.add(tfStandingRoom);
+		plManufacturer.add(lbManufacturer);
+		plManufacturer.add(tfManufacturer);
+		plModel.add(lbModel);
+		plModel.add(tfModel);
+		plNextInspectionDue.add(lbNextInspectionDue);
+		plNextInspectionDue.add(tfNextInspectionDue);
+		plArticulatedBus.add(lbArticulatedBus);
+		plArticulatedBus.add(cbArticulatedBus);
 
-		licencePlate.setPreferredSize(new Dimension(textWidth, textHeight));
-		numberOfSeats.setPreferredSize(new Dimension(textWidth, textHeight));
-		standingRoom.setPreferredSize(new Dimension(textWidth, textHeight));
-		manufacturer.setPreferredSize(new Dimension(textWidth, textHeight));
-		model.setPreferredSize(new Dimension(textWidth, textHeight));
-		nextInspectionDue.setPreferredSize(new Dimension(textWidth, textHeight));
-		articulatedBus.setPreferredSize(new Dimension(textWidth, textHeight));
+		lbLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbNumberOfSeats.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbStandingRoom.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbManufacturer.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbModel.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbNextInspectionDue.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbArticulatedBus.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
-		licencePlateText.setPreferredSize(new Dimension(textWidth, textHeight));
-		numberOfSeatsText.setPreferredSize(new Dimension(textWidth, textHeight));
-		standingRoomText.setPreferredSize(new Dimension(textWidth, textHeight));
-		manufacturerText.setPreferredSize(new Dimension(textWidth, textHeight));
-		modelText.setPreferredSize(new Dimension(textWidth, textHeight));
-		nextInspectionDueText.setPreferredSize(new Dimension(textWidth, textHeight));
-		articulatedBusText.setPreferredSize(new Dimension(textWidth, textHeight));
+		tfLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfNumberOfSeats.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfStandingRoom.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfManufacturer.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfModel.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfNextInspectionDue.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbArticulatedBus.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
-		bottomPanel.setLayout(new BorderLayout());
-		bottomPanel.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		bottomPanel.setPreferredSize(new Dimension(924, 100));
-		bottomPanel.add(cancel, BorderLayout.WEST);
-		bottomPanel.add(save, BorderLayout.EAST);
+		plBottom.setLayout(new BorderLayout());
+		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
+		plBottom.setPreferredSize(new Dimension(924, 100));
+		plBottom.add(btCancel, BorderLayout.WEST);
+		plBottom.add(btSave, BorderLayout.EAST);
 
 		controllerFormBus.insertValuesIntoForm();
 
 		pack();
 	}
 
-	public String getLicencePlateText() //nicht mehr wirklich getter
+	public String getTfLicencePlate() //nicht mehr wirklich getter
 	{
-		return licencePlateText.getText();
+		return tfLicencePlate.getText();
 	}
 
-	public String getNumberOfSeatsText()
+	public String getTfNumberOfSeats()
 	{
-		return numberOfSeatsText.getText();
+		return tfNumberOfSeats.getText();
 	}
 
-	public String getStandingRoomText()
+	public String getTfStandingRoom()
 	{
-		return standingRoomText.getText();
+		return tfStandingRoom.getText();
 	}
 
-	public String getManufacturerText()
+	public String getTfManufacturer()
 	{
-		return manufacturerText.getText();
+		return tfManufacturer.getText();
 	}
 
-	public String getModelText()
+	public String getTfModel()
 	{
-		return modelText.getText();
+		return tfModel.getText();
 	}
 
-	public String getNextInspectionDueText()
+	public String getTfNextInspectionDue()
 	{
-		return nextInspectionDueText.getText();
+		return tfNextInspectionDue.getText();
 	}
 
-	public boolean getArticulatedBusText()
+	public boolean getCbArticulatedBus()
 	{
-		return articulatedBusText.isSelected();
+		return cbArticulatedBus.isSelected();
 	}
 
-	public void setLicencePlateText(String text)
+	public void setTfLicencePlate(String text)
 	{
-		this.licencePlateText.setText(text);
+		this.tfLicencePlate.setText(text);
 	}
 
-	public void setNumberOfSeatsText(String text)
+	public void setTfNumberOfSeats(String text)
 	{
-		this.numberOfSeatsText.setText(text);
+		this.tfNumberOfSeats.setText(text);
 	}
 
-	public void setStandingRoomText(String text)
+	public void setTfStandingRoom(String text)
 	{
-		this.standingRoomText.setText(text);
+		this.tfStandingRoom.setText(text);
 	}
 
-	public void setManufacturerText(String text)
+	public void setTfManufacturer(String text)
 	{
-		this.manufacturerText.setText(text);
+		this.tfManufacturer.setText(text);
 	}
 
-	public void setModelText(String text)
+	public void setTfModel(String text)
 	{
-		this.modelText.setText(text);
+		this.tfModel.setText(text);
 	}
 
-	public void setNextInspectionDueText(String text)
+	public void setTfNextInspectionDue(String text)
 	{
-		this.nextInspectionDueText.setText(text);
+		this.tfNextInspectionDue.setText(text);
 	}
 
-	public void setArticulatedBusText(Boolean state)
+	public void setCbArticulatedBus(Boolean state)
 	{
-		this.articulatedBusText.setSelected(state);
+		this.cbArticulatedBus.setSelected(state);
 	}
 
 }

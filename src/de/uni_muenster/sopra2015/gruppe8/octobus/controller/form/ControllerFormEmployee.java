@@ -64,14 +64,14 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		if(objectID != -1)
 		{
 			formEmployee.setName(employee.getFirstName());
-			formEmployee.setLastNameText(employee.getName());
-			formEmployee.setAddressText(employee.getAddress());
-			formEmployee.setZipText(employee.getZipCode());
-			formEmployee.setCityText(employee.getCity());
-			formEmployee.setDateText(employee.getDateOfBirth().toString());
-			formEmployee.setPhoneText(employee.getPhone());
-			formEmployee.setUsernameText(employee.getUsername());
-			formEmployee.setRemarkText(employee.getNote());
+			formEmployee.setLastName(employee.getName());
+			formEmployee.setAddress(employee.getAddress());
+			formEmployee.setZipCode(employee.getZipCode());
+			formEmployee.setCity(employee.getCity());
+			formEmployee.setBirthDate(employee.getDateOfBirth().toString());
+			formEmployee.setPhone(employee.getPhone());
+			formEmployee.setUsername(employee.getUsername());
+			formEmployee.setNote(employee.getNote());
 
 
 			/*formEmployee.setLicencePlateText(bus.getLicencePlate());

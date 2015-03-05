@@ -13,80 +13,91 @@ import java.awt.*;
 /**
  * @author Patricia Schinke
  *         lenght of textfield
- *         zip an city
  */
 public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
-	private JPanel explanationPanel = new JPanel();
-	private String explanationText = "Bitte geben Sie die Daten des Mitarbeiters ein.";
-	private JLabel explanation = new JLabel(explanationText);
-	private JPanel rightPanel = new JPanel();
-	private JPanel midPanel = new JPanel();
-	private JPanel bottomPanel = new JPanel();
+	/**
+	 * at the top of the form is an explanation what you should do
+	 */
+	private JPanel plExplanation = new JPanel();
+	private String strExplanation = "Bitte geben Sie die Daten des Mitarbeiters ein.";
+	private JLabel lbExplanation = new JLabel(strExplanation);
+	private JPanel plRight = new JPanel();
+	private JPanel plMid = new JPanel();
+	private JPanel plBottom = new JPanel();
 
-	private JButton save = new JButton("Speichern");
-	private JButton cancel = new JButton("Abbrechen");
+	/**
+	 * every input has an own label, inputfield and panel
+	 */
+	private JLabel lbName = new JLabel("Name");
+	private JLabel lbFirstName = new JLabel("Vorname");
+	private JLabel lbAddress = new JLabel("Adresse");
+	private JLabel lbZipCode = new JLabel("PLZ");
+	private JLabel lbCity = new JLabel("Ort");
+	private JLabel lbBirthDate = new JLabel("Geburtsdatum");
+	private JLabel lbPhone = new JLabel("Telefon");
+	private JLabel lbMail = new JLabel("Mail-Adresse");
+	private JLabel lbNote = new JLabel("Bemerkung");
+	private JLabel lbUsername = new JLabel("Benutzername");
 
-	private JLabel firstName = new JLabel("Vorname");
-	private JLabel lastName = new JLabel("Name");
-	private JLabel address = new JLabel("Adresse");
-	private JLabel zip = new JLabel("PLZ");
-	private JLabel city = new JLabel("Ort");
-	private JLabel date = new JLabel("Geburtsdatum");
-	private JLabel phone = new JLabel("Telefon");
-	private JLabel remark = new JLabel("Bemerkung");
-	private JLabel username = new JLabel("Benutzername");
-	private JLabel mail = new JLabel("Mail-Adresse");
+	private JTextField tfName = new JTextField();
+	private JTextField tfFirstName = new JTextField();
+	private JTextField tfAddress = new JTextField();
+	private JTextField tfZipCode = new JTextField();
+	private JTextField tfCity = new JTextField();
+	private JTextField tfBirthDate = new JTextField();
+	private JTextField tfPhone = new JTextField();
+	private JTextField tfMail = new JTextField();
+	private JTextArea tfNote = new JTextArea();
+	private JTextField tfUsername = new JTextField();
 
-	private JTextField firstNameText = new JTextField();
-	private JTextField lastNameText = new JTextField();
-	private JTextField addressText = new JTextField();
-	private JTextField zipText = new JTextField();
-	private JTextField cityText = new JTextField();
-	private JTextField dateText = new JTextField();
-	private JTextField phoneText = new JTextField();
-	private JTextField mailText = new JTextField();
-	private JTextArea remarkText = new JTextArea();
-	private JTextField usernameText = new JTextField();
+	private JPanel plName = new JPanel();
+	private JPanel plFirstName = new JPanel();
+	private JPanel plAddress = new JPanel();
+	private JPanel plZipCode = new JPanel();
+	private JPanel plCity = new JPanel();
+	private JPanel plBirthDate = new JPanel();
+	private JPanel plPhone = new JPanel();
+	private JPanel plMail = new JPanel();
+	private JPanel plNote = new JPanel();
+	private JPanel plUsername = new JPanel();
+	private JPanel plRemarkText = new JPanel();
 
-	private JPanel firstNamePanel = new JPanel();
-	private JPanel lastNamePanel = new JPanel();
-	private JPanel addressPanel = new JPanel();
-	private JPanel zipPanel = new JPanel();
-	private JPanel cityPanel = new JPanel();
-	private JPanel datePanel = new JPanel();
-	private JPanel phonePanel = new JPanel();
-	private JPanel mailPanel = new JPanel();
-	private JPanel remarkPanel = new JPanel();
-	private JPanel usernamePanel = new JPanel();
-	private JPanel innerRemarkPanel = new JPanel();
+	/**
+	 * we have a panel with checkboxes for  the roles
+	 */
+	private JLabel lbRole = new JLabel("Rollen:");
 
-	private JLabel roleLabel = new JLabel("Rollen:");
+	private JLabel lbScheduleManager = new JLabel("Einsatzplaner");
+	private JLabel lbNetworkPlaner = new JLabel("Netzpaner");
+	private JLabel lbBusDriver = new JLabel("Busfahrer");
+	private JLabel lbTicketPlaner = new JLabel("Fahrkartenplaner");
+	private JLabel lbHRManager = new JLabel("Personalleiter");
 
-	private JLabel schedulemanager = new JLabel("Einsatzplaner");
-	private JLabel networkplaner = new JLabel("Netzpaner");
-	private JLabel busdriver = new JLabel("Busfahrer");
-	private JLabel ticketplaner = new JLabel("Fahrkartenplaner");
-	private JLabel hrmanager = new JLabel("Personalleiter");
+	private JCheckBox cbScheduleManager = new JCheckBox();
+	private JCheckBox cbNetworkPlaner = new JCheckBox();
+	private JCheckBox cbBusDriver = new JCheckBox();
+	private JCheckBox cbTicketPlaner = new JCheckBox();
+	private JCheckBox cbHRManager = new JCheckBox();
 
-	private JCheckBox schedulemanagerBox = new JCheckBox();
-	private JCheckBox networkplanerBox = new JCheckBox();
-	private JCheckBox busdriverBox = new JCheckBox();
-	private JCheckBox ticketplanerBox = new JCheckBox();
-	private JCheckBox hrmanagerBox = new JCheckBox();
+	private JPanel plScheduleManager = new JPanel();
+	private JPanel plNetworkPlaner = new JPanel();
+	private JPanel plBusDriver = new JPanel();
+	private JPanel plTicketPlaner = new JPanel();
+	private JPanel plHRManager = new JPanel();
 
-	private JPanel schedulemanagerPanel = new JPanel();
-	private JPanel networkplanerPanel = new JPanel();
-	private JPanel busdriverPanel = new JPanel();
-	private JPanel ticketplanerPanel = new JPanel();
-	private JPanel hrmanagerPanel = new JPanel();
+	/**
+	 * the buttons for save and cancel
+	 */
+	private JButton btSave = new JButton("Speichern");
+	private JButton btCancel = new JButton("Abbrechen");
 
-	private int textHeight = 25;
-	private int areaHeight = 50;
-	private int textWidth = 150;
-	private int boxWidth = 50;
+	private int iTextHeight = 25;
+	private int iAreaHeight = 50;
+	private int iTextWidth = 150;
+	private int iBoxWidth = 50;
 
 	public FormEmployee(Frame parent, int objectID)
 	{
@@ -101,267 +112,267 @@ public class FormEmployee extends FormGeneral
 		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
 		//Add events to buttons
-		save.addActionListener(e ->
+		btSave.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
 		});
-		cancel.addActionListener(e ->
+		btCancel.addActionListener(e ->
 		{
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
 
 		setLayout(new BorderLayout());
-		add(explanationPanel, BorderLayout.NORTH);
-		add(midPanel, BorderLayout.CENTER);
-		add(bottomPanel, BorderLayout.SOUTH);
+		add(plExplanation, BorderLayout.NORTH);
+		add(plMid, BorderLayout.CENTER);
+		add(plBottom, BorderLayout.SOUTH);
 
-		explanationPanel.setPreferredSize(new Dimension(924, 60));
-		explanationPanel.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
-		explanationPanel.add(explanation);
+		plExplanation.setPreferredSize(new Dimension(924, 60));
+		plExplanation.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
+		plExplanation.add(lbExplanation);
 
-		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
+		plMid.setLayout(new BoxLayout(plMid, BoxLayout.X_AXIS));
 
-		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.Y_AXIS));
-		midPanel.add(lastNamePanel);
-		midPanel.add(firstNamePanel);
-		midPanel.add(addressPanel);
-		midPanel.add(zipPanel);
-		midPanel.add(cityPanel);
-		midPanel.add(datePanel);
-		midPanel.add(phonePanel);
-		midPanel.add(mailPanel);
-		midPanel.add(remarkPanel);
-		midPanel.add(usernamePanel);
+		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
+		plMid.add(plName);
+		plMid.add(plFirstName);
+		plMid.add(plAddress);
+		plMid.add(plZipCode);
+		plMid.add(plCity);
+		plMid.add(plBirthDate);
+		plMid.add(plPhone);
+		plMid.add(plMail);
+		plMid.add(plNote);
+		plMid.add(plUsername);
 
-		lastNamePanel.add(lastName);
-		lastNamePanel.add(lastNameText);
-		firstNamePanel.add(firstName);
-		firstNamePanel.add(firstNameText);
-		addressPanel.add(address);
-		addressPanel.add(addressText);
-		zipPanel.add(zip);
-		zipPanel.add(zipText);
-		cityPanel.add(city);
-		cityPanel.add(cityText);
-		datePanel.add(date);
-		datePanel.add(dateText);
-		phonePanel.add(phone);
-		phonePanel.add(phoneText);
-		mailPanel.add(mail);
-		mailPanel.add(mailText);
-		remarkPanel.add(remark);
-		remarkPanel.add(innerRemarkPanel);
-		usernamePanel.add(username);
-		usernamePanel.add(usernameText);
+		plName.add(lbName);
+		plName.add(tfName);
+		plFirstName.add(lbFirstName);
+		plFirstName.add(tfFirstName);
+		plAddress.add(lbAddress);
+		plAddress.add(tfAddress);
+		plZipCode.add(lbZipCode);
+		plZipCode.add(tfZipCode);
+		plCity.add(lbCity);
+		plCity.add(tfCity);
+		plBirthDate.add(lbBirthDate);
+		plBirthDate.add(tfBirthDate);
+		plPhone.add(lbPhone);
+		plPhone.add(tfPhone);
+		plMail.add(lbMail);
+		plMail.add(tfMail);
+		plNote.add(lbNote);
+		plNote.add(plRemarkText);
+		plUsername.add(lbUsername);
+		plUsername.add(tfUsername);
 
-		JScrollPane scrollPane = new JScrollPane(remarkText);
-		innerRemarkPanel.add(scrollPane);
-		scrollPane.setPreferredSize(new Dimension(textWidth, areaHeight));
+		JScrollPane scrollPane = new JScrollPane(tfNote);
+		plRemarkText.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(iTextWidth, iAreaHeight));
 
-		lastName.setPreferredSize(new Dimension(textWidth, textHeight));
-		lastNameText.setPreferredSize(new Dimension(textWidth, textHeight));
-		firstName.setPreferredSize(new Dimension(textWidth, textHeight));
-		firstNameText.setPreferredSize(new Dimension(textWidth, textHeight));
-		address.setPreferredSize(new Dimension(textWidth, textHeight));
-		addressText.setPreferredSize(new Dimension(textWidth, textHeight));
-		zip.setPreferredSize(new Dimension(textWidth, textHeight));
-		zipText.setPreferredSize(new Dimension(textWidth, textHeight));
-		city.setPreferredSize(new Dimension(textWidth, textHeight));
-		cityText.setPreferredSize(new Dimension(textWidth, textHeight));
-		date.setPreferredSize(new Dimension(textWidth, textHeight));
-		dateText.setPreferredSize(new Dimension(textWidth, textHeight));
-		phone.setPreferredSize(new Dimension(textWidth, textHeight));
-		phoneText.setPreferredSize(new Dimension(textWidth, textHeight));
-		mail.setPreferredSize(new Dimension(textWidth, textHeight));
-		mailText.setPreferredSize(new Dimension(textWidth, textHeight));
-		remark.setPreferredSize(new Dimension(textWidth, textHeight));
-		username.setPreferredSize(new Dimension(textWidth, textHeight));
-		usernameText.setPreferredSize(new Dimension(textWidth, textHeight));
+		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbFirstName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfFirstName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbAddress.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfAddress.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbZipCode.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfZipCode.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbCity.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfCity.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbBirthDate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfBirthDate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbPhone.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfPhone.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbMail.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfMail.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbNote.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		lbUsername.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		tfUsername.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
-		add(rightPanel, BorderLayout.EAST);
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.add(roleLabel);
-		rightPanel.setBorder(new EmptyBorder(new Insets(0, 50, 0, 50)));
+		add(plRight, BorderLayout.EAST);
+		plRight.setLayout(new BoxLayout(plRight, BoxLayout.Y_AXIS));
+		plRight.add(lbRole);
+		plRight.setBorder(new EmptyBorder(new Insets(0, 50, 0, 50)));
 
-		Border border = rightPanel.getBorder();
+		Border border = plRight.getBorder();
 		Border myBorder = new LineBorder(Color.black, 1);
-		rightPanel.setBorder(new CompoundBorder(border, myBorder));
-		rightPanel.add(schedulemanagerPanel);
-		rightPanel.add(networkplanerPanel);
-		rightPanel.add(busdriverPanel);
-		rightPanel.add(ticketplanerPanel);
-		rightPanel.add(hrmanagerPanel);
+		plRight.setBorder(new CompoundBorder(border, myBorder));
+		plRight.add(plScheduleManager);
+		plRight.add(plNetworkPlaner);
+		plRight.add(plBusDriver);
+		plRight.add(plTicketPlaner);
+		plRight.add(plHRManager);
 
-		schedulemanagerPanel.add(schedulemanager);
-		schedulemanagerPanel.add(schedulemanagerBox);
-		networkplanerPanel.add(networkplaner);
-		networkplanerPanel.add(networkplanerBox);
-		busdriverPanel.add(busdriver);
-		busdriverPanel.add(busdriverBox);
-		ticketplanerPanel.add(ticketplaner);
-		ticketplanerPanel.add(ticketplanerBox);
-		hrmanagerPanel.add(hrmanager);
-		hrmanagerPanel.add(hrmanagerBox);
+		plScheduleManager.add(lbScheduleManager);
+		plScheduleManager.add(cbScheduleManager);
+		plNetworkPlaner.add(lbNetworkPlaner);
+		plNetworkPlaner.add(cbNetworkPlaner);
+		plBusDriver.add(lbBusDriver);
+		plBusDriver.add(cbBusDriver);
+		plTicketPlaner.add(lbTicketPlaner);
+		plTicketPlaner.add(cbTicketPlaner);
+		plHRManager.add(lbHRManager);
+		plHRManager.add(cbHRManager);
 
-		schedulemanager.setPreferredSize(new Dimension(textWidth, textHeight));
-		schedulemanagerBox.setPreferredSize(new Dimension(boxWidth, textHeight));
-		networkplaner.setPreferredSize(new Dimension(textWidth, textHeight));
-		networkplanerBox.setPreferredSize(new Dimension(boxWidth, textHeight));
-		busdriver.setPreferredSize(new Dimension(textWidth, textHeight));
-		busdriverBox.setPreferredSize(new Dimension(boxWidth, textHeight));
-		ticketplaner.setPreferredSize(new Dimension(textWidth, textHeight));
-		ticketplanerBox.setPreferredSize(new Dimension(boxWidth, textHeight));
-		hrmanager.setPreferredSize(new Dimension(textWidth, textHeight));
-		hrmanagerBox.setPreferredSize(new Dimension(boxWidth, textHeight));
+		lbScheduleManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbScheduleManager.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
+		lbNetworkPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbNetworkPlaner.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
+		lbBusDriver.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbBusDriver.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
+		lbTicketPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbTicketPlaner.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
+		lbHRManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cbHRManager.setPreferredSize(new Dimension(iBoxWidth, iTextHeight));
 
-		bottomPanel.setLayout(new BorderLayout());
-		bottomPanel.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		bottomPanel.setPreferredSize(new Dimension(924, 100));
-		bottomPanel.add(cancel, BorderLayout.WEST);
-		bottomPanel.add(save, BorderLayout.EAST);
+		plBottom.setLayout(new BorderLayout());
+		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
+		plBottom.setPreferredSize(new Dimension(924, 100));
+		plBottom.add(btCancel, BorderLayout.WEST);
+		plBottom.add(btSave, BorderLayout.EAST);
 
 		controllerFormEmployee.insertValuesIntoForm();
 
 		pack();
 	}
 
-	public String getFirstNameText()
+	public String getFirstName()
 	{
-		return firstNameText.getText();
+		return tfFirstName.getText();
 	}
 
-	public void setFirstNameText(String text)
+	public void setFirstName(String text)
 	{
-		this.firstNameText.setText(text);
+		this.tfFirstName.setText(text);
 	}
 
-	public String getLastNameText()
+	public String getLastName()
 	{
-		return lastNameText.getText();
+		return tfName.getText();
 	}
 
-	public void setLastNameText(String text)
+	public void setLastName(String text)
 	{
-		this.lastNameText.setText(text);
+		this.tfName.setText(text);
 	}
 
-	public String getAddressText()
+	public String getAddress()
 	{
-		return addressText.getText();
+		return tfAddress.getText();
 	}
 
-	public void setAddressText(String text)
+	public void setAddress(String text)
 	{
-		this.addressText.setText(text);
+		this.tfAddress.setText(text);
 	}
 
-	public String getZipText()
+	public String getZipCode()
 	{
-		return zipText.getText();
+		return tfZipCode.getText();
 	}
 
-	public void setZipText(String text)
+	public void setZipCode(String text)
 	{
-		this.zipText.setText(text);
+		this.tfZipCode.setText(text);
 	}
 
-	public String getCityText()
+	public String getCity()
 	{
-		return cityText.getText();
+		return tfCity.getText();
 	}
 
-	public void setCityText(String text)
+	public void setCity(String text)
 	{
-		this.cityText.setText(text);
+		this.tfCity.setText(text);
 	}
 
-	public String  getDateText()
+	public String getBirthDate()
 	{
-		return dateText.getText();
+		return tfBirthDate.getText();
 	}
 
-	public void setDateText(String text)
+	public void setBirthDate(String text)
 	{
-		this.dateText.setText(text);
+		this.tfBirthDate.setText(text);
 	}
 
-	public String getPhoneText()
+	public String getPhone()
 	{
-		return phoneText.getText();
+		return tfPhone.getText();
 	}
 
-	public void setPhoneText(String text)
+	public void setPhone(String text)
 	{
-		this.phoneText.setText(text);
+		this.tfPhone.setText(text);
 	}
 
-	public String getRemarkText()
+	public String getNote()
 	{
-		return remarkText.getText();
+		return tfNote.getText();
 	}
 
-	public void setRemarkText(String text)
+	public void setNote(String text)
 	{
-		this.remarkText.setText(text);
+		this.tfNote.setText(text);
 	}
 
-	public String getUsernameText()
+	public String getUsername()
 	{
-		return usernameText.getText();
+		return tfUsername.getText();
 	}
 
-	public void setUsernameText(String text)
+	public void setUsername(String text)
 	{
-		this.usernameText.setText(text);
+		this.tfUsername.setText(text);
 	}
 
-	public boolean getSchedulemanagerBox()
+	public boolean getScheduleManager()
 	{
-		return schedulemanagerBox.isSelected();
+		return cbScheduleManager.isSelected();
 	}
 
-	public void setSchedulemanagerBox(boolean state)
+	public void setScheduleManager(boolean state)
 	{
-		this.schedulemanagerBox.setSelected(state);
+		this.cbScheduleManager.setSelected(state);
 	}
 
-	public boolean getNetworkplanerBox()
+	public boolean getNetworkPlaner()
 	{
-		return networkplanerBox.isSelected();
+		return cbNetworkPlaner.isSelected();
 	}
 
-	public void setNetworkplanerBox(boolean state)
+	public void setNetworkPlaner(boolean state)
 	{
-		this.networkplanerBox.setSelected(state);
+		this.cbNetworkPlaner.setSelected(state);
 	}
 
-	public boolean getBusdriverBox()
+	public boolean getBusDriver()
 	{
-		return busdriverBox.isSelected();
+		return cbBusDriver.isSelected();
 	}
 
-	public void setBusdriverBox(boolean state)
+	public void setBusDriver(boolean state)
 	{
-		this.busdriverBox.setSelected(state);
+		this.cbBusDriver.setSelected(state);
 	}
 
-	public boolean getTicketplanerBox()
+	public boolean getTicketPlaner()
 	{
-		return ticketplanerBox.isSelected();
+		return cbTicketPlaner.isSelected();
 	}
 
-	public void setTicketplanerBox(boolean state)
+	public void setTicketPlaner(boolean state)
 	{
-		this.ticketplanerBox.setSelected(state);
+		this.cbTicketPlaner.setSelected(state);
 	}
 
-	public boolean getHrmanagerBox()
+	public boolean getHRManager()
 	{
-		return hrmanagerBox.isSelected();
+		return cbHRManager.isSelected();
 	}
 
-	public void setHrmanagerBox(boolean state)
+	public void setHRManager(boolean state)
 	{
-		this.hrmanagerBox.isSelected();
+		this.cbHRManager.isSelected();
 	}
 }
