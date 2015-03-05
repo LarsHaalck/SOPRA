@@ -42,6 +42,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 		sorter = new TableRowSorter<>((TM)model);
 		table = new JTable((TM)model);
+		table.setFillsViewportHeight(true);
 
 		table.removeColumn(table.getColumnModel().getColumn(0));
 
