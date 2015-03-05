@@ -9,6 +9,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldText;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Date;
 
 /**
  * Form used for adding and editing buses.
@@ -84,7 +85,6 @@ public class FormBus extends FormGeneral
 		add(lbNumberOfSeats, cstLabel);
 
 		cstTextField.gridy = 2;
-		//TODO 3 seats
 		tfNumberOfSeats = new FieldNumber(3);
 		add(tfNumberOfSeats, cstTextField);
 
@@ -93,8 +93,7 @@ public class FormBus extends FormGeneral
 		add(lbStandingRoom, cstLabel);
 
 		cstTextField.gridy = 3;
-		//TODO 3
-		tfStandingRoom = new FieldNumber();
+		tfStandingRoom = new FieldNumber(3);
 		add(tfStandingRoom, cstTextField);
 
 		cstLabel.gridy = 4;
@@ -155,24 +154,24 @@ public class FormBus extends FormGeneral
 		this.tfLicencePlate.setText(text);
 	}
 
-	public String getNumberOfSeats()
+	public int getNumberOfSeats()
 	{
-		return tfNumberOfSeats.getText();
+		return tfNumberOfSeats.getNumber();
 	}
 
-	public void setNumberOfSeats(String text)
+	public void setNumberOfSeats(int num)
 	{
-		this.tfNumberOfSeats.setText(text);
+		this.tfNumberOfSeats.setNumber(num);
 	}
 
-	public String getStandingRoom()
+	public int getStandingRoom()
 	{
-		return tfStandingRoom.getText();
+		return tfStandingRoom.getNumber();
 	}
 
-	public void setStandingRoom(String text)
+	public void setStandingRoom(int num)
 	{
-		this.tfStandingRoom.setText(text);
+		this.tfStandingRoom.setNumber(num);
 	}
 
 	public String getManufacturer()
@@ -195,14 +194,14 @@ public class FormBus extends FormGeneral
 		this.tfModel.setText(text);
 	}
 
-	public String getNextInspectionDue()
+	public Date getNextInspectionDue()
 	{
-		return tfNextInspectionDue.getText();
+		return tfNextInspectionDue.getDate();
 	}
 
-	public void setNextInspectionDue(String text)
+	public void setNextInspectionDue(Date date)
 	{
-		this.tfNextInspectionDue.setText(text);
+		this.tfNextInspectionDue.setDate(date);
 	}
 
 	public boolean getArticulatedBus()

@@ -73,11 +73,11 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		if(objectID != -1)
 		{
 			formBus.setLicencePlate(bus.getLicencePlate());
-			formBus.setNumberOfSeats("" + bus.getNumberOfSeats());
-			formBus.setStandingRoom("" + bus.getStandingRoom());
+			formBus.setNumberOfSeats(bus.getNumberOfSeats());
+			formBus.setStandingRoom(bus.getStandingRoom());
 			formBus.setManufacturer(bus.getManufacturer());
 			formBus.setModel(bus.getModel());
-			formBus.setNextInspectionDue("" + bus.getNextInspectionDue());
+			formBus.setNextInspectionDue(bus.getNextInspectionDue());
 			formBus.setArticulatedBus(bus.isArticulatedBus());
 		}
 	}
@@ -90,11 +90,11 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			bus = new Bus("TestNummernschild", 42, 32, "Ich", "cooler Bus", new Date(2015, 5, 29), true);
 		}
 		String licencePlate = formBus.getLicencePlate();
-		int numberOfSeats = parseInt(formBus.getNumberOfSeats());
-		int standingRoom = parseInt(formBus.getStandingRoom());
+		int numberOfSeats = formBus.getNumberOfSeats();
+		int standingRoom = formBus.getStandingRoom();
 		String manufacturer = formBus.getManufacturer();
 		String model = formBus.getModel();
-		Date nextInspectionDue = parseDate(formBus.getNextInspectionDue());
+		Date nextInspectionDue = formBus.getNextInspectionDue();
 		boolean articulatedBus = formBus.getArticulatedBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();
