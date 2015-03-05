@@ -169,11 +169,6 @@ public class FormBusStop extends FormGeneral
 		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 
-	public void showErrorForm(String error)
-	{
-		JOptionPane.showMessageDialog(this, error, "Fehler", JOptionPane.ERROR_MESSAGE);
-	}
-
 	public int getSelectedStopPoint()
 	{
 		return list.getSelectedIndex();
