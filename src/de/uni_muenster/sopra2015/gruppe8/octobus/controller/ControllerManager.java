@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +13,7 @@ public class ControllerManager
 	private static ArrayList<ListenerButton> listenerButton = new ArrayList<>();
 	private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
 	private static ArrayList<ListenerWindow> listenerWindow = new ArrayList<>();
+    private static ArrayList<ListenerTable> listenerTable = new ArrayList<>();
 
 	/**
 	 * Doesn't allow creating a single instance of ControllerManager
@@ -83,6 +85,13 @@ public class ControllerManager
 			listener.windowClose(emitter);
 	}
 
+    public static void informTableSelectionChanged(EmitterTable emitter)
+    {
+        ArrayList<ListenerTable> list = new ArrayList<>(listenerTable);
+        for(ListenerTable listener : list)
+            listener.tableSelectionChanged(emitter);
+    }
+
 
 	/**
 	 * Clears lists of listeners.
@@ -93,6 +102,7 @@ public class ControllerManager
 		listenerUserState.clear();
 		listenerButton.clear();
 		listenerWindow.clear();
+        listenerTable.clear();
 	}
 
 	/**
@@ -154,4 +164,18 @@ public class ControllerManager
 	{
 		listenerWindow.remove(listener);
 	}
+
+    /**
+     * Adds a ListenerTable to the listenerTable list.
+     * @param listener Listener to be added.
+     */
+    public static void addListener(ListenerTable listener)
+    {
+        listenerTable.add(listener);
+    }
+
+    public static void removeListener(ListenerTable listener)
+    {
+        listenerTable.remove(listener);
+    }
 }

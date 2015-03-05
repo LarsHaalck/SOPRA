@@ -37,10 +37,7 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			if(getSelectedID() == -1)
-				JOptionPane.showMessageDialog(this, "Um einen Mitarbeiter zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-			else
-				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_EDIT);
+			editEntry();
 		});
 
 		btnNew = new JButton("Neu");
@@ -68,5 +65,12 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 		setVisible(true);
 	}
 
-
+	@Override
+	protected void editEntry()
+	{
+		if(getSelectedID() == -1)
+			JOptionPane.showMessageDialog(this, "Um einen Mitarbeiter zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		else
+			controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_EDIT);
+	}
 }

@@ -37,10 +37,7 @@ public class TabTicket extends TabTable<TableModelTicket>
 
 		btnEdit = new JButton("Bearbeiten");
 		btnEdit.addActionListener(e-> {
-			if(getSelectedID() == -1)
-				JOptionPane.showMessageDialog(this, "Um ein Ticket zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-			else
-				controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_EDIT);
+			editEntry();
 		});
 
 		btnNew = new JButton("Neu");
@@ -66,5 +63,14 @@ public class TabTicket extends TabTable<TableModelTicket>
 		add(plButtons, BorderLayout.PAGE_END);
 
 		setVisible(true);
+	}
+
+	@Override
+	protected void editEntry()
+	{
+		if(getSelectedID() == -1)
+			JOptionPane.showMessageDialog(this, "Um ein Ticket zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		else
+			controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_EDIT);
 	}
 }
