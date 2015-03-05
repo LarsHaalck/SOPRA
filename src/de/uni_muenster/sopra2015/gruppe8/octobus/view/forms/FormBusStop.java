@@ -7,6 +7,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Patricia Schinke
@@ -141,6 +143,15 @@ public class FormBusStop extends FormGeneral
 		plListName.setLayout(new FlowLayout());
 		plListName.add(lbStoppingPoints);
 
+		lStoppingPoints.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if(e.getClickCount() == 2)
+					controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
+			}
+		});
 		plList.add(new JScrollPane(lStoppingPoints));
 
 		plListButtons.setLayout(new FlowLayout());
