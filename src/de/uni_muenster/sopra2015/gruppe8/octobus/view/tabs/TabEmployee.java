@@ -62,6 +62,8 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
 
+		controllerTabEmployee.fillTable();
+
 		setVisible(true);
 	}
 
