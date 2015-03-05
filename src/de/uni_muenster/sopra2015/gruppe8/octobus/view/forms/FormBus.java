@@ -85,7 +85,7 @@ public class FormBus extends FormGeneral
 
 		cstTextField.gridy = 2;
 		//TODO 3 seats
-		tfNumberOfSeats = new FieldNumber();
+		tfNumberOfSeats = new FieldNumber(3);
 		add(tfNumberOfSeats, cstTextField);
 
 		cstLabel.gridy = 3;
@@ -150,39 +150,14 @@ public class FormBus extends FormGeneral
 		return tfLicencePlate.getText();
 	}
 
-	public String getNumberOfSeats()
-	{
-		return tfNumberOfSeats.getText();
-	}
-
-	public String getStandingRoom()
-	{
-		return tfStandingRoom.getText();
-	}
-
-	public String getManufacturer()
-	{
-		return tfManufacturer.getText();
-	}
-
-	public String getModel()
-	{
-		return tfModel.getText();
-	}
-
-	public String getNextInspectionDue()
-	{
-		return tfNextInspectionDue.getText();
-	}
-
-	public boolean getArticulatedBus()
-	{
-		return cbArticulatedBus.isSelected();
-	}
-
 	public void setLicencePlate(String text)
 	{
 		this.tfLicencePlate.setText(text);
+	}
+
+	public String getNumberOfSeats()
+	{
+		return tfNumberOfSeats.getText();
 	}
 
 	public void setNumberOfSeats(String text)
@@ -190,9 +165,19 @@ public class FormBus extends FormGeneral
 		this.tfNumberOfSeats.setText(text);
 	}
 
+	public String getStandingRoom()
+	{
+		return tfStandingRoom.getText();
+	}
+
 	public void setStandingRoom(String text)
 	{
 		this.tfStandingRoom.setText(text);
+	}
+
+	public String getManufacturer()
+	{
+		return tfManufacturer.getText();
 	}
 
 	public void setManufacturer(String text)
@@ -200,14 +185,29 @@ public class FormBus extends FormGeneral
 		this.tfManufacturer.setText(text);
 	}
 
+	public String getModel()
+	{
+		return tfModel.getText();
+	}
+
 	public void setModel(String text)
 	{
 		this.tfModel.setText(text);
 	}
 
+	public String getNextInspectionDue()
+	{
+		return tfNextInspectionDue.getText();
+	}
+
 	public void setNextInspectionDue(String text)
 	{
 		this.tfNextInspectionDue.setText(text);
+	}
+
+	public boolean getArticulatedBus()
+	{
+		return cbArticulatedBus.isSelected();
 	}
 
 	public void setArticulatedBus(Boolean state)
