@@ -1,15 +1,10 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
 
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -42,15 +37,14 @@ public class FieldDate extends FieldText
 
 			String input = this.getText();
 			int indexDot = input.indexOf('.');
-			int day = Integer.parseInt(input.substring(0, indexDot));
+			day = Integer.parseInt(input.substring(0, indexDot));
 			input =  input.substring(indexDot + 1);
 			indexDot = input.indexOf('.');
 
-			int month = Integer.parseInt(input.substring(0, indexDot));
+			month = Integer.parseInt(input.substring(0, indexDot));
 			input = input.substring(indexDot + 1);
-			indexDot = input.indexOf('.');
 
-			int year = Integer.parseInt(input.substring(0));
+			year = Integer.parseInt(input.substring(0));
 
 			if(year < 0 || month < 1 || month > 12 || day > 31 || day < 1)
 				return false;
@@ -106,13 +100,4 @@ public class FieldDate extends FieldText
 		this.setText(df.format(date));
 	}
 
-    public void setRedBorder(boolean toggle)
-    {
-        if(toogle)
-        {
-            this.setBorder(BorderFactory.createLineBorder(Color.red));
-        }
-        else
-            this.setBorder(null);
-    }
 }

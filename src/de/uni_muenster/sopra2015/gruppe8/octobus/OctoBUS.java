@@ -22,5 +22,37 @@ public class OctoBUS
 				new EntryPoint("FrameMain"); //for debugging purposes, see EntryPoint.java for possible Values
 			}
 		});
+		drawASCII();
+	}
+
+	public static void drawASCII()
+	{
+		System.out.println("               ,@@#+''''+#@+               ");
+		System.out.println("             @';;;;;;;;;;;;;;@,            ");
+		System.out.println("           `+;;;';:......,;';;;#           ");
+		System.out.println("           +;;,..............;;;`          ");
+		System.out.println("          .;;.................;;@@.        ");
+		System.out.println("          .;;.................;;@;;`     # ");
+		System.out.println("         '.;;............:::..;;@,';`  `;' ");
+		System.out.println(" #      ;;+;;...........:::::.;;@  +;`.;;  ");
+		System.out.println(" ;'    ';+';;...........,:::,.;;@   #;;;`  ");
+		System.out.println(" `;;` ';` :;;............,:,..;;@    #+.   ");
+		System.out.println("  .;;''   .;;...........,:::,.;;@          ");
+		System.out.println("   ;;#    .;;..........,:::::,;;@;;+`      ");
+		System.out.println("          .;;';;;;;;;;;;;;;;;;;;@:+;+      ");
+		System.out.println("       ##'';;;;;;;;;;;;;;;;;;;;;@ @;;      ");
+		System.out.println("       ;;#;;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
+		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
+		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
+		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ +;`      ");
+		System.out.println("       ;; .+,,';;;;;;;;;;;;;;,,:@ ';.      ");
+		System.out.println("       ;; .',,#;;;;;;;;;;;;;;,,+@  ;;;'@,  ");
+		System.out.println("       ;' .;;;;;''''''''''';;;;;@  ;';;;;;+");
+		System.out.println("   '#';;@ .;;;;;. : .,:. : ;;;;;@      .+#`");
+		System.out.println(" ;;;;;;#  .;;;;;;;;;;;;;;;;;;;;;@          ");
+		System.out.println(" +@'.     .@@@@@@@@@@@@@@@@@@@@@@          ");
+		System.out.println("            +@@+           ;@@+            ");
+		System.out.println("            +@@+           ;@@+            ");
+		System.out.println("            .@@.           `@@:");
 	}
 }
