@@ -180,7 +180,7 @@ public class ControllerDatabase
                 busRecord.getValue(BUSES.STANDINGROOM),
                 busRecord.getValue(BUSES.MANUFACTURER),
                 busRecord.getValue(BUSES.MODEL),
-                new Date(busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+				new Date((long) busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
                 busRecord.getValue(BUSES.ARTICULATEDBUS));
         bus.setId(id);
 		return bus;
