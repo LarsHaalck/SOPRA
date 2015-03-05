@@ -1,6 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.MainFrame;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 
 import javax.swing.*;
 
@@ -11,16 +11,16 @@ import javax.swing.*;
  */
 public class OctoBUS
 {
-    public static void main(String[] args)
-    {
-        // For thread safety and adhering to best practices
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                new MainFrame();
-            }
-        });
-    }
+	public static void main(String[] args)
+	{
+		// For thread safety and adhering to best practices
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				new EntryPoint("TabBuses");
+			}
+		});
+	}
 }
