@@ -373,10 +373,4 @@ public class FormJourneySearch extends FormGeneral
     }
 
 
-
-    public static void main(String[] args) {
-        JFrame jojo = new JFrame();
-        JDialog dialog = new FormJourneySearch(jojo);
-    }
-
 }
