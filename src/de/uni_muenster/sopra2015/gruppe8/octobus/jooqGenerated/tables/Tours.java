@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord> {
 
-	private static final long serialVersionUID = 604715772;
+	private static final long serialVersionUID = 561532472;
 
 	/**
 	 * The reference instance of <code>tours</code>
@@ -100,6 +100,14 @@ public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	@Override
 	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>> getKeys() {
 		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TOURS);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>> getReferences() {
+		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_ROUTES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_BUSES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_EMPLOYEES_1);
 	}
 
 	/**

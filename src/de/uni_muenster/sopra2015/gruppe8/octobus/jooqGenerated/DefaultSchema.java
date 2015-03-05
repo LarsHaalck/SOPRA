@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = -1545432432;
+	private static final long serialVersionUID = -1480322830;
 
 	/**
 	 * The reference instance of <code></code>
@@ -39,9 +39,6 @@ public class DefaultSchema extends org.jooq.impl.SchemaImpl {
 
 	private final java.util.List<org.jooq.Table<?>> getTables0() {
 		return java.util.Arrays.<org.jooq.Table<?>>asList(
-			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Haltestellenkombis.HALTESTELLENKOMBIS,
-			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_haltestellen_inkl_2e_haltepunkten.LINIEN_MIT_HALTESTELLEN_INKL_2e_HALTEPUNKTEN,
-			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_ihren_abfahrten.LINIEN_MIT_IHREN_ABFAHRTEN,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Busstops.BUSSTOPS,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.BusstopsStoppingpoints.BUSSTOPS_STOPPINGPOINTS,
 			de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Buses.BUSES,

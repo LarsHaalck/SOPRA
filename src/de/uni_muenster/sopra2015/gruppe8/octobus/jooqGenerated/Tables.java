@@ -17,21 +17,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated;
 public class Tables {
 
 	/**
-	 * The table Haltestellenkombis
-	 */
-	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Haltestellenkombis HALTESTELLENKOMBIS = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Haltestellenkombis.HALTESTELLENKOMBIS;
-
-	/**
-	 * The table Linien mit Haltestellen inkl. Haltepunkten
-	 */
-	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_haltestellen_inkl_2e_haltepunkten LINIEN_MIT_HALTESTELLEN_INKL_2e_HALTEPUNKTEN = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_haltestellen_inkl_2e_haltepunkten.LINIEN_MIT_HALTESTELLEN_INKL_2e_HALTEPUNKTEN;
-
-	/**
-	 * The table Linien mit ihren Abfahrten
-	 */
-	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_ihren_abfahrten LINIEN_MIT_IHREN_ABFAHRTEN = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Linien_mit_ihren_abfahrten.LINIEN_MIT_IHREN_ABFAHRTEN;
-
-	/**
 	 * The table busStops
 	 */
 	public static final de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Busstops BUSSTOPS = de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Busstops.BUSSTOPS;

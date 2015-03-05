@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord> {
 
-	private static final long serialVersionUID = -1296176241;
+	private static final long serialVersionUID = -240478656;
 
 	/**
 	 * The reference instance of <code>busStops_stoppingPoints</code>
@@ -72,14 +72,6 @@ public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muens
 	 * {@inheritDoc}
 	 */
 	@Override
-	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> getIdentity() {
-		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_BUSSTOPS_STOPPINGPOINTS;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord> getPrimaryKey() {
 		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_BUSSTOPS_STOPPINGPOINTS;
 	}
@@ -90,6 +82,14 @@ public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muens
 	@Override
 	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord>> getKeys() {
 		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_BUSSTOPS_STOPPINGPOINTS);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public java.util.List<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, ?>> getReferences() {
+		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_BUSSTOPS_STOPPINGPOINTS_BUSSTOPS_1);
 	}
 
 	/**
