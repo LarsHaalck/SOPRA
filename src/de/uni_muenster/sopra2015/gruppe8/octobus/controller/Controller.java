@@ -46,7 +46,7 @@ public abstract class Controller
 
 	/**
 	 * Helper-methods. Implode all error-strings into one.
-	 * String is seperated by new lines.
+	 * String is separated by new lines.
 	 * @param errors List of all error-strings.
 	 * @return String with all error-strings.
 	 */
