@@ -12,11 +12,11 @@ public class Route
 	private int id;		// database-internal id. is set when object is added to database
 	private String name;
 	private String note;
-	private LinkedList<Tuple<BusStop,Integer>> stops;
+	private LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops;
 	private boolean night;
 	private HashMap<DayOfWeek,LinkedList<Integer>> startTimes;
 
-	public Route(String name, String note, LinkedList<Tuple<BusStop, Integer>> stops, boolean night, HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
+	public Route(String name, String note, LinkedList<Triple<BusStop, StoppingPoint,Integer>> stops, boolean night, HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
 	{
 		this.name = name;
 		this.note = note;
@@ -31,7 +31,7 @@ public class Route
 	{
 		name = "";
 		note = "";
-		stops = new LinkedList<Tuple<BusStop, Integer>>();
+		stops = new LinkedList<Triple<BusStop, StoppingPoint,Integer>>();
 		night = false;
 		startTimes = new HashMap<DayOfWeek, LinkedList<Integer>>();
 	}
@@ -56,12 +56,12 @@ public class Route
 		this.note = note;
 	}
 
-	public LinkedList<Tuple<BusStop, Integer>> getStops()
+	public LinkedList<Triple<BusStop, StoppingPoint,Integer>> getStops()
 	{
 		return stops;
 	}
 
-	public void setStops(LinkedList<Tuple<BusStop, Integer>> stops)
+	public void setStops(LinkedList<Triple<BusStop, StoppingPoint,Integer>> stops)
 	{
 		this.stops = stops;
 	}
@@ -119,7 +119,7 @@ public class Route
 	{
 		int duration = 0;
 		boolean sumUp = false;
-		for(Tuple<BusStop, Integer> t: stops)
+		for(Triple<BusStop, StoppingPoint,Integer>)
 		{
 			if(sumUp)
 				duration += t.getSecond();

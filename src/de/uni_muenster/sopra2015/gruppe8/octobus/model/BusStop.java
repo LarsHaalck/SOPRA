@@ -10,10 +10,10 @@ public class BusStop
     private int id;									// database-internal id. is set when object is added to database
     private String name;
     private Tuple<Integer, Integer> location;
-    private HashSet<String> stoppingPoints;
+    private HashSet<StoppingPoint> stoppingPoints;
     private boolean barrierFree;
 
-    public BusStop(String name, Tuple<Integer, Integer> location, HashSet<String> stoppingPoints, boolean barrierFree)
+    public BusStop(String name, Tuple<Integer, Integer> location, HashSet<StoppingPoint> stoppingPoints, boolean barrierFree)
     {
         this.name = name;
         this.location = location;
@@ -41,12 +41,12 @@ public class BusStop
         this.location = location;
     }
 
-    public HashSet<String> getStoppingPoints()
+    public HashSet<StoppingPoint> getStoppingPoints()
     {
         return stoppingPoints;
     }
 
-    public void setStoppingPoints(HashSet<String> stoppingPoints)
+    public void setStoppingPoints(HashSet<StoppingPoint> stoppingPoints)
     {
         this.stoppingPoints = stoppingPoints;
     }
