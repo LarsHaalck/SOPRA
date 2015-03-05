@@ -1,9 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.LoginDialog;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.listeners.ButtonListener;
 import javax.swing.*;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -30,7 +28,7 @@ public class ControllerMainPanel implements ButtonListener
             case "searchConnectionRequest":
                 System.out.println("Searching Connection");
 
-                ControllerDatabaseJOOQ dbcontrol = new ControllerDatabaseJOOQ();
+                ControllerDatabase dbcontrol = ControllerDatabase.getInstance();
 
                 dbcontrol.createTours(new Date(1425311123000l));
                 dbcontrol.createTours(new Date(1425397523000l));

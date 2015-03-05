@@ -17,27 +17,43 @@ import java.util.Date;
 /**
  * jOOQ Controller class for database access.
  *
- * @author Michael Biech, Phil Steinhorst
+ * @author Phil Steinhorst
+ * @author Michael Biech
  */
-public class ControllerDatabaseJOOQ
+public class ControllerDatabase
 {
 
-	DSLContext create;
+    private static final String DB_NAME = "Octobus.db";
 
-    public ControllerDatabaseJOOQ(){
+    private static ControllerDatabase controllerDatabase = null;
+
+    private DSLContext create;
+
+    private ControllerDatabase()
+    {
         openDB();
     }
 
+    static public ControllerDatabase getInstance()
+    {
+        if (controllerDatabase == null){
+            controllerDatabase = new ControllerDatabase();
+        }
+
+        return controllerDatabase;
+    }
+
 	/**
-	 * Initialize database for use inside this class
+	 * Initializes database for use inside this class
 	 */
 	public void openDB()
 	{
 		try
 		{
-            String url = "jdbc:sqlite:test.db";
+            String url = "jdbc:sqlite:" + DB_NAME;
             Connection conn;
 
+            // Dynamically load SQLite driver
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
@@ -45,27 +61,27 @@ public class ControllerDatabaseJOOQ
 
 		catch (ClassNotFoundException e)
 		{
-			System.out.println("Fehler beim Laden des JDBC-Treibers!");
+			System.out.println("Unable to load JDBC driver.");
 			e.printStackTrace();
 		}
 
 		catch (SQLException e)
 		{
-			System.out.println("SQL-Exception");
+			System.out.println("SQL-Exception occurred.");
 			e.printStackTrace();
 		}
 	}
 
-	///////////////////////
-	// Methods for Buses //
-	///////////////////////
+	/////////////////////////
+	// Methods for "Bus"es //
+	/////////////////////////
 
-	/**
-	 * Adds a new bus into database
-	 *
-	 * @param bus Bus object to be saved in database
-	 * @return Database ID of added bus
-	 */
+    /**
+     * Creates a new database entry for a Bus object
+     *
+     * @param bus Bus object to be stored in the database
+     * @return unique ID of newly created bus entry in the database
+     */
 	public int addBus(Bus bus)
 	{
 		BusesRecord newBus = create.insertInto(
@@ -85,26 +101,27 @@ public class ControllerDatabaseJOOQ
                         (int) bus.getNextInspectionDue().getTime()/1000,
                         (Boolean) bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
-				.fetchOne();
+				// TODO: Does this need "execute" instead of "fetch(One)()"?
+                .fetchOne();
 
 		return(newBus.getBusesId());
 	}
 
-	/**
-	 * Deletes a bus from database by using its database-internal id
-	 *
-	 * @param id contains the unique internal ID of the bus to be deleted
-	 */
+    /**
+     * Removes a bus entry from the database using its unique id
+     *
+     * @param id unique ID of the bus entry that is to be deleted from the database
+     */
 	public void deleteBus(int id)
 	{
 		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
 	}
 
-	/**
-	 * Modifies a bus in database by using its database-internal id
-	 *
-	 * @param bus bus object containing the new properties
-	 */
+    /**
+     * Modifies an existing bus entry in the database
+     *
+     * @param bus Bus object whose entry is to be updated in the database
+     */
 	public void modifyBus(Bus bus)
 	{
 		create.update(BUSES)
@@ -119,11 +136,11 @@ public class ControllerDatabaseJOOQ
 				.execute();
 	}
 
-	/**
-	 * Returns an ArrayList of Bus objects containing all buses stored in database
-	 *
-	 * @return contains every bus object stored in database
-	 */
+    /**
+     * Retrieves a list of Bus objects representing all bus entries stored in the database
+     *
+     * @return ArrayList containing Bus objects for every bus entry stored in the database
+     */
 	public ArrayList<Bus> getBuses()
 	{
 		Result<Record> busRecords = create.select().from(BUSES).fetch();
@@ -146,10 +163,10 @@ public class ControllerDatabaseJOOQ
 	}
 
     /**
-     * Returns a single bus from the database by using its database-internal id
+     * Retrieves a single Bus object from the database entry using its unique id
      *
-     * @param id the id of the bus which is to be retrieved
-     * @return a bus object from the database
+     * @param id unique ID of the bus to be retrieved
+     * @return Bus object created from its corresponding entry the database
      */
     public Bus getBus(int id)
     {
@@ -168,17 +185,19 @@ public class ControllerDatabaseJOOQ
 		return bus;
     }
 
-	//////////////////////////
-	// Methods for BusStops //
-	//////////////////////////
+    // TODO: getBus(String licensePlate)?
 
-	/**
-	 * Adds a new bus stop to the database
-	 *
-	 * @param bstop BusStop object to be saved in database
-	 * @return database ID of added bus
-	 */
-	public int addBusStop(BusStop bstop)
+	////////////////////////////
+	// Methods for "BusStop"s //
+	////////////////////////////
+
+    /**
+     * Creates a new database entry for a BusStop object
+     *
+     * @param bstop BusStop object to be stored in the database
+     * @return unique ID of newly created bus stop entry in the database
+     */
+    public int addBusStop(BusStop bstop)
 	{
 		BusstopsRecord newStop = create.insertInto(
                 BUSSTOPS,BUSSTOPS.NAME,
@@ -209,53 +228,59 @@ public class ControllerDatabaseJOOQ
 		return(newStop.getBusstopsId());
 	}
 
-	/**
-	 * deletes a bus stop from database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the bus stop to be deleted.
-	 */
+    /**
+     * Removes a bus stop entry from the database using its unique id
+     *
+     * @param id unique ID of the bus stop entry that is to be deleted from the database
+     */
 	public void deleteBusStop(int id)
 	{
 		create.delete(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.equal(id)).execute();
 	}
 
-	/**
-	 * modifies a bus stop in database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the bus stop to be modified.
-	 * @param bstop Bus stop object containing the new properties.
-	 */
-	public void modifyBusStop(int id, BusStop bstop)
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Modifies an existing bus stop entry in the database
+     *
+     * @param bstop BusStop object whose entry is to be updated in the database
+     */
+	public void modifyBusStop(BusStop bstop)
 	{
 		create.update(BUSSTOPS)
 				.set(BUSSTOPS.NAME, bstop.getName())
 				.set(BUSSTOPS.LOCATIONX, bstop.getLocation().getFirst())
 				.set(BUSSTOPS.LOCATIONY, bstop.getLocation().getSecond())
 				.set(BUSSTOPS.BARRIERFREE, bstop.isBarrierFree())
+                .where(BUSSTOPS.BUSSTOPS_ID.eq(bstop.getId()))
 				.execute();
-
-		// TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren!
 	}
 
-	/**
-	 * returns an ArrayList of BusStop objects containing all bus stops stored in database.
-	 *
-	 * @return Contains every bus stop object stored in database.
-	 */
+    /**
+     * Retrieves a list of BusStop objects representing all bus stop entries stored in the database
+     *
+     * @return ArrayList containing BusStop objects for every bus stop entry stored in the database
+     */
 	public ArrayList<BusStop> getBusStops()
 	{
-		Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();		// get all busStops from DB
+		// Start by getting all bus stops from the database
+        Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
-		for (Record rec : busStopRecords)			// for each busStop in DB...
+		// For each bus retrieved...
+        for (Record rec : busStopRecords)
 		{
-			Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
-					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
+            // ... get all corresponding stopping points...
+            Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
+                    .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
-			HashSet<StoppingPoint> spoints = new HashSet<>();
-			for (Record sp : stoppingPoints)
+            // ... and put them all into a HashSet
+            HashSet<StoppingPoint> spoints = new HashSet<>();
+            for (Record sp : stoppingPoints)
 			{
-				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));		//.. and put them into a HashSet
+				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
 			BusStop busStop = new BusStop(
@@ -263,27 +288,33 @@ public class ControllerDatabaseJOOQ
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
 					rec.getValue(BUSSTOPS.BARRIERFREE));
-			busStopList.add(busStop);			// create busStop object and add to ArrayList
+
+            // Finally, create BusStop object and add it to the ArrayList
+            busStopList.add(busStop);
 		}
 		return busStopList;
 	}
 
     /**
-     * Returns a single bus stop and its stopping points from the database according to its ID
+     * Retrieves a single BusStop object from the database entry using its unique id
      *
-     * @param id bus stop to retrieve from the database
-     * @return the requested bus stop as an object
+     * @param id unique ID of the bus stop to be retrieved
+     * @return BusStop object created from its corresponding entry the database
      */
     public BusStop getBusStop(int id)
     {
-        Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();		// get all busStops from DB
-        Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
+        // Get desired bus from DB
+        Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();
+
+        // Get all associated stopping points...
+        Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
-		HashSet<StoppingPoint> spoints = new HashSet<>();
+        // .. and add them into a HashSet
+        HashSet<StoppingPoint> spoints = new HashSet<>();
 		for (Record sp : stoppingPoints)
 		{
-			spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));		//.. and put them into a HashSet
+			spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 		}
 
 		BusStop busStop = new BusStop(
@@ -301,12 +332,12 @@ public class ControllerDatabaseJOOQ
 	// Methods for Employees //
 	///////////////////////////
 
-	/**
-	 * adds a new employee into database.
-	 *
-	 * @param emp Employee object to be saved in database.
-	 * @return Database ID of added employee.
-	 */
+    /**
+     * Creates a new database entry for an Employee object
+     *
+     * @param emp Employee object to be stored in the database
+     * @return unique ID of newly created employee entry in the database
+     */
 	public int addEmployee(Employee emp)
 	{
 		EmployeesRecord newEmp = create.insertInto(EMPLOYEES,
@@ -350,34 +381,22 @@ public class ControllerDatabaseJOOQ
 		return(newEmp.getEmployeesId());
 	}
 
-	/**
-	 * deletes an employee from database by using its unique user name.
-	 *
-	 * @param username Contains the unique user name of the employee to be deleted.
-	 */
-	@Deprecated
-	public void deleteEmployee(String username)
-	{
-		create.delete(EMPLOYEES).where(EMPLOYEES.USERNAME.equal(username)).execute();
-	}
-
-	/**
-	 * deletes an employee from database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the employee to be deleted.
-	 */
+    /**
+     * Removes an employee entry from the database using its unique id
+     *
+     * @param id unique ID of the employee entry that is to be deleted from the database
+     */
 	public void deleteEmployee(int id)
 	{
 		create.delete(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.equal(id)).execute();
 	}
 
-	/**
-	 * modifies an employee in database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the employee to be modified.
-	 * @param emp Employee object containing the new properties.
-	 */
-	public void modifyEmployee(int id, Employee emp)
+    /**
+     * Modifies an existing employee entry in the database
+     *
+     * @param emp Employee object whose entry is to be updated in the database
+     */
+	public void modifyEmployee(Employee emp)
 	{
 		create.update(EMPLOYEES)
 				.set(EMPLOYEES.NAME, emp.getName())
@@ -397,46 +416,15 @@ public class ControllerDatabaseJOOQ
 				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
 				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
 				.set(EMPLOYEES.ISSCHEDULE_MANAGER, emp.isRole(Role.SCHEDULE_MANAGER))
-				.where(EMPLOYEES.EMPLOYEES_ID.equal(id))
+				.where(EMPLOYEES.EMPLOYEES_ID.equal(emp.getId()))
 				.execute();
 	}
 
-	/**
-	 * modifies an employee in database by using its user name.
-	 *
-	 * @param username Contains the unique user name of the employee to be modified.
-	 * @param emp Employee object containing the new properties.
-	 */
-	@Deprecated
-	public void modifyEmployee(String username, Employee emp)
-	{
-		create.update(EMPLOYEES)
-				.set(EMPLOYEES.NAME, emp.getName())
-				.set(EMPLOYEES.FIRSTNAME,emp.getFirstName())
-				.set(EMPLOYEES.ADDRESS,emp.getAddress())
-				.set(EMPLOYEES.ZIPCODE,emp.getZipCode())
-				.set(EMPLOYEES.CITY,emp.getCity())
-				.set(EMPLOYEES.DATEOFBIRTH,(int) emp.getDateOfBirth().getTime()/1000)
-				.set(EMPLOYEES.PHONE,emp.getPhone())
-				.set(EMPLOYEES.EMAIL,emp.getEmail())
-				.set(EMPLOYEES.USERNAME,emp.getUsername())
-				.set(EMPLOYEES.SALT,emp.getSalt())
-				.set(EMPLOYEES.PASSWORD,emp.getPassword())
-				.set(EMPLOYEES.NOTE,emp.getNote())
-				.set(EMPLOYEES.ISBUSDRIVER,emp.isRole(Role.BUSDRIVER))
-				.set(EMPLOYEES.ISNETWORK_PLANNER,emp.isRole(Role.NETWORK_PLANNER))
-				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
-				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
-				.set(EMPLOYEES.ISSCHEDULE_MANAGER,emp.isRole(Role.SCHEDULE_MANAGER))
-				.where(EMPLOYEES.USERNAME.equal(username))
-				.execute();
-	}
-
-	/**
-	 * returns an ArrayList of Employee objects containing all employees stored in database.
-	 *
-	 * @return Contains every employee object stored in database.
-	 */
+    /**
+     * Retrieves a list of Employee objects representing all employee entries stored in the database
+     *
+     * @return ArrayList containing Employee objects for every employee entry stored in the database
+     */
 	public ArrayList<Employee> getEmployees()
 	{
 		Result<Record> empRecords = create.select().from(EMPLOYEES).fetch();
@@ -476,12 +464,12 @@ public class ControllerDatabaseJOOQ
 		return empList;
 	}
 
-	/**
-	 * Get a single employee object from database.
-	 *
-	 * @param id Unique database-internal ID of requested employee object.
-	 * @return Requested employee object.
-	 */
+    /**
+     * Retrieves a single Employee object from the database entry using its unique id
+     *
+     * @param id unique ID of the employee to be retrieved
+     * @return Employee object created from its corresponding entry the database
+     */
 	public Employee getEmployee(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
@@ -517,17 +505,22 @@ public class ControllerDatabaseJOOQ
 		return emp;
 	}
 
+    public Employee getEmployee(String username){
+        Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
+        return getEmployee(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+    }
+
 
 	////////////////////////
 	// Methods for Routes //
 	////////////////////////
 
-	/**
-	 * adds a new route into database.
-	 *
-	 * @param r Route object to be saved in database.
-	 * @return Database ID of added route.
-	 */
+    /**
+     * Creates a new database entry for a Route object
+     *
+     * @param r Route object to be stored in the database
+     * @return unique ID of newly created route entry in the database
+     */
 	public int addRoute(Route r)
 	{
 		RoutesRecord newRoute = create.insertInto(ROUTES,
@@ -551,7 +544,7 @@ public class ControllerDatabaseJOOQ
 					.values(newRoute.getRoutesId(),
 							triple.getFirst().getId(),
 							triple.getSecond().getId(),
-							triple.getThird())
+                            triple.getThird())
 					.execute();
 		}
 
@@ -574,52 +567,54 @@ public class ControllerDatabaseJOOQ
 		return(newRoute.getRoutesId());
 	}
 
-	/**
-	 * deletes a route from database by using its unique ID.
-	 *
-	 * @param id Contains the unique ID of the employee to be deleted.
-	 */
+    /**
+     * Removes a route entry from the database using its unique id
+     *
+     * @param id unique ID of the route entry that is to be deleted from the database
+     */
 	public void deleteRoute(int id)
 	{
 		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
 	}
 
-	/**
-	 * modifies a route in database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the route to be modified.
-	 * @param r Route object containing the new properties.
-	 */
-	public void modifyRoute(int id, Route r)
+    // TODO: Implementierten!
+    /**
+     * Modifies an existing route entry in the database
+     *
+     * @param r Route object whose entry is to be updated in the database
+     */
+	public void modifyRoute(Route r)
 	{
-		// TODO: Implementierten!
 	}
 
-	/**
-	 * returns an ArrayList of Route objects containing all routes stored in database.
-	 *
-	 * @return Contains every route object stored in database.
-	 *
-	 */
+    /**
+     * Retrieves a list of Route objects representing all route entries stored in the database
+     *
+     * @return ArrayList containing Route objects for every route entry stored in the database
+     */
 	public ArrayList<Route> getRoutes()
 	{
-		Result<Record> routesRecords = create.select().from(ROUTES).fetch();        // get all busStops from DB
+        // Start by getting all bus stops from the database
+        Result<Record> routesRecords = create.select().from(ROUTES).fetch();
 		ArrayList<Route> routesList = new ArrayList<>();
 
-		for (Record rec : routesRecords)            // for each busStop in DB...
+        // For each bus stop retrieved...
+        for (Record rec : routesRecords)
 		{
-			Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)    //.. get all corresponding stoppingPoints ...
-					.where(ROUTES_STARTTIMES.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+            // ... get all corresponding start times ...
+            Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
+                    .where(ROUTES_STARTTIMES.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
 
 			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = new HashMap<>();
-			startTimes.put(DayOfWeek.MONDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.TUESDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.THURSDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.FRIDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.SATURDAY, new LinkedList<Integer>());
-			startTimes.put(DayOfWeek.SUNDAY, new LinkedList<Integer>());
+			startTimes.put(DayOfWeek.MONDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.TUESDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.THURSDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.FRIDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.SATURDAY, new LinkedList<>());
+			startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 
+            // ... and put them into their respective lists, depending on the day
 			for (Record timerec : startTimesRecords)
 			{
 				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("MONDAY"))
@@ -639,11 +634,12 @@ public class ControllerDatabaseJOOQ
 			}
 
 
-			Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)    //.. get all corresponding stoppingPoints ...
-					.where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+            // Now get all stops on the route ...
+            Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+                    .where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
-
+            // ... and add them to the list of stops
 			for (Record s : stopsRecords)
 			{
 				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
@@ -658,33 +654,38 @@ public class ControllerDatabaseJOOQ
 					stops,
 					rec.getValue(ROUTES.NIGHT),
 					startTimes);
-			routesList.add(route);            // create busStop object and add to ArrayList
+
+            // Finally, create Route object and add it to the ArrayList
+            routesList.add(route);
 		}
 		return routesList;
 	}
 
-	/**
-	 * Get a route object from database.
-	 *
-	 * @param id Unique database-internal ID of requested route object.
-	 * @return Requested route object.
-	 */
+    /**
+     * Retrieves a single Route object from the database entry using its unique id
+     *
+     * @param id unique ID of the route to be retrieved
+     * @return Route object created from its corresponding entry the database
+     */
 	public Route getRoute(int id)
 	{
+	    // Start by getting the desired route from the database
 		Record rec = create.select().from(ROUTES).where(ROUTES.ROUTES.ROUTES_ID.eq(id)).fetchOne();
-		Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
+
+        // Fetch its starting times
+        Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
 				.where(ROUTES_STARTTIMES.ROUTES_ID.equal(id)).fetch();
 
 		HashMap<DayOfWeek, LinkedList<Integer>> startTimes = new HashMap<>();
+		startTimes.put(DayOfWeek.MONDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.TUESDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.THURSDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.FRIDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.SATURDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 
-		startTimes.put(DayOfWeek.MONDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.TUESDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.THURSDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.FRIDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.SATURDAY, new LinkedList<Integer>());
-		startTimes.put(DayOfWeek.SUNDAY, new LinkedList<Integer>());
-
+        // Put the starting times for the route in respective lists
 		for (Record timerec : startTimesRecords)
 		{
 			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("MONDAY"))
@@ -704,10 +705,12 @@ public class ControllerDatabaseJOOQ
 		}
 
 
-		Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)    //.. get all corresponding stoppingPoints ...
-				.where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
+        // Now get all stops on the route ...
+        Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+                .where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
+        // ... and add them to the list of stops
 		for (Record s : stopsRecords)
 		{
 			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
@@ -731,57 +734,11 @@ public class ControllerDatabaseJOOQ
 	// Methods for soldTickets //
 	/////////////////////////////
 
-	/**
-	 * adds a new sold ticket into database.
-	 *
-	 * @param sold Sold ticket object to be saved in database.
-	 * @return Database ID of added sold ticket.
-	 */
-	public int addSoldTicket(SoldTicket sold)
-	{
-		SoldticketsRecord newSold = create.insertInto(SOLDTICKETS,
-                SOLDTICKETS.NAME,
-                SOLDTICKETS.TIMESTAMP,
-                SOLDTICKETS.PRICE)
-			.values(sold.getName(),
-                    (int) sold.getDate().getTime() / 1000,
-                    sold.getPrice())
-			.returning(SOLDTICKETS.SOLDTICKETS_ID)
-			.fetchOne();
-
-		return(newSold.getSoldticketsId());
-	}
-
-	/**
-	 * deletes a sold ticket from database by using its unique ID.
-	 *
-	 * @param id Contains the unique ID of the sold ticket to be deleted.
-	 */
-	public void deleteSoldTicket(int id)
-	{
-		create.delete(SOLDTICKETS).where(SOLDTICKETS.SOLDTICKETS_ID.equal(id)).execute();
-	}
-
-	/**
-	 * modifies a sold ticket in database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the sold ticket to be modified.
-	 * @param sold Sold ticket object containing the new properties.
-	 */
-	public void modifySoldTicket(int id, SoldTicket sold)
-	{
-		create.update(SOLDTICKETS)
-				.set(SOLDTICKETS.NAME, sold.getName())
-				.set(SOLDTICKETS.TIMESTAMP, (int) sold.getDate().getTime() / 1000)
-				.set(SOLDTICKETS.PRICE, sold.getPrice())
-				.execute();
-	}
-
-	/**
-	 * returns an ArrayList of SoldTicket objects containing all sold tickets stored in database.
-	 *
-	 * @return Contains every sold ticket stored in database.
-	 */
+    /**
+     * Retrieves a list of SoldTicket objects representing all sold ticket entries stored in the database
+     *
+     * @return ArrayList containing SoldTicket objects for every sold ticket entry stored in the database
+     */
 	public ArrayList<SoldTicket> getSoldTickets()
 	{
 		Result<Record> soldTicketRecords = create.select().from(SOLDTICKETS).fetch();
@@ -800,13 +757,13 @@ public class ControllerDatabaseJOOQ
 		return soldTicketsList;
 	}
 
-	/**
-	 * Get a single sold ticket object from database.
-	 *
-	 * @param id Unique database-internal ID of requested sold ticket object.
-	 * @return Requested sold ticket object.
-	 */
-	public SoldTicket getSoldTicket(int id)
+    /**
+     * Retrieves a single SoldTicket object from the database entry using its unique id
+     *
+     * @param id unique ID of the sold ticket to be retrieved
+     * @return SoldTicket object created from its corresponding entry the database
+     */
+    public SoldTicket getSoldTicket(int id)
 	{
 		Record rec = create.select().from(SOLDTICKETS).where(SOLDTICKETS.SOLDTICKETS_ID.eq(id)).fetchOne();
 
@@ -823,12 +780,12 @@ public class ControllerDatabaseJOOQ
 	// Methods for Tickets //
 	/////////////////////////
 
-	/**
-	 * adds a new ticket into database.
-	 *
-	 * @param tick Ticket object to be saved in database.
-	 * @return Database ID of added ticket.
-	 */
+    /**
+     * Creates a new database entry for a Ticket object
+     *
+     * @param tick Ticket object to be stored in the database
+     * @return unique ID of newly created name entry in the database
+     */
 	public int addTickets(Ticket tick)
 	{
 		TicketsRecord newTick = create.insertInto(TICKETS,
@@ -846,37 +803,37 @@ public class ControllerDatabaseJOOQ
 		return(newTick.getTicketsId());
 	}
 
-	/**
-	 * deletes a ticket from database by using its unique ID.
-	 *
-	 * @param id Contains the unique ID of the ticket to be deleted.
-	 */
+    /**
+     * Removes a name entry from the database using its unique id
+     *
+     * @param id unique ID of the name entry that is to be deleted from the database
+     */
 	public void deleteTickets(int id)
 	{
 		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
 	}
 
-	/**
-	 * modifies a ticket in database by using its database-internal id.
-	 *
-	 * @param id Contains the unique internal ID of the ticket to be modified.
-	 * @param tick Ticket object containing the new properties.
-	 */
-	public void modifyTickets(int id, Ticket tick)
+    /**
+     * Modifies an existing name entry in the database
+     *
+     * @param tick Ticket object whose entry is to be updated in the database
+     */
+	public void modifyTickets(Ticket tick)
 	{
 		create.update(TICKETS)
 				.set(TICKETS.NAME, tick.getName())
 				.set(TICKETS.PRICE, tick.getPrice())
 				.set(TICKETS.NUMPASSENGERS, tick.getNumPassengers())
 				.set(TICKETS.DESCRIPTION, tick.getDescription())
+                .where(TICKETS.TICKETS_ID.eq(tick.getId()))
 				.execute();
 	}
 
-	/**
-	 * returns an ArrayList of Ticket objects containing all tickets stored in database.
-	 *
-	 * @return Contains every ticket stored in database.
-	 */
+    /**
+     * Retrieves a list of Ticket objects representing all name entries stored in the database
+     *
+     * @return ArrayList containing Ticket objects for every name entry stored in the database
+     */
 	public ArrayList<Ticket> getTickets()
 	{
 		Result<Record> ticketRecords = create.select().from(TICKETS).fetch();
@@ -896,12 +853,12 @@ public class ControllerDatabaseJOOQ
 		return ticketList;
 	}
 
-	/**
-	 * Get a single ticket object from database.
-	 *
-	 * @param id Unique database-internal ID of requested ticket object.
-	 * @return Requested ticket object.
-	 */
+    /**
+     * Retrieves a single Ticket object from the database entry using its unique id
+     *
+     * @param id unique ID of the name to be retrieved
+     * @return Ticket object created from its corresponding entry the database
+     */
 	public Ticket getTicket(int id)
 	{
 		Record rec = create.select().from(TICKETS).where(TICKETS.TICKETS_ID.eq(id)).fetchOne();
@@ -921,9 +878,12 @@ public class ControllerDatabaseJOOQ
 	////////////////////////
 
 	// TODO: Implementieren!
+    // TODO: 2015-03-05 - Most of this should work by now...
 
     /**
-     * In the future, this method will create all the trips for a given day
+     * Creates all trips for a given day
+     *
+     * @param date date for which tours ought to be generated
      */
     public void createTours(Date date){
 
