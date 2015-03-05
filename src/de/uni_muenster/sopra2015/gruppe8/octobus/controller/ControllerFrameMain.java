@@ -91,6 +91,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormTour(frame, -1);
 				f.setVisible(true);
 				break;
+
+            case FORM_JOURNEY_SEARCH:
+                f = new FormJourneySearch(frame);
+                break;
 		}
 	}
 
