@@ -2,7 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
+import javafx.geometry.HPos;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,6 +19,8 @@ public class FormBusStop extends FormGeneral
 
 	private JPanel plMid = new JPanel();
 	private JPanel plBottom = new JPanel();
+	private JPanel plUpperMid = new JPanel();
+	private JPanel plEmpty = new JPanel();
 
 	/**
 	 * at the top of the form is an explanation what you should do
@@ -33,10 +35,9 @@ public class FormBusStop extends FormGeneral
 	private JLabel lbName = new JLabel("Name");
 	private JLabel lbLocation = new JLabel("Ort");
 	private JLabel lbStoppingPoints = new JLabel("Haltepunkte");
-	private JLabel lbBarrierFree = new JLabel("Barrierefrei");
 
 	private JTextField tfName = new JTextField();
-	private JCheckBox cbBarrierFree = new JCheckBox();
+	private JCheckBox cbBarrierFree = new JCheckBox("Barrierefrei");
 
 	private JPanel plName = new JPanel();
 	private JPanel plLocation = new JPanel();
@@ -70,7 +71,8 @@ public class FormBusStop extends FormGeneral
 
 	private int iTextHeight = 25;
 	private int iTextWidth = 150;
-	private int iSmalltextWidth = 50;
+	private int iSmallTextWidth = 55;
+	private int iSmallTextHeight = 20;
 
 	public FormBusStop(Frame parent, int objectID)
 	{
@@ -101,37 +103,39 @@ public class FormBusStop extends FormGeneral
 		});
 
 		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
-		plMid.add(plName);
-		plMid.add(plLocation);
-		plMid.add(plBarrierFree);
+		plMid.add(plUpperMid);
 		plMid.add(plStoppingPoints);
 
-		plName.setLayout(new FlowLayout());
-		plLocation.setLayout(new FlowLayout());
-		plBarrierFree.setLayout(new FlowLayout());
+		plUpperMid.setLayout(new GridBagLayout());
+		GridBagConstraints cstLabel = new GridBagConstraints();
+		GridBagConstraints cstTextfield = new GridBagConstraints();
 
-		plName.add(lbName);
-		plName.add(tfName);
-		plLocation.add(lbLocation);
-		plLocation.add(plLocationTextFields);
-		plBarrierFree.add(lbBarrierFree);
-		plBarrierFree.add(cbBarrierFree);
+		cstLabel.gridx=0;
+		cstLabel.gridy=0;
+		plUpperMid.add(lbName,cstLabel);
+		cstTextfield.gridx=1;
+		cstTextfield.gridy=0;
+		plUpperMid.add(tfName, cstTextfield);
+		cstLabel.gridy=1;
+		plUpperMid.add(lbLocation, cstLabel);
+		cstTextfield.gridy=1;
+		plUpperMid.add(plLocationTextFields, cstTextfield);
+		cstTextfield.gridy=2;
+		plUpperMid.add(cbBarrierFree, cstTextfield);
 
 		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		lbLocation.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		plLocationTextFields.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbBarrierFree.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		cbBarrierFree.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
-		plLocationTextFields.setLayout(new FlowLayout());
 		plLocationTextFields.add(lbLocationX);
 		plLocationTextFields.add(tfLocationX);
 		plLocationTextFields.add(lbLocationY);
 		plLocationTextFields.add(tfLocationY);
 
-		tfLocationX.setPreferredSize(new Dimension(iSmalltextWidth, iTextHeight));
-		tfLocationY.setPreferredSize(new Dimension(iSmalltextWidth, iTextHeight));
+		tfLocationX.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
+		tfLocationY.setPreferredSize(new Dimension(iSmallTextWidth, iSmallTextHeight));
 
 		plStoppingPoints.setLayout(new BorderLayout());
 		plStoppingPoints.add(plListName, BorderLayout.NORTH);
