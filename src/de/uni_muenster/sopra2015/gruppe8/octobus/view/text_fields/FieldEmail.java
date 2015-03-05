@@ -23,7 +23,7 @@ public class FieldEmail extends FieldText
 		});
 	}
 
-	private boolean isValidEmail()
+	private boolean isValidEmail(String email)
 	{
 		String pattern = "^(.+)@(.+)$";
 		if (Pattern.compile(pattern).matcher(this.getText()).matches())
@@ -34,14 +34,19 @@ public class FieldEmail extends FieldText
 
 	public String getEmail()
 	{
-		if(isValidEmail())
-			return this.getText();
+		String input = this.getText();
+		if(isValidEmail(input))
+			return input;
 		else
 			return null;
 	}
 
 	public void setEmail(String email)
 	{
-		this.setText(email);
+		if(isValidEmail(email))
+			this.setText(email);
+		else
+			this.setText("");
 	}
+
 }

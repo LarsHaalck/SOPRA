@@ -5,16 +5,28 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
 
-/**
- * Created by Lars on 05-Mar-15.
- */
 public class FieldNumber extends FieldText
 {
 	private MaskFormatter formatter;
 
+	public FieldNumber(int limit)
+	{
+		super();
+		if(limit >= 9)
+			setLimit(9);
+		else
+			setLimit(limit);
+		setFieldMask();
+	}
+
 	public FieldNumber()
 	{
 		super(9);
+		setFieldMask();
+	}
+
+	private void setFieldMask()
+	{
 		formatter = new MaskFormatter();
 		try
 		{
@@ -36,7 +48,8 @@ public class FieldNumber extends FieldText
 	public void setNumber(int number)
 	{
 		this.setText(Integer.toString(number));
-
 	}
+
+	//TODO: setText() getText() Overrides
 
 }
