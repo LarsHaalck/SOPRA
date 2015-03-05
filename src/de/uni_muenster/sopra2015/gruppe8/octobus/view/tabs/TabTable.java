@@ -120,7 +120,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 						}
 					});
 		}
-
 	}
 
 	public boolean isRefineable()

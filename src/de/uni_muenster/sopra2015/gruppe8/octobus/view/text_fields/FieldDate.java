@@ -1,7 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
 
+import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
@@ -108,7 +110,7 @@ public class FieldDate extends FieldText
 
     public void setRedBorder(boolean toggle)
     {
-        if(toogle)
+        if(toggle)
         {
             this.setBorder(BorderFactory.createLineBorder(Color.red));
         }
