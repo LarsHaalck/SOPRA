@@ -14,7 +14,7 @@ public class FormBus extends FormGeneral
 {
 	private ControllerFormBus controllerFormBus;
 
-	/**
+	/*
 	 * at the top of the form is an explanation what you should do
 	 */
 	private String strExplanation = "Bitte geben Sie die Daten des Busses ein.";
@@ -26,7 +26,7 @@ public class FormBus extends FormGeneral
 	private JPanel plLeft = new JPanel();
 	private JPanel plRight = new JPanel();
 
-	/**
+	/*
 	 * every input has an own label, inputfield and panel
 	 */
 	private JLabel lbLicencePlate = new JLabel("Kennzeichen");
@@ -35,7 +35,6 @@ public class FormBus extends FormGeneral
 	private JLabel lbManufacturer = new JLabel("Hersteller");
 	private JLabel lbModel = new JLabel("Modell");
 	private JLabel lbNextInspectionDue = new JLabel("Nächste Inspektion");
-	private JLabel lbArticulatedBus = new JLabel("Bus mit Gelenk");
 
 	private JTextField tfLicencePlate = new JTextField();
 	private JTextField tfNumberOfSeats = new JTextField();
@@ -43,7 +42,7 @@ public class FormBus extends FormGeneral
 	private JTextField tfManufacturer = new JTextField();
 	private JTextField tfModel = new JTextField();
 	private JTextField tfNextInspectionDue = new JTextField();
-	private JCheckBox cbArticulatedBus = new JCheckBox();
+	private JCheckBox cbArticulatedBus = new JCheckBox("Bus mit Gelenk");
 
 	private JPanel plLicencePlate = new JPanel();
 	private JPanel plNumberOfSeats = new JPanel();
@@ -53,7 +52,7 @@ public class FormBus extends FormGeneral
 	private JPanel plNextInspectionDue = new JPanel();
 	private JPanel plArticulatedBus = new JPanel();
 
-	/**
+	/*
 	 * the buttons for save and cancel
 	 */
 	private JButton btSave = new JButton("Speichern");
@@ -120,7 +119,6 @@ public class FormBus extends FormGeneral
 		plModel.add(tfModel);
 		plNextInspectionDue.add(lbNextInspectionDue);
 		plNextInspectionDue.add(tfNextInspectionDue);
-		plArticulatedBus.add(lbArticulatedBus);
 		plArticulatedBus.add(cbArticulatedBus);
 
 		lbLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
@@ -129,7 +127,6 @@ public class FormBus extends FormGeneral
 		lbManufacturer.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		lbModel.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		lbNextInspectionDue.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbArticulatedBus.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 
 		tfLicencePlate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
 		tfNumberOfSeats.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
