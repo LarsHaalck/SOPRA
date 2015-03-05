@@ -51,7 +51,6 @@ public class FormTour extends FormGeneral
 			e.printStackTrace();
 		}
 		initComponents();
-		pack();
 		nextButton.requestFocus();
 	}
 
@@ -72,7 +71,7 @@ public class FormTour extends FormGeneral
 		CardLayout cl = (CardLayout) cardPanel.getLayout();
 		panelCounter = 0;
 		backButton.addActionListener(e -> {
-			if (panelCounter == 2)
+			if (panelCounter == 1)
 				nextButton.setText("Weiter");
 			if (panelCounter == 1)
 				setBackButtonEnabled(false);
@@ -80,12 +79,12 @@ public class FormTour extends FormGeneral
 			panelCounter--;
 		});
 		nextButton.addActionListener(e -> {
-			if (panelCounter == 1)
+			if (panelCounter == 0)
 			{
 				Dimension button = nextButton.getSize();
 				nextButton.setText("Fertig");
 			}
-			if (panelCounter == 2)
+			if (panelCounter == 1)
 			{
 				//TODO lese informationen aus
 				dispose();
