@@ -21,15 +21,23 @@ public class PanelPassenger extends JPanel
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(10, 10, 10, 10);
 		Dimension bigButtonSize = new Dimension(300, 300);
+
+		ImageIcon icon = new ImageIcon("res/images/icon_128.png");
+		JLabel lbLogo = new JLabel(icon);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.gridwidth = 1;
+		add(lbLogo, c);
 
 		JLabel lbWelcome = new JLabel("Willkommen bei OctoBUS!");
 		lbWelcome.setFont(lbWelcome.getFont().deriveFont(48.0f));
-		c.gridx = 0;
+		c.insets = new Insets(10, 10, 10, 10);
+		c.gridx = 1;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = 3;
+		c.gridwidth = 5;
 		add(lbWelcome, c);
 
 		JLabel lbPleaseSelect = new JLabel("Bitte treffen Sie eine Auswahl.");
@@ -38,7 +46,7 @@ public class PanelPassenger extends JPanel
 		c.gridx = 0;
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.CENTER;
-		c.gridwidth = 3;
+		c.gridwidth = 6;
 		add(lbPleaseSelect, c);
 
 		// main button panel
@@ -64,7 +72,7 @@ public class PanelPassenger extends JPanel
 		pnMainButtons.setBorder(BorderFactory.createEtchedBorder());
 		c.gridx = 0;
 		c.gridy = 2;
-		c.gridwidth = 1;
+		c.gridwidth = 6;
 		add(pnMainButtons, c);
 
 		pnMainButtons.setSize(new Dimension(950, 350));
