@@ -168,45 +168,46 @@ public class FormBusStop extends FormGeneral
 		pack();
 	}
 
-	public String showNewStopPointDialog()
+	public String showNewStoppingPointDialog()
 	{
 		return JOptionPane.showInputDialog(null, "Bitte geben Sie den Namen eines neuen Haltepunktes ein");
 	}
 
-	public String showEditStopPointDialog(String value)
+	public String showEditStoppingPointDialog(String value)
 	{
 		return JOptionPane.showInputDialog(null, "Bitte geben Sie den neuen Namen des Haltepunktes ein", value);
 	}
 
-	public int showDeleteStopPointDialog()
+	public int showDeleteStoppingPointDialog()
 	{
 		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 
-	public int getSelectedStopPoint()
+	public int getSelectedStoppingPoint()
 	{
 		return lStoppingPoints.getSelectedIndex();
 	}
 
-	public String getSelectedStopPointName()
+	public String getSelectedStoppingPointName()
 	{
 		return (String) lStoppingPoints.getSelectedValue();
 	}
 
-	public void addStopPoint(String name)
+	public void addStoppingPoint(String name)
 	{
 		lmStoppingPoints.addElement(name);
 	}
 
-	public void editStopPoint(int index, String name)
+	public void editStoppingPoint(int index, String name)
 	{
 		lmStoppingPoints.setElementAt(name, index);
 	}
 
-	public void removeStopPoint(int index)
+	public void removeStoppingPoint(int index)
 	{
 		lmStoppingPoints.remove(index);
 	}
+
 	public String getNameBusStop()
 	{
 		return tfName.getText();
@@ -242,14 +243,18 @@ public class FormBusStop extends FormGeneral
 		this.plLocation = plLocation;
 	}
 
-	public JPanel getStoppingPoints()
+	public List getStoppingPoints()
 	{
-		return plStoppingPoints;
-	}
+		List list = new List();
 
-	public void setStoppingPoints(JPanel plStoppingPoints)
-	{
-		this.plStoppingPoints = plStoppingPoints;
+		/**
+		 * loop which reads the arguments of my list and gives them to a new list
+		 */
+		for(int i = 0; i<lmStoppingPoints.getSize(); i++)
+		{
+			list.add(lmStoppingPoints.getElementAt(i));
+		}
+		return list;
 	}
 
 	public boolean getBarrierFree()
