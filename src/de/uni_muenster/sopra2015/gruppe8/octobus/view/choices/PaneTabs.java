@@ -13,7 +13,7 @@ public class PaneTabs extends JTabbedPane
 	{
 		super();
 
-		addTab("Example-Tab", new TabExample());
+		//addTab("Example-Tab", new TabExample());
 		addTab("Busnetz", new TabNetwork());
 		addTab("Busse", new TabBus());
 		addTab("Mitarbeiter", new TabEmployee());

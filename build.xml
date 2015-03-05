@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sopra" default="all">
-
+  
+  
   <property file="build.properties"/>
   <property environment="env"/>
   <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}" />
@@ -95,6 +96,15 @@
   <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
   
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.lib.classpath">
+    <fileset dir="${basedir}/lib">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
   <!-- Modules -->
   
   
@@ -118,20 +128,24 @@
   
   <path id="sopra.module.production.classpath">
     <path refid="${module.jdk.classpath.sopra}"/>
+    <path refid="library.lib.classpath"/>
   </path>
   
   <path id="sopra.runtime.production.module.classpath">
     <pathelement location="${sopra.output.dir}"/>
+    <path refid="library.lib.classpath"/>
   </path>
   
   <path id="sopra.module.classpath">
     <path refid="${module.jdk.classpath.sopra}"/>
     <pathelement location="${sopra.output.dir}"/>
+    <path refid="library.lib.classpath"/>
   </path>
   
   <path id="sopra.runtime.module.classpath">
     <pathelement location="${sopra.testoutput.dir}"/>
     <pathelement location="${sopra.output.dir}"/>
+    <path refid="library.lib.classpath"/>
   </path>
   
   
