@@ -5,4 +5,5 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
  */
 public interface ListenerTable {
     public abstract void tableSelectionChanged(EmitterTable emitter);
+	public abstract void tableContentChanged(EmitterTable emitter);
 }

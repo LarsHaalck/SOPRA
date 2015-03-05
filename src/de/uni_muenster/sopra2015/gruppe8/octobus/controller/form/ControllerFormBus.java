@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
@@ -46,6 +47,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 				{
 					if(saveToDB())
 					{
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUS);
 						closeDialog();
 					}
 				}
@@ -140,7 +142,10 @@ public class ControllerFormBus extends Controller implements ListenerButton
 
 	private boolean saveToDB()
 	{
-		controllerDatabase.modifyBus(bus);
+		if(objectID == -1)
+			controllerDatabase.addBus(bus);
+		else
+			controllerDatabase.modifyBus(bus);
 		return true;
 	}
 

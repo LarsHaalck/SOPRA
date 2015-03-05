@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBus;
 
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Controller for TabBus-class
  */
-public class ControllerTabBus extends Controller implements ListenerButton
+public class ControllerTabBus extends Controller implements ListenerButton, ListenerTable
 {
 	private TabBus tabBus;
 	private ControllerDatabase controllerDatabase;
@@ -68,11 +66,30 @@ public class ControllerTabBus extends Controller implements ListenerButton
 	protected void addListeners()
 	{
 		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerTable)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerTable)this);
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case TAB_BUS:
+				fillTable();
+				break;
+		}
 	}
 }

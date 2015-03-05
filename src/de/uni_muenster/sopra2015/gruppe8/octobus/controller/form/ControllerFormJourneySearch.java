@@ -113,5 +113,11 @@ public class ControllerFormJourneySearch extends Controller implements ListenerB
         }
     }
 
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+
+	}
+
 
 }

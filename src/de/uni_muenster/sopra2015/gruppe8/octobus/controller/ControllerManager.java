@@ -92,6 +92,13 @@ public class ControllerManager
             listener.tableSelectionChanged(emitter);
     }
 
+	public static void informTableContentChanged(EmitterTable emitter)
+	{
+		ArrayList<ListenerTable> list = new ArrayList<>(listenerTable);
+		for(ListenerTable listener : list)
+			listener.tableContentChanged(emitter);
+	}
+
 
 	/**
 	 * Clears lists of listeners.
