@@ -192,9 +192,9 @@ public class ControllerDatabaseJOOQ
 				.returning(BUSSTOPS.BUSSTOPS_ID)
 				.fetchOne();
 
-		HashSet<String> points = bstop.getStoppingPoints();
+		HashSet<StoppingPoint> points = bstop.getStoppingPoints();
 
-		for (String s : points)
+		for (StoppingPoint s : points)
 		{
 			create.insertInto(
                     BUSSTOPS_STOPPINGPOINTS,
@@ -202,7 +202,7 @@ public class ControllerDatabaseJOOQ
                     BUSSTOPS_STOPPINGPOINTS.NAME)
 				.values(
                         newStop.getBusstopsId(),
-                        s)
+                        s.getName())
 				.execute();
 		}
 
@@ -252,10 +252,10 @@ public class ControllerDatabaseJOOQ
 			Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
-			HashSet<String> spoints = new HashSet<>();
+			HashSet<StoppingPoint> spoints = new HashSet<>();
 			for (Record sp : stoppingPoints)
 			{
-				spoints.add(sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));		//.. and put them into a HashSet
+				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));		//.. and put them into a HashSet
 			}
 
 			BusStop busStop = new BusStop(
@@ -276,25 +276,22 @@ public class ControllerDatabaseJOOQ
      */
     public BusStop getBusStop(int id)
     {
-        Record busStopRecord = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();		// get all busStops from DB
+        Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();		// get all busStops from DB
         Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)	//.. get all corresponding stoppingPoints ...
-                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(busStopRecord.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
-        HashSet<String> spoints = new HashSet<>();
-        for (Record sp : stoppingPoints)
-        {
-            spoints.add(sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));		//.. and put them into a HashSet
-        }
+		HashSet<StoppingPoint> spoints = new HashSet<>();
+		for (Record sp : stoppingPoints)
+		{
+			spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));		//.. and put them into a HashSet
+		}
 
-        BusStop busStop = new BusStop(
-                busStopRecord.getValue(BUSSTOPS.NAME),
-                new Tuple<Integer,Integer>(
-                        busStopRecord.getValue(BUSSTOPS.LOCATIONX),
-                        busStopRecord.getValue(BUSSTOPS.LOCATIONY)
-                ),
-                spoints,
-                busStopRecord.getValue(BUSSTOPS.BARRIERFREE)
-        );
+		BusStop busStop = new BusStop(
+				rec.getValue(BUSSTOPS.NAME),
+				new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
+				spoints,
+				rec.getValue(BUSSTOPS.BARRIERFREE));
+
 		busStop.setId(id);
         return busStop;
 
@@ -543,16 +540,18 @@ public class ControllerDatabaseJOOQ
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
-		LinkedList<Tuple<BusStop,Integer>>  stops = r.getStops();
-		for (Tuple<BusStop,Integer> pair : stops)
+		LinkedList<Triple<BusStop,StoppingPoint,Integer>>  stops = r.getStops();
+		for (Triple<BusStop,StoppingPoint,Integer> triple : stops)
 		{
 			create.insertInto(ROUTES_STOPS,
                     ROUTES_STOPS.ROUTES_ID,
                     ROUTES_STOPS.BUSSTOPS_ID,
+					ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID,
 					ROUTES_STOPS.TIMETOPREVIOUS)
 					.values(newRoute.getRoutesId(),
-                            pair.getFirst().getId(),
-                            pair.getSecond())
+							triple.getFirst().getId(),
+							triple.getSecond().getId(),
+							triple.getThird())
 					.execute();
 		}
 
@@ -642,14 +641,15 @@ public class ControllerDatabaseJOOQ
 
 			Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)    //.. get all corresponding stoppingPoints ...
 					.where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
-			LinkedList<Tuple<BusStop, Integer>> stops = new LinkedList<>();
+			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
 
 			for (Record s : stopsRecords)
 			{
 				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 				BusStop bstop = getBusStop(stopId);
-				stops.add(new Tuple<>(bstop,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
+				StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 			}
 
 			Route route = new Route(
@@ -706,13 +706,14 @@ public class ControllerDatabaseJOOQ
 
 		Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)    //.. get all corresponding stoppingPoints ...
 				.where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
-		LinkedList<Tuple<BusStop, Integer>> stops = new LinkedList<>();
+		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
 		for (Record s : stopsRecords)
 		{
 			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 			BusStop bstop = getBusStop(stopId);
-			stops.add(new Tuple<>(bstop,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
+			StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 		}
 
 		Route route = new Route(
@@ -771,8 +772,8 @@ public class ControllerDatabaseJOOQ
 	{
 		create.update(SOLDTICKETS)
 				.set(SOLDTICKETS.NAME, sold.getName())
-				.set(SOLDTICKETS.TIMESTAMP,(int) sold.getDate().getTime()/1000)
-				.set(SOLDTICKETS.PRICE,sold.getPrice())
+				.set(SOLDTICKETS.TIMESTAMP, (int) sold.getDate().getTime() / 1000)
+				.set(SOLDTICKETS.PRICE, sold.getPrice())
 				.execute();
 	}
 
