@@ -119,10 +119,10 @@ public class Route
 	{
 		int duration = 0;
 		boolean sumUp = false;
-		for(Triple<BusStop, StoppingPoint,Integer>)
+		for(Triple<BusStop, StoppingPoint,Integer> t : stops)
 		{
 			if(sumUp)
-				duration += t.getSecond();
+				duration += t.getThird();
 			if(t.getFirst().equals(start))
 				sumUp = true;
 			if(t.getFirst().equals(end))
