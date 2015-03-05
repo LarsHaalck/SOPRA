@@ -103,10 +103,9 @@ public class ControllerDatabaseJOOQ
 	/**
 	 * Modifies a bus in database by using its database-internal id
 	 *
-	 * @param id contains the unique internal ID of the bus to be modified
 	 * @param bus bus object containing the new properties
 	 */
-	public void modifyBus(int id, Bus bus)
+	public void modifyBus(Bus bus)
 	{
 		create.update(BUSES)
 				.set(BUSES.LICENCEPLATE,bus.getLicencePlate())
@@ -116,7 +115,7 @@ public class ControllerDatabaseJOOQ
 				.set(BUSES.MODEL,bus.getModel())
 				.set(BUSES.NEXTINSPECTIONDUE,(int) bus.getNextInspectionDue().getTime()/1000)
 				.set(BUSES.ARTICULATEDBUS, bus.isArticulatedBus())
-				.where(BUSES.BUSES_ID.equal(id))
+				.where(BUSES.BUSES_ID.equal(bus.getId()))
 				.execute();
 	}
 

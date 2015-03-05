@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord> {
 
-	private static final long serialVersionUID = -749415873;
+	private static final long serialVersionUID = 706239277;
 
 	/**
 	 * The reference instance of <code>buses</code>
@@ -39,7 +39,7 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	/**
 	 * The column <code>buses.licencePlate</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> LICENCEPLATE = createField("licencePlate", org.jooq.impl.SQLDataType.CLOB.length(50).nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> LICENCEPLATE = createField("licencePlate", org.jooq.impl.SQLDataType.CLOB.length(10).nullable(false), this, "");
 
 	/**
 	 * The column <code>buses.numberOfSeats</code>.
@@ -54,12 +54,12 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	/**
 	 * The column <code>buses.manufacturer</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MANUFACTURER = createField("manufacturer", org.jooq.impl.SQLDataType.CLOB.length(50), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MANUFACTURER = createField("manufacturer", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>buses.model</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MODEL = createField("model", org.jooq.impl.SQLDataType.CLOB.length(50), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.String> MODEL = createField("model", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
 
 	/**
 	 * The column <code>buses.nextInspectionDue</code>.

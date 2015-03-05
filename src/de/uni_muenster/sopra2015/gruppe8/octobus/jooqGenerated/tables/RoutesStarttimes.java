@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RoutesStarttimes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord> {
 
-	private static final long serialVersionUID = -1046260900;
+	private static final long serialVersionUID = 1227174437;
 
 	/**
 	 * The reference instance of <code>routes_startTimes</code>
@@ -95,14 +95,6 @@ public class RoutesStarttimes extends org.jooq.impl.TableImpl<de.uni_muenster.so
 	@Override
 	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord>> getKeys() {
 		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_ROUTES_STARTTIMES);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public java.util.List<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesStarttimesRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_ROUTES_STARTTIMES_ROUTES_1);
 	}
 
 	/**

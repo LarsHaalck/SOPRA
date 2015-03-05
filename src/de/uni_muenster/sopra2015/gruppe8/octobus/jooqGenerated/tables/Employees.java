@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord> {
 
-	private static final long serialVersionUID = 1114170029;
+	private static final long serialVersionUID = 1881079955;
 
 	/**
 	 * The reference instance of <code>employees</code>
@@ -54,7 +54,7 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 	/**
 	 * The column <code>employees.zipCode</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> ZIPCODE = createField("zipCode", org.jooq.impl.SQLDataType.CLOB.length(200), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> ZIPCODE = createField("zipCode", org.jooq.impl.SQLDataType.CLOB.length(10), this, "");
 
 	/**
 	 * The column <code>employees.city</code>.
@@ -79,7 +79,7 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 	/**
 	 * The column <code>employees.username</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> USERNAME = createField("username", org.jooq.impl.SQLDataType.CLOB.length(200).nullable(false), this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.String> USERNAME = createField("username", org.jooq.impl.SQLDataType.CLOB.length(10).nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.salt</code>.

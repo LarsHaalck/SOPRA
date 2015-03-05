@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord> {
 
-	private static final long serialVersionUID = 772946145;
+	private static final long serialVersionUID = 604715772;
 
 	/**
 	 * The reference instance of <code>tours</code>
@@ -52,9 +52,9 @@ public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> BUSES_ID = createField("buses_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>tours.employee_id</code>.
+	 * The column <code>tours.employees_id</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> EMPLOYEE_ID = createField("employee_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, java.lang.Integer> EMPLOYEES_ID = createField("employees_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>tours</code> table reference
@@ -100,14 +100,6 @@ public class Tours extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	@Override
 	public java.util.List<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>> getKeys() {
 		return java.util.Arrays.<org.jooq.UniqueKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.PK_TOURS);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public java.util.List<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord, ?>>asList(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_ROUTES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_BUSES_1, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.FK_TOURS_EMPLOYEES_1);
 	}
 
 	/**

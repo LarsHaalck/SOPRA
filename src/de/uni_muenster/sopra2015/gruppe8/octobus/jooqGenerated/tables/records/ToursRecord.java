@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.ToursRecord> implements org.jooq.Record5<java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer> {
 
-	private static final long serialVersionUID = 951180593;
+	private static final long serialVersionUID = 997166352;
 
 	/**
 	 * Setter for <code>tours.tours_id</code>.
@@ -75,16 +75,16 @@ public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenst
 	}
 
 	/**
-	 * Setter for <code>tours.employee_id</code>.
+	 * Setter for <code>tours.employees_id</code>.
 	 */
-	public void setEmployeeId(java.lang.Integer value) {
+	public void setEmployeesId(java.lang.Integer value) {
 		setValue(4, value);
 	}
 
 	/**
-	 * Getter for <code>tours.employee_id</code>.
+	 * Getter for <code>tours.employees_id</code>.
 	 */
-	public java.lang.Integer getEmployeeId() {
+	public java.lang.Integer getEmployeesId() {
 		return (java.lang.Integer) getValue(4);
 	}
 
@@ -157,7 +157,7 @@ public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenst
 	 */
 	@Override
 	public org.jooq.Field<java.lang.Integer> field5() {
-		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tours.TOURS.EMPLOYEE_ID;
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tours.TOURS.EMPLOYEES_ID;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenst
 	 */
 	@Override
 	public java.lang.Integer value5() {
-		return getEmployeeId();
+		return getEmployeesId();
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenst
 	 */
 	@Override
 	public ToursRecord value5(java.lang.Integer value) {
-		setEmployeeId(value);
+		setEmployeesId(value);
 		return this;
 	}
 
@@ -267,13 +267,13 @@ public class ToursRecord extends org.jooq.impl.UpdatableRecordImpl<de.uni_muenst
 	/**
 	 * Create a detached, initialised ToursRecord
 	 */
-	public ToursRecord(java.lang.Integer toursId, java.lang.Integer timestamp, java.lang.Integer routesId, java.lang.Integer busesId, java.lang.Integer employeeId) {
+	public ToursRecord(java.lang.Integer toursId, java.lang.Integer timestamp, java.lang.Integer routesId, java.lang.Integer busesId, java.lang.Integer employeesId) {
 		super(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Tours.TOURS);
 
 		setValue(0, toursId);
 		setValue(1, timestamp);
 		setValue(2, routesId);
 		setValue(3, busesId);
-		setValue(4, employeeId);
+		setValue(4, employeesId);
 	}
 }
