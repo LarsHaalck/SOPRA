@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormJourneySearch;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,10 +21,9 @@ public class FormJourneySearch extends FormGeneral
     final private int halfDefaultWidth = WIDTH/2;
 
     //Controller
-    ControllerFormJourneySearch controllerFormJourneySearch = new ControllerFormJourneySearch();
+    ControllerFormJourneySearch controllerFormJourneySearch;
 
     //ParentJPanels for left and right side.
-    private JPanel leftParentGridPanel;
     private JPanel rightParentGridPanel;
 
     //Components
@@ -70,6 +70,7 @@ public class FormJourneySearch extends FormGeneral
             e.printStackTrace();
         }
 
+        controllerFormJourneySearch = new ControllerFormJourneySearch(this);
 
         initComponents();
 
@@ -93,41 +94,32 @@ public class FormJourneySearch extends FormGeneral
 
         //Button to make a searchrequest
         searchButton = new JButton("Suchen");
-        searchButton.addActionListener(e -> {
-            //controllerFormSearchConnection.buttonPressed(EmitterButton.FORM_SEARCH_SEARCH);
-            modifyRightGridPanel();
-            rightParentGridPanel.revalidate();
-            rightParentGridPanel.repaint();
-        });
+        searchButton.addActionListener(e ->
+                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_SEARCH));
 
         //Button to show (add) earlier results in the journeytable
         earlierButton = new JButton("Früher");
-        earlierButton.addActionListener(e -> {
-            controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_SEARCH_EARLIER);
-        });
+        earlierButton.addActionListener(e ->
+                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_EARLIER));
 
         //Button to show (add) the earliest journey in the journeytable.
         firstButton = new JButton("Erster Fahrt");
-        firstButton.addActionListener(e -> {
-            controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_SEARCH_FIRST);
-        });
+        firstButton.addActionListener(e ->
+                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_FIRST));
 
         //Analog to earlier
         laterButton = new JButton("Später");
-        laterButton.addActionListener(e -> {
-            controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_SEARCH_LATER);
-        });
+        laterButton.addActionListener(e ->
+                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_LATER));
 
         //Analog to first
         lastButton = new JButton("Letzte Fahrt");
-        lastButton.addActionListener(e -> {
-            controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_SEARCH_LAST);
-        });
+        lastButton.addActionListener(e ->
+                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_LAST));
 
         //Comboboxes to choose date and time.
         //TODO: Add listeners and functionality
-        //TODO: How to implement dateSelection (Calender?)?
-        //cal = new Calendar();
+        //TODO: Implement dateSelection?
 
         //dateSelection = new JComboBox<>();
         hourSelection = new JComboBox<>();
@@ -161,9 +153,26 @@ public class FormJourneySearch extends FormGeneral
         };
 
 
+        //Let's the user only select one row at time
+        class ForcedListSelectionModel extends DefaultListSelectionModel
+        {
+            public ForcedListSelectionModel () {
+                setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            }
+
+            @Override
+            public void clearSelection() {
+            }
+
+            @Override
+            public void removeSelectionInterval(int index0, int index1) {
+            }
+        }
 
         journeySearchResultTable = new JTable(tableModel);
-        //journeySearchResultTable.getSelectionModel().addListSelectionListener(new TableLis );
+        journeySearchResultTable.setSelectionModel(new ForcedListSelectionModel());
+        journeySearchResultTable.getSelectionModel().addListSelectionListener(e ->
+                controllerFormJourneySearch.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT));
         journeySearchResultTable.setPreferredSize(new Dimension(512, 400));
         tableScrollPane = new JScrollPane(journeySearchResultTable);
         tableScrollPane.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
@@ -285,26 +294,6 @@ public class FormJourneySearch extends FormGeneral
     {
         rightParentGridPanel = new JPanel();
 
-        /*rightParentGridPanel.setLayout(new BoxLayout(rightParentGridPanel, BoxLayout.Y_AXIS));
-
-
-        //Earlier and later Buttons to look for earlier/later Journeys
-        JPanel earlierButtonsPanel = new JPanel();
-        earlierButtonsPanel.setLayout(new BoxLayout(earlierButtonsPanel, BoxLayout.X_AXIS));
-        earlierButtonsPanel.add(earlierButton);
-        earlierButtonsPanel.add(firstButton);
-
-
-        JPanel laterButtonsPanel = new JPanel();
-        laterButtonsPanel.setLayout(new BoxLayout(laterButtonsPanel, BoxLayout.X_AXIS));
-        laterButtonsPanel.add(laterButton);
-        laterButtonsPanel.add(lastButton);
-
-        rightParentGridPanel.add(earlierButtonsPanel);
-        rightParentGridPanel.add(tableScrollPane);
-        rightParentGridPanel.add(laterButtonsPanel);
-        */
-
         //The transparent border.
         JPanel rightTransparent = new JPanel();
         rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
@@ -318,13 +307,10 @@ public class FormJourneySearch extends FormGeneral
     }
 
 
-    //TODO: Doesn't work!
     /**
-     * Doesn't work yet. Should modify the rightGridPanel by removing all elements it's containing now
-     * (a transparent border) and adding buttons and the table which should contain the journeys found for the search.
-     * Should be called the first time the search-button is pressed.
+     *
      */
-    private void modifyRightGridPanel()
+    public void modifyRightGridPanel()
     {
         rightParentGridPanel.removeAll();
         rightParentGridPanel.setLayout(new BoxLayout(rightParentGridPanel, BoxLayout.Y_AXIS));
@@ -355,8 +341,15 @@ public class FormJourneySearch extends FormGeneral
 
         //Add components to new rightParent
 
-        rightParentGridPanel.invalidate();
+        rightParentGridPanel.revalidate();
         rightParentGridPanel.repaint();
+    }
+
+    public void displayInformationInBox(String[] journey)
+    {
+        JTextPane textPane = new JTextPane();
+        selectedJourney.removeAll();
+
     }
 
     public JPanel getRightParentGridPanel()
@@ -364,6 +357,10 @@ public class FormJourneySearch extends FormGeneral
         return rightParentGridPanel;
     }
 
+    public JTable getJourneySearchResultTable()
+    {
+        return journeySearchResultTable;
+    }
 
     public String getOrigin()
     {
@@ -378,22 +375,8 @@ public class FormJourneySearch extends FormGeneral
 
 
     public static void main(String[] args) {
-        /*JFrame formJourneySearch = new JFrame();
-        formJourneySearch.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        formJourneySearch.setResizable(false);
-        // Make sure we don't lose any space to window decorations
-        formJourneySearch.getContentPane().setPreferredSize(new Dimension(1024, 640));
-        formJourneySearch.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        formJourneySearch.setResizable(false);
-        formJourneySearch.pack();
-        // Center frame on screen (as per http://stackoverflow.com/a/2442614/2010258)
-        formJourneySearch.setLocationRelativeTo(null);
-        formJourneySearch.setVisible(true);*/
-
         JFrame jojo = new JFrame();
         JDialog dialog = new FormJourneySearch(jojo);
-        //dialog.getContentPane().setPreferredSize(new Dimension(1024, 640));
     }
 
 }
