@@ -40,7 +40,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			case FORM_BUS_STOP_ADD_POINT:
 				while(true)
 				{
-					String newAnswer = dialog.showNewStopPointDialog();
+					String newAnswer = dialog.showNewStoppingPointDialog();
 					if (newAnswer != null)
 					{
 						if (newAnswer.length() == 0)
@@ -48,7 +48,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 							dialog.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
 						} else
 						{
-							dialog.addStopPoint(newAnswer);
+							dialog.addStoppingPoint(newAnswer);
 							break;
 						}
 					}
@@ -60,19 +60,19 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				break;
 
 			case FORM_BUS_STOP_DELETE_POINT:
-				if(dialog.getSelectedStopPoint() == -1)
+				if(dialog.getSelectedStoppingPoint() == -1)
 					break;
-				if(dialog.showDeleteStopPointDialog() == JOptionPane.YES_OPTION)
-					dialog.removeStopPoint(dialog.getSelectedStopPoint());
+				if(dialog.showDeleteStoppingPointDialog() == JOptionPane.YES_OPTION)
+					dialog.removeStoppingPoint(dialog.getSelectedStoppingPoint());
 				break;
 
 			case FORM_BUS_STOP_EDIT_POINT:
 				//Don't do anything if no stop-point is selected
-				if(dialog.getSelectedStopPoint() == -1)
+				if(dialog.getSelectedStoppingPoint() == -1)
 					break;
 				while(true)
 				{
-					String newAnswer = dialog.showEditStopPointDialog(dialog.getSelectedStopPointName());
+					String newAnswer = dialog.showEditStoppingPointDialog(dialog.getSelectedStoppingPointName());
 					if (newAnswer != null)
 					{
 						if (newAnswer.length() == 0)
@@ -80,7 +80,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 							dialog.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
 						} else
 						{
-							dialog.editStopPoint(dialog.getSelectedStopPoint(), newAnswer);
+							dialog.editStoppingPoint(dialog.getSelectedStoppingPoint(), newAnswer);
 							break;
 						}
 					}
