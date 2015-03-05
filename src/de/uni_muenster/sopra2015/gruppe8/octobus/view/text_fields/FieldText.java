@@ -8,6 +8,7 @@ import javax.swing.text.PlainDocument;
 
 public class FieldText extends JFormattedTextField
 {
+
 	private int limit;
 
 	public FieldText()
@@ -27,10 +28,21 @@ public class FieldText extends JFormattedTextField
 		this.limit = limit;
 	}
 
+
 	@Override
 	protected Document createDefaultModel()
 	{
 		return new LimitDocument();
+	}
+
+	public int getLimit()
+	{
+		return limit;
+	}
+
+	public void setLimit(int limit)
+	{
+		this.limit = limit;
 	}
 
 	private class LimitDocument extends PlainDocument

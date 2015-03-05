@@ -33,7 +33,6 @@ public class FieldDate extends FieldText
 		});
 
 	}
-
 	private boolean isValidDate()
 	{
 		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(this.getText()).matches()) //regex for date
@@ -45,7 +44,6 @@ public class FieldDate extends FieldText
 
 	public Date getDate()
 	{
-		this.setText("3.4.1994");
 		if(isValidDate())
 		{
 			String input = this.getText();
@@ -87,9 +85,7 @@ public class FieldDate extends FieldText
 			}
 
 			Calendar c = Calendar.getInstance();
-			c.set(Calendar.YEAR, year);
-			c.set(Calendar.MONTH, month);
-			c.set(Calendar.DAY_OF_MONTH, day);
+			c.set(year, month - 1, day, 0, 0);
 
 			return c.getTime();
 		}
