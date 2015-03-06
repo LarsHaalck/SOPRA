@@ -19,6 +19,12 @@ public class TableModelEmployee extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsEmployee.NAME.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsEmployee.NAME.toString(), ColumnsEmployee.FIRST_NAME.toString(),

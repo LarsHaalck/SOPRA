@@ -17,6 +17,12 @@ public class TableModelWorkPlan extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsWorkPlan.DATE.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsWorkPlan.DATE.toString(), ColumnsWorkPlan.START.toString(), ColumnsWorkPlan.END.toString()};

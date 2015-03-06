@@ -19,6 +19,12 @@ public class TableModelTicket extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsTicket.NAME.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsTicket.NAME.toString()};
