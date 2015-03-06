@@ -68,7 +68,8 @@ public class DisplayNetwork extends JPanel
 		{
 			if(g2 == null)
 				continue;
-			g2.drawOval(dataBusStop.getX(), dataBusStop.getY(), 20, 20);
+			g2.fillOval(dataBusStop.getX()-10, dataBusStop.getY()-10, 20, 20);
+			g2.drawString(dataBusStop.getName(), dataBusStop.getX()+25, dataBusStop.getY() + 25);
 		}
 	}
 }
