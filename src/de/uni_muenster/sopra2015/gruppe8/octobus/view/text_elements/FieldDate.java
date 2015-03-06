@@ -1,20 +1,17 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class FieldDate extends FieldText
 {
+    private int year, month, day;
+
 	public FieldDate()
 	{
 		super(11);
@@ -36,30 +33,21 @@ public class FieldDate extends FieldText
 	private boolean isValidDate()
 	{
 		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(this.getText()).matches()) //regex for date
-			return true;
-		else
-			return false;
-	}
+        {
 
-
-	public Date getDate()
-	{
-		if(isValidDate())
-		{
 			String input = this.getText();
 			int indexDot = input.indexOf('.');
-			int day = Integer.parseInt(input.substring(0, indexDot));
+			day = Integer.parseInt(input.substring(0, indexDot));
 			input =  input.substring(indexDot + 1);
 			indexDot = input.indexOf('.');
 
-			int month = Integer.parseInt(input.substring(0, indexDot));
+			month = Integer.parseInt(input.substring(0, indexDot));
 			input = input.substring(indexDot + 1);
-			indexDot = input.indexOf('.');
 
-			int year = Integer.parseInt(input.substring(0));
+			year = Integer.parseInt(input.substring(0));
 
 			if(year < 0 || month < 1 || month > 12 || day > 31 || day < 1)
-				return null;
+				return false;
 
 			boolean isLeapYear = ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0));
 			switch (month)
@@ -77,12 +65,25 @@ public class FieldDate extends FieldText
 				case 6:
 				case 9:
 				case 11:
-					if(day > 30) return null;
+					if(day > 30) return false;
 					break;
 				case 2:
-					if(isLeapYear && day > 29) return null;
-					else if(!isLeapYear && day > 28) return null;
+					if(isLeapYear && day > 29) return false;
+					else if(!isLeapYear && day > 28) return false;
 			}
+			return true;
+        }
+		else
+        {
+			return false;
+        }
+	}
+
+
+	public Date getDate()
+	{
+		if(isValidDate())
+		{
 
 			Calendar c = Calendar.getInstance();
 			c.set(year, month - 1, day, 0, 0);

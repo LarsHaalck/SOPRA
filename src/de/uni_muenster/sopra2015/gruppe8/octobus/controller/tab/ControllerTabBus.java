@@ -30,6 +30,9 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		switch(btn)
 		{
 			case TAB_BUS_DELETE:
+				controllerDatabase.deleteBus(tabBus.getSelectedID());
+				//TODO: I think it would be more performant to just delete table-entry instead of full reload
+				fillTable();
 				break;
 
 			case TAB_BUS_EDIT:
@@ -54,10 +57,10 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 			data[i][1] = bus.getLicencePlate();
 			data[i][2] = bus.getManufacturer();
 			data[i][3] = bus.getModel();
-			data[i][4] = bus.isArticulatedBus() ? "Gelenkbus" : "Normal";
+			data[i][4] = bus.isArticulatedBus();
 			data[i][5] = bus.getNumberOfSeats();
 			data[i][6] = bus.getStandingRoom();
-			data[i][7] = bus.getNextInspectionDue().toString();
+			data[i][7] = parseDate(bus.getNextInspectionDue());
 		}
 		tabBus.fillTable(data);
 	}

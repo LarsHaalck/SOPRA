@@ -98,10 +98,9 @@ public class ControllerDatabase
                         bus.getStandingRoom(),
                         bus.getManufacturer(),
 						bus.getModel(),
-                        (int) bus.getNextInspectionDue().getTime()/1000,
+                        (int) (bus.getNextInspectionDue().getTime()/1000),
                         (Boolean) bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
-				// TODO: Does this need "execute" instead of "fetch(One)()"?
                 .fetchOne();
 
 		return(newBus.getBusesId());
@@ -130,7 +129,7 @@ public class ControllerDatabase
 				.set(BUSES.STANDINGROOM, bus.getStandingRoom())
 				.set(BUSES.MANUFACTURER,bus.getManufacturer())
 				.set(BUSES.MODEL,bus.getModel())
-				.set(BUSES.NEXTINSPECTIONDUE,(int) bus.getNextInspectionDue().getTime()/1000)
+				.set(BUSES.NEXTINSPECTIONDUE,(int) (bus.getNextInspectionDue().getTime()/1000))
 				.set(BUSES.ARTICULATEDBUS, bus.isArticulatedBus())
 				.where(BUSES.BUSES_ID.equal(bus.getId()))
 				.execute();
@@ -180,13 +179,11 @@ public class ControllerDatabase
                 busRecord.getValue(BUSES.STANDINGROOM),
                 busRecord.getValue(BUSES.MANUFACTURER),
                 busRecord.getValue(BUSES.MODEL),
-                new Date(busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+				new Date((long) busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
                 busRecord.getValue(BUSES.ARTICULATEDBUS));
         bus.setId(id);
 		return bus;
     }
-
-    // TODO: getBus(String licensePlate)?
 
 	////////////////////////////
 	// Methods for "BusStop"s //
@@ -284,11 +281,15 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
+			//TODO Remove this.
+			boolean barrier = false;
+			if(rec.getValue(BUSSTOPS.BARRIERFREE) != null)
+				barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
-					rec.getValue(BUSSTOPS.BARRIERFREE));
+					barrier);
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
@@ -329,9 +330,9 @@ public class ControllerDatabase
 
     }
 
-	///////////////////////////
-	// Methods for Employees //
-	///////////////////////////
+	/////////////////////////////
+	// Methods for "Employee"s //
+	/////////////////////////////
 
     /**
      * Creates a new database entry for an Employee object
@@ -405,14 +406,14 @@ public class ControllerDatabase
 				.set(EMPLOYEES.ADDRESS,emp.getAddress())
 				.set(EMPLOYEES.ZIPCODE,emp.getZipCode())
 				.set(EMPLOYEES.CITY,emp.getCity())
-				.set(EMPLOYEES.DATEOFBIRTH,(int) emp.getDateOfBirth().getTime()/1000)
+				.set(EMPLOYEES.DATEOFBIRTH,(int) (emp.getDateOfBirth().getTime()/1000))
 				.set(EMPLOYEES.PHONE,emp.getPhone())
 				.set(EMPLOYEES.EMAIL,emp.getEmail())
 				.set(EMPLOYEES.USERNAME,emp.getUsername())
 				.set(EMPLOYEES.SALT,emp.getSalt())
 				.set(EMPLOYEES.PASSWORD,emp.getPassword())
 				.set(EMPLOYEES.NOTE,emp.getNote())
-				.set(EMPLOYEES.ISBUSDRIVER,emp.isRole(Role.BUSDRIVER))
+				.set(EMPLOYEES.ISBUSDRIVER, emp.isRole(Role.BUSDRIVER))
 				.set(EMPLOYEES.ISNETWORK_PLANNER,emp.isRole(Role.NETWORK_PLANNER))
 				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
 				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
@@ -452,7 +453,7 @@ public class ControllerDatabase
 					rec.getValue(EMPLOYEES.ADDRESS),
 					rec.getValue(EMPLOYEES.ZIPCODE),
 					rec.getValue(EMPLOYEES.CITY),
-					new Date(rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
+					new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
 					rec.getValue(EMPLOYEES.PHONE),
 					rec.getValue(EMPLOYEES.EMAIL),
 					rec.getValue(EMPLOYEES.USERNAME),
@@ -460,6 +461,7 @@ public class ControllerDatabase
 					rec.getValue(EMPLOYEES.SALT),
 					rec.getValue(EMPLOYEES.NOTE),
 					roles);
+			emp.setId(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
 			empList.add(emp);
 		}
 		return empList;
@@ -493,7 +495,7 @@ public class ControllerDatabase
 				rec.getValue(EMPLOYEES.ADDRESS),
 				rec.getValue(EMPLOYEES.ZIPCODE),
 				rec.getValue(EMPLOYEES.CITY),
-				new Date(rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
+				new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
 				rec.getValue(EMPLOYEES.PHONE),
 				rec.getValue(EMPLOYEES.EMAIL),
 				rec.getValue(EMPLOYEES.USERNAME),
@@ -512,9 +514,9 @@ public class ControllerDatabase
     }
 
 
-	////////////////////////
-	// Methods for Routes //
-	////////////////////////
+	//////////////////////////
+	// Methods for "Route"s //
+	//////////////////////////
 
     /**
      * Creates a new database entry for a Route object
@@ -731,9 +733,9 @@ public class ControllerDatabase
 	}
 
 
-	/////////////////////////////
-	// Methods for soldTickets //
-	/////////////////////////////
+	///////////////////////////////
+	// Methods for "soldTicket"s //
+	///////////////////////////////
 
     /**
      * Retrieves a list of SoldTicket objects representing all sold ticket entries stored in the database
@@ -751,7 +753,7 @@ public class ControllerDatabase
 			SoldTicket sold = new SoldTicket(
 					rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
 					rec.getValue(SOLDTICKETS.NAME),
-					new Date(rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
+					new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
 					rec.getValue(SOLDTICKETS.PRICE));
 			soldTicketsList.add(sold);
 		}
@@ -771,15 +773,15 @@ public class ControllerDatabase
 		SoldTicket sold = new SoldTicket(
 				rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
 				rec.getValue(SOLDTICKETS.NAME),
-				new Date(rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
+				new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
 				rec.getValue(SOLDTICKETS.PRICE));
 		sold.setId(id);
 		return(sold);
 	}
 
-	/////////////////////////
-	// Methods for Tickets //
-	/////////////////////////
+	///////////////////////////
+	// Methods for "Ticket"s //
+	///////////////////////////
 
     /**
      * Creates a new database entry for a Ticket object
@@ -787,7 +789,7 @@ public class ControllerDatabase
      * @param tick Ticket object to be stored in the database
      * @return unique ID of newly created name entry in the database
      */
-	public int addTickets(Ticket tick)
+	public int addTicket(Ticket tick)
 	{
 		TicketsRecord newTick = create.insertInto(TICKETS,
                 TICKETS.NAME,
@@ -819,7 +821,7 @@ public class ControllerDatabase
      *
      * @param tick Ticket object whose entry is to be updated in the database
      */
-	public void modifyTickets(Ticket tick)
+	public void modifyTicket(Ticket tick)
 	{
 		create.update(TICKETS)
 				.set(TICKETS.NAME, tick.getName())
@@ -874,9 +876,9 @@ public class ControllerDatabase
 		return(tick);
 	}
 
-	////////////////////////
-	//	Methods for Tours //
-	////////////////////////
+	//////////////////////////
+	//	Methods for "Tour"s //
+	//////////////////////////
 
 	// TODO: Implementieren!
     // TODO: 2015-03-05 - Most of this should work by now...
@@ -925,5 +927,31 @@ public class ControllerDatabase
 
             create.execute("END");
         }
+    }
+
+    /**
+     * Retrieves all tours to which the given user is assigned from the database
+     *
+     * @param id unique ID of the user whose tours are to be retrieved
+     * @return ArrayList of all tours associated with the given user
+     */
+    public ArrayList<Tour> getUserTours(int id)
+    {
+        ArrayList<Tour> result = new ArrayList<>();
+
+        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).fetch();
+
+        for (ToursRecord t : tours){
+            result.add(
+                    new Tour(
+                            new Date((long) t.getTimestamp()*1000),
+                            getRoute(t.getRoutesId()),
+                            getBus(t.getBusesId()),
+                            getEmployee(t.getEmployeesId())
+                    )
+            );
+        }
+
+        return result;
     }
 }

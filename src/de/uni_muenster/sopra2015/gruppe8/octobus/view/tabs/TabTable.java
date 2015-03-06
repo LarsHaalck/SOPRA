@@ -120,7 +120,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 						}
 					});
 		}
-
 	}
 
 	public boolean isRefineable()
@@ -186,5 +185,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	public void fillTable(Object[][] data)
 	{
 		model.setData(data);
+		table.revalidate();
+		table.repaint();
 	}
 }

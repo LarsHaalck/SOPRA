@@ -13,6 +13,11 @@ public class BusStop
     private HashSet<StoppingPoint> stoppingPoints;
     private boolean barrierFree;
 
+	public BusStop()
+	{
+		this.stoppingPoints = new HashSet<>();
+	}
+
     public BusStop(String name, Tuple<Integer, Integer> location, HashSet<StoppingPoint> stoppingPoints, boolean barrierFree)
     {
         this.name = name;
@@ -70,4 +75,9 @@ public class BusStop
     {
         this.id = id;
     }
+
+	public int getStoppingPointsNum()
+	{
+		return stoppingPoints.size();
+	}
 }

@@ -1,10 +1,11 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
+import java.awt.*;
 
 public class FieldText extends JFormattedTextField
 {
@@ -35,14 +36,20 @@ public class FieldText extends JFormattedTextField
 		return new LimitDocument();
 	}
 
-	public int getLimit()
-	{
-		return limit;
-	}
-
 	public void setLimit(int limit)
 	{
 		this.limit = limit;
+	}
+
+	//TODO: delete if not necessary
+	public void setRedBorder(boolean toggle)
+	{
+		if(toggle)
+		{
+			this.setBorder(BorderFactory.createLineBorder(Color.red));
+		}
+		else
+			this.setBorder(null);
 	}
 
 	private class LimitDocument extends PlainDocument

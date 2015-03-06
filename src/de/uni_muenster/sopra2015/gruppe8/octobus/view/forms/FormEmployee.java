@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.AreaText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -46,7 +47,7 @@ public class FormEmployee extends FormGeneral
 	private JTextField tfBirthDate = new JTextField();
 	private JTextField tfPhone = new JTextField();
 	private JTextField tfMail = new JTextField();
-	private JTextArea tfNote = new JTextArea();
+	private JTextArea tfNote = new AreaText();
 	private JTextField tfUsername = new JTextField();
 
 	private JPanel plName = new JPanel();

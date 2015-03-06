@@ -1,12 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 /**
  * Class extends normal table to have methods for getting an array of specified columns and get index by column by name
  */
-public abstract class ExtendedTableModel implements TableModel
+public abstract class ExtendedTableModel extends AbstractTableModel
 {
 	protected String[] columnNames = new String[]{};
 	protected Object[][] data = new Object[][]{};
@@ -120,5 +121,7 @@ public abstract class ExtendedTableModel implements TableModel
 	public void setData(Object[][] data)
 	{
 		this.data = data;
+		fireTableStructureChanged();
+		fireTableDataChanged();
 	}
 }

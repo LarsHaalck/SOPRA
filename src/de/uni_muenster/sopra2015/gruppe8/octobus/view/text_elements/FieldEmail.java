@@ -1,8 +1,7 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FieldEmail extends FieldText

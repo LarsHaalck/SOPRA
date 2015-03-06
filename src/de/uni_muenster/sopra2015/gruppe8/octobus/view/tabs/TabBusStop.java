@@ -63,6 +63,8 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
 
+		controllerTabBusStop.fillTable();
+
 		setVisible(true);
 	}
 
