@@ -30,6 +30,9 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		switch(btn)
 		{
 			case TAB_BUS_DELETE:
+				controllerDatabase.deleteBus(tabBus.getSelectedID());
+				//TODO: I think it would be more performant to just delete table-entry instead of full reload
+				fillTable();
 				break;
 
 			case TAB_BUS_EDIT:
