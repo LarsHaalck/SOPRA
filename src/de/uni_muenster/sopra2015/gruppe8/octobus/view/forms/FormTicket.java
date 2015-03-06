@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.AreaText;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
@@ -17,23 +18,16 @@ public class FormTicket extends FormGeneral
 {
 	private ControllerFormTicket controllerFormTicket;
 
-
-	/*
-	 * every input has an own label, inputfield and panel
-	 */
-
 	private FieldText tfName;
 	private FieldNumber tfPrice;
 	private FieldNumber tfNumPassengers;
-	//TODO maybe own implementation of TextArea?
-	private JTextArea taDescription;
+	private AreaText taDescription;
 
 	/*
 	 * the buttons for save and cancel
 	 */
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
-
+	private JButton btSave;
+	private JButton btCancel;
 
 	public FormTicket(Frame parent, int objectID)
 	{
@@ -49,14 +43,7 @@ public class FormTicket extends FormGeneral
 
 		controllerFormTicket = new ControllerFormTicket(this, objectID);
 
-		btSave.addActionListener(e ->
-		{
-			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE);
-		});
-		btCancel.addActionListener(e ->
-		{
-			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
-		});
+
 
 
 
@@ -113,7 +100,8 @@ public class FormTicket extends FormGeneral
 
 		cstTextField.ipady=50;
 		cstTextField.gridy = 4;
-		taDescription = new JTextArea();
+		taDescription = new AreaText();
+		taDescription.setRows(2);
 		JScrollPane scrollPane = new JScrollPane(taDescription);
 		add(scrollPane, cstTextField);
 
@@ -123,12 +111,23 @@ public class FormTicket extends FormGeneral
 		cstButton.gridx = 0;
 		cstButton.gridy = 5;
 		cstButton.anchor = GridBagConstraints.LAST_LINE_START;
-		add(btCancel, cstButton);
+		btSave = new JButton("Speichern");
+		add(btSave, cstButton);
 
 		cstButton.gridx = 3;
 		cstButton.gridy = 5;
 		cstButton.anchor = GridBagConstraints.LAST_LINE_END;
-		add(btSave, cstButton);
+		btCancel = new JButton("Abbrechen");
+		add(btCancel, cstButton);
+
+		btSave.addActionListener(e ->
+		{
+			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE);
+		});
+		btCancel.addActionListener(e ->
+		{
+			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
+		});
 
 		pack();
 		setLocationRelativeTo(null);
