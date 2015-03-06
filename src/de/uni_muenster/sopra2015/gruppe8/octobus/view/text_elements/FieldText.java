@@ -39,9 +39,8 @@ public class FieldText extends JFormattedTextField
 	{
 		super();
 		this.setColumns(columns);
-		if(limit == -1)
-			setLimit(limit);
-		else
+
+		if(limit != -1)
 			setLimit(limit);
 	}
 
