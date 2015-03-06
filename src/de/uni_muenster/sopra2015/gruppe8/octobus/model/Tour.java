@@ -7,15 +7,16 @@ import java.util.Date;
  */
 public class Tour
 {
-	private int id;			// database-internal id. is set when object is added to database
-	private Date date;
+    // ID assigned to the object in the database (set on first write to DB)
+    private int id;
+	private Date timestamp;
 	private Route route;
 	private Bus bus;
 	private Employee driver;
 
-	public Tour(Date date, int time, Route route, Bus bus, Employee driver)
+	public Tour(Date timestamp, Route route, Bus bus, Employee driver)
 	{
-		this.date = date;
+		this.timestamp = timestamp;
 		this.route = route;
 		this.bus = bus;
 		this.driver = driver;
@@ -31,14 +32,14 @@ public class Tour
 		this.bus = bus;
 	}
 
-	public Date getDate()
+	public Date getTimestamp()
 	{
-		return date;
+		return timestamp;
 	}
 
-	public void setDate(Date date)
+	public void setTimestamp(Date timestamp)
 	{
-		this.date = date;
+		this.timestamp = timestamp;
 	}
 
 	public Route getRoute()

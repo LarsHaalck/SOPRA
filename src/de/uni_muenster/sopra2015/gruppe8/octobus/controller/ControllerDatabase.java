@@ -1,6 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
+
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
@@ -99,7 +101,7 @@ public class ControllerDatabase
                         bus.getManufacturer(),
 						bus.getModel(),
                         (int) (bus.getNextInspectionDue().getTime()/1000),
-                        (Boolean) bus.isArticulatedBus())
+                        bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
                 .fetchOne();
 
@@ -184,8 +186,6 @@ public class ControllerDatabase
         bus.setId(id);
 		return bus;
     }
-
-    // TODO: getBus(String licensePlate)?
 
 	////////////////////////////
 	// Methods for "BusStop"s //
@@ -332,9 +332,9 @@ public class ControllerDatabase
 
     }
 
-	///////////////////////////
-	// Methods for Employees //
-	///////////////////////////
+	/////////////////////////////
+	// Methods for "Employee"s //
+	/////////////////////////////
 
     /**
      * Creates a new database entry for an Employee object
@@ -415,7 +415,7 @@ public class ControllerDatabase
 				.set(EMPLOYEES.SALT,emp.getSalt())
 				.set(EMPLOYEES.PASSWORD,emp.getPassword())
 				.set(EMPLOYEES.NOTE,emp.getNote())
-				.set(EMPLOYEES.ISBUSDRIVER,emp.isRole(Role.BUSDRIVER))
+				.set(EMPLOYEES.ISBUSDRIVER, emp.isRole(Role.BUSDRIVER))
 				.set(EMPLOYEES.ISNETWORK_PLANNER,emp.isRole(Role.NETWORK_PLANNER))
 				.set(EMPLOYEES.ISTICKET_PLANNER,emp.isRole(Role.TICKET_PLANNER))
 				.set(EMPLOYEES.ISHR_MANAGER,emp.isRole(Role.HR_MANAGER))
@@ -516,9 +516,9 @@ public class ControllerDatabase
     }
 
 
-	////////////////////////
-	// Methods for Routes //
-	////////////////////////
+	//////////////////////////
+	// Methods for "Route"s //
+	//////////////////////////
 
     /**
      * Creates a new database entry for a Route object
@@ -534,7 +534,7 @@ public class ControllerDatabase
                 ROUTES.NIGHT)
 				.values(r.getName(),
                         r.getNote(),
-                        (Boolean) r.isNight())
+                        r.isNight())
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
@@ -675,7 +675,7 @@ public class ControllerDatabase
 	public Route getRoute(int id)
 	{
 	    // Start by getting the desired route from the database
-		Record rec = create.select().from(ROUTES).where(ROUTES.ROUTES.ROUTES_ID.eq(id)).fetchOne();
+		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
 
         // Fetch its starting times
         Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
@@ -735,9 +735,9 @@ public class ControllerDatabase
 	}
 
 
-	/////////////////////////////
-	// Methods for soldTickets //
-	/////////////////////////////
+	///////////////////////////////
+	// Methods for "soldTicket"s //
+	///////////////////////////////
 
     /**
      * Retrieves a list of SoldTicket objects representing all sold ticket entries stored in the database
@@ -781,9 +781,9 @@ public class ControllerDatabase
 		return(sold);
 	}
 
-	/////////////////////////
-	// Methods for Tickets //
-	/////////////////////////
+	///////////////////////////
+	// Methods for "Ticket"s //
+	///////////////////////////
 
     /**
      * Creates a new database entry for a Ticket object
@@ -791,7 +791,7 @@ public class ControllerDatabase
      * @param tick Ticket object to be stored in the database
      * @return unique ID of newly created name entry in the database
      */
-	public int addTickets(Ticket tick)
+	public int addTicket(Ticket tick)
 	{
 		TicketsRecord newTick = create.insertInto(TICKETS,
                 TICKETS.NAME,
@@ -823,7 +823,7 @@ public class ControllerDatabase
      *
      * @param tick Ticket object whose entry is to be updated in the database
      */
-	public void modifyTickets(Ticket tick)
+	public void modifyTicket(Ticket tick)
 	{
 		create.update(TICKETS)
 				.set(TICKETS.NAME, tick.getName())
@@ -878,9 +878,9 @@ public class ControllerDatabase
 		return(tick);
 	}
 
-	////////////////////////
-	//	Methods for Tours //
-	////////////////////////
+	//////////////////////////
+	//  Methods for "Tour"s //
+	//////////////////////////
 
 	// TODO: Implementieren!
     // TODO: 2015-03-05 - Most of this should work by now...
@@ -890,7 +890,8 @@ public class ControllerDatabase
      *
      * @param date date for which tours ought to be generated
      */
-    public void createTours(Date date){
+    public void createTours(Date date)
+    {
 
         Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
@@ -929,5 +930,31 @@ public class ControllerDatabase
 
             create.execute("END");
         }
+    }
+
+    /**
+     * Retrieves all tours to which the given user is assigned from the database
+     *
+     * @param id unique ID of the user whose tours are to be retrieved
+     * @return ArrayList of all tours associated with the given user
+     */
+    public ArrayList<Tour> getUserTours(int id)
+    {
+        ArrayList<Tour> result = new ArrayList<>();
+
+        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).fetch();
+
+        for (ToursRecord t : tours){
+            result.add(
+                    new Tour(
+                            new Date((long) t.getTimestamp()*1000),
+                            getRoute(t.getRoutesId()),
+                            getBus(t.getBusesId()),
+                            getEmployee(t.getEmployeesId())
+                    )
+            );
+        }
+
+        return result;
     }
 }

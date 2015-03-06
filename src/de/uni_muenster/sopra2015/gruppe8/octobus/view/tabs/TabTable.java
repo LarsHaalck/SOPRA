@@ -27,7 +27,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private TM model;
 	private boolean isRefineable = true;
 	private boolean enableMultiFilter = false;
-	private int filterColumn = 0;
+	private int filterColumn = 1;
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
 	{
 		this.isRefineable = isRefineable;
