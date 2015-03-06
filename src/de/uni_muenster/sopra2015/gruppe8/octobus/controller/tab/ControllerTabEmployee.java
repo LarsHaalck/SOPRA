@@ -70,7 +70,7 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 			data[i][3] = employee.getAddress();
 			data[i][4] = employee.getZipCode();
 			data[i][5] = employee.getCity();
-			data[i][6] = employee.getDateOfBirth().toString();
+			data[i][6] = parseDate(employee.getDateOfBirth());
 			data[i][7] = employee.getEmail();
 			data[i][8] = employee.getUsername();
 		}

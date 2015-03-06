@@ -283,11 +283,15 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
+			//TODO Remove this.
+			boolean barrier = false;
+			if(rec.getValue(BUSSTOPS.BARRIERFREE) != null)
+				barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
-					rec.getValue(BUSSTOPS.BARRIERFREE));
+					barrier);
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
