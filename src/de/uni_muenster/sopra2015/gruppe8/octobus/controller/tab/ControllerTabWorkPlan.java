@@ -8,6 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPri
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import java.util.ArrayList;
 
@@ -62,7 +63,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 		{
 			Tour tour = tours.get(i);
 			data[i][0] = tour.getId();
-			data[i][1] = parseDate(tour.getTimestamp());
+			data[i][1] = new TableDate(tour.getTimestamp(), TableDate.Type.DATE_TIME);
 			data[i][2] = tour.getRoute().getName();
 			data[i][3] = tour.getRoute().getStart().getName();
 			data[i][4] = tour.getRoute().getEnd().getName();

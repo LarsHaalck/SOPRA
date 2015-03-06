@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabEmployee;
 
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Controller for TabEmployee
  */
-public class ControllerTabEmployee extends Controller implements ListenerButton
+public class ControllerTabEmployee extends Controller implements ListenerButton, ListenerTable
 {
 	private ControllerDatabase controllerDatabase;
 	private TabEmployee tabEmployee;
@@ -93,5 +91,20 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 			data[i][8] = employee.getUsername();
 		}
 		tabEmployee.fillTable(data);
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		if(emitter == EmitterTable.TAB_EMPLOYEE)
+		{
+			fillTable();
+		}
 	}
 }
