@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.DefaultExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 {
 	protected JTable table;
-	protected JTextField tfFilter;
+	protected FieldText tfFilter;
 	protected JLabel lbFilter = new JLabel("Filter-Text:");
 	protected JComboBox<String> cbFilter;
 	protected TableRowSorter<TM> sorter;
@@ -96,7 +97,8 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 		}
 
-		tfFilter = new JTextField(20);
+		tfFilter = new FieldText(20,-1);
+		//tfFilter.setColumns(20);
 
 		//Whenever filterText changes, invoke newFilter.
 		if(isRefineable)
