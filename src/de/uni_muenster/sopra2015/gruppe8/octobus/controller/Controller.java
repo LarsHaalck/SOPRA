@@ -80,4 +80,15 @@ public abstract class Controller
 			return null;
 		}
 	}
+
+	/**
+	 * Parses date to string.
+	 * @param d Date to parse.
+	 * @return String.
+	 */
+	protected String parseDate(Date d)
+	{
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY", Locale.GERMANY);
+		return simpleDateFormat.format(d);
+	}
 }
