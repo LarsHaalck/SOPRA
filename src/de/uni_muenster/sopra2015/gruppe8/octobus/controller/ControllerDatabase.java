@@ -9,6 +9,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -349,35 +353,55 @@ public class ControllerDatabase
      */
 	public int addEmployee(Employee emp)
 	{
+        // Take care of creating a salt and hashing the default password with that salt
+        SecureRandom random = new SecureRandom();
+        String salt = new BigInteger(130, random).toString(32);
+        String password = "octobus";
+        String generatedHash;
+
+        try
+        {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+
+            digest.update(password.getBytes());
+            digest.update(salt.getBytes());
+
+            generatedHash = new BigInteger(1, digest.digest()).toString();
+
+        } catch (NoSuchAlgorithmException e)
+        {
+            throw new UnsupportedOperationException(e);
+        }
+
 		EmployeesRecord newEmp = create.insertInto(EMPLOYEES,
                 EMPLOYEES.NAME,
                 EMPLOYEES.FIRSTNAME,
                 EMPLOYEES.ADDRESS,
                 EMPLOYEES.ZIPCODE,
-				EMPLOYEES.CITY,
+                EMPLOYEES.CITY,
                 EMPLOYEES.DATEOFBIRTH,
                 EMPLOYEES.PHONE,
                 EMPLOYEES.EMAIL,
                 EMPLOYEES.USERNAME,
-				EMPLOYEES.SALT,
+                EMPLOYEES.SALT,
                 EMPLOYEES.PASSWORD,
                 EMPLOYEES.NOTE,
                 EMPLOYEES.ISBUSDRIVER,
                 EMPLOYEES.ISNETWORK_PLANNER,
-				EMPLOYEES.ISTICKET_PLANNER,
+                EMPLOYEES.ISTICKET_PLANNER,
                 EMPLOYEES.ISHR_MANAGER,
                 EMPLOYEES.ISSCHEDULE_MANAGER)
-				.values(emp.getName(),
+                .values(emp.getName(),
                         emp.getFirstName(),
                         emp.getAddress(),
                         emp.getZipCode(),
                         emp.getCity(),
-						(int) emp.getDateOfBirth().getTime(),
+                        (int) (emp.getDateOfBirth().getTime()/1000),
                         emp.getPhone(),
                         emp.getEmail(),
                         emp.getUsername(),
-						emp.getSalt(),
-                        emp.getPassword(),
+                        salt,
+                        generatedHash,
                         emp.getNote(),
                         emp.isRole(Role.BUSDRIVER),
 						emp.isRole(Role.NETWORK_PLANNER),
