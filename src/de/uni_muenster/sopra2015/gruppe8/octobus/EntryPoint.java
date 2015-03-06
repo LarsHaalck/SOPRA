@@ -20,40 +20,40 @@ public class EntryPoint
 			case "PanelEmployee":
 				frameMain.getControllerFrameMain().displayContent(new PanelEmployee());
 				break;
-			case "TabExample":
+			/*case "TabExample":
+				panelEmployee.getPaneTabs().setSelectedIndex(0);
+				frameMain.getControllerFrameMain().displayContent(panelEmployee);
+				break;*/
+			case "TabNetwork":
 				panelEmployee.getPaneTabs().setSelectedIndex(0);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabNetwork":
+			case "TabBuses":
 				panelEmployee.getPaneTabs().setSelectedIndex(1);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabBuses":
+			case "TabEmployee":
 				panelEmployee.getPaneTabs().setSelectedIndex(2);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabEmployee":
+			case "TabBusStop":
 				panelEmployee.getPaneTabs().setSelectedIndex(3);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabBusStop":
+			case "TabLine":
 				panelEmployee.getPaneTabs().setSelectedIndex(4);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabLine":
+			case "TabTicket":
 				panelEmployee.getPaneTabs().setSelectedIndex(5);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabTicket":
+			case "TabWorkPlan":
 				panelEmployee.getPaneTabs().setSelectedIndex(6);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabWorkPlan":
-				panelEmployee.getPaneTabs().setSelectedIndex(7);
-				frameMain.getControllerFrameMain().displayContent(panelEmployee);
-				break;
 			case "TabSchedule":
-				panelEmployee.getPaneTabs().setSelectedIndex(8);
+				panelEmployee.getPaneTabs().setSelectedIndex(7);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
 		}

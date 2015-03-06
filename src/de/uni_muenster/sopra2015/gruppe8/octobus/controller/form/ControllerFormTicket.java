@@ -89,9 +89,9 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	{
 		//TODO tickets -> ticket
 		if(objectID == -1)
-			controllerDatabase.addTickets(ticket);
+			controllerDatabase.addTicket(ticket);
 		else
-			controllerDatabase.modifyTickets(ticket);
+			controllerDatabase.modifyTicket(ticket);
 		return true;
 	}
 
