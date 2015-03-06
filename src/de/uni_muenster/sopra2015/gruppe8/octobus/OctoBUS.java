@@ -19,7 +19,7 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new EntryPoint("FrameMain"); //for debugging purposes, see EntryPoint.java for possible Values
+				new EntryPoint("TabBusStop"); //for debugging purposes, see EntryPoint.java for possible Values
 			}
 		});
 		drawASCII();
