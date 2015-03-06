@@ -10,8 +10,9 @@ public class EntryPoint
 {
 	public EntryPoint(String ep)
 	{
+
 		FrameMain frameMain = new FrameMain();
-		PanelEmployee panelEmployee = new PanelEmployee();
+		/*PanelEmployee panelEmployee = new PanelEmployee();
 
 		switch (ep)
 		{
@@ -23,7 +24,7 @@ public class EntryPoint
 			/*case "TabExample":
 				panelEmployee.getPaneTabs().setSelectedIndex(0);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
-				break;*/
+				break;
 			case "TabNetwork":
 				panelEmployee.getPaneTabs().setSelectedIndex(0);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
@@ -56,6 +57,6 @@ public class EntryPoint
 				panelEmployee.getPaneTabs().setSelectedIndex(7);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-		}
+		}*/
 	}
 }

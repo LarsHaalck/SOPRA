@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Role;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
@@ -49,6 +50,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 						if(objectID == -1) //only show if user is new user
 							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
+						if(objectID != -1)
+							ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
 						closeDialog();
 					}
 				}

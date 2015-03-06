@@ -12,15 +12,36 @@ public class PaneTabs extends JTabbedPane
 	public PaneTabs()
 	{
 		super();
+	}
 
-		//addTab("Example-Tab", new TabExample());
+	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver)
+	{
+		removeAll();
+
 		addTab("Busnetz", new TabNetwork());
-		addTab("Busse", new TabBus());
-		addTab("Mitarbeiter", new TabEmployee());
-		addTab("Haltestellen", new TabBusStop());
-		addTab("Linien", new TabRoute());
-		addTab("Fahrkarten", new TabTicket());
-		addTab("Arbeitsplan", new TabWorkPlan());
-		addTab("Dienstplanung", new TabSchedule());
+
+		if(ticketPlaner)
+			addTab("Fahrkarten", new TabTicket());
+
+		if(scheduleManager)
+		{
+			addTab("Dienstplanung", new TabSchedule());
+			addTab("Busse", new TabBus());
+		}
+
+		if(hrManager)
+			addTab("Mitarbeiter", new TabEmployee());
+
+		if(networkPlaner)
+		{
+			addTab("Haltestellen", new TabBusStop());
+			addTab("Linien", new TabRoute());
+		}
+
+		if(busDriver)
+			addTab("Arbeitsplan", new TabWorkPlan());
+
+		revalidate();
+		repaint();
 	}
 }

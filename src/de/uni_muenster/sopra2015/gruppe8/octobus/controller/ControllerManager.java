@@ -50,6 +50,16 @@ public class ControllerManager
 			listener.userStateChanged(emitter);
 	}
 	/**
+	 * Informs every active ListenerUserState.
+	 * @param emitter changed UserState.
+	 */
+	public static void informUserStateChanged(EmitterUserState emitter, int userId)
+	{
+		ArrayList<ListenerUserState> list = new ArrayList<>(listenerUserState);
+		for (ListenerUserState listener : list)
+			listener.userStateChanged(emitter, userId);
+	}
+	/**
 	 * Informs every active ListenerWindow to open a new dialog window.
      *
 	 * @param emitter window to open.
