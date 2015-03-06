@@ -24,7 +24,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	FormRoute formRoute;
 	private int objectID;
 	private Route route;
-	private ArrayList<Integer> contentTableCurrent = new ArrayList<>();
+	private ArrayList<Integer> contentTableCurrent = new ArrayList<Integer>();
+	private JTable tableCurrent;
+	private int viewRow;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
@@ -75,7 +77,16 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP1_UP:
-
+				tableCurrent = formRoute.getStep1().getBusStopCurrent();
+				viewRow = tableCurrent.getSelectedRow();
+				if (viewRow == -1)
+					break;
+				if (viewRow == 0)
+					break;
+				int contentOld = contentTableCurrent.get(viewRow - 1);
+				contentTableCurrent.remove(viewRow - 1);
+				contentTableCurrent.add(viewRow, contentOld);
+				initTableCurrent();
 				break;
 
 			case FORM_ROUTE_STEP1_DOWN:
@@ -83,24 +94,32 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP1_ADD:
-				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
-				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
-				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
-				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_1();
-				//TODO kaputt
-				int viewRow = tableAvailabe.getSelectedRow();
-				int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
-				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
-				contentTableCurrent.add(selectedID);
-				tableAvailabe.clearSelection();
-				initTableCurrent();
-				initTableAvailable(contentTableCurrent);
-
-
-				break;
+					JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
+					ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
+					viewRow = tableAvailabe.getSelectedRow();
+					if (viewRow == -1)
+						break;
+					int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
+					int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
+					contentTableCurrent.add(selectedID);
+					tableAvailabe.clearSelection();
+					initTableCurrent();
+					break;
 
 			case FORM_ROUTE_STEP1_DELETE:
-
+				try
+				{
+					tableCurrent = formRoute.getStep1().getBusStopCurrent();
+					viewRow = tableCurrent.getSelectedRow();
+					contentTableCurrent.remove(viewRow);
+					tableCurrent.clearSelection();
+					initTableCurrent();
+				}
+				catch (IndexOutOfBoundsException e)
+				{
+					//TODO soll hier was passieren?
+					System.out.println("Fehler");
+				}
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
@@ -172,7 +191,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	public void initTableCurrent()
 	{
-		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
