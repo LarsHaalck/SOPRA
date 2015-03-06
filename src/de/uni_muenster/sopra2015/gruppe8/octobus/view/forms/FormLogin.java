@@ -102,7 +102,7 @@ public class FormLogin extends JDialog
 
 	private void setDefaultValues()
 	{
-		tfUsername.setText("herbert");
-		pfPassword.setText("octobus");
+		tfUsername.setText("root");
+		pfPassword.setText("abc123");
 	}
 }
