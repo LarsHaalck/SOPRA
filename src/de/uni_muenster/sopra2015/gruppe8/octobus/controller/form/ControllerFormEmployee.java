@@ -120,23 +120,39 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		boolean ticketPlaner = formEmployee.getTicketPlaner();
 
 		ArrayList<String> errorList = new ArrayList<>();
-		if(firstName.trim().length() == 0)
+		if(firstName == null)
+			errorList.add("Ungültige Eingabe des Vornamen. Es wurden illegale Zeichen verwendet.");
+		else if(firstName.trim().length() == 0)
 			errorList.add("Der Vorname darf nicht leer sein.");
-		if(lastName.trim().length() == 0)
+		if(lastName == null)
+			errorList.add("Ungültige Eingabe des Nachnamen. Es wurden illegale Zeichen verwendet.");
+		else if(lastName.trim().length() == 0)
 			errorList.add("Der Nachname darf nicht leer sein.");
-		if(address.trim().length() == 0)
+		if(address == null)
+			errorList.add("Ungültige Eingabe der Anschrift. Es wurden illegale Zeichen verwendet.");
+		else if(address.trim().length() == 0)
 			errorList.add("Die Adresse darf nicht leer sein.");
-		if(zipCode.trim().length() == 0)
+		if(zipCode == null)
+			errorList.add("Ungültige Eingabe der PLZ. Es wurden illegale Zeichen verwendet.");
+		else if(zipCode.trim().length() == 0)
 			errorList.add("Die PLZ darf nicht leer sein.");
-		if(city.trim().length() == 0)
+		if(city == null)
+			errorList.add("Ungültige Eingabe der Stadt. Es wurden illegale Zeichen verwendet.");
+		else if(city.trim().length() == 0)
 			errorList.add("Die Stadt darf nicht leer sein.");
 		if(birthDate == null)
 			errorList.add("Das Geburtsdatum liegt in keinem gültigen Format vor.");
 		if(eMail == null)
 			errorList.add("Die E-Mail-Adresse ist ungültig.");
-		if(username.trim().length() == 0)
+		if(phone == null)
+			errorList.add("Die Telefonnummer ist ungültig.");
+		if(username == null)
+			errorList.add("Ungültige Eingabe des Benutzernamens. Es wurden illegale Zeichen verwendet.");
+		if(note == null)
+			errorList.add("Ungültige Eingabe der Notiz. Es wurden illegale Zeichen verwendet.");
+		else if(username.trim().length() == 0)
 			errorList.add("Der Benutzername darf nicht leer sein.");
-		if(username.trim().length() < 3)
+		else if(username.trim().length() < 3)
 			errorList.add("Der Benutzername muss mehr als 3 Zeichen enthalten.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");

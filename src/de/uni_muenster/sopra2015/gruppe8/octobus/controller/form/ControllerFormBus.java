@@ -100,7 +100,9 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		boolean articulatedBus = formBus.getArticulatedBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(licencePlate.trim().length() == 0)
+		if(licencePlate == null)
+			errorFields.add("Ungültige Eingabe des Kennzeichen. Es wurden illegale Zeichen verwendet.");
+		else if(licencePlate.trim().length() == 0)
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(licencePlate.trim().length() < 5)
 			errorFields.add("Das Kennzeichen muss mindestens 5 Zeichen umfassen.");
@@ -108,9 +110,13 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			errorFields.add("Die Anzahl der Sitzplätze darf nicht leer sein.");
 		if(standingRoom == -1)
 			errorFields.add("Die Anzahl der Stehplätze darf nicht leer sein.");
-		if(manufacturer.trim().length() == 0)
+		if(manufacturer == null)
+			errorFields.add("Ungültige Eingabe des Herstellers. Es wurden illegale Zeichen verwendet.");
+		else if(manufacturer.trim().length() == 0)
 			errorFields.add("Der Hersteller-Name darf nicht leer sein.");
-		if(model.trim().length() == 0)
+		if(model == null)
+			errorFields.add("Ungültige Eingabe des Modells. Es wurden illegale Zeichen verwendet.");
+		else if(model.trim().length() == 0)
 			errorFields.add("Der Modell-Name darf nicht leer sein.");
 		if(nextInspectionDue == null)
 			errorFields.add("Das Datum der nächsten Inspektion ist in keinem gültigen Format.");

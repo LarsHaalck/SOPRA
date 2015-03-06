@@ -113,7 +113,9 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 		String description = formTicket.getDescription();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(name.trim().length() == 0)
+		if(name == null)
+			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
+		else if(name.trim().length() == 0)
 			errorFields.add("Der Name darf nicht leer sein.");
 		else if (name.trim().length() < 5)
 			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
@@ -121,6 +123,8 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 			errorFields.add("Der Preis darf nicht leer sein.");
 		if(numPassangers == -1)
 			errorFields.add("Die Anzahl der Fahrgäste darf nicht leer sein.");
+		if(description == null)
+			errorFields.add("Ungültige Eingabe der Beschreibung. Es wurden illegale Zeichen verwendet.");
 
 		if(errorFields.size() > 0)
 		{
