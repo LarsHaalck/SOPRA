@@ -6,6 +6,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 public class FieldText extends JFormattedTextField
 {
@@ -25,11 +26,12 @@ public class FieldText extends JFormattedTextField
 
 	public FieldText(int width, int limit)
 	{
-		super(width);
+		super();
+		this.setColumns(width);
 		if(limit == -1)
-			limit = 200;
+			this.limit = 200;
 		else
-			limit = limit;
+			this.limit = limit;
 	}
 
 	public FieldText(int limit, JFormattedTextField.AbstractFormatter formatter)
@@ -50,15 +52,19 @@ public class FieldText extends JFormattedTextField
 		this.limit = limit;
 	}
 
-	//TODO: delete if not necessary
-	public void setRedBorder(boolean toggle)
+	@Override
+	public String getText()
 	{
-		if(toggle)
-		{
-			this.setBorder(BorderFactory.createLineBorder(Color.red));
-		}
+		if(isValidInput())
+			return super.getText();
 		else
-			this.setBorder(null);
+			return "";
+	}
+
+	public boolean isValidInput()
+	{
+		//TODO: sql injection prevention
+		return true;
 	}
 
 	private class LimitDocument extends PlainDocument
@@ -73,5 +79,4 @@ public class FieldText extends JFormattedTextField
 			}
 		}
 	}
-
 }

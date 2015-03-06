@@ -9,6 +9,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -231,6 +235,10 @@ public class ControllerDatabase
 		return(newStop.getBusstopsId());
 	}
 
+
+    // TODO: This must delete the bus stop everywhere it's references, that means Routes first and foremost!
+    // TODO: deleteBusStops sollte statt void eine ArrayList der Routen zurückgeben die von einer Löschung betroffen werden.
+    // (continued) Wir weigern uns daher diese Haltestellen zu löschen!!
     /**
      * Removes a bus stop entry from the database using its unique id
      *
@@ -269,11 +277,11 @@ public class ControllerDatabase
 	public ArrayList<BusStop> getBusStops()
 	{
 		// Start by getting all bus stops from the database
-        Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();
+        Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).fetch();
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
-        for (Record rec : busStopRecords)
+        for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
             Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
@@ -286,15 +294,13 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
-			//TODO Remove this.
-			boolean barrier = false;
-			if(rec.getValue(BUSSTOPS.BARRIERFREE) != null)
-				barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
+			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
 					barrier);
+            busStop.setId(rec.getBusstopsId());
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
@@ -347,35 +353,55 @@ public class ControllerDatabase
      */
 	public int addEmployee(Employee emp)
 	{
+        // Take care of creating a salt and hashing the default password with that salt
+        SecureRandom random = new SecureRandom();
+        String salt = new BigInteger(130, random).toString(32);
+        String password = "octobus";
+        String generatedHash;
+
+        try
+        {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+
+            digest.update(password.getBytes());
+            digest.update(salt.getBytes());
+
+            generatedHash = new BigInteger(1, digest.digest()).toString();
+
+        } catch (NoSuchAlgorithmException e)
+        {
+            throw new UnsupportedOperationException(e);
+        }
+
 		EmployeesRecord newEmp = create.insertInto(EMPLOYEES,
                 EMPLOYEES.NAME,
                 EMPLOYEES.FIRSTNAME,
                 EMPLOYEES.ADDRESS,
                 EMPLOYEES.ZIPCODE,
-				EMPLOYEES.CITY,
+                EMPLOYEES.CITY,
                 EMPLOYEES.DATEOFBIRTH,
                 EMPLOYEES.PHONE,
                 EMPLOYEES.EMAIL,
                 EMPLOYEES.USERNAME,
-				EMPLOYEES.SALT,
+                EMPLOYEES.SALT,
                 EMPLOYEES.PASSWORD,
                 EMPLOYEES.NOTE,
                 EMPLOYEES.ISBUSDRIVER,
                 EMPLOYEES.ISNETWORK_PLANNER,
-				EMPLOYEES.ISTICKET_PLANNER,
+                EMPLOYEES.ISTICKET_PLANNER,
                 EMPLOYEES.ISHR_MANAGER,
                 EMPLOYEES.ISSCHEDULE_MANAGER)
-				.values(emp.getName(),
+                .values(emp.getName(),
                         emp.getFirstName(),
                         emp.getAddress(),
                         emp.getZipCode(),
                         emp.getCity(),
-						(int) emp.getDateOfBirth().getTime(),
+                        (int) (emp.getDateOfBirth().getTime()/1000),
                         emp.getPhone(),
                         emp.getEmail(),
                         emp.getUsername(),
-						emp.getSalt(),
-                        emp.getPassword(),
+                        salt,
+                        generatedHash,
                         emp.getNote(),
                         emp.isRole(Role.BUSDRIVER),
 						emp.isRole(Role.NETWORK_PLANNER),
@@ -482,6 +508,9 @@ public class ControllerDatabase
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
+        // TODO: Does this work with fetchOne()?
+        if (rec == null) return null;
+
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
 			roles.add(Role.SCHEDULE_MANAGER);
@@ -515,7 +544,7 @@ public class ControllerDatabase
 
     public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return (rec == null) ? null : getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 

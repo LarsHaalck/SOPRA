@@ -9,26 +9,18 @@ public class FieldEmail extends FieldText
 	public FieldEmail()
 	{
 		super();
-		this.addKeyListener(new KeyAdapter()
-		{
-			public void keyTyped(KeyEvent e) //ignore some cases to prevent SQL-injections
-			{
-				char c = e.getKeyChar();
-				if (c == '\'' || c == '=')
-				{
-					e.consume();  // ignore event
-				}
-			}
-		});
 	}
 
 	private boolean isValidEmail(String email)
 	{
-		String pattern = "^(.+)@(.+)$";
-		if (Pattern.compile(pattern).matcher(this.getText()).matches())
-			return true;
-		else
-			return false;
+		if(super.isValidInput())
+		{
+			//rfc 5322 regex pattern for email adresses
+			String pattern = "^([\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+[\\.]?)+[\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+@{1}((([0-9A-Za-z_-]+)([\\.]{1}[0-9A-Za-z_-]+)*\\.{1}([A-Za-z]){1,6})|(([0-9]{1,3}[\\.]{1}){3}([0-9]{1,3}){1}))$";
+			if (Pattern.compile(pattern).matcher(email).matches())
+				return true;
+		}
+		return false;
 	}
 
 	public String getEmail()

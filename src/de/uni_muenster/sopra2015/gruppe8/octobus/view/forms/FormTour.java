@@ -63,13 +63,6 @@ public class FormTour extends FormGeneral
 			backButton_Pressed();
 		});
 		nextButton.addActionListener(e -> {
-
-			int zahl = Integer.parseInt(step1.getNameValue());
-			String[] test = new String[zahl];
-			for (int i = 0; i < zahl; i++)
-				test[i] = "Haltestelle" + i;
-			step2.fillJpMain(test);
-
 			nextButton_Pressed();
 		});
 		cancelButton.addActionListener(e -> {
@@ -93,6 +86,10 @@ public class FormTour extends FormGeneral
 		c.add(cardPanel, BorderLayout.CENTER);
 		c.add(buttonPanel, BorderLayout.SOUTH);
 	}
+
+	// ------------------------------------
+	// -------- Controller ----------------
+	// ------------------------------------
 
 	public void backButton_Pressed()
 	{
