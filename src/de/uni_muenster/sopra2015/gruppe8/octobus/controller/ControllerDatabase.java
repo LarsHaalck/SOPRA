@@ -957,7 +957,7 @@ public class ControllerDatabase
     {
         ArrayList<Tour> result = new ArrayList<>();
 
-        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).fetch();
+        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).orderBy(TOURS.TIMESTAMP).fetch();
 
         for (ToursRecord t : tours){
             result.add(
