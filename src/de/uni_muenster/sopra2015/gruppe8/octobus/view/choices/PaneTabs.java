@@ -20,13 +20,10 @@ public class PaneTabs extends JTabbedPane
 
 		addTab("Busnetz", new TabNetwork());
 
-		if(ticketPlaner)
-			addTab("Fahrkarten", new TabTicket());
-
 		if(scheduleManager)
 		{
-			addTab("Dienstplanung", new TabSchedule());
 			addTab("Busse", new TabBus());
+			addTab("Dienstplanung", new TabSchedule());
 		}
 
 		if(hrManager)
@@ -37,6 +34,9 @@ public class PaneTabs extends JTabbedPane
 			addTab("Haltestellen", new TabBusStop());
 			addTab("Linien", new TabRoute());
 		}
+
+		if(ticketPlaner)
+			addTab("Fahrkarten", new TabTicket());
 
 		if(busDriver)
 			addTab("Arbeitsplan", new TabWorkPlan());
