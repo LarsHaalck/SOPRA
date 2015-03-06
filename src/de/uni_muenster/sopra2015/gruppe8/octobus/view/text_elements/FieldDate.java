@@ -32,10 +32,11 @@ public class FieldDate extends FieldText
 	}
 	private boolean isValidDate()
 	{
-		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(this.getText()).matches()) //regex for date
+		String input = this.getText();
+		if(input.trim().length() == 0)
+			return false;
+		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(input).matches()) //regex for date
         {
-
-			String input = this.getText();
 			int indexDot = input.indexOf('.');
 			day = Integer.parseInt(input.substring(0, indexDot));
 			input =  input.substring(indexDot + 1);

@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private boolean isRefineable = true;
 	private boolean enableMultiFilter = false;
 	private int filterColumn = 1;
+	private ArrayList listSortKeys;
+
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
 	{
 		this.isRefineable = isRefineable;
@@ -109,24 +112,25 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 						public void changedUpdate(DocumentEvent e)
 						{
 							newFilter();
+							sorter.sort();
 						}
 
 						public void insertUpdate(DocumentEvent e)
 						{
 							newFilter();
+							sorter.sort();
 						}
 
 						public void removeUpdate(DocumentEvent e)
 						{
 							newFilter();
+							sorter.sort();
 						}
 					});
 		}
 
-		/*ArrayList listSortKeys = new ArrayList();
-		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
-		System.out.println(model.getFirstSortColumn());
-		sorter.setSortKeys(listSortKeys);*/
+		listSortKeys = new ArrayList();
+		listSortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
 	}
 
 	public boolean isRefineable()
@@ -224,6 +228,8 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		/*ArrayList listSortKeys = new ArrayList();
 		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
 		sorter.setSortKeys(listSortKeys);*/
+		if(data.length > 0) //sort iff data is available
+			sorter.setSortKeys(listSortKeys);
 		table.repaint();
 	}
 }

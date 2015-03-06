@@ -13,6 +13,8 @@ public class FieldEmail extends FieldText
 
 	private boolean isValidEmail(String email)
 	{
+		if(email.trim().length() == 0)
+			return false;
 		if(super.isValidInput())
 		{
 			//rfc 5322 regex pattern for email adresses
