@@ -190,6 +190,7 @@ public class FormEmployee extends FormGeneral
 		add(tfUsername, cstTextField);
 
 		cstLabel.gridy = 10;
+		cstLabel.ipady = 0;
 		JLabel lbRole = new JLabel("Rollen");
 		add(lbRole, cstLabel);
 
