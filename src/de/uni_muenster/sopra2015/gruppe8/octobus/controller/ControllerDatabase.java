@@ -641,18 +641,17 @@ public class ControllerDatabase
 					startTimes.get(DayOfWeek.SUNDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
 			}
 
-
             // Now get all stops on the route ...
-            Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+            Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
                     .where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
             // ... and add them to the list of stops
-			for (Record s : stopsRecords)
+			for (RoutesStopsRecord s : stopsRecords)
 			{
 				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 				BusStop bstop = getBusStop(stopId);
-				StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+				StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
 				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 			}
 
@@ -714,16 +713,16 @@ public class ControllerDatabase
 
 
         // Now get all stops on the route ...
-        Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+        Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
                 .where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
         // ... and add them to the list of stops
-		for (Record s : stopsRecords)
+		for (RoutesStopsRecord s : stopsRecords)
 		{
 			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 			BusStop bstop = getBusStop(stopId);
-			StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+			StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
 			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 		}
 
@@ -737,6 +736,19 @@ public class ControllerDatabase
 		return route;
 	}
 
+
+    //////////////////////////////////
+    // Methods for "StoppingPoint"s //
+    //////////////////////////////////
+
+    public StoppingPoint getStoppingPoint(int id)
+    {
+        BusstopsStoppingpointsRecord spr = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+                .fetchOne();
+
+        return new StoppingPoint(id, spr.getName());
+    }
 
 	///////////////////////////////
 	// Methods for "soldTicket"s //

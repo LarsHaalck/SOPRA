@@ -61,8 +61,8 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 			data[i][0] = tour.getId();
 			data[i][1] = parseDate(tour.getTimestamp());
 			data[i][2] = tour.getRoute().getName();
-			data[i][3] = tour.getRoute().getStart();
-			data[i][4] = tour.getRoute().getEnd();
+			data[i][3] = tour.getRoute().getStart().getName();
+			data[i][4] = tour.getRoute().getEnd().getName();
 			data[i][5] = tour.getRoute().getDuration();
 			data[i][6] = tour.getBus().getLicencePlate();
 		}
