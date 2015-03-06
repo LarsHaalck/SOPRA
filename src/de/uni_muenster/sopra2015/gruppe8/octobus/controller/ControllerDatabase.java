@@ -231,6 +231,10 @@ public class ControllerDatabase
 		return(newStop.getBusstopsId());
 	}
 
+
+    // TODO: This must delete the bus stop everywhere it's references, that means Routes first and foremost!
+    // TODO: deleteBusStops sollte statt void eine ArrayList der Routen zurückgeben die von einer Löschung betroffen werden.
+    // (continued) Wir weigern uns daher diese Haltestellen zu löschen!!
     /**
      * Removes a bus stop entry from the database using its unique id
      *
@@ -269,11 +273,11 @@ public class ControllerDatabase
 	public ArrayList<BusStop> getBusStops()
 	{
 		// Start by getting all bus stops from the database
-        Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();
+        Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).fetch();
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
-        for (Record rec : busStopRecords)
+        for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
             Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
@@ -286,15 +290,13 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
-			//TODO Remove this.
-			boolean barrier = false;
-			if(rec.getValue(BUSSTOPS.BARRIERFREE) != null)
-				barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
+			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
 					barrier);
+            busStop.setId(rec.getBusstopsId());
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
@@ -482,6 +484,9 @@ public class ControllerDatabase
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
+        // TODO: Does this work with fetchOne()?
+        if (rec == null) return null;
+
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
 			roles.add(Role.SCHEDULE_MANAGER);
@@ -515,7 +520,7 @@ public class ControllerDatabase
 
     public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return (rec == null) ? null : getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 
