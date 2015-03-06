@@ -1,26 +1,43 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
 public class ControllerFormBusStop extends Controller implements ListenerButton
 {
-	private FormBusStop dialog;
-	int objectId;
+	private FormBusStop formBusStop;
+	ControllerDatabase controllerDatabase;
+	BusStop busStop;
+	int objectID;
 
-	public ControllerFormBusStop(FormBusStop dialog, int objectId)
+	public ControllerFormBusStop(FormBusStop formBusStop, int objectID)
 	{
 		super();
-		this.dialog = dialog;
-		this.objectId = objectId;
+		controllerDatabase = ControllerDatabase.getInstance();
+		this.formBusStop = formBusStop;
+		this.objectID = objectID;
+		if(objectID != -1)
+		{
+			setBusInfo();
+		}
 	}
 
 	@Override
@@ -29,8 +46,14 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		switch(emitter)
 		{
 			case FORM_BUS_STOP_SAVE:
-				//TODO:Save them
-				closeDialog();
+				if(parseValuesFromForm())
+				{
+					if (saveToDB())
+					{
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUSSTOP);
+						closeDialog();
+					}
+				}
 				break;
 
 			case FORM_BUS_STOP_CANCEL:
@@ -40,15 +63,15 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			case FORM_BUS_STOP_ADD_POINT:
 				while(true)
 				{
-					String newAnswer = dialog.showNewStoppingPointDialog();
+					String newAnswer = formBusStop.showNewStoppingPointDialog();
 					if (newAnswer != null)
 					{
 						if (newAnswer.length() == 0)
 						{
-							dialog.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
+							formBusStop.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
 						} else
 						{
-							dialog.addStoppingPoint(newAnswer);
+							formBusStop.addStoppingPoint(newAnswer);
 							break;
 						}
 					}
@@ -60,27 +83,27 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				break;
 
 			case FORM_BUS_STOP_DELETE_POINT:
-				if(dialog.getSelectedStoppingPoint() == -1)
+				if(formBusStop.getSelectedStoppingPoint() == -1)
 					break;
-				if(dialog.showDeleteStoppingPointDialog() == JOptionPane.YES_OPTION)
-					dialog.removeStoppingPoint(dialog.getSelectedStoppingPoint());
+				if(formBusStop.showDeleteStoppingPointDialog() == JOptionPane.YES_OPTION)
+					formBusStop.removeStoppingPoint(formBusStop.getSelectedStoppingPoint());
 				break;
 
 			case FORM_BUS_STOP_EDIT_POINT:
 				//Don't do anything if no stop-point is selected
-				if(dialog.getSelectedStoppingPoint() == -1)
+				if(formBusStop.getSelectedStoppingPoint() == -1)
 					break;
 				while(true)
 				{
-					String newAnswer = dialog.showEditStoppingPointDialog(dialog.getSelectedStoppingPointName());
+					String newAnswer = formBusStop.showEditStoppingPointDialog(formBusStop.getSelectedStoppingPointName());
 					if (newAnswer != null)
 					{
 						if (newAnswer.length() == 0)
 						{
-							dialog.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
+							formBusStop.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
 						} else
 						{
-							dialog.editStoppingPoint(dialog.getSelectedStoppingPoint(), newAnswer);
+							formBusStop.editStoppingPoint(formBusStop.getSelectedStoppingPoint(), newAnswer);
 							break;
 						}
 					}
@@ -91,6 +114,99 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				}
 				break;
 		}
+	}
+	/**
+	 * Fetch a BusStop object from the DB.
+	 */
+	private void setBusInfo()
+	{
+		busStop = controllerDatabase.getBusStop(objectID);
+	}
+
+	/**
+	 * Inserts the values of the BusStop which is going to
+	 * be changed into the form.
+	 */
+	public void insertValuesIntoForm()
+	{
+		if(objectID != -1)
+		{
+			formBusStop.setNameBusStop(busStop.getName());
+			formBusStop.setLocationX(busStop.getLocation().getFirst());
+			formBusStop.setLocationY(busStop.getLocation().getSecond());
+
+			List list = new List();
+			for(StoppingPoint p: busStop.getStoppingPoints())
+				formBusStop.addStoppingPoint(p.getName());
+			formBusStop.setBarrierFree(busStop.isBarrierFree());
+		}
+	}
+
+	/**
+	 *Checks if form input is correct and adds values to local busStop.
+	 * @return Returns true on correct input.
+	 */
+	private boolean parseValuesFromForm()
+	{
+		if(objectID == -1)
+		{
+			busStop = new BusStop();
+		}
+
+		String name = formBusStop.getNameBusStop();
+		int x = formBusStop.getLocationX();
+		int y = formBusStop.getLocationY();
+
+		HashSet<StoppingPoint> stoppingPoints = new HashSet<>();
+		List listStoppingPoints = formBusStop.getStoppingPoints();
+		for(int i = 0; i < listStoppingPoints.getItemCount(); i++)
+		{
+			StoppingPoint temp = new StoppingPoint();
+			temp.setName(listStoppingPoints.getItem(i));
+			stoppingPoints.add(temp);
+		}
+		boolean barrierFree = formBusStop.getBarrierFree();
+
+		ArrayList<String> errorFields = new ArrayList<>();
+		if(name.trim().length() == 0)
+			errorFields.add("Das Kennzeichen darf nicht leer sein.");
+		else if(name.trim().length() < 5)
+			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
+		if(x == -1)
+			errorFields.add("Die X Koordinate darf nicht leer sein.");
+		if(y == -1)
+			errorFields.add("Die Y Koordinate darf nicht leer sein.");
+		if(stoppingPoints.isEmpty())
+			errorFields.add("Es muss mindestens ein Haltepunkt existieren");
+
+		if(errorFields.size() > 0)
+		{
+			String errorMessage = "Die eingegeben Daten sind nicht gültig.\n";
+			errorMessage += errorListToString(errorFields);
+			formBusStop.showErrorForm(errorMessage);
+			return false;
+		}
+		else
+		{
+			busStop.setName(name);
+			busStop.setLocation(new Tuple<>(x, y));
+			busStop.setBarrierFree(barrierFree);
+			busStop.setStoppingPoints(stoppingPoints);
+			return true;
+		}
+	}
+
+	/**
+	 * Saves the current busStop to the DB.
+	 * @return
+	 */
+	private boolean saveToDB()
+	{
+		if(objectID == -1)
+			controllerDatabase.addBusStop(busStop);
+		else
+			controllerDatabase.modifyBusStop(busStop);
+		return true;
 	}
 
 	@Override
@@ -107,7 +223,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	private void closeDialog()
 	{
-		dialog.dispose();
+		formBusStop.dispose();
 		removeListeners();
 	}
 }

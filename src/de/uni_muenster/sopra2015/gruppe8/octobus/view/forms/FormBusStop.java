@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
@@ -26,7 +27,7 @@ public class FormBusStop extends FormGeneral
 	 * every input has an own label, inputfield and panel
 	 */
 
-	private JTextField tfName = new JTextField();
+	private FieldText tfName = new FieldText();
 	private JCheckBox cbBarrierFree = new JCheckBox("Barrierefrei");
 
 	/*
@@ -36,8 +37,8 @@ public class FormBusStop extends FormGeneral
 	private JLabel lbLocationX = new JLabel("X:");
 	private JLabel lbLocationY = new JLabel("Y:");
 
-	private JTextField tfLocationX = new JTextField();
-	private JTextField tfLocationY = new JTextField();
+	private FieldNumber tfLocationX = new FieldNumber(4);
+	private FieldNumber tfLocationY = new FieldNumber(4);
 
 
 	private JButton btListAdd = new JButton("Hinzufügen");
@@ -197,9 +198,11 @@ public class FormBusStop extends FormGeneral
 					controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
 			}
 		});
-
+		controllerFormBusStop.insertValuesIntoForm();
 		pack();
 		setLocationRelativeTo(null);
+
+
 	}
 
 	public String showNewStoppingPointDialog()
@@ -254,27 +257,27 @@ public class FormBusStop extends FormGeneral
 
 	public int getLocationX()
 	{
-		return Integer.parseInt(tfLocationX.getText());
+		return tfLocationX.getNumber();
 	}
 
 	public int getLocationY()
 	{
-		return Integer.parseInt(tfLocationY.getText());
+		return tfLocationY.getNumber();
 	}
 
 	public void setLocationX(int x)
 	{
-		tfLocationX.setText(""+x);
+		tfLocationX.setNumber(x);
 	}
 
 	public void setLocationY(int y)
 	{
-		tfLocationY.setText(""+y);
+		tfLocationY.setNumber(y);
 	}
 
 	public void setLocationBusStop(JPanel plLocation)
 	{
-		//fehlt noch
+		//TODO fehlt noch
 	}
 
 	public List getStoppingPoints()
