@@ -273,7 +273,7 @@ public class ControllerDatabase
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
-        for (Record rec : busStopRecords)
+        for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
             Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
@@ -295,6 +295,7 @@ public class ControllerDatabase
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
 					barrier);
+            busStop.setId(rec.getBusstopsId());
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
@@ -481,6 +482,9 @@ public class ControllerDatabase
 	public Employee getEmployeeById(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
+
+        // TODO: Does this work with fetchOne()?
+        if (rec.size() == 0) return null;
 
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
