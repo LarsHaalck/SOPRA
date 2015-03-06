@@ -2,9 +2,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldDate;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldNumber;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldText;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,9 +22,10 @@ public class FormTicket extends FormGeneral
 	 * every input has an own label, inputfield and panel
 	 */
 
-	private JTextField tfName;
-	private JTextField tfPrice;
-	private JTextField tfNumPassengers;
+	private FieldText tfName;
+	private FieldNumber tfPrice;
+	private FieldNumber tfNumPassengers;
+	//TODO maybe own implementation of TextArea?
 	private JTextArea taDescription;
 
 	/*
@@ -47,7 +47,7 @@ public class FormTicket extends FormGeneral
 			setTitle("Ticket ändern");
 		setResizable(false);
 
-		controllerFormTicket = new ControllerFormTicket(this);
+		controllerFormTicket = new ControllerFormTicket(this, objectID);
 
 		btSave.addActionListener(e ->
 		{
@@ -87,7 +87,7 @@ public class FormTicket extends FormGeneral
 		cstTextField.gridwidth = 2;
 		cstTextField.gridx = 2;
 		cstTextField.gridy = 1;
-		tfName = new FieldText(10);
+		tfName = new FieldText();
 		add(tfName, cstTextField);
 
 		cstLabel.gridy = 2;
@@ -95,7 +95,7 @@ public class FormTicket extends FormGeneral
 		add(lbPrice, cstLabel);
 
 		cstTextField.gridy = 2;
-		tfPrice = new FieldNumber(3);
+		tfPrice = new FieldNumber(6);
 		add(tfPrice, cstTextField);
 
 		cstLabel.gridy = 3;
@@ -132,26 +132,27 @@ public class FormTicket extends FormGeneral
 
 		pack();
 		setLocationRelativeTo(null);
+		controllerFormTicket.insertValuesIntoForm();
 	}
 
-	public String getNameTicket()
+	public String getName()
 	{
 		return tfName.getText();
 	}
 
-	public void setNameTicket(String text)
+	public void setName(String text)
 	{
 		this.tfName.setText(text);
 	}
 
-	public String getPrice()
+	public int getPrice()
 	{
-		return tfPrice.getText();
+		return tfPrice.getNumber();
 	}
 
-	public void setPrice(String text)
+	public void setPrice(int price)
 	{
-		this.tfPrice.setText(text);
+		this.tfPrice.setNumber(price);
 	}
 
 	public String getDescription()
@@ -164,13 +165,13 @@ public class FormTicket extends FormGeneral
 		this.taDescription.setText(text);
 	}
 
-	public String getNumPassengers()
+	public int getNumPassengers()
 	{
-		return tfNumPassengers.getText();
+		return tfNumPassengers.getNumber();
 	}
 
-	public void setNumPassengers(String text)
+	public void setNumPassengers(int number)
 	{
-		this.tfNumPassengers.setText(text);
+		this.tfNumPassengers.setNumber(number);
 	}
 }

@@ -2,9 +2,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldDate;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldNumber;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields.FieldText;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

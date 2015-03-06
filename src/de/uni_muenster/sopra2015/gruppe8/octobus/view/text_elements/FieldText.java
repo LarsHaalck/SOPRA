@@ -1,4 +1,4 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_fields;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
@@ -41,6 +41,17 @@ public class FieldText extends JFormattedTextField
 		this.limit = limit;
 	}
 
+	//TODO: delete if not necessary
+	public void setRedBorder(boolean toggle)
+	{
+		if(toggle)
+		{
+			this.setBorder(BorderFactory.createLineBorder(Color.red));
+		}
+		else
+			this.setBorder(null);
+	}
+
 	private class LimitDocument extends PlainDocument
 	{
 		@Override
@@ -52,16 +63,6 @@ public class FieldText extends JFormattedTextField
 				super.insertString(offset, str, attr);
 			}
 		}
-	}
-
-	public void setRedBorder(boolean toggle)
-	{
-		if(toggle)
-		{
-			this.setBorder(BorderFactory.createLineBorder(Color.red));
-		}
-		else
-			this.setBorder(null);
 	}
 
 }
