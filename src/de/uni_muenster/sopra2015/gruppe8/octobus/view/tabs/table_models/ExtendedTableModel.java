@@ -13,6 +13,12 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	protected Object[][] data = new Object[][]{};
 
 	/**
+	 * returns the column, to be sorted
+	 * @return int with the number of the column
+	 */
+	public abstract int getFirstSortColumn();
+
+	/**
 	 * Returns all refineable columns.
 	 * @return String array with names of refineable columns.
 	 */

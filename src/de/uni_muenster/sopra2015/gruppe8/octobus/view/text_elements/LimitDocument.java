@@ -4,6 +4,9 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+/**
+ * is used to limit content of text fields (e.g. FieldText)
+ */
 class LimitDocument extends PlainDocument//package class
 {
 	private int limit;
@@ -14,15 +17,11 @@ class LimitDocument extends PlainDocument//package class
 		limit = 200; //default value
 	}
 
-	public int getLimit()
-	{
-		return limit;
-	}
-
 	public void setLimit(int limit)
 	{
 		this.limit = limit;
 	}
+
 
 	@Override
 	public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException

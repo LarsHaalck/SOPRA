@@ -1,13 +1,11 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 import javax.swing.*;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.PlainDocument;
-import java.awt.*;
-import java.util.regex.Pattern;
 
+/**
+ * own text field class which uses
+ */
 public class FieldText extends JFormattedTextField
 {
 
@@ -17,7 +15,7 @@ public class FieldText extends JFormattedTextField
 	public FieldText()
 	{
 		super();
-		limitDoc.setLimit(200);
+		limitDoc.setLimit(limit);
 
 	}
 	public FieldText(int limit)
@@ -35,10 +33,8 @@ public class FieldText extends JFormattedTextField
 			this.limit = 200;
 		else
 			this.limit = limit;
-		limitDoc.setLimit(limit);
+		limitDoc.setLimit(this.limit);
 	}
-
-
 
 	protected void setLimit(int limit)
 	{

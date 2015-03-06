@@ -25,6 +25,12 @@ public class TableModelBus extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsBus.LICENCE_PLATE.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsBus.LICENCE_PLATE.toString(), ColumnsBus.MANUFACTURER.toString(), ColumnsBus.ARTICULATED_BUS.toString()};

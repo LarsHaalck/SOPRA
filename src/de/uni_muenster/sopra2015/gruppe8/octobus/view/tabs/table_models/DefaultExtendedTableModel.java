@@ -9,6 +9,12 @@ import javax.swing.event.TableModelListener;
 public class DefaultExtendedTableModel extends ExtendedTableModel
 {
 	@Override
+	public int getFirstSortColumn()
+	{
+		return 0;
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{};
