@@ -48,7 +48,6 @@ public class PrintViewWorkPlan implements Printable
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
 
-		drawLines();
 		drawHeader();
 		drawContent(pageIndex);
 
@@ -83,8 +82,18 @@ public class PrintViewWorkPlan implements Printable
 				lastDate = curDate;
 				graphics2D.drawString(curDate, curX, curY);
 			}
-			curX = 60;
 			curY += 20;
+			curX += 20;
+			Date finishedTime = new Date(tour.getSecond().getTime() + (tour.getThird() * 60 * 1000));
+			String timeString = hour.format(tour.getSecond()) + " - "+hour.format(finishedTime);
+			graphics2D.drawString(timeString,curX, curY);
+			curX += 70;
+			graphics2D.drawString(tour.getFirst(),curX, curY);
+			curX = 80;
+			curY += 20;
+			graphics2D.drawString("Bus: "+tour.getFourth(), curX, curY);
+			curX = 60;
+			curY += 30;
 		}
 	}
 
