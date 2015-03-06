@@ -170,6 +170,11 @@ public class Employee
 
 	public void deleteRole(Role role) {roles.remove(role);}
 
+	public void setRoles (HashSet<Role> roles)
+	{
+		this.roles = roles;
+	}
+
 	public int getId()
 	{
 		return id;

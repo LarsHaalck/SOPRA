@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Date;
 
 /**
  * @author Patricia Schinke
@@ -15,16 +16,16 @@ public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
-	private JTextField tfName;
-	private JTextField tfFirstName;
-	private JTextField tfAddress;
-	private JTextField tfZipCode;
-	private JTextField tfCity;
-	private JTextField tfBirthDate;
-	private JTextField tfPhone;
-	private JTextField tfMail;
-	private JTextArea tfNote;
-	private JTextField tfUsername;
+	private FieldText tfName;
+	private FieldText tfFirstName;
+	private FieldText tfAddress;
+	private FieldNumber tfZipCode;
+	private FieldText tfCity;
+	private FieldDate tfBirthDate;
+	private FieldText tfPhone;
+	private FieldEmail tfMail;
+	private AreaText tfNote;
+	private FieldText tfUsername;
 	private JCheckBox cbScheduleManager;
 	private JCheckBox cbNetworkPlaner;
 	private JCheckBox cbBusDriver;
@@ -52,16 +53,6 @@ public class FormEmployee extends FormGeneral
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		controllerFormEmployee = new ControllerFormEmployee(this, objectID);
 
-		//Add events to buttons
-		btSave.addActionListener(e ->
-		{
-			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
-		});
-		btCancel.addActionListener(e ->
-		{
-			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
-		});
-
 		setLayout(new GridBagLayout());
 		GridBagConstraints cstLabel = new GridBagConstraints();
 		GridBagConstraints cstTextField = new GridBagConstraints();
@@ -85,14 +76,14 @@ public class FormEmployee extends FormGeneral
 		cstLabel.gridx = 0;
 		cstLabel.gridy = 1;
 		cstLabel.weightx = 0.1;
-		JLabel lbName = new JLabel("Name");
+		JLabel lbName = new JLabel("Nachname");
 		add(lbName, cstLabel);
 
 		cstTextField.gridwidth = 5;
 		cstTextField.gridx = 1;
 		cstTextField.gridy = 1;
 		cstTextField.weightx = 1;
-		tfName = new FieldText();
+		tfName = new FieldText(200);
 		add(tfName, cstTextField);
 
 		cstLabel.gridy = 2;
@@ -100,7 +91,7 @@ public class FormEmployee extends FormGeneral
 		add(lbFirstName, cstLabel);
 
 		cstTextField.gridy = 2;
-		tfFirstName = new FieldText();
+		tfFirstName = new FieldText(200);
 		add(tfFirstName, cstTextField);
 
 		cstLabel.gridy=3;
@@ -116,7 +107,7 @@ public class FormEmployee extends FormGeneral
 
 		cstTextField.gridy = 3;
 		cstTextField.gridx = 4;
-		tfAddress = new FieldText();
+		tfAddress = new FieldText(200);
 		add(tfAddress, cstTextField);
 
 		cstLabel.gridy = 4;
@@ -129,7 +120,7 @@ public class FormEmployee extends FormGeneral
 		cstTextField.weightx = 0.2;
 		cstTextField.gridwidth = 1;
 		cstTextField.gridx=2;
-		tfZipCode = new FieldNumber();
+		tfZipCode = new FieldNumber(10);
 		tfZipCode.setColumns(5);
 		add(tfZipCode, cstTextField);
 
@@ -145,7 +136,7 @@ public class FormEmployee extends FormGeneral
 
 		cstTextField.gridx = 5;
 		cstTextField.weightx = 1;
-		tfCity = new FieldText();
+		tfCity = new FieldText(200);
 		add(tfCity, cstTextField);
 
 		cstLabel.weightx=1;
@@ -195,7 +186,7 @@ public class FormEmployee extends FormGeneral
 		add(lbUserName, cstLabel);
 
 		cstTextField.gridy = 9;
-		tfUsername = new FieldText();
+		tfUsername = new FieldText(10);
 		add(tfUsername, cstTextField);
 
 		cstLabel.gridy = 10;
@@ -232,6 +223,16 @@ public class FormEmployee extends FormGeneral
 		cstLabel.gridwidth = 3;
 		btCancel = new JButton("Abbrechen");
 		add(btCancel, cstLabel);
+
+		//Add events to buttons
+		btSave.addActionListener(e ->
+		{
+			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
+		});
+		btCancel.addActionListener(e ->
+		{
+			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
+		});
 
 		controllerFormEmployee.insertValuesIntoForm();
 
@@ -290,14 +291,14 @@ public class FormEmployee extends FormGeneral
 		this.tfCity.setText(text);
 	}
 
-	public String getBirthDate()
+	public Date getBirthDate()
 	{
-		return tfBirthDate.getText();
+		return tfBirthDate.getDate();
 	}
 
-	public void setBirthDate(String text)
+	public void setBirthDate(Date date)
 	{
-		this.tfBirthDate.setText(text);
+		this.tfBirthDate.setDate(date);
 	}
 
 	public String getPhone()
@@ -308,6 +309,16 @@ public class FormEmployee extends FormGeneral
 	public void setPhone(String text)
 	{
 		this.tfPhone.setText(text);
+	}
+
+	public void setEMail(String text)
+	{
+		this.tfMail.setEmail(text);
+	}
+
+	public String getEMail()
+	{
+		return this.tfMail.getEmail();
 	}
 
 	public String getNote()
@@ -377,6 +388,6 @@ public class FormEmployee extends FormGeneral
 
 	public void setHRManager(boolean state)
 	{
-		this.cbHRManager.isSelected();
+		this.cbHRManager.setSelected(state);
 	}
 }
