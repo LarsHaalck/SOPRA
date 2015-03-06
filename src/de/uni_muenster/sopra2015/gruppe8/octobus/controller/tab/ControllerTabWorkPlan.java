@@ -42,7 +42,11 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 	{
 		switch (btn)
 		{
+			case TAB_WORK_PLAN_EXPORT:
+				break;
 
+			case TAB_WORK_PLAN_PRINT:
+				break;
 		}
 	}
 
