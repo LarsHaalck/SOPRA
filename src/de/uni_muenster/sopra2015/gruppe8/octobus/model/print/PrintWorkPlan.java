@@ -28,4 +28,9 @@ public class PrintWorkPlan
 	{
 		return tours;
 	}
+
+	public int numTours()
+	{
+		return tours.size();
+	}
 }
