@@ -222,14 +222,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	 */
 	public void fillTable(Object[][] data)
 	{
+		//TODO doesnt repaint when there is a new entry
 		table.clearSelection();
 		model.setData(data);
+		//if(data.length > 0) //sort iff data is available
+			//sorter.setSortKeys(listSortKeys);
 		table.revalidate();
-		/*ArrayList listSortKeys = new ArrayList();
-		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
-		sorter.setSortKeys(listSortKeys);*/
-		if(data.length > 0) //sort iff data is available
-			sorter.setSortKeys(listSortKeys);
 		table.repaint();
 	}
 }
