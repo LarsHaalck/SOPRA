@@ -90,7 +90,7 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_NEW:
-				f = new FormTour(frame, -1);
+				f = new FormRoute(frame, -1);
 				f.setVisible(true);
 				break;
 
@@ -124,7 +124,7 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f.setVisible(true);
 				break;
 			case FORM_ROUTE_EDIT:
-				f = new FormTour(frame, objectID);
+				f = new FormRoute(frame, objectID);
 				f.setVisible(true);
 		}
 	}

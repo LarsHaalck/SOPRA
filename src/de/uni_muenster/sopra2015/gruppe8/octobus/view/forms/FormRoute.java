@@ -1,8 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Created by Jonas on 03.03.2015.
  */
-public class FormTour extends FormGeneral
+public class FormRoute extends FormGeneral
 {
 	private JPanel cardPanel, buttonPanel;
 	private CardLayout cl;
@@ -18,12 +18,12 @@ public class FormTour extends FormGeneral
 	private JButton backButton, nextButton, cancelButton;
 	private Container c;
 	private int panelCounter, panelMax;
-	private FormTourStep1 step1;
-	private FormTourStep2 step2;
+	private FormRouteStep1 step1;
+	private FormRouteStep2 step2;
 
 	private ControllerFormRoute controllerFormRoute;
 
-	public FormTour(Frame parent, int objectId)
+	public FormRoute(Frame parent, int objectId)
 	{
 		super(parent, "");
 
@@ -32,7 +32,7 @@ public class FormTour extends FormGeneral
 		else
 			setTitle("Linie bearbeiten");
 
-		controllerFormRoute = new ControllerFormRoute();
+		controllerFormRoute = new ControllerFormRoute(this, objectId);
 
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
@@ -46,9 +46,9 @@ public class FormTour extends FormGeneral
 		cardPanel = new JPanel();
 		cardPanel.setBorder(new EmptyBorder(new Insets(5, 10, 5, 10)));
 		cardPanel.setLayout(new CardLayout());
-		step1 = new FormTourStep1();
+		step1 = new FormRouteStep1(controllerFormRoute);
 		cardPanel.add(step1);
-		step2 = new FormTourStep2();
+		step2 = new FormRouteStep2(controllerFormRoute);
 		cardPanel.add(step2);
 		panelMax = 1;
 		panelCounter = 0;
@@ -60,13 +60,16 @@ public class FormTour extends FormGeneral
 		cancelButton = new JButton("Abbrechen");
 
 		backButton.addActionListener(e -> {
-			backButton_Pressed();
+			//backButton_Pressed();
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_BACK);
 		});
 		nextButton.addActionListener(e -> {
-			nextButton_Pressed();
+			//nextButton_Pressed();
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_NEXT);
 		});
 		cancelButton.addActionListener(e -> {
-			dispose();
+			//dispose();
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_CANCEL);
 		});
 
 		buttonBox = new Box(BoxLayout.X_AXIS);
@@ -85,34 +88,51 @@ public class FormTour extends FormGeneral
 
 		c.add(cardPanel, BorderLayout.CENTER);
 		c.add(buttonPanel, BorderLayout.SOUTH);
+		controllerFormRoute.initTable();
 	}
 
-	// ------------------------------------
-	// -------- Controller ----------------
-	// ------------------------------------
-
-	public void backButton_Pressed()
+	public FormRouteStep1 getStep1()
 	{
-		if (panelCounter == 1)
-			backButton.setEnabled(false);
-		if (panelCounter == panelMax)
-			nextButton.setText("Weiter");
-		cl.previous(cardPanel);
-		panelCounter--;
+		return step1;
 	}
 
-	public void nextButton_Pressed()
+	public FormRouteStep2 getStep2()
 	{
-		if (panelCounter == 0)
-			backButton.setEnabled(true);
-		if (panelCounter == panelMax - 1)
-			nextButton.setText("Fertig");
-		if (panelCounter == panelMax)
-		{
-			//TODO lese informationen aus
-			dispose();
-		}
-		cl.next(cardPanel);
-		panelCounter++;
+		return step2;
+	}
+
+	public int getPanelMax()
+	{
+		return panelMax;
+	}
+
+	public void setPanelCounter(int panelCounter)
+	{
+		this.panelCounter = panelCounter;
+	}
+
+	public CardLayout getCl()
+	{
+		return cl;
+	}
+
+	public JButton getBackButton()
+	{
+		return backButton;
+	}
+
+	public JButton getNextButton()
+	{
+		return nextButton;
+	}
+
+	public JPanel getCardPanel()
+	{
+		return cardPanel;
+	}
+
+	public int getPanelCounter()
+	{
+		return panelCounter;
 	}
 }
