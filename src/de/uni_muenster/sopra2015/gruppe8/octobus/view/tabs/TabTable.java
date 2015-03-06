@@ -11,6 +11,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract class that creates stuff we need for every tab with a table
@@ -98,7 +99,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		}
 
 		tfFilter = new FieldText(20,-1);
-		//tfFilter.setColumns(20);
 
 		//Whenever filterText changes, invoke newFilter.
 		if(isRefineable)
@@ -122,6 +122,11 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 						}
 					});
 		}
+
+		/*ArrayList listSortKeys = new ArrayList();
+		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
+		System.out.println(model.getFirstSortColumn());
+		sorter.setSortKeys(listSortKeys);*/
 	}
 
 	public boolean isRefineable()
@@ -216,6 +221,9 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		table.clearSelection();
 		model.setData(data);
 		table.revalidate();
+		/*ArrayList listSortKeys = new ArrayList();
+		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
+		sorter.setSortKeys(listSortKeys);*/
 		table.repaint();
 	}
 }

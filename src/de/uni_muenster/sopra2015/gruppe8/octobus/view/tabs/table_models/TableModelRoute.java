@@ -17,6 +17,12 @@ public class TableModelRoute extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsRoute.NAME.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsRoute.NAME.toString(), ColumnsRoute.START.toString(), ColumnsRoute.END.toString()};

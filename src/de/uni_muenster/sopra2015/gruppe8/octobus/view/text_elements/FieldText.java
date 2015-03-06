@@ -33,7 +33,7 @@ public class FieldText extends JFormattedTextField
 			this.limit = 200;
 		else
 			this.limit = limit;
-		limitDoc.setLimit(limit);
+		limitDoc.setLimit(this.limit);
 	}
 
 	protected void setLimit(int limit)
