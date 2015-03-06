@@ -89,8 +89,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	{
 		if(objectID == -1)
 		{
-			//TODO empty constructor
-			bus = new Bus("TestNummernschild", 42, 32, "Ich", "cooler Bus", new Date(2015, 5, 29), true);
+			bus = new Bus();
 		}
 		String licencePlate = formBus.getLicencePlate();
 		int numberOfSeats = formBus.getNumberOfSeats();
