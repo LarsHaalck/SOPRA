@@ -12,6 +12,11 @@ public class SoldTicket
 	private Date date;
 	private int price;
 
+	public SoldTicket()
+	{
+		date = new Date(0);
+	}
+
 	public SoldTicket(int id, String name, Date date, int price)
 	{
 		this.id = id;

@@ -16,6 +16,11 @@ public class Bus
 	private Date nextInspectionDue;
 	private boolean articulatedBus;
 
+	public Bus()
+	{
+
+	}
+
 	public Bus(String licencePlate, int numberOfSeats, int standingRoom, String manufacturer, String model,
 			   Date nextInspectionDue, boolean articulatedBus)
 	{

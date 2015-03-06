@@ -14,6 +14,11 @@ public class Tour
 	private Bus bus;
 	private Employee driver;
 
+	public Tour()
+	{
+		this.timestamp = new Date(0);
+	}
+
 	public Tour(Date timestamp, Route route, Bus bus, Employee driver)
 	{
 		this.timestamp = timestamp;
