@@ -27,7 +27,7 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 		switch (emitter)
 		{
 			case PANEL_EMPLOYEE_CHANGE_PASSWORD:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD);
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_CHANGE_PASSWORD, employee.getId());
 				break;
 			case PANEL_EMPLOYEE_LOGOUT:
 				ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_OUT);

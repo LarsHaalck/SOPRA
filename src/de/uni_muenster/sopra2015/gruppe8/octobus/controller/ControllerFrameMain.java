@@ -73,11 +73,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f.setVisible(true);
 				break;
 
-			case FORM_CHANGE_PASSWORD:
-				f = new FormChangePassword(frame);
-				f.setVisible(true);
-				break;
-
 			case FORM_BUS_NEW:
 				f = new FormBus(frame, -1);
 				f.setVisible(true);
@@ -135,6 +130,11 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 			case FORM_ROUTE_EDIT:
 				f = new FormRoute(frame, objectID);
 				f.setVisible(true);
+				break;
+			case FORM_CHANGE_PASSWORD:
+				f = new FormChangePassword(frame, objectID);
+				f.setVisible(true);
+				break;
 		}
 	}
 
