@@ -2,7 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.AreaText;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,30 +15,6 @@ public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
-	/*
-	 * at the top of the form is an explanation what you should do
-	 */
-	private JPanel plExplanation = new JPanel();
-	private String strExplanation = "Bitte geben Sie die Daten des Mitarbeiters ein.";
-	private JLabel lbExplanation = new JLabel(strExplanation);
-	private JPanel plRight = new JPanel();
-	private JPanel plMid = new JPanel();
-	private JPanel plBottom = new JPanel();
-
-	/*
-	 * every input has an own label, inputfield and panel
-	 */
-	private JLabel lbName = new JLabel("Name");
-	private JLabel lbFirstName = new JLabel("Vorname");
-	private JLabel lbAddress = new JLabel("Adresse");
-	private JLabel lbZipCode = new JLabel("PLZ");
-	private JLabel lbCity = new JLabel("Ort");
-	private JLabel lbBirthDate = new JLabel("Geburtsdatum");
-	private JLabel lbPhone = new JLabel("Telefon");
-	private JLabel lbMail = new JLabel("Mail-Adresse");
-	private JLabel lbNote = new JLabel("Bemerkung");
-	private JLabel lbUsername = new JLabel("Benutzername");
-
 	private JTextField tfName = new JTextField();
 	private JTextField tfFirstName = new JTextField();
 	private JTextField tfAddress = new JTextField();
@@ -50,28 +26,12 @@ public class FormEmployee extends FormGeneral
 	private JTextArea tfNote = new AreaText();
 	private JTextField tfUsername = new JTextField();
 
-	private JPanel plName = new JPanel();
-	private JPanel plFirstName = new JPanel();
-	private JPanel plAddress = new JPanel();
-	private JPanel plZipCode = new JPanel();
-	private JPanel plCity = new JPanel();
-	private JPanel plBirthDate = new JPanel();
-	private JPanel plPhone = new JPanel();
-	private JPanel plMail = new JPanel();
-	private JPanel plNote = new JPanel();
-	private JPanel plUsername = new JPanel();
-	private JPanel plRemarkText = new JPanel();
 
-	/*
-	 * we have a panel with checkboxes for  the roles
-	 */
-	private JLabel lbRole = new JLabel("Rollen:");
-
-	private JCheckBox cbScheduleManager = new JCheckBox("Einsatzplaner");
-	private JCheckBox cbNetworkPlaner = new JCheckBox("Netzpaner");
-	private JCheckBox cbBusDriver = new JCheckBox("Busfahrer");
-	private JCheckBox cbTicketPlaner = new JCheckBox("Fahrartenplaner");
-	private JCheckBox cbHRManager = new JCheckBox("Personalleiter");
+	private JCheckBox cbScheduleManager;
+	private JCheckBox cbNetworkPlaner;
+	private JCheckBox cbBusDriver;
+	private JCheckBox cbTicketPlaner;
+	private JCheckBox cbHRManager;
 
 	/*
 	 * the buttons for save and cancel
@@ -79,14 +39,13 @@ public class FormEmployee extends FormGeneral
 	private JButton btSave = new JButton("Speichern");
 	private JButton btCancel = new JButton("Abbrechen");
 
-	private int iTextHeight = 25;
-	private int iAreaHeight = 50;
-	private int iTextWidth = 150;
-
 	public FormEmployee(Frame parent, int objectID)
 	{
 		//super(parent, "Mitarbeiter verwalten");
 		super(parent, "");
+
+		getRootPane().setBorder(new EmptyBorder(10,10,10,10));
+
 		if(objectID == -1)
 			setTitle("Mitarbeiter anlegen");
 		else
@@ -105,108 +64,180 @@ public class FormEmployee extends FormGeneral
 			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
 		});
 
-		setLayout(new BorderLayout());
-		add(plExplanation, BorderLayout.NORTH);
-		add(plMid, BorderLayout.CENTER);
-		add(plBottom, BorderLayout.SOUTH);
+		setLayout(new GridBagLayout());
+		GridBagConstraints cstLabel = new GridBagConstraints();
+		GridBagConstraints cstTextField = new GridBagConstraints();
 
-		plExplanation.setPreferredSize(new Dimension(924, 60));
-		plExplanation.setBorder(new EmptyBorder(new Insets(30, 0, 30, 0)));
-		plExplanation.add(lbExplanation);
+		//general constraints
+		cstTextField.fill = GridBagConstraints.HORIZONTAL;
+		cstLabel.fill = GridBagConstraints.HORIZONTAL;
+		cstLabel.ipadx = 10;
+		cstLabel.ipady = 20;
+		cstLabel.anchor = GridBagConstraints.LINE_START;
+		cstLabel.weighty = 1;
 
-		plMid.setLayout(new BoxLayout(plMid, BoxLayout.X_AXIS));
+		cstLabel.gridwidth = 6;
+		cstLabel.gridx = 0;
+		cstLabel.gridy = 0;
+		String strExplanation = "Bitte geben Sie die Daten des Mitarbeiters ein.";
+		JLabel lbExplanation = new JLabel(strExplanation);
+		add(lbExplanation, cstLabel);
 
-		plMid.setLayout(new BoxLayout(plMid, BoxLayout.Y_AXIS));
-		plMid.add(plName);
-		plMid.add(plFirstName);
-		plMid.add(plAddress);
-		plMid.add(plZipCode);
-		plMid.add(plCity);
-		plMid.add(plBirthDate);
-		plMid.add(plPhone);
-		plMid.add(plMail);
-		plMid.add(plNote);
-		plMid.add(plUsername);
+		cstLabel.gridwidth = 1;
+		cstLabel.gridx = 0;
+		cstLabel.gridy = 1;
+		cstLabel.weightx = 0.1;
+		JLabel lbName = new JLabel("Name");
+		add(lbName, cstLabel);
 
-		plName.add(lbName);
-		plName.add(tfName);
-		plFirstName.add(lbFirstName);
-		plFirstName.add(tfFirstName);
-		plAddress.add(lbAddress);
-		plAddress.add(tfAddress);
-		plZipCode.add(lbZipCode);
-		plZipCode.add(tfZipCode);
-		plCity.add(lbCity);
-		plCity.add(tfCity);
-		plBirthDate.add(lbBirthDate);
-		plBirthDate.add(tfBirthDate);
-		plPhone.add(lbPhone);
-		plPhone.add(tfPhone);
-		plMail.add(lbMail);
-		plMail.add(tfMail);
-		plNote.add(lbNote);
-		plNote.add(plRemarkText);
-		plUsername.add(lbUsername);
-		plUsername.add(tfUsername);
+		cstTextField.gridwidth = 5;
+		cstTextField.gridx = 1;
+		cstTextField.gridy = 1;
+		cstTextField.weightx = 1;
+		tfName = new FieldText();
+		add(tfName, cstTextField);
 
+		cstLabel.gridy = 2;
+		JLabel lbFirstName = new JLabel("Vorname");
+		add(lbFirstName, cstLabel);
+
+		cstTextField.gridy = 2;
+		tfFirstName = new FieldText();
+		add(tfFirstName, cstTextField);
+
+		cstLabel.gridy=3;
+		JLabel lbAddressComplete = new JLabel("Anschrift");
+		add(lbAddressComplete, cstLabel);
+
+		cstLabel.gridy = 3;
+		cstLabel.gridx = 1;
+		cstLabel.gridwidth = 3;
+		cstLabel.ipadx = 0;
+		JLabel lbAddress = new JLabel("Adresse");
+		add(lbAddress, cstLabel);
+
+		cstTextField.gridy = 3;
+		cstTextField.gridx = 4;
+		tfAddress = new FieldText();
+		add(tfAddress, cstTextField);
+
+		cstLabel.gridy = 4;
+		cstLabel.weightx=0.1;
+		cstLabel.gridwidth = 1;
+		JLabel lbZipCode = new JLabel("PLZ");
+		add(lbZipCode, cstLabel);
+
+		cstTextField.gridy = 4;
+		cstTextField.weightx = 0.2;
+		cstTextField.gridwidth = 1;
+		cstTextField.gridx=2;
+		tfZipCode = new FieldNumber();
+		tfZipCode.setColumns(5);
+		add(tfZipCode, cstTextField);
+
+		cstTextField.weightx=0.1;
+		cstTextField.gridx=3;
+		JPanel plEmpty = new JPanel();
+		add(plEmpty, cstTextField);
+
+		cstLabel.gridx = 4;
+		cstLabel.ipadx = 0;
+		JLabel lbCity = new JLabel("Ort");
+		add(lbCity, cstLabel);
+
+		cstTextField.gridx = 5;
+		cstTextField.weightx = 1;
+		tfCity = new FieldText();
+		add(tfCity, cstTextField);
+
+		cstLabel.weightx=1;
+		cstLabel.ipadx = 20;
+		cstTextField.weightx=1;
+
+		cstLabel.gridy = 5;
+		cstLabel.gridx = 0;
+		JLabel lbBirthDate = new JLabel("Geburtsdatum");
+		add(lbBirthDate, cstLabel);
+
+		cstTextField.gridy = 5;
+		cstTextField.gridwidth = 5;
+		cstTextField.gridx = 1;
+		tfBirthDate = new FieldDate();
+		add(tfBirthDate, cstTextField);
+
+		cstLabel.gridy = 6;
+		JLabel lbPhone = new JLabel("Telefon");
+		add(lbPhone, cstLabel);
+
+		cstTextField.gridy = 6;
+		tfPhone = new FieldPhone();
+		add(tfPhone, cstTextField);
+
+		cstLabel.gridy = 7;
+		JLabel lbMail = new JLabel("E-Mail");
+		add(lbMail, cstLabel);
+
+		cstTextField.gridy = 7;
+		tfMail = new FieldEmail();
+		add(tfMail, cstTextField);
+
+		cstLabel.gridy = 8;
+		cstLabel.weighty = 2;
+		JLabel lbNote = new JLabel("Bemerkung");
+		add(lbNote, cstLabel);
+
+		cstTextField.gridy = 8;
+		tfNote = new AreaText();
+		tfNote.setRows(2);
 		JScrollPane scrollPane = new JScrollPane(tfNote);
-		plRemarkText.add(scrollPane);
-		scrollPane.setPreferredSize(new Dimension(iTextWidth, iAreaHeight));
+		add(scrollPane, cstTextField);
 
-		/*
-		 * we have to set the preferred size for the labels and textfields
-		 */
-		lbName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbFirstName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfFirstName.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbAddress.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfAddress.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbZipCode.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfZipCode.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbCity.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfCity.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbBirthDate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfBirthDate.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbPhone.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfPhone.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbMail.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfMail.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbNote.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbUsername.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		tfUsername.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cstLabel.gridy = 9;
+		JLabel lbUserName = new JLabel("Benutzername");
+		add(lbUserName, cstLabel);
 
-		add(plRight, BorderLayout.EAST);
-		plRight.setLayout(new BoxLayout(plRight, BoxLayout.Y_AXIS));
-		plRight.add(lbRole);
-		lbRole.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		lbRole.setHorizontalAlignment(JLabel.LEFT);
+		cstTextField.gridy = 9;
+		tfUsername = new FieldText();
+		add(tfUsername, cstTextField);
 
-		plRight.setBorder(new EmptyBorder(new Insets(100, 0, 100, 100)));
-		plRight.add(cbScheduleManager);
-		plRight.add(cbNetworkPlaner);
-		plRight.add(cbBusDriver);
-		plRight.add(cbTicketPlaner);
-		plRight.add(cbHRManager);
+		cstLabel.gridy = 10;
+		JLabel lbRole = new JLabel("Rollen");
+		add(lbRole, cstLabel);
 
-		/*
-		 * and we have to set the preferred size for the checkboxes
-		 */
-		cbScheduleManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbNetworkPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbBusDriver.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbTicketPlaner.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
-		cbHRManager.setPreferredSize(new Dimension(iTextWidth, iTextHeight));
+		cstTextField.gridy = 10;
+		cbScheduleManager = new JCheckBox("EinsatzPlaner");
+		add(cbScheduleManager, cstTextField);
 
-		plBottom.setLayout(new BorderLayout());
-		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		plBottom.setPreferredSize(new Dimension(924, 100));
-		plBottom.add(btCancel, BorderLayout.WEST);
-		plBottom.add(btSave, BorderLayout.EAST);
+		cstTextField.gridy = 11;
+		cbNetworkPlaner = new JCheckBox("Netzplaner");
+		add(cbNetworkPlaner, cstTextField);
+
+		cstTextField.gridy = 12;
+		cbBusDriver = new JCheckBox("Busfahrer");
+		add(cbBusDriver, cstTextField);
+
+		cstTextField.gridy = 13;
+		cbTicketPlaner = new JCheckBox("Fahrkartenplaner");
+		add(cbTicketPlaner, cstTextField);
+
+		cstTextField.gridy = 14;
+		cbHRManager = new JCheckBox("Personalleiter");
+		add(cbHRManager,cstTextField);
+
+		cstLabel.gridy = 15;
+		cstLabel.ipadx = 0;
+		cstLabel.ipady = 0;
+		add(btSave, cstLabel);
+
+		cstLabel.gridx = 3;
+		cstLabel.gridwidth = 3;
+		add(btCancel, cstLabel);
 
 		controllerFormEmployee.insertValuesIntoForm();
 
 		pack();
+		setSize(new Dimension(400, 540));
+		setLocationRelativeTo(null);
 	}
 
 	public String getFirstName()

@@ -130,12 +130,12 @@ public class FormBus extends FormGeneral
 		cstButton.gridx = 0;
 		cstButton.gridy = 8;
 		cstButton.anchor = GridBagConstraints.LAST_LINE_START;
-		add(btCancel, cstButton);
+		add(btSave, cstButton);
 
 		cstButton.gridx = 3;
 		cstButton.gridy = 8;
 		cstButton.anchor = GridBagConstraints.LAST_LINE_END;
-		add(btSave, cstButton);
+		add(btCancel, cstButton);
 
 		pack();
 

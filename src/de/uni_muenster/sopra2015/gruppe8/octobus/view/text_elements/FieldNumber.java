@@ -19,6 +19,7 @@ public class FieldNumber extends FieldText
 
 	public FieldNumber(int width, int limit)
 	{
+		super();
 		this.setColumns(width);
 		if(limit >= 9 || limit == -1)
 			setLimit(9);
