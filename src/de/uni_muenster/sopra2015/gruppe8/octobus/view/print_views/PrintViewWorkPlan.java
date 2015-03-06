@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,11 @@ public class PrintViewWorkPlan implements Printable
 	private double pageHeight;
 	private double pageWidth;
 	private PrintWorkPlan data;
+	private int entriesPerPage;
+	private int numPages;
+	private final int entryHeight = 70;
+	private final int entryXStart = 60;
+	private final int entryYStart = 180;
 
 	public PrintViewWorkPlan(PrintWorkPlan data)
 	{
@@ -38,8 +42,8 @@ public class PrintViewWorkPlan implements Printable
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws
 	PrinterException {
 
-		if (pageIndex > 0)
-		{ /* We have only one page, and 'page' is zero-based */
+		if (pageIndex > numPages)
+		{
 			return NO_SUCH_PAGE;
 		}
 		graphics2D = (Graphics2D) graphics;
@@ -47,6 +51,8 @@ public class PrintViewWorkPlan implements Printable
 
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
+
+		calcEntriesPerPage();
 
 		drawHeader();
 		drawContent(pageIndex);
@@ -69,32 +75,40 @@ public class PrintViewWorkPlan implements Printable
 
 		String lastDate = "";
 
-		long curX = 60;
-		long curY = 180;
+		long curX = entryXStart;
+		long curY = entryYStart;
 
 		graphics2D.setFont(fontNormal);
 
-		for (Quadruple<String,Date,Integer,String> tour : data.getTours())
+		ArrayList<Quadruple<String, Date, Integer, String>> tours = data.getTours();
+		for (int i = pageIndex*entriesPerPage; i<tours.size(); i++)
 		{
+			Quadruple<String, Date, Integer, String> tour = tours.get(i);
 			String curDate = date.format(tour.getSecond());
 			if(!curDate.equals(lastDate))
 			{
 				lastDate = curDate;
 				graphics2D.drawString(curDate, curX, curY);
+				curY += 20;
 			}
-			curY += 20;
 			curX += 20;
 			Date finishedTime = new Date(tour.getSecond().getTime() + (tour.getThird() * 60 * 1000));
 			String timeString = hour.format(tour.getSecond()) + " - "+hour.format(finishedTime);
 			graphics2D.drawString(timeString,curX, curY);
 			curX += 70;
 			graphics2D.drawString(tour.getFirst(),curX, curY);
-			curX = 80;
+			curX = entryXStart + 20;
 			curY += 20;
 			graphics2D.drawString("Bus: "+tour.getFourth(), curX, curY);
-			curX = 60;
+			curX = entryXStart;
 			curY += 30;
 		}
+	}
+
+	private void calcEntriesPerPage()
+	{
+		entriesPerPage = (int)pageHeight/entryHeight;
+		numPages = (int)Math.ceil(pageHeight/entriesPerPage);
 	}
 
 	private void drawLines()
