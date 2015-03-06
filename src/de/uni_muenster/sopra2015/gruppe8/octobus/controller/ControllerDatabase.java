@@ -98,10 +98,9 @@ public class ControllerDatabase
                         bus.getStandingRoom(),
                         bus.getManufacturer(),
 						bus.getModel(),
-                        (int) bus.getNextInspectionDue().getTime()/1000,
+                        (int) (bus.getNextInspectionDue().getTime()/1000),
                         (Boolean) bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
-				// TODO: Does this need "execute" instead of "fetch(One)()"?
                 .fetchOne();
 
 		return(newBus.getBusesId());
@@ -130,7 +129,7 @@ public class ControllerDatabase
 				.set(BUSES.STANDINGROOM, bus.getStandingRoom())
 				.set(BUSES.MANUFACTURER,bus.getManufacturer())
 				.set(BUSES.MODEL,bus.getModel())
-				.set(BUSES.NEXTINSPECTIONDUE,(int) bus.getNextInspectionDue().getTime()/1000)
+				.set(BUSES.NEXTINSPECTIONDUE,(int) (bus.getNextInspectionDue().getTime()/1000))
 				.set(BUSES.ARTICULATEDBUS, bus.isArticulatedBus())
 				.where(BUSES.BUSES_ID.equal(bus.getId()))
 				.execute();
@@ -405,7 +404,7 @@ public class ControllerDatabase
 				.set(EMPLOYEES.ADDRESS,emp.getAddress())
 				.set(EMPLOYEES.ZIPCODE,emp.getZipCode())
 				.set(EMPLOYEES.CITY,emp.getCity())
-				.set(EMPLOYEES.DATEOFBIRTH,(int) emp.getDateOfBirth().getTime()/1000)
+				.set(EMPLOYEES.DATEOFBIRTH,(int) (emp.getDateOfBirth().getTime()/1000))
 				.set(EMPLOYEES.PHONE,emp.getPhone())
 				.set(EMPLOYEES.EMAIL,emp.getEmail())
 				.set(EMPLOYEES.USERNAME,emp.getUsername())
@@ -452,7 +451,7 @@ public class ControllerDatabase
 					rec.getValue(EMPLOYEES.ADDRESS),
 					rec.getValue(EMPLOYEES.ZIPCODE),
 					rec.getValue(EMPLOYEES.CITY),
-					new Date(rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
+					new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
 					rec.getValue(EMPLOYEES.PHONE),
 					rec.getValue(EMPLOYEES.EMAIL),
 					rec.getValue(EMPLOYEES.USERNAME),
@@ -494,7 +493,7 @@ public class ControllerDatabase
 				rec.getValue(EMPLOYEES.ADDRESS),
 				rec.getValue(EMPLOYEES.ZIPCODE),
 				rec.getValue(EMPLOYEES.CITY),
-				new Date(rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
+				new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
 				rec.getValue(EMPLOYEES.PHONE),
 				rec.getValue(EMPLOYEES.EMAIL),
 				rec.getValue(EMPLOYEES.USERNAME),
@@ -752,7 +751,7 @@ public class ControllerDatabase
 			SoldTicket sold = new SoldTicket(
 					rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
 					rec.getValue(SOLDTICKETS.NAME),
-					new Date(rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
+					new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
 					rec.getValue(SOLDTICKETS.PRICE));
 			soldTicketsList.add(sold);
 		}
@@ -772,7 +771,7 @@ public class ControllerDatabase
 		SoldTicket sold = new SoldTicket(
 				rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
 				rec.getValue(SOLDTICKETS.NAME),
-				new Date(rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
+				new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
 				rec.getValue(SOLDTICKETS.PRICE));
 		sold.setId(id);
 		return(sold);
