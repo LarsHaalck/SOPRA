@@ -14,7 +14,7 @@ public class FieldDate extends FieldText
 
 	public FieldDate()
 	{
-		super(11);
+		super(10);
 		isValidDate();
 
 		this.addKeyListener(new KeyAdapter()

@@ -2,6 +2,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormLogin;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldPassword;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +15,8 @@ public class FormLogin extends JDialog
 {
 	private ControllerFormLogin controllerFormLogin;
 
-	private JTextField tfUsername;
-	private JPasswordField pfPassword;
+	private FieldText tfUsername;
+	private FieldPassword pfPassword;
 	private JLabel lbUsername, lbPassword, lbError;
 	private JButton btnLogin, btnCancel;
 	private JPanel panel;
@@ -35,7 +37,8 @@ public class FormLogin extends JDialog
 		cs.gridwidth = 1;
 		panel.add(lbUsername, cs);
 
-		tfUsername = new JTextField(20);
+		tfUsername = new FieldText(20,20);
+		tfUsername.setText("bla");
 		cs.gridx = 1;
 		cs.gridy = 0;
 		cs.gridwidth = 2;
@@ -47,7 +50,7 @@ public class FormLogin extends JDialog
 		cs.gridwidth = 1;
 		panel.add(lbPassword, cs);
 
-		pfPassword = new JPasswordField(20);
+		pfPassword = new FieldPassword(20);
 		cs.gridx = 1;
 		cs.gridy = 1;
 		cs.gridwidth = 2;
