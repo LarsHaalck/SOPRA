@@ -41,6 +41,7 @@ public class FieldText extends JFormattedTextField
 		this.limit = limit;
 	}
 
+	//TODO: delete if not necessary
 	public void setRedBorder(boolean toggle)
 	{
 		if(toggle)

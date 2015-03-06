@@ -207,8 +207,6 @@ public class FormEmployee extends FormGeneral
 		controllerFormEmployee.insertValuesIntoForm();
 
 		pack();
-		System.out.println(tfNote.getFont());
-		System.out.println(tfFirstName.getFont());
 	}
 
 	public String getFirstName()
