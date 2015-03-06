@@ -15,6 +15,12 @@ public class TableModelBusStop extends ExtendedTableModel
 	}
 
 	@Override
+	public int getFirstSortColumn()
+	{
+		return getColumnIndex(ColumnsBusStop.NAME.toString());
+	}
+
+	@Override
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsBusStop.NAME.toString()};
