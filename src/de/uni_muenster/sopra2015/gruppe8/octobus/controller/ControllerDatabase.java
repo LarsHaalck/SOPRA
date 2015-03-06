@@ -269,7 +269,7 @@ public class ControllerDatabase
 	public ArrayList<BusStop> getBusStops()
 	{
 		// Start by getting all bus stops from the database
-        Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();
+        Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).fetch();
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
