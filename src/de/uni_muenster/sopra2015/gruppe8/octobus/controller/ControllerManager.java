@@ -14,6 +14,7 @@ public class ControllerManager
 	private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
 	private static ArrayList<ListenerWindow> listenerWindow = new ArrayList<>();
     private static ArrayList<ListenerTable> listenerTable = new ArrayList<>();
+	private static ArrayList<ListenerPrint> listenerPrint = new ArrayList<>();
 
 	/**
 	 * Doesn't allow creating a single instance of ControllerManager
@@ -85,13 +86,23 @@ public class ControllerManager
 			listener.windowClose(emitter);
 	}
 
-    public static void informTableSelectionChanged(EmitterTable emitter)
+	/**
+	 * Informs every active ListenerTable that selection has changed.
+	 *
+	 * @param emitter table with changed selection
+	 */
+	public static void informTableSelectionChanged(EmitterTable emitter)
     {
         ArrayList<ListenerTable> list = new ArrayList<>(listenerTable);
         for(ListenerTable listener : list)
             listener.tableSelectionChanged(emitter);
     }
 
+	/**
+	 * Informs every active ListenerTable that content needs to update.
+	 *
+	 * @param emitter table that needs to update
+	 */
 	public static void informTableContentChanged(EmitterTable emitter)
 	{
 		ArrayList<ListenerTable> list = new ArrayList<>(listenerTable);
@@ -99,6 +110,17 @@ public class ControllerManager
 			listener.tableContentChanged(emitter);
 	}
 
+	/**
+	 * Informs every active ListenerPrint that manages print-requests
+	 * @param emitter document that should be printed.
+	 * @param objectId objectId corresponding to document.
+	 */
+	public static void informPrintRequested(EmitterPrint emitter, int objectId)
+	{
+		ArrayList<ListenerPrint> list = new ArrayList<>(listenerPrint);
+		for(ListenerPrint listener : list)
+			listener.printDocument(emitter, objectId);
+	}
 
 	/**
 	 * Clears lists of listeners.
@@ -110,6 +132,7 @@ public class ControllerManager
 		listenerButton.clear();
 		listenerWindow.clear();
         listenerTable.clear();
+		listenerPrint.clear();
 	}
 
 	/**
@@ -174,6 +197,7 @@ public class ControllerManager
 
     /**
      * Adds a ListenerTable to the listenerTable list.
+	 * 
      * @param listener Listener to be added.
      */
     public static void addListener(ListenerTable listener)
@@ -181,8 +205,33 @@ public class ControllerManager
         listenerTable.add(listener);
     }
 
-    public static void removeListener(ListenerTable listener)
+	/**
+	 * Removes a ListenerTable to the listenerTable list.
+	 * 
+	 * @param listener Listener to be removed.
+	 */
+	public static void removeListener(ListenerTable listener)
     {
         listenerTable.remove(listener);
     }
+
+	/**
+	 * Adds a ListenerPrint to the listenerPrint list.
+	 *
+	 * @param listener Listener to be added.
+	 */
+	public static void addListener(ListenerPrint listener)
+	{
+		listenerPrint.add(listener);
+	}
+
+	/**
+	 * Removes a ListenerPrint to the listenerPrint list.
+	 *
+	 * @param listener Listener to be removed.
+	 */
+	public static void removeListener(ListenerPrint listener)
+	{
+		listenerPrint.remove(listener);
+	}
 }

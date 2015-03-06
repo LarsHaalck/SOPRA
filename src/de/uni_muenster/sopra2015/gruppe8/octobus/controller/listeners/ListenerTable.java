@@ -1,9 +1,18 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
- * Created by sszie_000 on 05.03.2015.
+ * Listener used to manage some table-changes
  */
 public interface ListenerTable {
-    public abstract void tableSelectionChanged(EmitterTable emitter);
+	/**
+	 * Implements the action happens after table-selection changed
+	 * @param emitter Table
+	 */
+	public abstract void tableSelectionChanged(EmitterTable emitter);
+
+	/**
+	 * Implements the action that table-content has changed
+	 * @param emitter Table
+	 */
 	public abstract void tableContentChanged(EmitterTable emitter);
 }

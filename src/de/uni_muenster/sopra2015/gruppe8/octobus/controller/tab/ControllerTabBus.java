@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 			data[i][4] = bus.isArticulatedBus();
 			data[i][5] = bus.getNumberOfSeats();
 			data[i][6] = bus.getStandingRoom();
-			data[i][7] = parseDate(bus.getNextInspectionDue());
+			data[i][7] = new TableDate(bus.getNextInspectionDue(), TableDate.Type.DATE);
 		}
 		tabBus.fillTable(data);
 	}

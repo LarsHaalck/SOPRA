@@ -25,11 +25,12 @@ public class FieldText extends JFormattedTextField
 
 	public FieldText(int width, int limit)
 	{
-		super(width);
+		super();
+		this.setColumns(width);
 		if(limit == -1)
-			limit = 200;
+			this.limit = 200;
 		else
-			limit = limit;
+			this.limit = limit;
 	}
 
 	public FieldText(int limit, JFormattedTextField.AbstractFormatter formatter)
