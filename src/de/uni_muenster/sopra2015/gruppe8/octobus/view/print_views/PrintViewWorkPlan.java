@@ -42,11 +42,6 @@ public class PrintViewWorkPlan implements Printable
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws
 	PrinterException {
-
-		if (pageIndex >= numPages)
-		{
-			return NO_SUCH_PAGE;
-		}
 		graphics2D = (Graphics2D) graphics;
 		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
@@ -54,6 +49,11 @@ public class PrintViewWorkPlan implements Printable
 		pageWidth = pageFormat.getImageableWidth();
 
 		calcEntriesPerPage();
+
+		if (pageIndex >= numPages)
+		{
+			return NO_SUCH_PAGE;
+		}
 
 		drawHeader();
 		drawContent(pageIndex);

@@ -85,10 +85,13 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			case FORM_ROUTE_STEP1_ADD:
 				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
 				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
-				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_1();
-				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_2();
+				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
+				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_1();
 				//TODO kaputt
-				contentTableCurrent.add((int) modelTableAvailable.getValueAt(tableAvailabe.getSelectedRow(),0));
+				int viewRow = tableAvailabe.getSelectedRow();
+				int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
+				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
+				contentTableCurrent.add(selectedID);
 				tableAvailabe.clearSelection();
 				initTableCurrent();
 				initTableAvailable(contentTableCurrent);
