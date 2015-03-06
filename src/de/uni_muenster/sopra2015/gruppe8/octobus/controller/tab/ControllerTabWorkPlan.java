@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
@@ -46,6 +47,8 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 				break;
 
 			case TAB_WORK_PLAN_PRINT:
+				System.out.println("Butn pressed");
+				ControllerManager.informPrintRequested(EmitterPrint.WORK_PLAN, 1);
 				break;
 		}
 	}

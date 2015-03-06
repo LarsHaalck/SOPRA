@@ -15,11 +15,13 @@ import java.awt.*;
 public class ControllerFrameMain extends Controller implements ListenerButton, ListenerUserState, ListenerWindow
 {
 	private FrameMain frame;
+	private ControllerPrint controllerPrint;
 
 	public ControllerFrameMain(FrameMain frame)
 	{
 		super();
 		this.frame = frame;
+		this.controllerPrint = new ControllerPrint();
 	}
 
 	@Override

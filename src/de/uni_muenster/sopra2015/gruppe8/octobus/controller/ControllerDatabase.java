@@ -153,6 +153,9 @@ public class ControllerDatabase
 	{
 		Result<Record> busRecords = create.select().from(BUSES).fetch();
 
+        // In case there are no buses - which is unlikely, but who knows
+        if (busRecords == null) return null;
+
 		ArrayList<Bus> busList = new ArrayList<>();
 
 		for (Record rec : busRecords)
@@ -175,12 +178,14 @@ public class ControllerDatabase
      * Retrieves a single Bus object from the database entry using its unique id
      *
      * @param id unique ID of the bus to be retrieved
-     * @return Bus object created from its corresponding entry the database
+     * @return Bus object created from its corresponding entry the database, null if bus not found
      */
     public Bus getBus(int id)
     {
 
         Record busRecord = create.select().from(BUSES).where(BUSES.BUSES_ID.eq(id)).fetchOne();
+
+        if (busRecord == null) return null;
 
         Bus bus = new Bus(
                 busRecord.getValue(BUSES.LICENCEPLATE),
@@ -278,20 +283,25 @@ public class ControllerDatabase
 	{
 		// Start by getting all bus stops from the database
         Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).fetch();
+
+        // In case there are no BusStops, which is unlikely, but who knows
+        if (busStopRecords == null) return null;
+
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
         for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
-            Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
+            Result<BusstopsStoppingpointsRecord> stoppingPoints = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
                     .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
             // ... and put them all into a HashSet
+            // (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
             HashSet<StoppingPoint> spoints = new HashSet<>();
-            for (Record sp : stoppingPoints)
+            for (BusstopsStoppingpointsRecord sp : stoppingPoints)
 			{
-				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
+				spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(),sp.getName()));
 			}
 
 			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
@@ -312,18 +322,20 @@ public class ControllerDatabase
      * Retrieves a single BusStop object from the database entry using its unique id
      *
      * @param id unique ID of the bus stop to be retrieved
-     * @return BusStop object created from its corresponding entry the database
+     * @return BusStop object created from its corresponding entry the database, null if bus stop not found
      */
     public BusStop getBusStop(int id)
     {
         // Get desired bus from DB
         Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();
+        if (rec == null) return null;
 
         // Get all associated stopping points...
         Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
 
         // .. and add them into a HashSet
+        //  (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
         HashSet<StoppingPoint> spoints = new HashSet<>();
 		for (Record sp : stoppingPoints)
 		{
@@ -462,6 +474,9 @@ public class ControllerDatabase
 	{
 		Result<Record> empRecords = create.select().from(EMPLOYEES).fetch();
 
+        // In case we have no employees to return
+        if (empRecords == null) return null;
+
 		ArrayList<Employee> empList = new ArrayList<>();
 
 		for (Record rec : empRecords)
@@ -502,13 +517,13 @@ public class ControllerDatabase
      * Retrieves a single Employee object from the database entry using its unique id
      *
      * @param id unique ID of the employee to be retrieved
-     * @return Employee object created from its corresponding entry the database
+     * @return Employee object created from its corresponding entry the database, null if employee not found
      */
 	public Employee getEmployeeById(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
-        // TODO: Does this work with fetchOne()?
+        // Return null if employee can not be found
         if (rec == null) return null;
 
 		HashSet<Role> roles = new HashSet<>();
@@ -701,12 +716,14 @@ public class ControllerDatabase
      * Retrieves a single Route object from the database entry using its unique id
      *
      * @param id unique ID of the route to be retrieved
-     * @return Route object created from its corresponding entry the database
+     * @return Route object created from its corresponding entry the database, null if route not found
      */
 	public Route getRoute(int id)
 	{
 	    // Start by getting the desired route from the database
 		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
+
+        if (rec == null) return null;
 
         // Fetch its starting times
         Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
@@ -810,11 +827,13 @@ public class ControllerDatabase
      * Retrieves a single SoldTicket object from the database entry using its unique id
      *
      * @param id unique ID of the sold ticket to be retrieved
-     * @return SoldTicket object created from its corresponding entry the database
+     * @return SoldTicket object created from its corresponding entry the database, null if sold ticket not found
      */
     public SoldTicket getSoldTicket(int id)
 	{
 		Record rec = create.select().from(SOLDTICKETS).where(SOLDTICKETS.SOLDTICKETS_ID.eq(id)).fetchOne();
+
+        if (rec == null) return null;
 
 		SoldTicket sold = new SoldTicket(
 				rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
@@ -906,11 +925,13 @@ public class ControllerDatabase
      * Retrieves a single Ticket object from the database entry using its unique id
      *
      * @param id unique ID of the name to be retrieved
-     * @return Ticket object created from its corresponding entry the database
+     * @return Ticket object created from its corresponding entry the database, null if ticket not found
      */
 	public Ticket getTicket(int id)
 	{
 		Record rec = create.select().from(TICKETS).where(TICKETS.TICKETS_ID.eq(id)).fetchOne();
+
+        if (rec == null) return null;
 
 		Ticket tick = new Ticket(
 				rec.getValue(TICKETS.PRICE),
@@ -986,7 +1007,7 @@ public class ControllerDatabase
     {
         ArrayList<Tour> result = new ArrayList<>();
 
-        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).fetch();
+        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).orderBy(TOURS.TIMESTAMP).fetch();
 
         for (ToursRecord t : tours){
             result.add(
