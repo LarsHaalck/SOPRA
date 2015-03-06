@@ -197,7 +197,7 @@ public class FormRouteStep1 extends JPanel
 		int nRow = model_1.getRowCount();
 		String[] tableData = new String[nRow];
 		for (int i = 0 ; i < nRow ; i++)
-			tableData[i] = model_1.getValueAt(i,0).toString();
+			tableData[i] = model_1.getValueAt(i,1).toString();
 		return tableData;
 	}
 
