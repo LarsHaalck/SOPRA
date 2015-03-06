@@ -124,7 +124,9 @@ public class FormBusStop extends FormGeneral
 		add(lbStoppingPoints, cstLabel);
 
 		cstLabel.gridy = 5;
-		add(new JScrollPane(lStoppingPoints), cstLabel);
+		cstLabel.fill = GridBagConstraints.HORIZONTAL;
+		JScrollPane spListStoppingPoints = new JScrollPane(lStoppingPoints);
+		add(spListStoppingPoints, cstLabel);
 
 		cstLabel.gridy = 6;
 		JPanel plButtons = new JPanel();
