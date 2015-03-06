@@ -13,7 +13,7 @@ public class FieldEmail extends FieldText
 
 	private boolean isValidEmail(String email)
 	{
-		if(email.trim().length() == 0)
+		if(email == null)
 			return false;
 		if(super.isValidInput())
 		{

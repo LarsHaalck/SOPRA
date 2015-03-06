@@ -14,6 +14,8 @@ public class AreaText extends JTextArea
 		super();
 		setFont(new Font("Tahoma", Font.PLAIN, 11));
 		limitDoc.setLimit(this.limit);
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 
 	@Override
