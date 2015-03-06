@@ -8,16 +8,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Locale;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for the FormBus class.
  */
 public class ControllerFormBus extends Controller implements ListenerButton
 {
@@ -33,7 +29,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		this.formBus = formBus;
 		if(objectID != -1)
 		{
-			setBusById();
+			setBusInfo();
 		}
 	}
 
@@ -61,9 +57,8 @@ public class ControllerFormBus extends Controller implements ListenerButton
 
 	/**
 	 * Fetch a Bus object from the DB.
-	 * @param id Bus-ID.
 	 */
-	private void setBusById()
+	private void setBusInfo()
 	{
 		bus = controllerDatabase.getBus(objectID);
 	}
@@ -86,6 +81,10 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		}
 	}
 
+	/**
+	 *Checks if form input is correct and adds values to local bus.
+	 * @return Returns true on correct input.
+	 */
 	private boolean parseValuesFromForm()
 	{
 		if(objectID == -1)
@@ -106,12 +105,10 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(licencePlate.trim().length() < 5)
 			errorFields.add("Das Kennzeichen muss mindestens 5 Zeichen umfassen.");
-		else if(licencePlate.length() > 20)
-			errorFields.add("Das Kennzeichen darf nicht mehr als 20 Zeichen umfassen.");
 		if(numberOfSeats == -1)
-			errorFields.add("Die Anzahl der Sitzplätze ist keine gültige Zahl");
+			errorFields.add("Die Anzahl der Sitzplätze darf nicht leer sein.");
 		if(standingRoom == -1)
-			errorFields.add("Die Anzahl der Stehplätze ist keine gültige Zahl.");
+			errorFields.add("Die Anzahl der Stehplätze darf nicht leer sein.");
 		if(manufacturer.trim().length() == 0)
 			errorFields.add("Der Hersteller-Name darf nicht leer sein.");
 		if(model.trim().length() == 0)
@@ -135,11 +132,14 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			bus.setModel(model);
 			bus.setNextInspectionDue(nextInspectionDue);
 			bus.setArticulatedBus(articulatedBus);
-			//TODO Update into databse
 			return true;
 		}
 	}
 
+	/**
+	 * Saves the current bus to the DB.
+	 * @return
+	 */
 	private boolean saveToDB()
 	{
 		if(objectID == -1)
