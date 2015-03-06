@@ -46,6 +46,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 				{
 					if(saveToDb())
 					{
+						formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
 						closeDialog();
 					}

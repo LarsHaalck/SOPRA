@@ -73,4 +73,9 @@ public abstract class FormGeneral extends JDialog
 		JOptionPane.showMessageDialog(this, error, "Fehler", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public void showInformationForm(String information)
+	{
+		JOptionPane.showMessageDialog(this, information, "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+	}
+
 }
