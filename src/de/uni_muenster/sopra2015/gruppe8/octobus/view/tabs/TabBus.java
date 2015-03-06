@@ -28,12 +28,7 @@ public class TabBus extends TabTable<TableModelBus>
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			if(getSelectedID() != -1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					== JOptionPane.YES_OPTION)
-			{
-				System.out.println("Delete pressed");
-				controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_DELETE);
-			}
+			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_DELETE);
 		});
 
 		btnEdit = new JButton("Bearbeiten");
@@ -70,9 +65,6 @@ public class TabBus extends TabTable<TableModelBus>
 	@Override
 	protected void editEntry()
 	{
-		if(getSelectedID() == -1)
-			JOptionPane.showMessageDialog(this, "Um einen Bus zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-		else
 			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_EDIT);
 	}
 }

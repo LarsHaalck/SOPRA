@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Busstops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord> {
 
-	private static final long serialVersionUID = -1541771006;
+	private static final long serialVersionUID = -2102549885;
 
 	/**
 	 * The reference instance of <code>busStops</code>
@@ -54,7 +54,7 @@ public class Busstops extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.
 	/**
 	 * The column <code>busStops.barrierFree</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Boolean> BARRIERFREE = createField("barrierFree", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Boolean> BARRIERFREE = createField("barrierFree", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * Create a <code>busStops</code> table reference

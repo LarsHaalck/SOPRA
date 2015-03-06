@@ -11,6 +11,11 @@ public class Ticket
     private int numPassengers;
     private String description;
 
+	public Ticket()
+	{
+
+	}
+
     public Ticket(int price, String name, int numPassengers, String description, int id)
     {
         this.price = price;

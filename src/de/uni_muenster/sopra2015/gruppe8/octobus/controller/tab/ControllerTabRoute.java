@@ -34,7 +34,7 @@ public class ControllerTabRoute extends Controller implements ListenerButton
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 
 	@Override
@@ -42,15 +42,35 @@ public class ControllerTabRoute extends Controller implements ListenerButton
 	{
 		switch (btn)
 		{
-			case TAB_LINE_NEW:
+			case TAB_ROUTE_NEW:
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_ROUTE_NEW);
 				break;
 
-			case TAB_LINE_EDIT:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_ROUTE_EDIT, tabRoute.getSelectedID());
+			case TAB_ROUTE_EDIT:
+				if(tabRoute.getSelectedID() != -1)
+				{
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_ROUTE_EDIT, tabRoute.getSelectedID());
+				}
+				else
+				{
+					tabRoute.showMessageDialog("Um eine Linie zu bearbeiten wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 
-			case TAB_LINE_DELETE:
+			case TAB_ROUTE_DELETE:
+
+				if(tabRoute.getSelectedID() != -1)
+				{
+					if(tabRoute.showConfirmDialog("Wirklich löschen?"))
+					{
+						controllerDatabase.deleteRoute(tabRoute.getSelectedID());
+						fillTable();
+					}
+				}
+				else
+				{
+					tabRoute.showMessageDialog("Um eine Linie zu löschen wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 		}
 	}

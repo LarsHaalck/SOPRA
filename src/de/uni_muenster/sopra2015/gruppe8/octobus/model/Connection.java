@@ -13,6 +13,11 @@ public class Connection
 	private Date date;
 	private int time;
 
+	public Connection()
+	{
+		trips = new LinkedList<>();
+	}
+
 	public Connection(LinkedList<Quadruple<Integer, BusStop, Route, BusStop>> trips, int duration, Date date, int time)
 	{
 		this.trips = trips;

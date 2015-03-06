@@ -16,6 +16,18 @@ public class FieldNumber extends FieldText
 		setMask();
 	}
 
+
+	public FieldNumber(int width, int limit)
+	{
+		this.setColumns(width);
+		if(limit >= 9 || limit == -1)
+			setLimit(9);
+		else
+			setLimit(limit);
+
+		setMask();
+	}
+
 	public FieldNumber()
 	{
 		super(9);

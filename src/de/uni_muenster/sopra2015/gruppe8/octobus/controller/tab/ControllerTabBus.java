@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import java.util.ArrayList;
 
@@ -30,14 +31,29 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		switch(btn)
 		{
 			case TAB_BUS_DELETE:
-				controllerDatabase.deleteBus(tabBus.getSelectedID());
-				//TODO: I think it would be more performant to just delete table-entry instead of full reload
-				fillTable();
+				if(tabBus.getSelectedID() != -1)
+				{
+					if(tabBus.showConfirmDialog("Wirklich löschen?"))
+					{
+						controllerDatabase.deleteBus(tabBus.getSelectedID());
+						fillTable();
+					}
+				}
+				else
+				{
+					tabBus.showMessageDialog("Um einen Bus zu löschen wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 
 			case TAB_BUS_EDIT:
-				//TODO
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, tabBus.getSelectedID());
+				if(tabBus.getSelectedID() != -1)
+				{
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_EDIT, tabBus.getSelectedID());
+				}
+				else
+				{
+					tabBus.showMessageDialog("Um einen Bus zu bearbeiten wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 
 			case TAB_BUS_NEW:
@@ -60,7 +76,7 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 			data[i][4] = bus.isArticulatedBus();
 			data[i][5] = bus.getNumberOfSeats();
 			data[i][6] = bus.getStandingRoom();
-			data[i][7] = parseDate(bus.getNextInspectionDue());
+			data[i][7] = new TableDate(bus.getNextInspectionDue(), TableDate.Type.DATE);
 		}
 		tabBus.fillTable(data);
 	}

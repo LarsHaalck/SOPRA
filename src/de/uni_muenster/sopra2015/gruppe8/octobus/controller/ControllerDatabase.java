@@ -25,6 +25,9 @@ import java.util.Date;
 public class ControllerDatabase
 {
 
+    /**
+     * Name of the database file which ought to be loaded
+     */
     private static final String DB_NAME = "Octobus.db";
 
     private static ControllerDatabase controllerDatabase = null;
@@ -266,11 +269,11 @@ public class ControllerDatabase
 	public ArrayList<BusStop> getBusStops()
 	{
 		// Start by getting all bus stops from the database
-        Result<Record> busStopRecords = create.select().from(BUSSTOPS).fetch();
+        Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).fetch();
 		ArrayList<BusStop> busStopList = new ArrayList<>();
 
 		// For each bus retrieved...
-        for (Record rec : busStopRecords)
+        for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
             Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
@@ -292,6 +295,7 @@ public class ControllerDatabase
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
 					spoints,
 					barrier);
+            busStop.setId(rec.getBusstopsId());
 
             // Finally, create BusStop object and add it to the ArrayList
             busStopList.add(busStop);
@@ -475,9 +479,12 @@ public class ControllerDatabase
      * @param id unique ID of the employee to be retrieved
      * @return Employee object created from its corresponding entry the database
      */
-	public Employee getEmployee(int id)
+	public Employee getEmployeeById(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
+
+        // TODO: Does this work with fetchOne()?
+        if (rec.size() == 0) return null;
 
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
@@ -510,9 +517,9 @@ public class ControllerDatabase
 		return emp;
 	}
 
-    public Employee getEmployee(String username){
+    public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployee(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 
@@ -638,18 +645,17 @@ public class ControllerDatabase
 					startTimes.get(DayOfWeek.SUNDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
 			}
 
-
             // Now get all stops on the route ...
-            Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+            Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
                     .where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
             // ... and add them to the list of stops
-			for (Record s : stopsRecords)
+			for (RoutesStopsRecord s : stopsRecords)
 			{
 				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 				BusStop bstop = getBusStop(stopId);
-				StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+				StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
 				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 			}
 
@@ -711,16 +717,16 @@ public class ControllerDatabase
 
 
         // Now get all stops on the route ...
-        Result<Record> stopsRecords = create.select().from(ROUTES_STOPS)
+        Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
                 .where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
         // ... and add them to the list of stops
-		for (Record s : stopsRecords)
+		for (RoutesStopsRecord s : stopsRecords)
 		{
 			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 			BusStop bstop = getBusStop(stopId);
-			StoppingPoint spoint = new StoppingPoint(s.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),s.getValue(BUSSTOPS_STOPPINGPOINTS.NAME));
+			StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
 			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 		}
 
@@ -734,6 +740,19 @@ public class ControllerDatabase
 		return route;
 	}
 
+
+    //////////////////////////////////
+    // Methods for "StoppingPoint"s //
+    //////////////////////////////////
+
+    public StoppingPoint getStoppingPoint(int id)
+    {
+        BusstopsStoppingpointsRecord spr = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+                .fetchOne();
+
+        return new StoppingPoint(id, spr.getName());
+    }
 
 	///////////////////////////////
 	// Methods for "soldTicket"s //
@@ -813,7 +832,7 @@ public class ControllerDatabase
      *
      * @param id unique ID of the name entry that is to be deleted from the database
      */
-	public void deleteTickets(int id)
+	public void deleteTicket(int id)
 	{
 		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
 	}
@@ -950,7 +969,7 @@ public class ControllerDatabase
                             new Date((long) t.getTimestamp()*1000),
                             getRoute(t.getRoutesId()),
                             getBus(t.getBusesId()),
-                            getEmployee(t.getEmployeesId())
+                            getEmployeeById(t.getEmployeesId())
                     )
             );
         }

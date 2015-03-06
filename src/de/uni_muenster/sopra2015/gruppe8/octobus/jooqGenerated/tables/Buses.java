@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord> {
 
-	private static final long serialVersionUID = 706239277;
+	private static final long serialVersionUID = 459303662;
 
 	/**
 	 * The reference instance of <code>buses</code>
@@ -69,7 +69,7 @@ public class Buses extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gru
 	/**
 	 * The column <code>buses.articulatedBus</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Boolean> ARTICULATEDBUS = createField("articulatedBus", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Boolean> ARTICULATEDBUS = createField("articulatedBus", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * Create a <code>buses</code> table reference
