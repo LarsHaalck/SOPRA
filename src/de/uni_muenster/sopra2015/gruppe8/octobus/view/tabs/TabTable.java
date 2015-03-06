@@ -220,8 +220,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	 */
 	public void fillTable(Object[][] data)
 	{
-		System.out.println("fill table called");
-
 		table.clearSelection();
 		model.setData(data);
 
