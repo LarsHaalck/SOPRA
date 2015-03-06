@@ -116,7 +116,7 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 		if(name.trim().length() == 0)
 			errorFields.add("Der Name darf nicht leer sein.");
 		else if (name.trim().length() < 5)
-			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen");
+			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
 		if(price == -1)
 			errorFields.add("Der Preis darf nicht leer sein.");
 		if(numPassangers == -1)

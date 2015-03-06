@@ -132,6 +132,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			errorList.add("Die Stadt darf nicht leer sein.");
 		if(birthDate == null)
 			errorList.add("Das Geburtsdatum liegt in keinem gültigen Format vor.");
+		if(eMail == null)
+			errorList.add("Die E-Mail-Adresse ist ungültig.");
 		if(username.trim().length() == 0)
 			errorList.add("Der Benutzername darf nicht leer sein.");
 		if(username.trim().length() < 3)
