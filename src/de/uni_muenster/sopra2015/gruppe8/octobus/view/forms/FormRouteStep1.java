@@ -167,6 +167,8 @@ public class FormRouteStep1 extends JPanel
 	public void fillTableCurrent(Object[][] data)
 	{
 		model_1.setData(data);
+		revalidate();
+		repaint();
 	}
 
 	//--------------------------------------
