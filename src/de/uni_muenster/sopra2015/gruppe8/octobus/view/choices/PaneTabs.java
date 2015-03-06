@@ -18,7 +18,7 @@ public class PaneTabs extends JTabbedPane
 		addTab("Busse", new TabBus());
 		addTab("Mitarbeiter", new TabEmployee());
 		addTab("Haltestellen", new TabBusStop());
-		addTab("Linien", new TabLine());
+		addTab("Linien", new TabRoute());
 		addTab("Fahrkarten", new TabTicket());
 		addTab("Arbeitsplan", new TabWorkPlan());
 		addTab("Dienstplanung", new TabSchedule());
