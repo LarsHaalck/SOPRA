@@ -1,6 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
+
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
@@ -23,6 +25,9 @@ import java.util.Date;
 public class ControllerDatabase
 {
 
+    /**
+     * Name of the database file which ought to be loaded
+     */
     private static final String DB_NAME = "Octobus.db";
 
     private static ControllerDatabase controllerDatabase = null;
@@ -99,7 +104,7 @@ public class ControllerDatabase
                         bus.getManufacturer(),
 						bus.getModel(),
                         (int) (bus.getNextInspectionDue().getTime()/1000),
-                        (Boolean) bus.isArticulatedBus())
+                        bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
                 .fetchOne();
 
@@ -473,7 +478,7 @@ public class ControllerDatabase
      * @param id unique ID of the employee to be retrieved
      * @return Employee object created from its corresponding entry the database
      */
-	public Employee getEmployee(int id)
+	public Employee getEmployeeById(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
@@ -508,9 +513,9 @@ public class ControllerDatabase
 		return emp;
 	}
 
-    public Employee getEmployee(String username){
+    public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployee(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 
@@ -532,7 +537,7 @@ public class ControllerDatabase
                 ROUTES.NIGHT)
 				.values(r.getName(),
                         r.getNote(),
-                        (Boolean) r.isNight())
+                        r.isNight())
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
@@ -673,7 +678,7 @@ public class ControllerDatabase
 	public Route getRoute(int id)
 	{
 	    // Start by getting the desired route from the database
-		Record rec = create.select().from(ROUTES).where(ROUTES.ROUTES.ROUTES_ID.eq(id)).fetchOne();
+		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
 
         // Fetch its starting times
         Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
@@ -811,7 +816,7 @@ public class ControllerDatabase
      *
      * @param id unique ID of the name entry that is to be deleted from the database
      */
-	public void deleteTickets(int id)
+	public void deleteTicket(int id)
 	{
 		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
 	}
@@ -877,7 +882,7 @@ public class ControllerDatabase
 	}
 
 	//////////////////////////
-	//	Methods for "Tour"s //
+	//  Methods for "Tour"s //
 	//////////////////////////
 
 	// TODO: Implementieren!
@@ -888,7 +893,8 @@ public class ControllerDatabase
      *
      * @param date date for which tours ought to be generated
      */
-    public void createTours(Date date){
+    public void createTours(Date date)
+    {
 
         Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
@@ -947,7 +953,7 @@ public class ControllerDatabase
                             new Date((long) t.getTimestamp()*1000),
                             getRoute(t.getRoutesId()),
                             getBus(t.getBusesId()),
-                            getEmployee(t.getEmployeesId())
+                            getEmployeeById(t.getEmployeesId())
                     )
             );
         }
