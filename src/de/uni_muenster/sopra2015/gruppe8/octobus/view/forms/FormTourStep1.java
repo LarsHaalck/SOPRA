@@ -16,9 +16,8 @@ public class FormTourStep1 extends JPanel
 {
 	private JTable busStopCurrent, busStopAvailable;
 	private BasicArrowButton add, delete, up, down;
-	private Box boxMain, boxTop;
+	private Box boxTop;
 	private DefaultTableModel model_1,model_2;
-	private String[][] rowdata_busStopCurrent, rowdata_busStopAvailable;
 	private JLabel name;
 	private JCheckBox nightLineClick;
 	private JPanel bottomPanel, space;
@@ -30,7 +29,7 @@ public class FormTourStep1 extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(new Insets(5, 10, 15, 10)));
 
-		name = new JLabel("Name der Linie");
+		name = new JLabel("Name der Linie: ");
 		nameTour = new FieldText(20, -1);
 		nightLineClick = new JCheckBox("Nachtlinie");
 
@@ -62,18 +61,24 @@ public class FormTourStep1 extends JPanel
 		cTable.gridheight = 4;
 
 		up = new BasicArrowButton(BasicArrowButton.NORTH);
+		up.addActionListener(e -> {
+
+		});
 		cButton.gridx = 0;
 		cButton.gridy = 1;
 		cButton.insets = new Insets(130, 0, 5, 50);
 		bottomPanel.add(up, cButton);
 
 		down = new BasicArrowButton(BasicArrowButton.SOUTH);
+		down.addActionListener(e -> {
+
+		});
 		cButton.gridx = 0;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(5, 0, 5, 50);
 		bottomPanel.add(down, cButton);
 
-		model_1 = new DefaultTableModel(rowdata_busStopCurrent, new String[] {"Haltestelle"});
+		model_1 = new DefaultTableModel(null, new String[] {"Haltestelle"});
 		busStopCurrent = new JTable(model_1);
 		busStopCurrent.setFillsViewportHeight(true);
 		t1 = new JScrollPane(busStopCurrent);
@@ -83,18 +88,24 @@ public class FormTourStep1 extends JPanel
 		bottomPanel.add(t1, cTable);
 
 		add = new BasicArrowButton(BasicArrowButton.WEST);
+		add.addActionListener(e -> {
+
+		});
 		cButton.gridx = 2;
 		cButton.gridy = 1;
 		cButton.insets = new Insets(135, 50, 20, 50);
 		bottomPanel.add(add, cButton);
 
 		delete = new BasicArrowButton(BasicArrowButton.EAST);
+		delete.addActionListener(e -> {
+
+		});
 		cButton.gridx = 2;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(20, 50, 5, 50);
 		bottomPanel.add(delete, cButton);
 
-		model_2 = new DefaultTableModel(rowdata_busStopAvailable, new String[] {"Haltestelle"});
+		model_2 = new DefaultTableModel(null, new String[] {"Haltestelle"});
 		busStopAvailable = new JTable(model_2);
 		busStopAvailable.setFillsViewportHeight(true);
 		t2 = new JScrollPane(busStopAvailable);
@@ -112,19 +123,48 @@ public class FormTourStep1 extends JPanel
 		add(bottomPanel, BorderLayout.CENTER);
 	}
 
-	public Vector<Vector<String>> getTableData() //nochmal angucken
+	//--------------------------------------
+	//------------- getter -----------------
+	//--------------------------------------
+
+	public Vector<Vector<String>> getTableData() //TODO nochmal angucken
 	{
 		return model_1.getDataVector();
 	}
 
-	public String getNameValue()
+	public String getName()
 	{
 		System.out.println(nameTour.getText());
 		return nameTour.getText();
 	}
 
-	public boolean isNightLine()
+	public boolean getIsNightLine()
 	{
 		return nightLineClick.isSelected();
 	}
+
+	//--------------------------------------
+	//------------- setter -----------------
+	//--------------------------------------
+
+	public void setIsNightLine(boolean isNightLine)
+	{
+		nightLineClick.setSelected(isNightLine);
+	}
+
+	public void setNameTour(String setNameTour)
+	{
+		nameTour.setText(setNameTour);
+	}
+
+	public void setBusStopCurrent(String[][] rowdata_busStopCurrent)
+	{
+		model_1.setDataVector(rowdata_busStopCurrent, new String[] {"Haltestelle"});
+	}
+
+	public  void setBusStopAvailable(String[][] rowdata_busStopAvailable)
+	{
+		model_2.setDataVector(rowdata_busStopAvailable, new String[] {"Haltestelle"});
+	}
+
 }
