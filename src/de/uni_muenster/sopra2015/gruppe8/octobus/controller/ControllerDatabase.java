@@ -877,7 +877,7 @@ public class ControllerDatabase
 	}
 
 	//////////////////////////
-	//	Methods for "Tour"s //
+	//  Methods for "Tour"s //
 	//////////////////////////
 
 	// TODO: Implementieren!
