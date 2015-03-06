@@ -180,10 +180,38 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		sorter.setRowFilter(rf);
 	}
 
+	/**
+	 * Displays a message to inform the user.
+	 * @param string Message to be displayed.
+	 */
+	public void showMessageDialog(String string)
+	{
+		JOptionPane.showMessageDialog(this, string, "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Displays a confirmation dialog.
+	 * @param string Matter to be confirmed.
+	 * @return true on confirmation.
+	 */
+	public boolean showConfirmDialog(String string)
+	{
+		return JOptionPane.showConfirmDialog(this, string, "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+				== JOptionPane.YES_OPTION;
+	}
+
+	/**
+	 * Triggers editing the selected entry.
+	 */
 	protected abstract void editEntry();
 
+	/**
+	 * Fills the Table.
+	 * @param data Data the table is filled with.
+	 */
 	public void fillTable(Object[][] data)
 	{
+		table.clearSelection();
 		model.setData(data);
 		table.revalidate();
 		table.repaint();

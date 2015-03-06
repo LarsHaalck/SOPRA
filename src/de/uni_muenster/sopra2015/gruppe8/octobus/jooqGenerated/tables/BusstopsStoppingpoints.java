@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord> {
 
-	private static final long serialVersionUID = -240478656;
+	private static final long serialVersionUID = 1916218231;
 
 	/**
 	 * The reference instance of <code>busStops_stoppingPoints</code>
@@ -66,6 +66,14 @@ public class BusstopsStoppingpoints extends org.jooq.impl.TableImpl<de.uni_muens
 
 	private BusstopsStoppingpoints(java.lang.String alias, org.jooq.Table<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord> aliased, org.jooq.Field<?>[] parameters) {
 		super(alias, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.DefaultSchema.DEFAULT_SCHEMA, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> getIdentity() {
+		return de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Keys.IDENTITY_BUSSTOPS_STOPPINGPOINTS;
 	}
 
 	/**

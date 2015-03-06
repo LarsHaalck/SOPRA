@@ -22,6 +22,7 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> IDENTITY_BUSSTOPS = Identities0.IDENTITY_BUSSTOPS;
+	public static final org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> IDENTITY_BUSSTOPS_STOPPINGPOINTS = Identities0.IDENTITY_BUSSTOPS_STOPPINGPOINTS;
 	public static final org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> IDENTITY_BUSES = Identities0.IDENTITY_BUSES;
 	public static final org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Integer> IDENTITY_EMPLOYEES = Identities0.IDENTITY_EMPLOYEES;
 	public static final org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Integer> IDENTITY_ROUTES = Identities0.IDENTITY_ROUTES;
@@ -65,6 +66,7 @@ public class Keys {
 
 	private static class Identities0 extends org.jooq.impl.AbstractKeys {
 		public static org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsRecord, java.lang.Integer> IDENTITY_BUSSTOPS = createIdentity(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Busstops.BUSSTOPS, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Busstops.BUSSTOPS.BUSSTOPS_ID);
+		public static org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusstopsStoppingpointsRecord, java.lang.Integer> IDENTITY_BUSSTOPS_STOPPINGPOINTS = createIdentity(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.BusstopsStoppingpoints.BUSSTOPS_STOPPINGPOINTS, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.BusstopsStoppingpoints.BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID);
 		public static org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.BusesRecord, java.lang.Integer> IDENTITY_BUSES = createIdentity(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Buses.BUSES, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Buses.BUSES.BUSES_ID);
 		public static org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Integer> IDENTITY_EMPLOYEES = createIdentity(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Employees.EMPLOYEES, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Employees.EMPLOYEES.EMPLOYEES_ID);
 		public static org.jooq.Identity<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Integer> IDENTITY_ROUTES = createIdentity(de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes.ROUTES, de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes.ROUTES.ROUTES_ID);

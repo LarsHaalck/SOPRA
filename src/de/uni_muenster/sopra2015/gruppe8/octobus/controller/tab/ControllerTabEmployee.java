@@ -36,11 +36,29 @@ public class ControllerTabEmployee extends Controller implements ListenerButton
 				break;
 
 			case TAB_EMPLOYEE_EDIT:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, tabEmployee.getSelectedID());
+				if(tabEmployee.getSelectedID() != -1)
+				{
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_EMPLOYEE_EDIT, tabEmployee.getSelectedID());
+				}
+				else
+				{
+					tabEmployee.showMessageDialog("Um einen Mitarbeiter zu bearbeiten wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 
 			case TAB_EMPLOYEE_DELETE:
-				//TODO: Delete it
+				if(tabEmployee.getSelectedID() != -1)
+				{
+					if(tabEmployee.showConfirmDialog("Wirklich löschen?"))
+					{
+						controllerDatabase.deleteEmployee(tabEmployee.getSelectedID());
+						fillTable();
+					}
+				}
+				else
+				{
+					tabEmployee.showMessageDialog("Um einen Mitarbeiter zu löschen wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 		}
 	}

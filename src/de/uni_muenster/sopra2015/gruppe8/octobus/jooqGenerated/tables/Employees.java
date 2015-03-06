@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord> {
 
-	private static final long serialVersionUID = 1881079955;
+	private static final long serialVersionUID = 1423538930;
 
 	/**
 	 * The reference instance of <code>employees</code>
@@ -99,27 +99,27 @@ public class Employees extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015
 	/**
 	 * The column <code>employees.isBUSDRIVER</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISBUSDRIVER = createField("isBUSDRIVER", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISBUSDRIVER = createField("isBUSDRIVER", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.isNETWORK_PLANNER</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISNETWORK_PLANNER = createField("isNETWORK_PLANNER", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISNETWORK_PLANNER = createField("isNETWORK_PLANNER", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.isTICKET_PLANNER</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISTICKET_PLANNER = createField("isTICKET_PLANNER", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISTICKET_PLANNER = createField("isTICKET_PLANNER", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.isHR_MANAGER</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISHR_MANAGER = createField("isHR_MANAGER", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISHR_MANAGER = createField("isHR_MANAGER", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * The column <code>employees.isSCHEDULE_MANAGER</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISSCHEDULE_MANAGER = createField("isSCHEDULE_MANAGER", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.EmployeesRecord, java.lang.Boolean> ISSCHEDULE_MANAGER = createField("isSCHEDULE_MANAGER", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * Create a <code>employees</code> table reference

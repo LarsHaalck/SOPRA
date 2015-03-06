@@ -28,12 +28,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			if(getSelectedID()!=-1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					== JOptionPane.YES_OPTION)
-			{
-				System.out.println("Delete pressed");
-				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_DELETE);
-			}
+			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_DELETE);
 		});
 
 		btnEdit = new JButton("Bearbeiten");
@@ -71,9 +66,6 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 	@Override
 	protected void editEntry()
 	{
-		if(getSelectedID() == -1)
-			JOptionPane.showMessageDialog(this, "Um eine Haltestelle zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-		else
 			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_EDIT);
 	}
 }
