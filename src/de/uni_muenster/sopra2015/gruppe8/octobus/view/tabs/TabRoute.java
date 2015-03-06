@@ -1,9 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabRoute;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelLine;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelRoute;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +10,7 @@ import java.awt.*;
 /**
  *
  */
-public class TabLine extends TabTable<TableModelLine>
+public class TabRoute extends TabTable<TableModelRoute>
 {
 	private JButton btnDelete;
 	private JButton btnEdit;
@@ -19,9 +18,9 @@ public class TabLine extends TabTable<TableModelLine>
 
 	private ControllerTabRoute controllerTabRoute;
 
-	public TabLine()
+	public TabRoute()
 	{
-		super(TableModelLine.class, true, true);
+		super(TableModelRoute.class, true, true);
 
 		controllerTabRoute = new ControllerTabRoute(this);
 
@@ -63,6 +62,8 @@ public class TabLine extends TabTable<TableModelLine>
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
+
+		controllerTabRoute.fillTable();
 
 		setVisible(true);
 	}
