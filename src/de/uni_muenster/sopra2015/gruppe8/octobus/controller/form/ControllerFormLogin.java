@@ -70,7 +70,6 @@ public class ControllerFormLogin extends Controller implements ListenerButton
                     digest.update(candidateSalt.getBytes());
 
                     generatedHash = new BigInteger(1, digest.digest()).toString();
-                    System.out.println(generatedHash);
 
                 } catch (NoSuchAlgorithmException e)
                 {
