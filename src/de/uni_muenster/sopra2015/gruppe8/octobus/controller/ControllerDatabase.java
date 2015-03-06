@@ -1,6 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
+
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
@@ -99,7 +101,7 @@ public class ControllerDatabase
                         bus.getManufacturer(),
 						bus.getModel(),
                         (int) (bus.getNextInspectionDue().getTime()/1000),
-                        (Boolean) bus.isArticulatedBus())
+                        bus.isArticulatedBus())
 				.returning(BUSES.BUSES_ID)
                 .fetchOne();
 
@@ -532,7 +534,7 @@ public class ControllerDatabase
                 ROUTES.NIGHT)
 				.values(r.getName(),
                         r.getNote(),
-                        (Boolean) r.isNight())
+                        r.isNight())
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
@@ -673,7 +675,7 @@ public class ControllerDatabase
 	public Route getRoute(int id)
 	{
 	    // Start by getting the desired route from the database
-		Record rec = create.select().from(ROUTES).where(ROUTES.ROUTES.ROUTES_ID.eq(id)).fetchOne();
+		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
 
         // Fetch its starting times
         Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
@@ -888,7 +890,8 @@ public class ControllerDatabase
      *
      * @param date date for which tours ought to be generated
      */
-    public void createTours(Date date){
+    public void createTours(Date date)
+    {
 
         Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
