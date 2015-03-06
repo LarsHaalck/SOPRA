@@ -15,18 +15,16 @@ public class FormEmployee extends FormGeneral
 {
 	private ControllerFormEmployee controllerFormEmployee;
 
-	private JTextField tfName = new JTextField();
-	private JTextField tfFirstName = new JTextField();
-	private JTextField tfAddress = new JTextField();
-	private JTextField tfZipCode = new JTextField();
-	private JTextField tfCity = new JTextField();
-	private JTextField tfBirthDate = new JTextField();
-	private JTextField tfPhone = new JTextField();
-	private JTextField tfMail = new JTextField();
-	private JTextArea tfNote = new AreaText();
-	private JTextField tfUsername = new JTextField();
-
-
+	private JTextField tfName;
+	private JTextField tfFirstName;
+	private JTextField tfAddress;
+	private JTextField tfZipCode;
+	private JTextField tfCity;
+	private JTextField tfBirthDate;
+	private JTextField tfPhone;
+	private JTextField tfMail;
+	private JTextArea tfNote;
+	private JTextField tfUsername;
 	private JCheckBox cbScheduleManager;
 	private JCheckBox cbNetworkPlaner;
 	private JCheckBox cbBusDriver;
@@ -36,8 +34,8 @@ public class FormEmployee extends FormGeneral
 	/*
 	 * the buttons for save and cancel
 	 */
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
+	private JButton btSave;
+	private JButton btCancel;
 
 	public FormEmployee(Frame parent, int objectID)
 	{
@@ -227,10 +225,12 @@ public class FormEmployee extends FormGeneral
 		cstLabel.gridy = 15;
 		cstLabel.ipadx = 0;
 		cstLabel.ipady = 0;
+		btSave = new JButton("Speichern");
 		add(btSave, cstLabel);
 
 		cstLabel.gridx = 3;
 		cstLabel.gridwidth = 3;
+		btCancel = new JButton("Abbrechen");
 		add(btCancel, cstLabel);
 
 		controllerFormEmployee.insertValuesIntoForm();

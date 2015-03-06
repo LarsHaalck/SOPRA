@@ -24,7 +24,7 @@ public class FormBus extends FormGeneral
 	private FieldText tfManufacturer;
 	private FieldText tfModel;
 	private FieldDate tfNextInspectionDue;
-	private JCheckBox cbArticulatedBus = new JCheckBox("Bus mit Gelenk");
+	private JCheckBox cbArticulatedBus;
 	private JButton btSave;
 	private JButton btCancel;
 
@@ -122,6 +122,7 @@ public class FormBus extends FormGeneral
 
 		cstTextField.gridwidth = 2;
 		cstTextField.gridy = 7;
+		cbArticulatedBus = new JCheckBox("Bus mit Gelenk");
 		add(cbArticulatedBus, cstTextField);
 
 		GridBagConstraints cstButton = new GridBagConstraints();

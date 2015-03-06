@@ -23,36 +23,22 @@ public class FormBusStop extends FormGeneral
 {
 	private ControllerFormBusStop controllerFormBusStop;
 
-	/*
-	 * every input has an own label, inputfield and panel
-	 */
+	private FieldText tfName;
+	private JCheckBox cbBarrierFree;
 
-	private FieldText tfName = new FieldText();
-	private JCheckBox cbBarrierFree = new JCheckBox("Barrierefrei");
-
-	/*
-	 * location has two textfields
-	 */
-
-	private JLabel lbLocationX = new JLabel("X:");
-	private JLabel lbLocationY = new JLabel("Y:");
-
-	private FieldNumber tfLocationX = new FieldNumber(4);
-	private FieldNumber tfLocationY = new FieldNumber(4);
-
-
-	private JButton btListAdd = new JButton("Hinzufügen");
-	private JButton btListEdit = new JButton("Bearbeiten");
-	private JButton btListDelete = new JButton("Entfernen");
-
+	private FieldNumber tfLocationX;
+	private FieldNumber tfLocationY;
+	private JButton btListAdd;
+	private JButton btListEdit;
+	private JButton btListDelete;
 	private DefaultListModel<String> lmStoppingPoints = new DefaultListModel<String>();
 	private JList lStoppingPoints = new JList(lmStoppingPoints);
 
 	/*
 	 * the buttons for save and cancel
 	 */
-	private JButton btSave = new JButton("Speichern");
-	private JButton btCancel = new JButton("Abbrechen");
+	private JButton btSave;
+	private JButton btCancel;
 
 
 	public FormBusStop(Frame parent, int objectID)
@@ -67,34 +53,6 @@ public class FormBusStop extends FormGeneral
 			setTitle("Bushaltestelle bearbeiten");
 
 		controllerFormBusStop = new ControllerFormBusStop(this, objectID);
-
-		btListAdd.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_ADD_POINT);
-		});
-
-		btListEdit.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
-		});
-
-		btListDelete.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT);
-		});
-
-
-		//Panel for save/cancel buttons
-		JPanel plBottom = new JPanel();
-		plBottom.setLayout(new BorderLayout());
-		plBottom.setBorder(new EmptyBorder(new Insets(30, 60, 30, 60)));
-		plBottom.setPreferredSize(new Dimension(0, 100));
-		btSave.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
-		});
-		btCancel.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
-		});
-
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints cstLabel = new GridBagConstraints();
@@ -133,9 +91,11 @@ public class FormBusStop extends FormGeneral
 		cstTextField.gridwidth=1;
 		cstTextField.weightx = 0.1;
 		cstTextField.anchor = GridBagConstraints.LINE_START;
+		JLabel lbLocationX = new JLabel("X:");
 		add(lbLocationX, cstTextField);
 		cstTextField.gridx = 2;
 		cstTextField.weightx = 1;
+		tfLocationX = new FieldNumber(4);
 		add(tfLocationX, cstTextField);
 		cstTextField.gridx = 3;
 		cstTextField.weightx = 0.1;
@@ -144,14 +104,17 @@ public class FormBusStop extends FormGeneral
 		cstTextField.gridx = 4;
 		cstTextField.weightx = 0.1;
 		cstTextField.anchor = GridBagConstraints.LINE_END;
+		JLabel lbLocationY = new JLabel("Y:");
 		add(lbLocationY,cstTextField);
 		cstTextField.gridx = 5;
 		cstTextField.weightx = 1;
+		tfLocationY = new FieldNumber(4);
 		add(tfLocationY, cstTextField);
 
 		cstTextField.gridwidth = 5;
 		cstTextField.gridy = 3;
 		cstTextField.gridx = 1;
+		cbBarrierFree  = new JCheckBox("Barrierefrei");
 		add(cbBarrierFree, cstTextField);
 
 		cstLabel.gridwidth = 6;
@@ -169,10 +132,13 @@ public class FormBusStop extends FormGeneral
 		GridBagConstraints cstButtons = new GridBagConstraints();
 		cstButtons.gridx=0;
 		cstButtons.gridy=0;
+		btListAdd = new JButton("Hinzufügen");
 		plButtons.add(btListAdd, cstButtons);
 		cstButtons.gridx=1;
+		btListEdit = new JButton("Bearbeiten");
 		plButtons.add(btListEdit, cstButtons);
 		cstButtons.gridx=2;
+		btListDelete = new JButton("Entfernen");
 		plButtons.add(btListDelete, cstButtons);
 		add(plButtons, cstLabel);
 
@@ -183,11 +149,11 @@ public class FormBusStop extends FormGeneral
 		cstLabel.fill = GridBagConstraints.HORIZONTAL;
 		JPanel plEndButtons = new JPanel();
 		plEndButtons.setLayout(new BorderLayout());
+		btSave = new JButton("Speichern");
 		plEndButtons.add(btSave, BorderLayout.WEST);
+		btCancel = new JButton("Abbrechen");
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
-
-
 
 		lStoppingPoints.addMouseListener(new MouseAdapter()
 		{
@@ -198,6 +164,28 @@ public class FormBusStop extends FormGeneral
 					controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
 			}
 		});
+
+		btSave.addActionListener(e ->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
+		});
+		btCancel.addActionListener(e ->
+		{
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
+		});
+
+		btListAdd.addActionListener(e -> {
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_ADD_POINT);
+		});
+
+		btListEdit.addActionListener(e -> {
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
+		});
+
+		btListDelete.addActionListener(e -> {
+			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT);
+		});
+
 		controllerFormBusStop.insertValuesIntoForm();
 		pack();
 		setLocationRelativeTo(null);
