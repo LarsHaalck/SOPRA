@@ -4,53 +4,56 @@ import javax.swing.*;
 import javax.swing.text.Document;
 
 /**
- * own text field class which uses
+ * adjusted JFormattedTextField which can be limited to up to 200 characters
  */
 public class FieldText extends JFormattedTextField
 {
+	private LimitDocument limitDocument;
 
-	private int limit = 200; //default value
-	private LimitDocument limitDoc;
-
+	/**
+	 * calls default constructor of JFormattedTextField
+	 */
 	public FieldText()
 	{
 		super();
-		limitDoc.setLimit(limit);
-
 	}
+
+
+	/**
+	 * calls default constructor of JFormattedTextField and sets limit
+	 * @param limit limits maximum number of characters in FieldText. If reached, all user inputs, will be blocked
+	 */
 	public FieldText(int limit)
 	{
 		super();
-		this.limit = limit;
-		limitDoc.setLimit(limit);
+		setLimit(limit);
 	}
 
-	public FieldText(int width, int limit)
+
+	/**
+	 * calls default constructor of JFormattedTextField, sets column width of the field and sets limit
+	 * @param columns numbers of columns to use to calculate preferred width
+	 * @param limit maximum number of characters
+	 */
+	public FieldText(int columns, int limit)
 	{
 		super();
-		this.setColumns(width);
+		this.setColumns(columns);
 		if(limit == -1)
-			this.limit = 200;
+			setLimit(limit);
 		else
-			this.limit = limit;
-		limitDoc.setLimit(this.limit);
+			setLimit(limit);
 	}
 
 	protected void setLimit(int limit)
 	{
-		this.limit = limit;
-		limitDoc.setLimit(limit);
+		limitDocument.setLimit(limit);
 	}
 
-	@Override
-	public String getText()
-	{
-		if(isValidInput())
-			return super.getText();
-		else
-			return "";
-	}
-
+	/**
+	 * validates user input in order to prevent sql injections
+	 * @return true iff user input does not contain malicious characters
+	 */
 	public boolean isValidInput()
 	{
 		//TODO: sql injection prevention
@@ -58,11 +61,26 @@ public class FieldText extends JFormattedTextField
 	}
 
 
+	/**
+	 * overrides JFormattedTextField getText() by checking if input is malicious before returning
+	 * @return text of JFormattedTextField or null if input is not valid
+	 */
+	@Override
+	public String getText()
+	{
+		if(isValidInput())
+			return super.getText();
+		else
+			return null;
+	}
+
+
+
 	@Override
 	protected Document createDefaultModel()
 	{
-		this.limitDoc = new LimitDocument();
-		return limitDoc;
+		this.limitDocument = new LimitDocument();
+		return limitDocument;
 	}
 
 }

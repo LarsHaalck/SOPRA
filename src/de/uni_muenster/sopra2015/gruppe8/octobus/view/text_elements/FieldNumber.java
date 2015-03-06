@@ -3,9 +3,26 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+
+/**
+ * adjusted FieldText for number input only where all input except numbers is blocked
+ */
 public class FieldNumber extends FieldText
 {
 
+	/**
+	 * constructs FieldNumber with max input length of 9
+	 */
+	public FieldNumber()
+	{
+		super(9);
+		setMask();
+	}
+
+	/**
+	 * constructs FieldNumber with maximum input length of limit
+	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
+	 */
 	public FieldNumber(int limit)
 	{
 		super();
@@ -17,10 +34,15 @@ public class FieldNumber extends FieldText
 	}
 
 
-	public FieldNumber(int width, int limit)
+	/**
+	 * constructs FieldNumber with maximum input length of limit and specified number of columns
+	 * @param columns numbers of columns to use to calculate preferred width
+	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
+	 */
+	public FieldNumber(int columns, int limit)
 	{
 		super();
-		this.setColumns(width);
+		this.setColumns(columns);
 		if(limit >= 9 || limit == -1)
 			setLimit(9);
 		else
@@ -29,12 +51,10 @@ public class FieldNumber extends FieldText
 		setMask();
 	}
 
-	public FieldNumber()
-	{
-		super(9);
-		setMask();
-	}
 
+	/**
+	 * blocks all inputs except numbers
+	 */
 	private void setMask()
 	{
 		this.addKeyListener(new KeyAdapter()
@@ -51,6 +71,9 @@ public class FieldNumber extends FieldText
 	}
 
 
+	/**
+	 * @return -1 if no number was entered, returns input otherwise
+	 */
 	public int getNumber()
 	{
 		if(this.getText().length() == 0)
@@ -62,8 +85,7 @@ public class FieldNumber extends FieldText
 				return Integer.parseInt(this.getText());
 			} catch(Exception e)
 			{
-				System.out.println("Exception in FieldNumber parse");
-				return -1;
+				return -1; //only for compiler. Shouldn't happen!
 			}
 		}
 	}
@@ -72,7 +94,4 @@ public class FieldNumber extends FieldText
 	{
 		this.setText(Integer.toString(number));
 	}
-
-	//TODO: setText() getText() Overrides
-
 }
