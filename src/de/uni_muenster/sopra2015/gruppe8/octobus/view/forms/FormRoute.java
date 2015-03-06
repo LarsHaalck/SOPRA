@@ -88,7 +88,7 @@ public class FormRoute extends FormGeneral
 
 		c.add(cardPanel, BorderLayout.CENTER);
 		c.add(buttonPanel, BorderLayout.SOUTH);
-		controllerFormRoute.initTable();
+		controllerFormRoute.initTableAvailable();
 	}
 
 	public FormRouteStep1 getStep1()

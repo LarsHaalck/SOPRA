@@ -10,7 +10,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTa
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +24,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	FormRoute formRoute;
 	private int objectID;
 	private Route route;
+	private ArrayList<Integer> contentTableCurrent = new ArrayList<>();
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
@@ -80,6 +83,16 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP1_ADD:
+				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
+				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
+				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_1();
+				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_2();
+				//TODO kaputt
+				contentTableCurrent.add((int) modelTableAvailable.getValueAt(tableAvailabe.getSelectedRow(),0));
+				tableAvailabe.clearSelection();
+				initTableCurrent();
+				initTableAvailable(contentTableCurrent);
+
 
 				break;
 
@@ -137,9 +150,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	}
 
 	/**
-	 * Initializes table with BusStops
+	 * Initializes table Available with BusStops
 	 */
-	public void initTable()
+	public void initTableAvailable()
 	{
 		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
 		Object[][] data = new Object[busStops.size()][2];
@@ -148,6 +161,43 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			BusStop busStop = busStops.get(i);
 			data[i][0] = busStop.getId();
 			data[i][1] = busStop.getName();
+		}
+		formRoute.getStep1().fillTableAvailable(data);
+	}
+	/**
+	 * Initializes table Current with BusStops
+	 */
+	public void initTableCurrent()
+	{
+		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
+		Object[][] data = new Object[contentTableCurrent.size()][2];
+		for(int i=0; i<data.length; i++)
+		{
+			BusStop busStop = controllerDatabase.getBusStop(contentTableCurrent.get(i));
+			data[i][0] = busStop.getId();
+			data[i][1] = busStop.getName();
+		}
+		formRoute.getStep1().fillTableCurrent(data);
+	}
+
+	/**
+	 * Initializes table with BusStops
+	 * @param id List of BusStop IDs to be excluded
+	 */
+	public void initTableAvailable(ArrayList<Integer> id)
+	{
+		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
+		Object[][] data = new Object[busStops.size() - id.size()][2];
+		int k = 0;
+		for(int i=0; i<busStops.size(); i++)
+		{
+			BusStop busStop = busStops.get(i);
+			if(!id.contains(busStop.getId()))
+			{
+				data[k][0] = busStop.getId();
+				data[k][1] = busStop.getName();
+				k++;
+			}
 		}
 		formRoute.getStep1().fillTableAvailable(data);
 	}

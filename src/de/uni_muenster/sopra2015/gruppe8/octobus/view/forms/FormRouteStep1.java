@@ -154,16 +154,44 @@ public class FormRouteStep1 extends JPanel
 	}
 
 	/**
-	 *
+	 * Fills table available with data.
 	 */
 	public void fillTableAvailable(Object[][] data)
 	{
 		model_2.setData(data);
 	}
 
+	/**
+	 * Fills table current with data.
+	 */
+	public void fillTableCurrent(Object[][] data)
+	{
+		model_1.setData(data);
+	}
+
 	//--------------------------------------
 	//------------- getter -----------------
 	//--------------------------------------
+
+	public JTable getBusStopCurrent()
+	{
+		return busStopCurrent;
+	}
+
+	public JTable getBusStopAvailable()
+	{
+		return busStopAvailable;
+	}
+
+	public RouteTableModel getModel_1()
+	{
+		return model_1;
+	}
+
+	public RouteTableModel getModel_2()
+	{
+		return model_2;
+	}
 
 	public String[] getTableData () {
 		int nRow = model_1.getRowCount();
