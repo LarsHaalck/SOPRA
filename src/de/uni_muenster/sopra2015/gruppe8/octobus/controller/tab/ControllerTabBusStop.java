@@ -47,10 +47,29 @@ public class ControllerTabBusStop extends Controller implements ListenerButton
 				break;
 
 			case TAB_BUS_STOP_EDIT:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_STOP_EDIT, tabBusStop.getSelectedID());
+				if(tabBusStop.getSelectedID() != -1)
+				{
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_STOP_EDIT, tabBusStop.getSelectedID());
+				}
+				else
+				{
+					tabBusStop.showMessageDialog("Um eine Haltestelle zu bearbeiten wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 
 			case TAB_BUS_STOP_DELETE:
+				if(tabBusStop.getSelectedID() != -1)
+				{
+					if(tabBusStop.showConfirmDialog("Wirklich löschen?"))
+					{
+						controllerDatabase.deleteBusStop(tabBusStop.getSelectedID());
+						fillTable();
+					}
+				}
+				else
+				{
+					tabBusStop.showMessageDialog("Um eine Haltestelle zu löschen wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 				break;
 		}
 	}

@@ -25,6 +25,9 @@ import java.util.Date;
 public class ControllerDatabase
 {
 
+    /**
+     * Name of the database file which ought to be loaded
+     */
     private static final String DB_NAME = "Octobus.db";
 
     private static ControllerDatabase controllerDatabase = null;
@@ -475,7 +478,7 @@ public class ControllerDatabase
      * @param id unique ID of the employee to be retrieved
      * @return Employee object created from its corresponding entry the database
      */
-	public Employee getEmployee(int id)
+	public Employee getEmployeeById(int id)
 	{
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
@@ -510,9 +513,9 @@ public class ControllerDatabase
 		return emp;
 	}
 
-    public Employee getEmployee(String username){
+    public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployee(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 
@@ -813,7 +816,7 @@ public class ControllerDatabase
      *
      * @param id unique ID of the name entry that is to be deleted from the database
      */
-	public void deleteTickets(int id)
+	public void deleteTicket(int id)
 	{
 		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
 	}
@@ -950,7 +953,7 @@ public class ControllerDatabase
                             new Date((long) t.getTimestamp()*1000),
                             getRoute(t.getRoutesId()),
                             getBus(t.getBusesId()),
-                            getEmployee(t.getEmployeesId())
+                            getEmployeeById(t.getEmployeesId())
                     )
             );
         }
