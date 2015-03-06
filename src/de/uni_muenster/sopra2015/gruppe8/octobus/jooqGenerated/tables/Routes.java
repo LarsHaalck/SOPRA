@@ -16,7 +16,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Routes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord> {
 
-	private static final long serialVersionUID = 1497509269;
+	private static final long serialVersionUID = 283500182;
 
 	/**
 	 * The reference instance of <code>routes</code>
@@ -49,7 +49,7 @@ public class Routes extends org.jooq.impl.TableImpl<de.uni_muenster.sopra2015.gr
 	/**
 	 * The column <code>routes.night</code>.
 	 */
-	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Boolean> NIGHT = createField("night", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final org.jooq.TableField<de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord, java.lang.Boolean> NIGHT = createField("night", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false), this, "");
 
 	/**
 	 * Create a <code>routes</code> table reference
