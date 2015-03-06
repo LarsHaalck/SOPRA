@@ -46,7 +46,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 				{
 					if(saveToDb())
 					{
-						formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
+						if(objectID == -1) //only show if user is new user
+							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
 						closeDialog();
 					}
@@ -165,6 +166,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 				roles.add(Role.SCHEDULE_MANAGER);
 			if(ticketPlaner)
 				roles.add(Role.TICKET_PLANNER);
+			employee.setRoles(roles);
 		}
 		return true;
 	}
