@@ -25,7 +25,7 @@ public class FieldText extends JFormattedTextField
 
 	public FieldText(int width, int limit)
 	{
-		super(width);
+		this.setColumns(width);
 		if(limit == -1)
 			limit = 200;
 		else
