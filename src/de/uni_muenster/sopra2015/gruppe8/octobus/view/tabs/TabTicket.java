@@ -27,12 +27,7 @@ public class TabTicket extends TabTable<TableModelTicket>
 		setLayout(new BorderLayout(5,5));
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			if(getSelectedID() != -1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					== JOptionPane.YES_OPTION)
-			{
-				System.out.println("Delete pressed");
-				controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_DELETE);
-			}
+			controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_DELETE);
 		});
 
 		btnEdit = new JButton("Bearbeiten");
@@ -61,16 +56,14 @@ public class TabTicket extends TabTable<TableModelTicket>
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
-
+		controllerTabTicket.fillTable();
 		setVisible(true);
+
 	}
 
 	@Override
 	protected void editEntry()
 	{
-		if(getSelectedID() == -1)
-			JOptionPane.showMessageDialog(this, "Um ein Ticket zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-		else
-			controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_EDIT);
+		controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_EDIT);
 	}
 }

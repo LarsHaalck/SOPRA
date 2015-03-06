@@ -28,12 +28,7 @@ public class TabRoute extends TabTable<TableModelRoute>
 
 		btnDelete = new JButton("Löschen");
 		btnDelete.addActionListener(e -> {
-			if(getSelectedID() != -1 && JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					== JOptionPane.YES_OPTION)
-			{
-				System.out.println("Delete pressed");
-				controllerTabRoute.buttonPressed(EmitterButton.TAB_LINE_DELETE);
-			}
+			controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_DELETE);
 		});
 
 		btnEdit = new JButton("Bearbeiten");
@@ -43,7 +38,7 @@ public class TabRoute extends TabTable<TableModelRoute>
 
 		btnNew = new JButton("Neu");
 		btnNew.addActionListener(e-> {
-			controllerTabRoute.buttonPressed(EmitterButton.TAB_LINE_NEW);
+			controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_NEW);
 		});
 
 		if(super.isRefineable())
@@ -71,9 +66,6 @@ public class TabRoute extends TabTable<TableModelRoute>
 	@Override
 	protected void editEntry()
 	{
-		if(getSelectedID() == -1)
-			JOptionPane.showMessageDialog(this, "Um eine Linie zu bearbeiten, wählen Sie bitte einen Eintrag aus der Tabelle.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
-		else
-			controllerTabRoute.buttonPressed(EmitterButton.TAB_LINE_EDIT);
+		controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_EDIT);
 	}
 }

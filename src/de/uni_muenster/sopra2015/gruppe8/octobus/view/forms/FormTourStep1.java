@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * Created by Jonas on 04.03.2015.
@@ -107,5 +108,15 @@ public class FormTourStep1 extends JPanel
 		bottomPanel.add(space, cTable);
 
 		add(bottomPanel, BorderLayout.CENTER);
+	}
+
+	public Vector<String> getTableData()
+	{
+		return model_1.getDataVector();
+	}
+
+	public String getName()
+	{
+		return nameTour.getText();
 	}
 }
