@@ -9,6 +9,11 @@ public class StoppingPoint
     private int id;
     private String name;
 
+	public StoppingPoint()
+	{
+
+	}
+
     public StoppingPoint(int id, String name)
     {
         this.id = id;

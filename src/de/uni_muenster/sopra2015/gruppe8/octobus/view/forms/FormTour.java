@@ -64,7 +64,7 @@ public class FormTour extends FormGeneral
 		});
 		nextButton.addActionListener(e -> {
 
-			int zahl = Integer.parseInt(step1.getName());
+			int zahl = Integer.parseInt(step1.getNameValue());
 			String[] test = new String[zahl];
 			for (int i = 0; i < zahl; i++)
 				test[i] = "Haltestelle" + i;

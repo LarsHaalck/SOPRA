@@ -16,6 +16,12 @@ public class Route
 	private boolean night;
 	private HashMap<DayOfWeek,LinkedList<Integer>> startTimes;
 
+	public Route()
+	{
+		stops = new LinkedList<>();
+		startTimes = new HashMap<>();
+	}
+
 	public Route(String name, String note, LinkedList<Triple<BusStop, StoppingPoint,Integer>> stops, boolean night, HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
 	{
 		this.name = name;
@@ -25,15 +31,6 @@ public class Route
 		this.startTimes = startTimes;
 
 		//TODO: Create empty list and hashmap if parameters are null??
-	}
-
-	public Route()
-	{
-		name = "";
-		note = "";
-		stops = new LinkedList<Triple<BusStop, StoppingPoint,Integer>>();
-		night = false;
-		startTimes = new HashMap<DayOfWeek, LinkedList<Integer>>();
 	}
 
 	public String getName()

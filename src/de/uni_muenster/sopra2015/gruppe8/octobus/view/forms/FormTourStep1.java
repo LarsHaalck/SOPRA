@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -20,7 +22,7 @@ public class FormTourStep1 extends JPanel
 	private JLabel name;
 	private JCheckBox nightLineClick;
 	private JPanel bottomPanel, space;
-	private JTextField nameTour;
+	private FieldText nameTour;
 	private JScrollPane t1, t2;
 
 	public FormTourStep1()
@@ -29,7 +31,7 @@ public class FormTourStep1 extends JPanel
 		setBorder(new EmptyBorder(new Insets(5, 10, 15, 10)));
 
 		name = new JLabel("Name der Linie");
-		nameTour = new JTextField(20);
+		nameTour = new FieldText(20, -1);
 		nightLineClick = new JCheckBox("Nachtlinie");
 
 		boxTop = new Box(BoxLayout.X_AXIS);
@@ -110,13 +112,19 @@ public class FormTourStep1 extends JPanel
 		add(bottomPanel, BorderLayout.CENTER);
 	}
 
-	public Vector<String> getTableData()
+	public Vector<Vector<String>> getTableData() //nochmal angucken
 	{
 		return model_1.getDataVector();
 	}
 
-	public String getName()
+	public String getNameValue()
 	{
+		System.out.println(nameTour.getText());
 		return nameTour.getText();
+	}
+
+	public boolean isNightLine()
+	{
+		return nightLineClick.isSelected();
 	}
 }

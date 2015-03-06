@@ -24,6 +24,11 @@ public class Employee
     private String note;
 	private HashSet<Role> roles;
 
+	public Employee()
+	{
+		roles = new HashSet<>();
+	}
+
     public Employee(String name, String firstName, String address, String zipCode, String city, Date dateOfBirth,
                     String phone, String email, String username, String password, String salt, String note, HashSet<Role> roles)
     {
