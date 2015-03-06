@@ -231,6 +231,10 @@ public class ControllerDatabase
 		return(newStop.getBusstopsId());
 	}
 
+
+    // TODO: This must delete the bus stop everywhere it's references, that means Routes first and foremost!
+    // TODO: deleteBusStops sollte statt void eine ArrayList der Routen zurückgeben die von einer Löschung betroffen werden.
+    // (continued) Wir weigern uns daher diese Haltestellen zu löschen!!
     /**
      * Removes a bus stop entry from the database using its unique id
      *
@@ -286,10 +290,7 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 			}
 
-			//TODO Remove this.
-			boolean barrier = false;
-			if(rec.getValue(BUSSTOPS.BARRIERFREE) != null)
-				barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
+			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
@@ -484,7 +485,7 @@ public class ControllerDatabase
 		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
 
         // TODO: Does this work with fetchOne()?
-        if (rec.size() == 0) return null;
+        if (rec == null) return null;
 
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
@@ -519,7 +520,7 @@ public class ControllerDatabase
 
     public Employee getEmployeeByUsername(String username){
         Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        return (rec == null) ? null : getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
 

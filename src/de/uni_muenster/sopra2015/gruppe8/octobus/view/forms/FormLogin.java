@@ -85,9 +85,9 @@ public class FormLogin extends JDialog
 		setDefaultValues();
 	}
 
-	public void illegalInput()
+	public void illegalInput(String message)
 	{
-		lbError.setText("Der Username oder das Passwort ist falsch!");
+		lbError.setText(message);
 	}
 
 	public String getUsername()
