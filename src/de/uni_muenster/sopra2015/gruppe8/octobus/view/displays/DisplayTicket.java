@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDi
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -45,7 +46,10 @@ public class DisplayTicket extends JPanel
 	//adds Panel to the plTable with data from the dataBase (is used in ControllerFormShowTckets
 	public void addPanel(String name, int price, int numPassengers, String description){
 		JPanel plNew = new JPanel();
+	//noch umranden und vllt mit Farben und anderen schriftgrößen schöner machen
+	//	plNew.setBackground(Color.lightGray);
 		plNew.setLayout(new GridBagLayout());
+		plNew.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		GridBagConstraints cst = new GridBagConstraints();
 		cst.ipadx = 20;
 		cst.ipady = 20;
@@ -59,8 +63,8 @@ public class DisplayTicket extends JPanel
 		cst.gridx = 2;
 		JLabel lbNumPassengers = new JLabel(""+numPassengers);
 		plNew.add(lbNumPassengers, cst);
-		cst.gridx = 1;
-		cst.gridy = 0;
+		cst.gridx = 0;
+		cst.gridy = 1;
 		cst.gridwidth = 3;
 		JLabel lbDescription = new JLabel(description);
 		plNew.add(lbDescription, cst);
