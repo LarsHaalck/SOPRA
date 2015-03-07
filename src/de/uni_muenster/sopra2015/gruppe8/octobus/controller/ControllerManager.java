@@ -97,6 +97,18 @@ public class ControllerManager
 	}
 
 	/**
+	 * Informs every active ListenerWindow to switch to a display
+	 *
+	 * @param emitter display to switch to
+	 */
+	public static void informDisplaySwitch(EmitterDisplay emitter)
+	{
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
+		for (ListenerWindow listener : list)
+			listener.displaySwitch(emitter);
+	}
+
+	/**
 	 * Informs every active ListenerTable that selection has changed.
 	 *
 	 * @param emitter table with changed selection

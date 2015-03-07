@@ -24,4 +24,10 @@ public interface ListenerWindow
 	 * @param wd Window to be closed.
 	 */
 	public void windowClose(EmitterWindow wd);
+
+	/**
+	 * Switch to a given display.
+	 * @param dp Display to switch to.
+	 */
+	public void displaySwitch(EmitterDisplay dp);
 }
