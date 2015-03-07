@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormShowTickets;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,23 +10,28 @@ import java.awt.*;
  */
 public class FormShowTickets extends JDialog
 {
-	private JPanel plTable = new JPanel();
+	//panel which shall show all tickets should be with scollpane
+	private JPanel plTable;
+	private ControllerFormShowTickets controller;
 
 	public FormShowTickets()
 	{
+		controller = new ControllerFormShowTickets(this);
+		plTable = new JPanel();
+
 		JScrollPane scrollPane = new JScrollPane(plTable);
 		add(scrollPane);
 
+		//all Tickets shown vertical
 		plTable.setLayout(new BoxLayout(plTable, BoxLayout.Y_AXIS));
-
-
 	}
 
 	public void fillData()
 	{
-		//fills the data
+		controller.fill();
 	}
 
+	//adds Panel to the plTable with data from the dataBase (is used in ControllerFormShowTckets
 	public void addPanel(String name, int price, int numPassengers, String description){
 		JPanel plNew = new JPanel();
 		plNew.setLayout(new GridBagLayout());
