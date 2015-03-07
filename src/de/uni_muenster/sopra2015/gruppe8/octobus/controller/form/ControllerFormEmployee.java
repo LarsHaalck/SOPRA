@@ -11,6 +11,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,6 +59,35 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 						closeDialog();
 					}
 				}
+				break;
+
+			case FORM_EMPLOYEE_RESET_PASSWORD:
+				// Take care of creating a salt and hashing the default password with that salt
+				SecureRandom random = new SecureRandom();
+				String salt = new BigInteger(130, random).toString(32);
+				String password = "octobus";
+				String generatedHash = "";
+
+				try
+				{
+					MessageDigest digest = MessageDigest.getInstance("SHA-512");
+
+					digest.update(password.getBytes());
+					digest.update(salt.getBytes());
+
+					generatedHash = new BigInteger(1, digest.digest()).toString();
+
+				} catch (NoSuchAlgorithmException e)
+				{
+					throw new UnsupportedOperationException(e);
+				}
+
+				employee.setSalt(salt);
+				employee.setPassword(generatedHash);
+
+				controllerDatabase.modifyEmployee(employee);
+
+				formEmployee.showInformationForm("Das Passwort des Benutzers wurde auf \"octobus\" zurück gesetzt!");
 				break;
 
 			case FORM_EMPLOYEE_CANCEL:
