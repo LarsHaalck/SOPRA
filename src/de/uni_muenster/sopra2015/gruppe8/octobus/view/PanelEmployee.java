@@ -34,9 +34,9 @@ public class PanelEmployee extends JPanel
 		setVisible(true);
 	}
 
-	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver)
+	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver, int userId)
 	{
-		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver);
+		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver, userId);
 	}
 
 	/*

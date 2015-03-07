@@ -5,5 +5,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
  */
 public enum EmitterPrint
 {
-	WORK_PLAN
+	WORK_PLAN,
+	STOPPING_POINT
 }

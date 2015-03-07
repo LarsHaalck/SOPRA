@@ -16,10 +16,10 @@ public class TabWorkPlan extends TabTable<TableModelWorkPlan>
 
 	private JButton btnPrint, btnExport;
 
-	public TabWorkPlan()
+	public TabWorkPlan(int userId)
 	{
 		super(TableModelWorkPlan.class, true, true);
-		controllerTabWorkPlan = new ControllerTabWorkPlan(this);
+		controllerTabWorkPlan = new ControllerTabWorkPlan(this, userId);
 
 		setLayout(new BorderLayout(5,5));
 
@@ -52,6 +52,13 @@ public class TabWorkPlan extends TabTable<TableModelWorkPlan>
 
 		setVisible(true);
 	}
+
+	public void enableButtons(boolean enable)
+	{
+		btnExport.setEnabled(enable);
+		btnPrint.setEnabled(enable);
+	}
+
 	@Override
 	protected void editEntry()
 	{

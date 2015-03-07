@@ -145,6 +145,18 @@ public class ControllerManager
 	}
 
 	/**
+	 * Informs every active ListenerPrint that manages print-requests
+	 * @param emitter document that should be printed.
+	 * @param objectIds objectIds corresponding to document.
+	 */
+	public static void informPrintRequested(EmitterPrint emitter, ArrayList<Integer> objectIds)
+	{
+		ArrayList<ListenerPrint> list = new ArrayList<>(listenerPrint);
+		for(ListenerPrint listener : list)
+			listener.printDocument(emitter, objectIds);
+	}
+
+	/**
 	 * Clears lists of listeners.
 	 * Evil method, only use by user-state-change.
 	 */
@@ -154,7 +166,6 @@ public class ControllerManager
 		listenerButton.clear();
 		listenerWindow.clear();
         listenerTable.clear();
-		listenerPrint.clear();
 	}
 
 	/**
