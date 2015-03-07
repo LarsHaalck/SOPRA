@@ -66,6 +66,8 @@ public class DisplayTicket extends JPanel
 		cst.gridx = 0;
 		cst.gridy = 1;
 		cst.gridwidth = 3;
+		String[] lines = description.split("\n");
+		//TODO add every single line with for-each
 		JLabel lbDescription = new JLabel(description);
 		plNew.add(lbDescription, cst);
 		plTable.add(plNew);
