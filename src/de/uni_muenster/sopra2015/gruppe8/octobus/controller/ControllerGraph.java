@@ -16,10 +16,9 @@ public class ControllerGraph
 	ArrayList<Route> routes;
 
 	int numStops;
-	int numStopPoints;
 	HashSet<TupleInt> adjSet; //stores all object id tuples which are connected
 
-	HashMap<Tuple<Integer, Integer>, LinkedList<Route>> routesConnecting;
+	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 
 
 	/* something to store all routes per stop
@@ -82,6 +81,8 @@ public class ControllerGraph
 			}
 		}
 
+		System.out.println(weight(db.getBusStop(75), db.getBusStop(13), 500));
+
 	}
 
 
@@ -109,15 +110,95 @@ public class ControllerGraph
 		*
 		 */
 
+		int arrival = -1;
+
 		int id1 = s1.getId(); int id2 = s2.getId();
-		LinkedList<Route> connectors = routesConnecting.get(new Tuple<>(id1, id2)); //connectors contains all routes directed from s1 to s2
+		LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2)); //connectors contains all routes directed from s1 to s2
 
 		for (Route connector : connectors)
 		{
+			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
 
+			//TODO: remove hardcoded DayOfWeek (MONDAY)
+			DayOfWeek day = DayOfWeek.MONDAY;
+			LinkedList<Integer> startTimesOnDay = startTimes.get(day);
+			LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
+
+
+			int currentArrival = 0;
+
+			int timeDiff = 0;
+			int timeDiffOnFirst = 0;
+
+			for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
+			{
+				timeDiff += routeStop.getThird();
+
+				BusStop currentStop = routeStop.getFirst();
+
+				if(currentStop.getId() == id1) //bus arrived at s1
+				{
+					timeDiffOnFirst = timeDiff;
+				}
+				else if (currentStop.getId() == id2) //bus arrived at s2 -> break
+				{
+					break;
+				}
+			}
+
+			for (Integer start : startTimesOnDay)
+			{
+				if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
+					continue;
+				currentArrival = start + timeDiff;
+				break; //break after first match
+			}
+
+			if(currentArrival < arrival || arrival == -1)
+			{
+				arrival = currentArrival;
+			}
+
+			// <editor-fold desc="muell">
+			/*for (Integer start : startTimesOnDay)
+			{
+				int currentTime = start;
+
+				for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
+				{
+					currentTime += routeStop.getThird();
+
+					BusStop currentStop = routeStop.getFirst();
+
+					if(foundMatchingTour)
+					{
+						currentArrival += routeStop.getThird();
+					}
+					if(currentStop == s1) //bus arrive at s1
+					{
+						if(currentTime < time) break; //bus arrive at s1 before time -> choose another start time
+						foundMatchingTour = true;
+						currentArrival = currentTime;
+					}
+					else if (currentStop == s2) //bus arrived at s2 -> break
+					{
+						break;
+					}
+				}
+
+				if(foundMatchingTour) //other start times are now irrelevant
+				{
+					break;
+				}
+			}
+
+			if(currentArrival < arrival || arrival == -1)
+			{
+				arrival = currentArrival;
+			}*/
+			// </editor-fold>
 		}
-
-		return 0;
+		return arrival;
 	}
 
 
