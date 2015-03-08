@@ -58,8 +58,6 @@ import java.util.*; // For ArrayList
 
 /**
  * A class representing a Fibonacci heap.
- *
- * @param T The type of elements to store in the heap.
  * @author Keith Schwarz (htiek@cs.stanford.edu)
  */
 public final class FibonacciHeap<T> {
