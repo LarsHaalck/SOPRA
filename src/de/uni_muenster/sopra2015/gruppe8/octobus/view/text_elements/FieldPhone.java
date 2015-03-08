@@ -2,7 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 
 /**
- * adjusted FieldText for phone numbers
+ * Customised FieldText for phone numbers
  */
 //TODO: can probably be deleted
 public class FieldPhone extends FieldText

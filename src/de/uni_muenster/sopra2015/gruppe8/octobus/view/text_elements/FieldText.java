@@ -4,14 +4,14 @@ import javax.swing.*;
 import javax.swing.text.Document;
 
 /**
- * adjusted JFormattedTextField which can be limited to up to 200 characters
+ * Customised JFormattedTextField which can be limited to up to 200 characters of input.
  */
 public class FieldText extends JFormattedTextField
 {
 	private LimitDocument limitDocument;
 
 	/**
-	 * calls default constructor of JFormattedTextField
+	 * Calls default constructor of JFormattedTextField.
 	 */
 	public FieldText()
 	{
@@ -20,7 +20,8 @@ public class FieldText extends JFormattedTextField
 
 
 	/**
-	 * calls default constructor of JFormattedTextField and sets limit
+	 * Calls default constructor of JFormattedTextField and sets desired limit.
+     *
 	 * @param limit limits maximum number of characters in FieldText. If reached, all user inputs, will be blocked
 	 */
 	public FieldText(int limit)
@@ -31,7 +32,9 @@ public class FieldText extends JFormattedTextField
 
 
 	/**
-	 * calls default constructor of JFormattedTextField, sets column width of the field and sets limit
+	 * Calls default constructor of JFormattedTextField, sets desired column width of the field and sets desired limit
+     * on total length of the input.
+     *
 	 * @param columns numbers of columns to use to calculate preferred width
 	 * @param limit maximum number of characters
 	 */
@@ -50,7 +53,8 @@ public class FieldText extends JFormattedTextField
 	}
 
 	/**
-	 * validates user input in order to prevent sql injections
+	 * Vlidates user input in order to prevent SQL injections.
+     *
 	 * @return true iff user input does not contain malicious characters
 	 */
 	public boolean isValidInput()
@@ -59,9 +63,9 @@ public class FieldText extends JFormattedTextField
 		return true;
 	}
 
-
 	/**
-	 * overrides JFormattedTextField getText() by checking if input is malicious before returning
+	 * Overrides JFormattedTextField getText() by checking if input is malicious before returning.
+     *
 	 * @return text of JFormattedTextField or null if input is not valid
 	 */
 	@Override
@@ -72,8 +76,6 @@ public class FieldText extends JFormattedTextField
 		else
 			return null;
 	}
-
-
 
 	@Override
 	protected Document createDefaultModel()

@@ -5,13 +5,13 @@ import java.awt.event.KeyEvent;
 
 
 /**
- * adjusted FieldText for number input only where all input except numbers is blocked
+ * Customised FieldText exclusively for number inputs where all input except numbers is blocked.
  */
 public class FieldNumber extends FieldText
 {
 
 	/**
-	 * constructs FieldNumber with max input length of 9
+	 * Constructs FieldNumber with maximum input length of 9.
 	 */
 	public FieldNumber()
 	{
@@ -20,7 +20,8 @@ public class FieldNumber extends FieldText
 	}
 
 	/**
-	 * constructs FieldNumber with maximum input length of limit
+	 * Constructs FieldNumber with maximum input length of limit.
+     *
 	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
 	 */
 	public FieldNumber(int limit)
@@ -35,7 +36,8 @@ public class FieldNumber extends FieldText
 
 
 	/**
-	 * constructs FieldNumber with maximum input length of limit and specified number of columns
+	 * Constructs FieldNumber with maximum input length of limit and specified number of columns.
+     *
 	 * @param columns numbers of columns to use to calculate preferred width
 	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
 	 */
@@ -44,7 +46,7 @@ public class FieldNumber extends FieldText
 		super();
 		this.setColumns(columns);
 		if(limit >= 9 || limit == -1)
-			setLimit(9);
+		setLimit(9);
 		else
 			setLimit(limit);
 
@@ -53,13 +55,14 @@ public class FieldNumber extends FieldText
 
 
 	/**
-	 * blocks all inputs except numbers
+	 * Blocks all inputs except numbers.
 	 */
 	private void setMask()
 	{
 		this.addKeyListener(new KeyAdapter()
 		{
-			public void keyTyped(KeyEvent e) //ignore some cases to prevent SQL-injections
+            // Ignore some cases to prevent SQL injections
+            public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
 				if (c < '0' || c > '9')
@@ -72,6 +75,8 @@ public class FieldNumber extends FieldText
 
 
 	/**
+     * Returns field's input / -1 if no number was entered.
+     *
 	 * @return -1 if no number was entered, returns input otherwise
 	 */
 	public int getNumber()
@@ -85,7 +90,8 @@ public class FieldNumber extends FieldText
 				return Integer.parseInt(this.getText());
 			} catch(Exception e)
 			{
-				return -1; //only for compiler. Shouldn't happen!
+                // Only for the compiler. This shouldn't happen!
+                return -1;
 			}
 		}
 	}
