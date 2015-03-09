@@ -3,27 +3,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
-/**
- * Customised FieldText exclusively for number inputs where all input except numbers is blocked.
- */
 public class FieldNumber extends FieldText
 {
 
-	/**
-	 * Constructs FieldNumber with maximum input length of 9.
-	 */
-	public FieldNumber()
-	{
-		super(9);
-		setMask();
-	}
-
-	/**
-	 * Constructs FieldNumber with maximum input length of limit.
-     *
-	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
-	 */
 	public FieldNumber(int limit)
 	{
 		super();
@@ -53,6 +35,19 @@ public class FieldNumber extends FieldText
 		setMask();
 	}
 
+	public FieldNumber(int widht, int limit, int intervalMaximum)
+	{
+		super();
+		setLimit(limit);
+		this.setColumns(widht);
+		setInterval(intervalMaximum);
+	}
+
+	public FieldNumber()
+	{
+		super(9);
+		setMask();
+	}
 
 	/**
 	 * Blocks all inputs except numbers.
@@ -73,6 +68,30 @@ public class FieldNumber extends FieldText
 		});
 	}
 
+	private void setInterval(int intervalMaximum)
+	{
+		this.addKeyListener(new KeyAdapter()
+		{
+			public void keyTyped(KeyEvent e) //ignore some cases to prevent SQL-injections
+			{
+				char c = e.getKeyChar();
+				if (c < '0' || c > '9')
+				{
+					e.consume();  // ignore event
+				}
+				int i = Character.getNumericValue(c);
+				int value = i;
+				if (getNumber() != -1)
+				{
+					value = getNumber() * 10 + i;
+				}
+				if (value > intervalMaximum)
+				{
+					e.consume(); // ignore event
+				}
+			}
+		});
+	}
 
 	/**
      * Returns field's input / -1 if no number was entered.

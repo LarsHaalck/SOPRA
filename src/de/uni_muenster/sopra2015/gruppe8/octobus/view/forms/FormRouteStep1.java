@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 /**
@@ -89,6 +91,17 @@ public class FormRouteStep1 extends JPanel
 		busStopCurrent.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		busStopCurrent.removeColumn(busStopCurrent.getColumnModel().getColumn(0));
 		busStopCurrent.setFillsViewportHeight(true);
+		busStopCurrent.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+				{
+					controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DELETE);
+				}
+			}
+		});
 		t1 = new JScrollPane(busStopCurrent);
 		t1.setPreferredSize(new Dimension(250, 400));
 		cTable.gridx = 1;
@@ -118,6 +131,17 @@ public class FormRouteStep1 extends JPanel
 		busStopAvailable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		busStopAvailable.removeColumn(busStopAvailable.getColumnModel().getColumn(0));
 		busStopAvailable.setFillsViewportHeight(true);
+		busStopAvailable.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_ADD);
+				}
+			}
+		});
 		t2 = new JScrollPane(busStopAvailable);
 		t2.setPreferredSize(new Dimension(250, 400));
 		cTable.gridx = 3;
@@ -167,6 +191,8 @@ public class FormRouteStep1 extends JPanel
 	public void fillTableCurrent(Object[][] data)
 	{
 		model_1.setData(data);
+		revalidate();
+		repaint();
 	}
 
 	//--------------------------------------
@@ -197,7 +223,7 @@ public class FormRouteStep1 extends JPanel
 		int nRow = model_1.getRowCount();
 		String[] tableData = new String[nRow];
 		for (int i = 0 ; i < nRow ; i++)
-			tableData[i] = model_1.getValueAt(i,0).toString();
+			tableData[i] = model_1.getValueAt(i,1).toString();
 		return tableData;
 	}
 
