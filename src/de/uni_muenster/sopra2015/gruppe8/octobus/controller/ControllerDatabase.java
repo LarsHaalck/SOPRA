@@ -124,7 +124,7 @@ public class ControllerDatabase
 	public int deleteBus(int id)
 	{
 		// Start by deleting references to this bus from all tours
-        int numOfTours = deleteToursUsingBus(id);
+        int numOfTours = deleteBusFromTours(id);
         // Then delete the bus itself
 		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
 		return numOfTours;
@@ -327,6 +327,10 @@ public class ControllerDatabase
 
 		return (Integer) record.getValue(0);
 	}
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Modifies an existing bus stop entry in the database
@@ -1081,7 +1085,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the stopping point
 	 * @return number of routes using the stopping point
 	 */
-	public int getNumberOfRoutesUsingStoppingPoint(int id)
+	public int getNumberOfRoutesUsingStoppingPointId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1376,15 +1380,11 @@ public class ControllerDatabase
 	 */
 	public int deleteToursUsingRoutesId(int id)
 	{
-		Record record = create
-				.selectCount()
-				.from(TOURS)
-				.where(TOURS.ROUTES_ID.equal(id))
-				.fetchOne();
+        int numOfTours = getNumberOfToursUsingRoutesId();
 
 		create.delete(TOURS).where(TOURS.ROUTES_ID.eq(id)).execute();
 
-		return (Integer) record.getValue(0);
+		return numOfTours;
 	}
 
 	/**
@@ -1457,20 +1457,6 @@ public class ControllerDatabase
 		return (Integer) record.getValue(0);
 	}
 
-	/**
-	 * deletes all tours with a specific bus assigned.
-	 *
-	 * @param id unique ID of the bus
-	 * @return number of tours deleted
-	 */
-	public int deleteToursUsingBus(int id)
-	{
-		int numOfTours = getNumberOfToursUsingBusId(id);
-
-		create.delete(TOURS).where(TOURS.BUSES_ID.eq(id)).execute();
-
-		return (Integer) numOfTours;
-	}
 
 	/**
 	 * gets the number of tours with a specific employee assigned.
