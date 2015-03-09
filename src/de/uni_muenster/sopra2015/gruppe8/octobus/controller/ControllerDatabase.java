@@ -567,7 +567,7 @@ public class ControllerDatabase
 		// For each bus retrieved...
 		for (BusstopsStoppingpointsRecord rec : rows)
 		{
-			result.add(getStoppingPointById(rec.getBusstopsId()));
+			result.add(getStoppingPointById(rec.getBusstopsStoppingpointsId()));
 		}
 		return result;
 	}
@@ -941,11 +941,11 @@ public class ControllerDatabase
 	public ArrayList<Route> getRoutes()
 	{
         // Start by getting all bus stops from the database
-        Result<Record> routesRecords = create.select().from(ROUTES).fetch();
+        Result<RoutesRecord> routesRecords = create.selectFrom(ROUTES).fetch();
 		ArrayList<Route> routesList = new ArrayList<>();
 
         // For each bus stop retrieved...
-        for (Record rec : routesRecords)
+        for (RoutesRecord rec : routesRecords)
 		{
             // ... get all corresponding start times ...
             Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
@@ -999,6 +999,7 @@ public class ControllerDatabase
 					stops,
 					rec.getValue(ROUTES.NIGHT),
 					startTimes);
+            route.setId(rec.getRoutesId());
 
             // Finally, create Route object and add it to the ArrayList
             routesList.add(route);
@@ -1177,7 +1178,7 @@ public class ControllerDatabase
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
                 .fetchOne();
 
-        return new StoppingPoint(id, spr.getName());
+        return (spr == null) ? null : new StoppingPoint(id, spr.getName());
     }
 
     /**
