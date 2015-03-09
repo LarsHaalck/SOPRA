@@ -46,7 +46,7 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 		//for loop for all tickets
 		for(Ticket t: tickets)
 		{
-			i = i +100; //erstmal
+			i = i +30; //erstmal
 			displayTicket.addPanel(t.getName(), t.getPrice(), t.getNumPassengers(), t.getDescription(), i);
 		}
 	}

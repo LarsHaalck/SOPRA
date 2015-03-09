@@ -2,14 +2,15 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Quadruple;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
 import java.awt.*;
 import java.awt.print.PrinterJob;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,10 +30,41 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	public void printDocument(EmitterPrint emitter, ArrayList<Integer> objectIds)
 	{
 
-		switch(emitter)
+		switch (emitter)
 		{
 			case STOPPING_POINT:
+				int objectId = objectIds.get(0);
+
+				StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
+				Route route = controllerDatabase.getRouteById(objectId);
+				DayOfWeek day = DayOfWeek.MONDAY;
+
+
+				//Create new print-job
+				PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(stoppingPoint, route, day);
+
+				PrinterJob job = PrinterJob.getPrinterJob();
+
+				//PrintViewWorkPlan is only for managing data to print
+				PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
+				job.setPrintable(printViewStoppingPoint);
+
+
+				//Show dialog to user, select printer
+				boolean doPrint = job.printDialog();
+				if (doPrint)
+				{
+					try
+					{
+						job.print();
+					} catch (Exception e)
+					{
+						System.out.println(e.getMessage());
+						System.out.println("Don't print");
+					}
+				}
 				break;
+
 		}
 	}
 
