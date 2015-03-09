@@ -3,16 +3,17 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
-import javafx.geometry.HPos;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * @author Patricia Schinke
@@ -31,14 +32,18 @@ public class FormBusStop extends FormGeneral
 	private JButton btListAdd;
 	private JButton btListEdit;
 	private JButton btListDelete;
-	private DefaultListModel<String> lmStoppingPoints = new DefaultListModel<String>();
-	private JList lStoppingPoints = new JList(lmStoppingPoints);
+	private StoppingPointTableModel tmStoppingPoints = new StoppingPointTableModel();
+	private JTable tableStoppingPoints = new JTable(tmStoppingPoints);
 
 	/*
 	 * the buttons for save and cancel
 	 */
 	private JButton btSave;
 	private JButton btCancel;
+	private RowSorter<StoppingPointTableModel> sorter;
+
+	int selectedRow = -1;
+	int selectedID = -1;
 
 
 	public FormBusStop(Frame parent, int objectID)
@@ -125,7 +130,7 @@ public class FormBusStop extends FormGeneral
 
 		cstLabel.gridy = 5;
 		cstLabel.fill = GridBagConstraints.HORIZONTAL;
-		JScrollPane spListStoppingPoints = new JScrollPane(lStoppingPoints);
+		JScrollPane spListStoppingPoints = new JScrollPane(tableStoppingPoints);
 		add(spListStoppingPoints, cstLabel);
 
 		cstLabel.gridy = 6;
@@ -157,13 +162,30 @@ public class FormBusStop extends FormGeneral
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
 
-		lStoppingPoints.addMouseListener(new MouseAdapter()
+		sorter = new TableRowSorter<>(tmStoppingPoints);
+		tableStoppingPoints.removeColumn(tableStoppingPoints.getColumnModel().getColumn(0));
+		tableStoppingPoints.setRowSorter(sorter);
+		tableStoppingPoints.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
 				if (e.getClickCount() == 2)
 					controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
+			}
+		});
+		tableStoppingPoints.getSelectionModel().addListSelectionListener(e->
+		{
+			int viewRow = tableStoppingPoints.getSelectedRow();
+			if (viewRow < 0)
+			{
+				selectedRow = -1;
+				selectedID = -1;
+
+			} else
+			{
+				selectedRow = tableStoppingPoints.convertRowIndexToModel(viewRow);
+				selectedID = (int) tmStoppingPoints.getValueAt(selectedRow, 0);
 			}
 		});
 
@@ -212,27 +234,46 @@ public class FormBusStop extends FormGeneral
 
 	public int getSelectedStoppingPoint()
 	{
-		return lStoppingPoints.getSelectedIndex();
+
+		return selectedID;
 	}
 
 	public String getSelectedStoppingPointName()
 	{
-		return (String) lStoppingPoints.getSelectedValue();
+		return (String) tmStoppingPoints.getValueAt(selectedRow, 1);
+	}
+
+	public int getSelectedRow()
+	{
+		return selectedRow;
 	}
 
 	public void addStoppingPoint(String name)
 	{
-		lmStoppingPoints.addElement(name);
+		tmStoppingPoints.add(0, name);
+		tableStoppingPoints.revalidate();
+		tableStoppingPoints.repaint();
+	}
+
+	public void addStoppingPoint(int id, String name)
+	{
+		tmStoppingPoints.add(id, name);
+		tableStoppingPoints.revalidate();
+		tableStoppingPoints.repaint();
 	}
 
 	public void editStoppingPoint(int index, String name)
 	{
-		lmStoppingPoints.setElementAt(name, index);
+		tmStoppingPoints.setElementAt(index, name);
+		tableStoppingPoints.revalidate();
+		tableStoppingPoints.repaint();
 	}
 
 	public void removeStoppingPoint(int index)
 	{
-		lmStoppingPoints.remove(index);
+		tmStoppingPoints.remove(index);
+		tableStoppingPoints.revalidate();
+		tableStoppingPoints.repaint();
 	}
 
 	public String getNameBusStop()
@@ -270,16 +311,16 @@ public class FormBusStop extends FormGeneral
 		//TODO fehlt noch
 	}
 
-	public List getStoppingPoints()
+	public ArrayList<StoppingPoint> getStoppingPoints()
 	{
-		List list = new List();
+		ArrayList<StoppingPoint> list = new ArrayList<>();
 
 		/**
 		 * loop which reads the arguments of my list and gives them to a new list
 		 */
-		for(int i = 0; i<lmStoppingPoints.getSize(); i++)
+		for(int i = 0; i< tmStoppingPoints.getRowCount(); i++)
 		{
-			list.add(lmStoppingPoints.getElementAt(i));
+			list.add(new StoppingPoint((Integer)tmStoppingPoints.getValueAt(i,0), (String) tmStoppingPoints.getValueAt(i,1)));
 		}
 		return list;
 	}
@@ -292,5 +333,63 @@ public class FormBusStop extends FormGeneral
 	public void setBarrierFree(boolean state)
 	{
 		this.cbBarrierFree.setSelected(state);
+	}
+
+	private class StoppingPointTableModel extends ExtendedTableModel
+	{
+		public StoppingPointTableModel()
+		{
+			columnNames = new String[]{"Haltepunkte"};
+		}
+
+		@Override
+		public int getFirstSortColumn()
+		{
+			return 1;
+		}
+
+		@Override
+		public String[] getRefineableColumns()
+		{
+			return new String[0];
+		}
+
+		public void add(int id, String name)
+		{
+			Object[][] dataNew = new Object[data.length+1][2];
+			for(int i=0; i<data.length; i++)
+			{
+				dataNew[i][0] = data[i][0];
+				dataNew[i][1] = data[i][1];
+			}
+			dataNew[data.length] = new Object[]{id, name};
+			data = dataNew;
+			fireTableDataChanged();
+			fireTableStructureChanged();
+		}
+
+		public void setElementAt(int index, String value)
+		{
+			data[index][1] = value;
+			fireTableDataChanged();
+			fireTableStructureChanged();
+		}
+
+		public void remove(int id)
+		{
+			Object[][] dataNew = new Object[data.length-1][2];
+			int curIndex = 0;
+			for(Object[] obj : data)
+			{
+				if((int)obj[0] != id)
+				{
+					dataNew[curIndex] = obj;
+					curIndex++;
+				}
+			}
+			data = dataNew;
+			fireTableDataChanged();
+			fireTableStructureChanged();
+		}
 	}
 }
