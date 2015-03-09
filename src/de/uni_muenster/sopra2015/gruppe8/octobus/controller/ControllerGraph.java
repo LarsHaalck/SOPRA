@@ -31,7 +31,7 @@ public class ControllerGraph
 	}
 
 
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		ControllerGraph graph = new ControllerGraph();
 
@@ -39,7 +39,7 @@ public class ControllerGraph
 
 		return;
 
-	}
+	}*/
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
@@ -305,9 +305,7 @@ public class ControllerGraph
 			int currentStop = stopId;
 			int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 
-			//TODO: change this to route id instead of name
-			//Route prevRoute = null;
-			String prevRouteString = null;
+			Route prevRoute = null;
 			Quadruple<Integer, StoppingPoint, Route, StoppingPoint> prevQuadruple = null;
 			StoppingPoint end;
 
@@ -322,21 +320,15 @@ public class ControllerGraph
 				System.out.println("Stopping Point - End: " + db.getBusStop(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
 
 
-				//no transition -> delete old entry
-				/*if(prevRoute != null && currentRoute.getId() == prevRoute.getId()) //prevRoute != null -> prevQuadruple != null
-				{
-					trips.remove(prevQuadruple);
-				}*/
-
-				end = bestStoppingPoints.get(currentStop);
-
 				//no change of route -> no transition -> delete old Quadruple but save its end stopping point
-				if(prevRouteString != null && currentRoute.getName().equals(prevRouteString)) //prevRoute != null -> prevQuadruple != null
+				end = bestStoppingPoints.get(currentStop);
+				if(prevRoute != null && currentRoute.getId() == prevRoute.getId()) //prevRoute != null -> prevQuadruple != null
 				{
 					end = prevQuadruple.getFourth();
 					trips.remove(prevQuadruple);
-
 				}
+
+
 
 
 				prevQuadruple = new Quadruple<>(
@@ -348,8 +340,7 @@ public class ControllerGraph
 				//add them in reverse order
 				trips.addFirst(prevQuadruple);
 
-				//prevRoute = currentRoute;
-				prevRouteString = currentRoute.getName();
+				prevRoute = currentRoute;
 
 				currentStop = prevStop;
 				prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
