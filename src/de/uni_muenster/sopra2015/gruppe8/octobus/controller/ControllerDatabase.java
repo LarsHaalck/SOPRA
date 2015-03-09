@@ -116,10 +116,10 @@ public class ControllerDatabase
 	}
 
     /**
-     * Removes a bus entry from the database using its unique id. Assigned tours will also be deleted.
+     * Removes a bus entry from the database using its unique id. Assigned tours will also be modified
      *
      * @param id unique ID of the bus entry that is to be deleted from the database
-	 * @return number of tours deleted due to bus deletion
+	 * @return number of tours modified due to bus deletion
      */
 	public int deleteBus(int id)
 	{
@@ -128,6 +128,56 @@ public class ControllerDatabase
         // Then delete the bus itself
 		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
 		return numOfTours;
+	}
+
+	/**
+	 * Deletes a specific bus from tours within a specific range of time.
+	 *
+	 * @param uid unique ID of the bus being deleted from tours
+	 * @param begin point in time after which drivers ought to be deleted from tours
+	 * @param end point in time before which drivers ought to be deleted from tours
+	 * @return number of tours edited
+	 */
+	public int deleteBusFromTours(int uid, Date begin, Date end)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.BUSES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.fetchOne();
+
+		create.update(TOURS)
+				.set(TOURS.BUSES_ID,(Integer) null)
+				.where(TOURS.BUSES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Deletes a specific bus from tours.
+	 *
+	 * @param id unique ID of the bus being deleted from tours
+	 * @return number of tours edited
+	 */
+	public int deleteBusFromTours(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.BUSES_ID.equal(id))
+				.fetchOne();
+
+		create.update(TOURS)
+				.set(TOURS.BUSES_ID,(Integer) null)
+				.where(TOURS.BUSES_ID.equal(id))
+				.execute();
+
+		return (Integer) record.getValue(0);
 	}
 
     /**
@@ -402,6 +452,28 @@ public class ControllerDatabase
 			names.add(route.getName());
 		}
 		return(names);
+	}
+
+	/**
+	 * Returns a list of routes which use a specific stopping point
+	 *
+	 * @param id unique ID of the stopping point
+	 * @return ArrayList of routes containing the routes
+	 */
+	public ArrayList<Route> getRoutesUsingStoppingPoint(int id)
+	{
+		Result<RoutesStopsRecord> routes = create
+				.selectFrom(ROUTES_STOPS)
+				.where(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+				.fetch();
+
+		ArrayList<Route> listOfRoutes = new ArrayList<>();
+		for (RoutesStopsRecord rec : routes)
+		{
+			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			listOfRoutes.add(getRoute(routeID));
+		}
+		return(listOfRoutes);
 	}
 
 	/**
@@ -686,7 +758,7 @@ public class ControllerDatabase
 				.fetchOne();
 
 		create.update(TOURS)
-				.set(TOURS.EMPLOYEES_ID,(Integer) null)
+				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(id))
 				.execute();
 
@@ -986,6 +1058,24 @@ public class ControllerDatabase
 		return(names);
 	}
 
+	/**
+	 * gets the number of routes with a specific stopping point assigned.
+	 *
+	 * @param id unique ID of the stopping point
+	 * @return number of routes using the stopping point
+	 */
+	public int getNumberOfRoutesUsingStoppingPoint(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(ROUTES_STOPS)
+				.where(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID.equal(id))
+				.groupBy(ROUTES_STOPS.ROUTES_ID)
+				.fetchOne();
+
+		return (Integer) record.getValue(0);
+	}
+
     //////////////////////////////////
     // Methods for "StoppingPoint"s //
     //////////////////////////////////
@@ -1031,6 +1121,21 @@ public class ControllerDatabase
 
         return resultList;
     }
+
+	/**
+	 * Removes a stopping point entry from the database using its unique id. Assigned tours will also be modified
+	 *
+	 * @param id unique ID of the bus entry that is to be deleted from the database
+	 */
+	public void deleteStoppingPoint(int id)
+	{
+		if (getNumberOfRoutesUsingStoppingPoint(id) == 0)
+		{
+			create.delete(BUSSTOPS_STOPPINGPOINTS)
+					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();
+		}
+	}
+
 
 	///////////////////////////////
 	// Methods for "soldTicket"s //
