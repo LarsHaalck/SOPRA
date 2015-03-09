@@ -15,7 +15,7 @@ public class AreaText extends JTextArea
 	public AreaText()
 	{
 		super();
-		setFont(new Font("Tahoma", Font.PLAIN, 11));
+		setFont(UIManager.getDefaults().getFont("JTextField.font"));
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
 
