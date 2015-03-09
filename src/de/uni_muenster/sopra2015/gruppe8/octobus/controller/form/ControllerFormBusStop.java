@@ -231,11 +231,11 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             {
                 // Add entries for newly created stopping points
                 if (s.getId() <= 0)
-                    controllerDatabase.getInstance().addStoppingPoint(busStop.getId());
+                    controllerDatabase.getInstance().addStoppingPoint(busStop.getId(), s);
                 // Modify stopping points that already have entries in the database.
                 // Yes, this does overwrite unmodified entries with the same data.
                 else
-                    ControllerDatabase.getInstance().modifyStopppingPointById();
+                    ControllerDatabase.getInstance().modifyStoppingPoint(s);
             }
 
             // Remove all altered stopping points (which have already been handled) from the original list.
@@ -246,7 +246,6 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             {
                 ControllerDatabase.getInstance().deleteStoppingPointById(s.getId());
             }
-
         }
 
 		return true;

@@ -329,6 +329,22 @@ public class ControllerDatabase
 		return (Integer) record.getValue(0);
 	}
 
+    /**
+     * Retrieves the bus stop associated with the given stopping point. Comes in handy for
+     * displaying the complete name of a stopping point.
+     *
+     * @param id StoppingPoint for which to retrieve the associated BusStop
+     * @return BusStop associated with the stopping point
+     */
+    public BusStop getBusStopByStoppingPointId(int id)
+    {
+        BusstopsStoppingpointsRecord r = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+                .fetchOne();
+
+        return getBusStopById(r.getBusstopsId());
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -895,7 +911,7 @@ public class ControllerDatabase
      *
      * @param r Route object whose entry is to be updated in the database
      * @param deleteTours true if associated tours ought to be deleted
-	 * @return new ID of the changed route entry
+	 * @return id of the changed route entry (new if deleteTours was true)
      */
 	public int modifyRoute(Route r, boolean deleteTours)
 	{
