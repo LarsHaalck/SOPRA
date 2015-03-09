@@ -829,15 +829,32 @@ public class ControllerDatabase
 		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
 	}
 
-    // TODO: Implementierten!
     /**
-     * Modifies an existing route entry in the database
+     * Modifies an existing route entry in the database. Route entry ID will be changed if stopping points or starting
+	 * times are changed
      *
      * @param r Route object whose entry is to be updated in the database
      * @param deleteTours true if associated tours ought to be deleted
+	 * @return new ID of the changed route entry
      */
-	public void modifyRoute(Route r, boolean deleteTours)
+	public int modifyRoute(Route r, boolean deleteTours)
 	{
+		if (!deleteTours)
+		{
+			create.update(ROUTES)
+					.set(ROUTES.NAME, r.getName())
+					.set(ROUTES.NOTE, r.getNote())
+					.set(ROUTES.NIGHT, r.isNight())
+					.where(ROUTES.ROUTES_ID.equal(r.getId()))
+					.execute();
+			return(r.getId());
+		} else
+		{
+			deleteRouteFromTours(r.getId());
+			deleteRouteFromRoutesStartTimes(r.getId());
+			deleteRouteFromRoutesStops(r.getId());
+			return(addRoute(r));
+		}
 	}
 
     /**
@@ -1132,6 +1149,19 @@ public class ControllerDatabase
 			create.delete(BUSSTOPS_STOPPINGPOINTS)
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();
 		}
+	}
+
+	/**
+	 * Modifies an existing bus stop entry in the database
+	 *
+	 * @param spoint StoppingPoint object whose entry is to be updated in the database
+	 */
+	public void modifyStoppingPoint(StoppingPoint spoint)
+	{
+		create.update(BUSSTOPS_STOPPINGPOINTS)
+				.set(BUSSTOPS_STOPPINGPOINTS.NAME, spoint.getName())
+				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.equal(spoint.getId()))
+				.execute();
 	}
 
 
