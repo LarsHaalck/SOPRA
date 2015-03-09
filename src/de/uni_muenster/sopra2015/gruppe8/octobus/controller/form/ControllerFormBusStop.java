@@ -168,7 +168,9 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		boolean barrierFree = formBusStop.getBarrierFree();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(name.trim().length() == 0)
+		if(name == null)
+			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
+		else if(name.trim().length() == 0)
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(name.trim().length() < 5)
 			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");

@@ -2,31 +2,28 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Observer used to keep track of each active Controller and to manage interactions between them.
+ * Manager which is used to keep track of each active Controller and to manage interactions between them.
  */
 public class ControllerManager
 {
-	private static ArrayList<ListenerButton> listenerButton = new ArrayList<>();
-	private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
+    private static ArrayList<ListenerUserState> listenerUserState = new ArrayList<>();
+    private static ArrayList<ListenerButton> listenerButton = new ArrayList<>();
 	private static ArrayList<ListenerWindow> listenerWindow = new ArrayList<>();
     private static ArrayList<ListenerTable> listenerTable = new ArrayList<>();
 	private static ArrayList<ListenerPrint> listenerPrint = new ArrayList<>();
 
 	/**
-	 * Doesn't allow creating a single instance of ControllerManager
+	 * Prevents the creation of ControllerManager instances.
 	 */
-	private ControllerManager()
-	{
-
-	}
+	private ControllerManager() {}
 
 	/**
 	 * Informs every active ListenerButton.
-	 * @param emitter pressed Button.
+     *
+	 * @param emitter pressed Button
 	 */
 	public static void informButtonPressed(EmitterButton emitter)
 	{
@@ -36,12 +33,13 @@ public class ControllerManager
 	}
 
 
-	// following functions copy their corresponding ArrayList first, because event triggers could
-	// lead to new listeners, which could lead to infinite loops!!
+	// The functions below create copies of their corresponding ArrayList before accessing them, because
+	// event triggers could result in new listeners being registered, which in turn could lead to infinite loops!
 
 	/**
 	 * Informs every active ListenerUserState.
-	 * @param emitter changed UserState.
+     *
+	 * @param emitter changed UserState
 	 */
 	public static void informUserStateChanged(EmitterUserState emitter)
 	{
@@ -49,10 +47,23 @@ public class ControllerManager
 		for (ListenerUserState listener : list)
 			listener.userStateChanged(emitter);
 	}
+
+	/**
+	 * Informs every active ListenerUserState.
+     *
+	 * @param emitter changed UserState
+	 */
+	public static void informUserStateChanged(EmitterUserState emitter, int userId)
+	{
+		ArrayList<ListenerUserState> list = new ArrayList<>(listenerUserState);
+		for (ListenerUserState listener : list)
+			listener.userStateChanged(emitter, userId);
+	}
+
 	/**
 	 * Informs every active ListenerWindow to open a new dialog window.
      *
-	 * @param emitter window to open.
+	 * @param emitter window to open
 	 */
 	public static void informWindowOpen(EmitterWindow emitter)
 	{
@@ -64,8 +75,8 @@ public class ControllerManager
 	/**
 	 * Informs every active ListenerWindow to open a new window.
 	 *
-	 * @param emitter window to open.
-	 * @param objectID Database-ID that will be needed in the opened window.
+	 * @param emitter window to open
+	 * @param objectID database id which will be needed in the opened window
 	 */
 	public static void informWindowOpen(EmitterWindow emitter, int objectID)
 	{
@@ -77,13 +88,25 @@ public class ControllerManager
 	/**
 	 * Informs every active ListenerWindow to close a certain window.
      *
-	 * @param emitter window to be closed.
+	 * @param emitter window to be closed
 	 */
 	public static void informWindowClose(EmitterWindow emitter)
 	{
 		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
 		for (ListenerWindow listener : list)
 			listener.windowClose(emitter);
+	}
+
+	/**
+	 * Informs every active ListenerWindow to switch to a display.
+	 *
+	 * @param emitter display to switch to
+	 */
+	public static void informDisplaySwitch(EmitterDisplay emitter)
+	{
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
+		for (ListenerWindow listener : list)
+			listener.displaySwitch(emitter);
 	}
 
 	/**
@@ -101,7 +124,7 @@ public class ControllerManager
 	/**
 	 * Informs every active ListenerTable that content needs to update.
 	 *
-	 * @param emitter table that needs to update
+	 * @param emitter table that needs to be updated
 	 */
 	public static void informTableContentChanged(EmitterTable emitter)
 	{
@@ -111,15 +134,29 @@ public class ControllerManager
 	}
 
 	/**
-	 * Informs every active ListenerPrint that manages print-requests
-	 * @param emitter document that should be printed.
-	 * @param objectId objectId corresponding to document.
+	 * Informs every active ListenerPrint that manages print-requests.
+     *
+	 * @param emitter document that should be printed
+	 * @param objectId objectId corresponding to document
 	 */
 	public static void informPrintRequested(EmitterPrint emitter, int objectId)
 	{
 		ArrayList<ListenerPrint> list = new ArrayList<>(listenerPrint);
 		for(ListenerPrint listener : list)
 			listener.printDocument(emitter, objectId);
+	}
+
+    // TODO: What does "Evil method, only use by user-state-change." mean?
+	/**
+	 * Informs every active ListenerPrint that manages print-requests
+	 * @param emitter document that should be printed.
+	 * @param objectIds objectIds corresponding to document.
+	 */
+	public static void informPrintRequested(EmitterPrint emitter, ArrayList<Integer> objectIds)
+	{
+		ArrayList<ListenerPrint> list = new ArrayList<>(listenerPrint);
+		for(ListenerPrint listener : list)
+			listener.printDocument(emitter, objectIds);
 	}
 
 	/**
@@ -132,13 +169,12 @@ public class ControllerManager
 		listenerButton.clear();
 		listenerWindow.clear();
         listenerTable.clear();
-		listenerPrint.clear();
 	}
 
 	/**
 	 * Adds a ListenerButton to the listenerButton list.
      *
-	 * @param listener Listener to be added.
+	 * @param listener listener to be added
 	 */
 	public static void addListener(ListenerButton listener)
 	{
@@ -148,7 +184,7 @@ public class ControllerManager
 	/**
 	 * Removes a ListenerButton from the listenerButton list.
      *
-	 * @param listener Listener to be removed.
+	 * @param listener listener to be removed
 	 */
 	public static void removeListener(ListenerButton listener)
 	{
@@ -158,7 +194,7 @@ public class ControllerManager
 	/**
 	 * Adds a ListenerUserState to the listenerUserState list.
      *
-	 * @param listener Listener to be added.
+	 * @param listener listener to be added
 	 */
 	public static void addListener(ListenerUserState listener)
 	{
@@ -168,7 +204,7 @@ public class ControllerManager
 	/**
 	 * Removes a ListenerUserState from the listenerUserState list.
      *
-	 * @param listener Listener to be removed
+	 * @param listener listener to be removed
 	 */
 	public static void removeListener(ListenerUserState listener)
 	{
@@ -178,7 +214,7 @@ public class ControllerManager
 	/**
 	 * Adds a ListenerWindow to the listenerWindow list.
      *
-	 * @param listener Listener to be added.
+	 * @param listener listener to be added
 	 */
 	public static void addListener(ListenerWindow listener)
 	{
@@ -188,7 +224,7 @@ public class ControllerManager
 	/**
 	 * Removes a ListenerWindow to the listenerWindow list.
      *
-	 * @param listener Listener to be removed
+	 * @param listener listener to be removed
 	 */
 	public static void removeListener(ListenerWindow listener)
 	{
@@ -197,8 +233,8 @@ public class ControllerManager
 
     /**
      * Adds a ListenerTable to the listenerTable list.
-	 * 
-     * @param listener Listener to be added.
+	 *
+     * @param listener listener to be added
      */
     public static void addListener(ListenerTable listener)
     {
@@ -207,8 +243,8 @@ public class ControllerManager
 
 	/**
 	 * Removes a ListenerTable to the listenerTable list.
-	 * 
-	 * @param listener Listener to be removed.
+	 *
+	 * @param listener listener to be removed
 	 */
 	public static void removeListener(ListenerTable listener)
     {
@@ -218,7 +254,7 @@ public class ControllerManager
 	/**
 	 * Adds a ListenerPrint to the listenerPrint list.
 	 *
-	 * @param listener Listener to be added.
+	 * @param listener listener to be added
 	 */
 	public static void addListener(ListenerPrint listener)
 	{
@@ -228,7 +264,7 @@ public class ControllerManager
 	/**
 	 * Removes a ListenerPrint to the listenerPrint list.
 	 *
-	 * @param listener Listener to be removed.
+	 * @param listener listener to be removed
 	 */
 	public static void removeListener(ListenerPrint listener)
 	{

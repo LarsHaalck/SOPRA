@@ -4,12 +4,17 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Role;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -46,11 +51,46 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 				{
 					if(saveToDb())
 					{
-						formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
+						if(objectID == -1) //only show if user is new user
+							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt." +
+                                    "\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
+						if(objectID != -1)
+							ControllerManager
+                                    .informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
 						closeDialog();
 					}
 				}
+				break;
+
+			case FORM_EMPLOYEE_RESET_PASSWORD:
+				// Take care of creating a salt and hashing the default password with that salt
+				SecureRandom random = new SecureRandom();
+				String salt = new BigInteger(130, random).toString(32);
+				String password = "octobus";
+				String generatedHash = "";
+
+				try
+				{
+					MessageDigest digest = MessageDigest.getInstance("SHA-512");
+
+					digest.update(password.getBytes());
+					digest.update(salt.getBytes());
+
+					generatedHash = new BigInteger(1, digest.digest()).toString();
+
+				} catch (NoSuchAlgorithmException e)
+				{
+					throw new UnsupportedOperationException(e);
+				}
+
+				employee.setSalt(salt);
+				employee.setPassword(generatedHash);
+
+				controllerDatabase.modifyEmployee(employee);
+
+				formEmployee.showInformationForm("Das Passwort des Benutzers wurde" +
+                        " auf \"octobus\" zurückgesetzt!");
 				break;
 
 			case FORM_EMPLOYEE_CANCEL:
@@ -116,21 +156,39 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		boolean ticketPlaner = formEmployee.getTicketPlaner();
 
 		ArrayList<String> errorList = new ArrayList<>();
-		if(firstName.trim().length() == 0)
+		if(firstName == null)
+			errorList.add("Ungültige Eingabe des Vornamen. Es wurden illegale Zeichen verwendet.");
+		else if(firstName.trim().length() == 0)
 			errorList.add("Der Vorname darf nicht leer sein.");
-		if(lastName.trim().length() == 0)
+		if(lastName == null)
+			errorList.add("Ungültige Eingabe des Nachnamen. Es wurden illegale Zeichen verwendet.");
+		else if(lastName.trim().length() == 0)
 			errorList.add("Der Nachname darf nicht leer sein.");
-		if(address.trim().length() == 0)
+		if(address == null)
+			errorList.add("Ungültige Eingabe der Anschrift. Es wurden illegale Zeichen verwendet.");
+		else if(address.trim().length() == 0)
 			errorList.add("Die Adresse darf nicht leer sein.");
-		if(zipCode.trim().length() == 0)
+		if(zipCode == null)
+			errorList.add("Ungültige Eingabe der PLZ. Es wurden illegale Zeichen verwendet.");
+		else if(zipCode.trim().length() == 0)
 			errorList.add("Die PLZ darf nicht leer sein.");
-		if(city.trim().length() == 0)
+		if(city == null)
+			errorList.add("Ungültige Eingabe der Stadt. Es wurden illegale Zeichen verwendet.");
+		else if(city.trim().length() == 0)
 			errorList.add("Die Stadt darf nicht leer sein.");
 		if(birthDate == null)
 			errorList.add("Das Geburtsdatum liegt in keinem gültigen Format vor.");
-		if(username.trim().length() == 0)
+		if(eMail == null)
+			errorList.add("Die E-Mail-Adresse ist ungültig.");
+		if(phone == null)
+			errorList.add("Die Telefonnummer ist ungültig.");
+		if(username == null)
+			errorList.add("Ungültige Eingabe des Benutzernamens. Es wurden illegale Zeichen verwendet.");
+		if(note == null)
+			errorList.add("Ungültige Eingabe der Notiz. Es wurden illegale Zeichen verwendet.");
+		else if(username.trim().length() == 0)
 			errorList.add("Der Benutzername darf nicht leer sein.");
-		if(username.trim().length() < 3)
+		else if(username.trim().length() < 3)
 			errorList.add("Der Benutzername muss mehr als 3 Zeichen enthalten.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");
@@ -165,6 +223,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 				roles.add(Role.SCHEDULE_MANAGER);
 			if(ticketPlaner)
 				roles.add(Role.TICKET_PLANNER);
+			employee.setRoles(roles);
 		}
 		return true;
 	}

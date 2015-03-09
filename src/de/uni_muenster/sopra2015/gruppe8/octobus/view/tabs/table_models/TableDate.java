@@ -1,17 +1,25 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
-import javafx.scene.control.Tab;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Date wrapper class for german date format which implements Comparator in order to be sorted in Tables
+ */
 public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 {
-	Date date;
+	public enum Type
+	{
+		DATE,
+		DATE_TIME,
+		TIME
+	}
 
+
+	Date date;
 
 	int day = -1;
 	int month = -1;
@@ -22,6 +30,11 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 	Calendar calendar;
 	Type type;
 
+	/**
+	 * constructs TableDate from date object
+	 * @param date Date object to be used
+	 * @param type see TableData.TYPE (must be one of: Type.DATE, Type.DATE_TIME or Type.TIME)
+	 */
 	public TableDate(Date date, Type type)
 	{
 		this.date = date;
@@ -98,6 +111,14 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 	}
 
 
+	/**
+	 * compares time of two TableDate objects
+	 * @param o1
+	 * @param o2
+	 * @return  -1 if o1 < o2
+	 *          0 if o1 = o2    or
+	 *          1 if o1 > o2
+	 */
 	private int compareTime(TableDate o1, TableDate o2)
 	{
 		if (o1.getHour() < o2.getHour())
@@ -115,6 +136,14 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 
 	}
 
+	/**
+	 * compares date (without time) of two TableDate objects
+	 * @param o1
+	 * @param o2
+	 * @return  -1 if o1 < o2
+	 *          0 if o1 = o2    or
+	 *          1 if o1 > o2
+	 */
 	private int compareDate(TableDate o1, TableDate o2)
 	{
 		if (o1.getYear() < o2.getYear())
@@ -169,10 +198,4 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 		return type;
 	}
 
-	public enum Type
-	{
-		DATE,
-		DATE_TIME,
-		TIME
-	}
 }

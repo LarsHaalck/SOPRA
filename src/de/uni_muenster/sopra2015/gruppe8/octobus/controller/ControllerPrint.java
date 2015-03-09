@@ -26,14 +26,28 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	}
 
 	@Override
+	public void printDocument(EmitterPrint emitter, ArrayList<Integer> objectIds)
+	{
+
+		switch(emitter)
+		{
+			case STOPPING_POINT:
+				break;
+		}
+	}
+
+	@Override
 	public void printDocument(EmitterPrint emitter, int objectId)
 	{
 		switch (emitter)
 		{
 			case WORK_PLAN:
+				//TODO Maybe show a little message to user, prepare print or se
+
 				if(objectId <= 0)
 					break;
 
+				//Get tour and employee-data
 				ArrayList<Tour> tours = controllerDatabase.getUserTours(objectId);
 				Employee employee = controllerDatabase.getEmployeeById(objectId);
 
@@ -42,17 +56,21 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 				for (Tour tour : tours)
 				{
+					//Build strings for printing
 					String tourDesc = tour.getRoute().getName() + " (" + tour.getRoute().getStart().getName() + " - " + tour.getRoute().getEnd().getName()+")";
 					String busName = tour.getBus().getLicencePlate();
 					tourData.add(new Quadruple<>(tourDesc, tour.getTimestamp(), tour.getRoute().getDuration(), busName));
 				}
-				
+
+				//Create new print-job
 				PrintWorkPlan printWorkPlan = new PrintWorkPlan(name, tourData);
 				
 				PrinterJob job = PrinterJob.getPrinterJob();
+				//PrintViewWorkPlan is only for managing data to print
 				PrintViewWorkPlan printViewWorkPlan = new PrintViewWorkPlan(printWorkPlan);
 				job.setPrintable(printViewWorkPlan);
 
+				//Show dialog to user, select printer
 				boolean doPrint = job.printDialog();
 				if(doPrint)
 				{
@@ -65,6 +83,8 @@ public class ControllerPrint extends Controller implements ListenerPrint
 						System.out.println("Don't print");
 					}
 				}
+
+				//TODO Show error
 
 				break;
 		}
@@ -79,6 +99,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerPrint)this);
+		ControllerManager.removeListener((ListenerPrint)this);
 	}
 }

@@ -254,6 +254,25 @@ public class ControllerDatabase
 		create.delete(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.equal(id)).execute();
 	}
 
+	/**
+	 * Deletes all stopping points of a specific bus stop.
+	 *
+	 * @param id unique ID of the bus stop whose stopping points to be deleted.
+	 * @return number of stopping points deleted
+	 */
+	public int deleteBusStopFromStoppingPoints(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(BUSSTOPS_STOPPINGPOINTS)
+				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(id))
+				.fetchOne();
+
+		create.delete(BUSSTOPS_STOPPINGPOINTS).where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id)).execute();
+
+		return (Integer) record.getValue(0);
+	}
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -352,6 +371,60 @@ public class ControllerDatabase
         return busStop;
 
     }
+
+	/**
+	 * Returns a list of names of routes which use a specific stopping point
+	 *
+	 * @param id unique ID of the stopping point
+	 * @return ArrayList of Strings containing names of routes
+	 */
+	public ArrayList<String> getRouteNamesUsingStoppingPoint(int id)
+	{
+		Result<RoutesStopsRecord> routes = create
+				.selectFrom(ROUTES_STOPS)
+				.where(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+				.fetch();
+
+		ArrayList<String> names = new ArrayList<>();
+		for (RoutesStopsRecord rec : routes)
+		{
+			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			RoutesRecord route = create
+					.selectFrom(ROUTES)
+					.where(ROUTES.ROUTES_ID.eq(routeID))
+					.groupBy(ROUTES_STOPS.ROUTES_ID)
+					.fetchOne();
+			names.add(route.getName());
+		}
+		return(names);
+	}
+
+	/**
+	 * Returns a list of names of routes which use a specific bus stop
+	 *
+	 * @param id unique ID of the bus stop
+	 * @return ArrayList of Strings containing names of routes
+	 */
+	public ArrayList<String> getRouteNamesUsingBusStop(int id)
+	{
+		Result<RoutesStopsRecord> routes = create
+				.selectFrom(ROUTES_STOPS)
+				.where(ROUTES_STOPS.BUSSTOPS_ID.eq(id))
+				.groupBy(ROUTES_STOPS.ROUTES_ID)
+				.fetch();
+
+		ArrayList<String> names = new ArrayList<>();
+		for (RoutesStopsRecord rec : routes)
+		{
+			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			RoutesRecord route = create
+					.selectFrom(ROUTES)
+					.where(ROUTES.ROUTES_ID.eq(routeID))
+					.fetchOne();
+			names.add(route.getName());
+		}
+		return(names);
+	}
 
 	/////////////////////////////
 	// Methods for "Employee"s //
@@ -782,6 +855,78 @@ public class ControllerDatabase
 		return route;
 	}
 
+	/**
+	 * Deletes all stopping points of a specific route.
+	 *
+	 * @param id unique ID of the route whose stopping points to be deleted.
+	 * @return number of stopping points deleted
+	 */
+	public int deleteRouteFromRoutesStops(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(ROUTES_STOPS)
+				.where(ROUTES_STOPS.ROUTES_ID.equal(id))
+				.fetchOne();
+
+		create.delete(ROUTES_STOPS).where(ROUTES_STOPS.ROUTES_ID.eq(id)).execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Deletes all start times of a specific route.
+	 *
+	 * @param id unique ID of the route whose start times to be deleted.
+	 * @return number of stopping points deleted
+	 */
+	public int deleteRouteFromRoutesStartTimes(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(ROUTES_STARTTIMES)
+				.where(ROUTES_STARTTIMES.ROUTES_ID.equal(id))
+				.fetchOne();
+
+		create.delete(ROUTES_STARTTIMES).where(ROUTES_STARTTIMES.ROUTES_ID.eq(id)).execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Returns a list of names of bus stops and stopping points which are used by a specific route
+	 *
+	 * @param id unique ID of the route
+	 * @return ArrayList of Strings containing names of bus stops with stopping points
+	 */
+	public ArrayList<String> getBusStopNamesUsingRoute(int id)
+	{
+		Result<RoutesStopsRecord> routes = create
+				.selectFrom(ROUTES_STOPS)
+				.where(ROUTES_STOPS.ROUTES_ID.eq(id))
+				.groupBy(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID)
+				.fetch();
+
+		ArrayList<String> names = new ArrayList<>();
+		for (RoutesStopsRecord rec : routes)
+		{
+			int stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_ID);
+			BusstopsRecord bstop = create
+					.selectFrom(BUSSTOPS)
+					.where(BUSSTOPS.BUSSTOPS_ID.eq(stopID))
+					.fetchOne();
+			String nameString = bstop.getName() + " ";
+
+			stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID);
+			BusstopsStoppingpointsRecord bstoppoint = create
+					.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(stopID))
+					.fetchOne();
+			nameString += bstoppoint.getName();
+			names.add(nameString);
+		}
+		return(names);
+	}
 
     //////////////////////////////////
     // Methods for "StoppingPoint"s //
@@ -1022,4 +1167,87 @@ public class ControllerDatabase
 
         return result;
     }
+
+	/**
+	 * Deletes a specific user from tours within a specific range of time.
+	 *
+	 * @param uid unique ID of the user being deleted from tours
+	 * @param begin point in time after which drivers ought to be deleted from tours
+	 * @param end point in time before which drivers ought to be deleted from tours
+	 * @return number of tours edited
+	 */
+	public int deleteUserFromTours(int uid, Date begin, Date end)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.EMPLOYEES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.fetchOne();
+
+		create.update(TOURS)
+				.set(TOURS.EMPLOYEES_ID,(Integer) null)
+				.where(TOURS.EMPLOYEES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Deletes all tours of a specific route.
+	 *
+	 * @param id unique ID of the route whose tours to be deleted.
+	 * @return number of tours deleted
+	 */
+	public int deleteRouteFromTours(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.ROUTES_ID.equal(id))
+				.fetchOne();
+
+		create.delete(TOURS).where(TOURS.ROUTES_ID.eq(id)).execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * deletes all tours before today.
+	 *
+	 * @return number of deleted tours
+	 */
+	public int purgeTours()
+	{
+		return (purgeTours(new GregorianCalendar().getTime()));
+	}
+
+	/**
+	 * deletes all tours before a specific date.
+	 *
+	 * @return number of deleted tours
+	 */
+	public int purgeTours(Date date)
+	{
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int deadline = (int) (calendar.getTimeInMillis()/1000);
+
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.TIMESTAMP.lessThan(deadline))
+				.fetchOne();
+
+		create.delete(TOURS).where(TOURS.TIMESTAMP.lessThan(deadline)).execute();
+
+		return (Integer) record.getValue(0);
+	}
 }

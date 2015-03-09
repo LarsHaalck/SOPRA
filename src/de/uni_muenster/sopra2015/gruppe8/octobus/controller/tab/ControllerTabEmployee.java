@@ -65,12 +65,14 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	protected void addListeners()
 	{
 		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerTable)this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
 		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerTable)this);
 	}
 
 	public void fillTable()

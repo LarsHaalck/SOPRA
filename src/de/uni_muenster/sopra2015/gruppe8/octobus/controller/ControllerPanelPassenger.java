@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterDisplay;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
@@ -31,7 +32,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_JOURNEY_SEARCH);
 				break;
 			case PANEL_PASSENGER_SHOW_TICKETS:
-				System.out.println("Show tickets");
+				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_TICKET);
 				break;
 			case PANEL_PASSENGER_SHOW_NETWORK:
 				System.out.println("Show network");

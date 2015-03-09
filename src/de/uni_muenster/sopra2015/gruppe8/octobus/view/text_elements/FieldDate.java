@@ -8,10 +8,16 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 
+/**
+ * Customised FieldText for (German) date inputs (only allows numbers and dots).
+ */
 public class FieldDate extends FieldText
 {
     private int year, month, day;
 
+	/**
+	 * Constructs FieldDate with limit of 10 (dd.mm.yyyy -> 10 characters).
+	 */
 	public FieldDate()
 	{
 		super(10);
@@ -22,21 +28,32 @@ public class FieldDate extends FieldText
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if (((c < '0') || (c > '9')) && (c != '.')) //only allow numbers and dots
+                // Accept only numbers and periods
+                if (((c < '0') || (c > '9')) && (c != '.'))
 				{
-					e.consume();  // ignore event
+					e.consume();
 				}
 			}
 		});
 
 	}
+
+
+	/**
+	 * Checks if input is a valid date.
+     *
+	 * @return true iff input is valid
+	 */
 	private boolean isValidDate()
 	{
 		String input = this.getText();
 		if(input == null || input.trim().length() == 0)
 			return false;
-		if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(input).matches()) //regex for date
+
+        // Match against regex for date
+        if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(input).matches())
         {
+	        // Parse day, month, year
 			int indexDot = input.indexOf('.');
 			day = Integer.parseInt(input.substring(0, indexDot));
 			input =  input.substring(indexDot + 1);
@@ -53,15 +70,6 @@ public class FieldDate extends FieldText
 			boolean isLeapYear = ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0));
 			switch (month)
 			{
-				/*case 1: //should be unnecessary
-				case 3:
-				case 5:
-				case 7:
-				case 8:
-				case 10:
-				case 12:
-					if(day > 31) return null;
-					break;*/
 				case 4:
 				case 6:
 				case 9:
@@ -81,13 +89,19 @@ public class FieldDate extends FieldText
 	}
 
 
+	/**
+     * Returns the entered String as a Date object.
+     *
+	 * @return date if input is a valid date, null otherwise
+	 */
 	public Date getDate()
 	{
 		if(isValidDate())
 		{
 
 			Calendar c = Calendar.getInstance();
-			c.set(year, month - 1, day, 0, 0);
+            // -1 because Calendar.MONTH is 0-indexed
+            c.set(year, month - 1, day, 0, 0);
 
 			return c.getTime();
 		}

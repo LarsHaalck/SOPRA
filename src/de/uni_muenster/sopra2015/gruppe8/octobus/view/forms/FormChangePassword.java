@@ -20,10 +20,10 @@ public class FormChangePassword extends JDialog
 	private JPasswordField tfOldPassword, tfNewPassword, tfNewPasswordCorrect;
 	private JButton btnSave, btnCancel;
 
-	public FormChangePassword(Frame parent)
+	public FormChangePassword(Frame parent, int userId)
 	{
 		super(parent, "Passwort ändern", true);
-		controllerFormChangePassword = new ControllerFormChangePassword(this);
+		controllerFormChangePassword = new ControllerFormChangePassword(this, userId);
 
 		panel = new JPanel(new GridBagLayout());
 		cs = new GridBagConstraints();
@@ -123,16 +123,17 @@ public class FormChangePassword extends JDialog
 
 	public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
 	{
+		//Todo: Move this to error-dialog. Should looks a bit nicer then.
 		if (OldPassword)
 			lbOldPassword_Error.setText("Das Passwort ist falsch!");
 		else
 			lbOldPassword_Error.setText(" ");
 		if (NewPassword)
-			lbNewPassword_Error.setText("Das Passwort ist falsch!");
+			lbNewPassword_Error.setText("Das neue Passwort ist zu kurz!");
 		else
 			lbNewPassword_Error.setText(" ");
 		if (NewPasswordCorrect)
-			lbNewPasswordCorrect_Error.setText("Das Passwort ist falsch!");
+			lbNewPasswordCorrect_Error.setText("Die eingegeben Passwörter stimmen nicht überein.");
 		else
 			lbNewPasswordCorrect_Error.setText(" ");
 	}
