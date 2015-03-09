@@ -471,7 +471,7 @@ public class ControllerDatabase
 		for (RoutesStopsRecord rec : routes)
 		{
 			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
-			listOfRoutes.add(getRoute(routeID));
+			listOfRoutes.add(getRouteById(routeID));
 		}
 		return(listOfRoutes);
 	}
@@ -852,9 +852,9 @@ public class ControllerDatabase
 			return(r.getId());
 		} else
 		{
-			deleteRouteFromTours(r.getId());
-			deleteRouteFromRoutesStartTimes(r.getId());
-			deleteRouteFromRoutesStops(r.getId());
+			deleteToursUsingRoutesId(r.getId());
+			deleteStartTimesUsingRouteId(r.getId());
+			deleteRoutesStopsUsingRouteId(r.getId());
 			return(addRoute(r));
 		}
 	}
