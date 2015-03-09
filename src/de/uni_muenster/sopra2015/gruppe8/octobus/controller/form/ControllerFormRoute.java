@@ -3,10 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
@@ -16,13 +13,18 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.text.Collator;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Controller for FormRoute class.
  */
-public class ControllerFormRoute extends Controller implements ListenerButton, ListenerTable
+public class ControllerFormRoute extends Controller implements ListenerButton, ListenerTable, ListenerWindow
 {
 	private ControllerDatabase controllerDatabase;
 	FormRoute formRoute;
@@ -141,7 +143,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
-				System.out.println(route.getStartTimes().get(DayOfWeek.FRIDAY).getFirst());
+				System.out.println(route.getStartTimes().get(DayOfWeek.FRIDAY));
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
@@ -167,13 +169,15 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	{
 		ControllerManager.addListener((ListenerButton) this);
 		ControllerManager.addListener((ListenerTable) this);
+		ControllerManager.addListener((ListenerWindow) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
-		ControllerManager.addListener((ListenerTable) this);
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerTable) this);
+		ControllerManager.removeListener((ListenerWindow) this);
 	}
 
 	/**
@@ -215,6 +219,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}
+	//TODO Currently not used
 	/**
 	 * Initializes table with BusStops
 	 * @param id List of BusStop IDs to be excluded
@@ -235,5 +240,94 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			}
 		}
 		formRoute.getStep1().fillTableAvailable(data);
+	}
+	private void refreshTablesStep2()
+	{
+		ArrayList<Tuple<DayOfWeek, DefaultTableModel>> models = new ArrayList<>();
+
+		models.add(new Tuple<>(DayOfWeek.MONDAY, formRoute.getStep2().getDtmMo()));
+		models.add(new Tuple<>(DayOfWeek.TUESDAY, formRoute.getStep2().getDtmDi()));
+		models.add(new Tuple<>(DayOfWeek.WEDNESDAY, formRoute.getStep2().getDtmMi()));
+		models.add(new Tuple<>(DayOfWeek.THURSDAY, formRoute.getStep2().getDtmDo()));
+		models.add(new Tuple<>(DayOfWeek.FRIDAY, formRoute.getStep2().getDtmFr()));
+		models.add(new Tuple<>(DayOfWeek.SATURDAY, formRoute.getStep2().getDtmSa()));
+		models.add(new Tuple<>(DayOfWeek.SUNDAY, formRoute.getStep2().getDtmSo()));
+
+		for (Tuple<DayOfWeek, DefaultTableModel> model : models)
+		{
+			model.getSecond().setRowCount(0);
+		}
+
+		HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
+
+		for (Tuple<DayOfWeek, DefaultTableModel> model : models)
+		{
+			LinkedList<Integer> times = startTimes.get(model.getFirst());
+			times.sort(new Comparator<Integer>()
+			{
+				@Override
+				public int compare(Integer o1, Integer o2)
+				{
+					if(o1 < o2)
+						return -1;
+					else if(o1 == o2)
+						return 0;
+					else
+						return 1;
+				}
+			});
+
+			for (Integer time : times)
+			{
+				int hours = (int) time/60;
+				int minutes = time - hours*60;
+				String[] rowTime = new String[1];
+				if(minutes < 10)
+				{
+					if(hours < 10)
+						rowTime[0] = "0" + hours + ":0" + minutes;
+					else
+						rowTime[0] = hours + ":0" + minutes;
+				}
+				else
+				{
+					if(hours < 10)
+						rowTime[0] = "0" + hours + ":" + minutes;
+					else
+						rowTime[0] = hours + ":" + minutes;
+				}
+				model.getSecond().addRow(rowTime);
+			}
+		}
+	}
+
+	@Override
+	public void windowOpen(EmitterWindow wd)
+	{
+
+	}
+
+	@Override
+	public void windowOpen(EmitterWindow wd, int objectID)
+	{
+
+	}
+
+	@Override
+	public void windowClose(EmitterWindow wd)
+	{
+		switch (wd)
+		{
+			case FORM_ROUTE_STEP2_DEPARTURE_CLOSE:
+				System.out.println("check");
+				refreshTablesStep2();
+				break;
+		}
+	}
+
+	@Override
+	public void displaySwitch(EmitterDisplay dp)
+	{
+
 	}
 }
