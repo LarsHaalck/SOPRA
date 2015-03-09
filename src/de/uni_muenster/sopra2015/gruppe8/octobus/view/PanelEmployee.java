@@ -3,6 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PanelNavigation;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayTicket;
 
 import javax.swing.*;
 
@@ -23,7 +25,7 @@ public class PanelEmployee extends JPanel
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		panelNavigation = new PanelNavigation("Günni");
+		panelNavigation = new PanelNavigation("");
 		add(panelNavigation);
 
 		paneTabs = new PaneTabs();
@@ -35,6 +37,11 @@ public class PanelEmployee extends JPanel
 	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver, int userId)
 	{
 		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver, userId);
+	}
+
+	public void setUsername(String username)
+	{
+		panelNavigation.setWelcomeText("Willkommen, "+username+"!");
 	}
 
 	/*

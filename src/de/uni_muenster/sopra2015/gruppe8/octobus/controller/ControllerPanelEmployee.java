@@ -69,6 +69,7 @@ public class ControllerPanelEmployee extends Controller implements ListenerButto
 				//Only reset tabs if logged-in-users rights changed
 				if(employee.getId() == userId)
 				{
+					panel.setUsername(employee.getFirstName());
 					panel.setTabs(employee.isRole(Role.TICKET_PLANNER), employee.isRole(Role.SCHEDULE_MANAGER),
 							employee.isRole(Role.HR_MANAGER), employee.isRole(Role.NETWORK_PLANNER),
 							employee.isRole(Role.BUSDRIVER), employee.getId());
