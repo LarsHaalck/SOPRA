@@ -58,90 +58,140 @@ import java.util.*; // For ArrayList
 
 /**
  * A class representing a Fibonacci heap.
+ *
  * @author Keith Schwarz (htiek@cs.stanford.edu)
  */
-public final class FibonacciHeap<T> {
-	/* In order for all of the Fibonacci heap operations to complete in O(1),
-	 * clients need to have O(1) access to any element in the heap.  We make
-	 * this work by having each insertion operation produce a handle to the
-	 * node in the tree.  In actuality, this handle is the node itself, but
-	 * we guard against external modification by marking the internal fields
-	 * private.
-	 */
-	public static final class Entry<T> {
-		private int     mDegree = 0;       // Number of children
-		private boolean mIsMarked = false; // Whether this node is marked
-
-		private Entry<T> mNext;   // Next and previous elements in the list
-		private Entry<T> mPrev;
-
-		private Entry<T> mParent; // Parent in the tree, if any.
-
-		private Entry<T> mChild;  // Child node, if any.
-
-		private T      mElem;     // Element being stored here
-		private double mPriority; // Its priority
-
-		/**
-		 * Returns the element represented by this heap entry.
-		 *
-		 * @return The element represented by this heap entry.
-		 */
-		public T getValue() {
-			return mElem;
-		}
-		/**
-		 * Sets the element associated with this heap entry.
-		 *
-		 * @param value The element to associate with this heap entry.
-		 */
-		public void setValue(T value) {
-			mElem = value;
-		}
-
-		/**
-		 * Returns the priority of this element.
-		 *
-		 * @return The priority of this element.
-		 */
-		public double getPriority() {
-			return mPriority;
-		}
-
-		/**
-		 * Constructs a new Entry that holds the given element with the indicated
-		 * priority.
-		 *
-		 * @param elem The element stored in this node.
-		 * @param priority The priority of this element.
-		 */
-		private Entry(T elem, double priority) {
-			mNext = mPrev = this;
-			mElem = elem;
-			mPriority = priority;
-		}
-	}
-
+public final class FibonacciHeap<T>
+{
 	/* Pointer to the minimum element in the heap. */
 	private Entry<T> mMin = null;
-
 	/* Cached size of the heap, so we don't have to recompute this explicitly. */
 	private int mSize = 0;
+
+	/**
+	 * Given two Fibonacci heaps, returns a new Fibonacci heap that contains
+	 * all of the elements of the two heaps.  Each of the input heaps is
+	 * destructively modified by having all its elements removed.  You can
+	 * continue to use those heaps, but be aware that they will be empty
+	 * after this call completes.
+	 *
+	 * @param one The first Fibonacci heap to merge.
+	 * @param two The second Fibonacci heap to merge.
+	 * @return A new FibonacciHeap containing all of the elements of both
+	 * heaps.
+	 */
+	public static <T> FibonacciHeap<T> merge(FibonacciHeap<T> one, FibonacciHeap<T> two)
+	{
+        /* Create a new FibonacciHeap to hold the result. */
+		FibonacciHeap<T> result = new FibonacciHeap<T>();
+
+        /* Merge the two Fibonacci heap root lists together.  This helper function
+         * also computes the min of the two lists, so we can store the result in
+         * the mMin field of the new heap.
+         */
+		result.mMin = mergeLists(one.mMin, two.mMin);
+
+        /* The size of the new heap is the sum of the sizes of the input heaps. */
+		result.mSize = one.mSize + two.mSize;
+
+        /* Clear the old heaps. */
+		one.mSize = two.mSize = 0;
+		one.mMin = null;
+		two.mMin = null;
+
+        /* Return the newly-merged heap. */
+		return result;
+	}
+
+	/**
+	 * Utility function which, given two pointers into disjoint circularly-
+	 * linked lists, merges the two lists together into one circularly-linked
+	 * list in O(1) time.  Because the lists may be empty, the return value
+	 * is the only pointer that's guaranteed to be to an element of the
+	 * resulting list.
+	 * <p>
+	 * This function assumes that one and two are the minimum elements of the
+	 * lists they are in, and returns a pointer to whichever is smaller.  If
+	 * this condition does not hold, the return value is some arbitrary pointer
+	 * into the doubly-linked list.
+	 *
+	 * @param one A pointer into one of the two linked lists.
+	 * @param two A pointer into the other of the two linked lists.
+	 * @return A pointer to the smallest element of the resulting list.
+	 */
+	private static <T> Entry<T> mergeLists(Entry<T> one, Entry<T> two)
+	{
+        /* There are four cases depending on whether the lists are null or not.
+         * We consider each separately.
+         */
+		if (one == null && two == null)
+		{ // Both null, resulting list is null.
+			return null;
+		} else if (one != null && two == null)
+		{ // Two is null, result is one.
+			return one;
+		} else if (one == null && two != null)
+		{ // One is null, result is two.
+			return two;
+		} else
+		{ // Both non-null; actually do the splice.
+            /* This is actually not as easy as it seems.  The idea is that we'll
+             * have two lists that look like this:
+             *
+             * +----+     +----+     +----+
+             * |    |--N->|one |--N->|    |
+             * |    |<-P--|    |<-P--|    |
+             * +----+     +----+     +----+
+             *
+             *
+             * +----+     +----+     +----+
+             * |    |--N->|two |--N->|    |
+             * |    |<-P--|    |<-P--|    |
+             * +----+     +----+     +----+
+             *
+             * And we want to relink everything to get
+             *
+             * +----+     +----+     +----+---+
+             * |    |--N->|one |     |    |   |
+             * |    |<-P--|    |     |    |<+ |
+             * +----+     +----+<-\  +----+ | |
+             *                  \  P        | |
+             *                   N  \       N |
+             * +----+     +----+  \->+----+ | |
+             * |    |--N->|two |     |    | | |
+             * |    |<-P--|    |     |    | | P
+             * +----+     +----+     +----+ | |
+             *              ^ |             | |
+             *              | +-------------+ |
+             *              +-----------------+
+             *
+             */
+			Entry<T> oneNext = one.mNext; // Cache this since we're about to overwrite it.
+			one.mNext = two.mNext;
+			one.mNext.mPrev = one;
+			two.mNext = oneNext;
+			two.mNext.mPrev = two;
+
+            /* Return a pointer to whichever's smaller. */
+			return one.mPriority < two.mPriority ? one : two;
+		}
+	}
 
 	/**
 	 * Inserts the specified element into the Fibonacci heap with the specified
 	 * priority.  Its priority must be a valid double, so you cannot set the
 	 * priority to NaN.
 	 *
-	 * @param value The value to insert.
+	 * @param value    The value to insert.
 	 * @param priority Its priority, which must be valid.
 	 * @return An Entry representing that element in the tree.
 	 */
-	public Entry<T> enqueue(T value, double priority) {
+	public Entry<T> enqueue(T value, double priority)
+	{
 		checkPriority(priority);
 
         /* Create the entry object, which is a circularly-linked list of length
-         * one.
+		 * one.
          */
 		Entry<T> result = new Entry<T>(value, priority);
 
@@ -163,7 +213,8 @@ public final class FibonacciHeap<T> {
 	 * @return The smallest element of the heap.
 	 * @throws NoSuchElementException If the heap is empty.
 	 */
-	public Entry<T> min() {
+	public Entry<T> min()
+	{
 		if (isEmpty())
 			throw new NoSuchElementException("Heap is empty.");
 		return mMin;
@@ -174,7 +225,8 @@ public final class FibonacciHeap<T> {
 	 *
 	 * @return Whether the heap is empty.
 	 */
-	public boolean isEmpty() {
+	public boolean isEmpty()
+	{
 		return mMin == null;
 	}
 
@@ -183,42 +235,9 @@ public final class FibonacciHeap<T> {
 	 *
 	 * @return The number of elements in the heap.
 	 */
-	public int size() {
+	public int size()
+	{
 		return mSize;
-	}
-
-	/**
-	 * Given two Fibonacci heaps, returns a new Fibonacci heap that contains
-	 * all of the elements of the two heaps.  Each of the input heaps is
-	 * destructively modified by having all its elements removed.  You can
-	 * continue to use those heaps, but be aware that they will be empty
-	 * after this call completes.
-	 *
-	 * @param one The first Fibonacci heap to merge.
-	 * @param two The second Fibonacci heap to merge.
-	 * @return A new FibonacciHeap containing all of the elements of both
-	 *         heaps.
-	 */
-	public static <T> FibonacciHeap<T> merge(FibonacciHeap<T> one, FibonacciHeap<T> two) {
-        /* Create a new FibonacciHeap to hold the result. */
-		FibonacciHeap<T> result = new FibonacciHeap<T>();
-
-        /* Merge the two Fibonacci heap root lists together.  This helper function
-         * also computes the min of the two lists, so we can store the result in
-         * the mMin field of the new heap.
-         */
-		result.mMin = mergeLists(one.mMin, two.mMin);
-
-        /* The size of the new heap is the sum of the sizes of the input heaps. */
-		result.mSize = one.mSize + two.mSize;
-
-        /* Clear the old heaps. */
-		one.mSize = two.mSize = 0;
-		one.mMin  = null;
-		two.mMin  = null;
-
-        /* Return the newly-merged heap. */
-		return result;
 	}
 
 	/**
@@ -228,7 +247,8 @@ public final class FibonacciHeap<T> {
 	 * @return The smallest element of the Fibonacci heap.
 	 * @throws NoSuchElementException If the heap is empty.
 	 */
-	public Entry<T> dequeueMin() {
+	public Entry<T> dequeueMin()
+	{
         /* Check for whether we're empty. */
 		if (isEmpty())
 			throw new NoSuchElementException("Heap is empty.");
@@ -248,10 +268,11 @@ public final class FibonacciHeap<T> {
          * min element around the min element to remove it, then arbitrarily
          * reassign the min.
          */
-		if (mMin.mNext == mMin) { // Case one
+		if (mMin.mNext == mMin)
+		{ // Case one
 			mMin = null;
-		}
-		else { // Case two
+		} else
+		{ // Case two
 			mMin.mPrev.mNext = mMin.mNext;
 			mMin.mNext.mPrev = mMin.mPrev;
 			mMin = mMin.mNext; // Arbitrary element of the root list.
@@ -261,10 +282,12 @@ public final class FibonacciHeap<T> {
          * since they're about to become roots.  Because the elements are
          * stored in a circular list, the traversal is a bit complex.
          */
-		if (minElem.mChild != null) {
+		if (minElem.mChild != null)
+		{
             /* Keep track of the first visited node. */
 			Entry<?> curr = minElem.mChild;
-			do {
+			do
+			{
 				curr.mParent = null;
 
                 /* Walk to the next node, then stop if this is the node we
@@ -307,9 +330,11 @@ public final class FibonacciHeap<T> {
 			toVisit.add(curr);
 
         /* Traverse this list and perform the appropriate unioning steps. */
-		for (Entry<T> curr: toVisit) {
+		for (Entry<T> curr : toVisit)
+		{
             /* Keep merging until a match arises. */
-			while (true) {
+			while (true)
+			{
                 /* Ensure that the list is long enough to hold an element of this
                  * degree.
                  */
@@ -319,7 +344,8 @@ public final class FibonacciHeap<T> {
                 /* If nothing's here, we're can record that this tree has this size
                  * and are done processing.
                  */
-				if (treeTable.get(curr.mDegree) == null) {
+				if (treeTable.get(curr.mDegree) == null)
+				{
 					treeTable.set(curr.mDegree, curr);
 					break;
 				}
@@ -331,8 +357,8 @@ public final class FibonacciHeap<T> {
                 /* Determine which of the two trees has the smaller root, storing
                  * the two tree accordingly.
                  */
-				Entry<T> min = (other.mPriority < curr.mPriority)? other : curr;
-				Entry<T> max = (other.mPriority < curr.mPriority)? curr  : other;
+				Entry<T> min = (other.mPriority < curr.mPriority) ? other : curr;
+				Entry<T> max = (other.mPriority < curr.mPriority) ? curr : other;
 
                 /* Break max out of the root list, then merge it into min's child
                  * list.
@@ -374,16 +400,17 @@ public final class FibonacciHeap<T> {
 	 * IllegalArgumentException.  The new priority must be a finite double,
 	 * so you cannot set the priority to be NaN, or +/- infinity.  Doing
 	 * so also throws an IllegalArgumentException.
-	 *
+	 * <p>
 	 * It is assumed that the entry belongs in this heap.  For efficiency
 	 * reasons, this is not checked at runtime.
 	 *
-	 * @param entry The element whose priority should be decreased.
+	 * @param entry       The element whose priority should be decreased.
 	 * @param newPriority The new priority to associate with this entry.
 	 * @throws IllegalArgumentException If the new priority exceeds the old
-	 *         priority, or if the argument is not a finite double.
+	 *                                  priority, or if the argument is not a finite double.
 	 */
-	public void decreaseKey(Entry<T> entry, double newPriority) {
+	public void decreaseKey(Entry<T> entry, double newPriority)
+	{
 		checkPriority(newPriority);
 		if (newPriority > entry.mPriority)
 			throw new IllegalArgumentException("New priority exceeds old.");
@@ -394,13 +421,14 @@ public final class FibonacciHeap<T> {
 
 	/**
 	 * Deletes this Entry from the Fibonacci heap that contains it.
-	 *
+	 * <p>
 	 * It is assumed that the entry belongs in this heap.  For efficiency
 	 * reasons, this is not checked at runtime.
 	 *
 	 * @param entry The entry to delete.
 	 */
-	public void delete(Entry<T> entry) {
+	public void delete(Entry<T> entry)
+	{
         /* Use decreaseKey to drop the entry's key to -infinity.  This will
          * guarantee that the node is cut and set to the global minimum.
          */
@@ -417,91 +445,21 @@ public final class FibonacciHeap<T> {
 	 * @param priority The user's specified priority.
 	 * @throws IllegalArgumentException If it is not valid.
 	 */
-	private void checkPriority(double priority) {
+	private void checkPriority(double priority)
+	{
 		if (Double.isNaN(priority))
 			throw new IllegalArgumentException(priority + " is invalid.");
-	}
-
-	/**
-	 * Utility function which, given two pointers into disjoint circularly-
-	 * linked lists, merges the two lists together into one circularly-linked
-	 * list in O(1) time.  Because the lists may be empty, the return value
-	 * is the only pointer that's guaranteed to be to an element of the
-	 * resulting list.
-	 *
-	 * This function assumes that one and two are the minimum elements of the
-	 * lists they are in, and returns a pointer to whichever is smaller.  If
-	 * this condition does not hold, the return value is some arbitrary pointer
-	 * into the doubly-linked list.
-	 *
-	 * @param one A pointer into one of the two linked lists.
-	 * @param two A pointer into the other of the two linked lists.
-	 * @return A pointer to the smallest element of the resulting list.
-	 */
-	private static <T> Entry<T> mergeLists(Entry<T> one, Entry<T> two) {
-        /* There are four cases depending on whether the lists are null or not.
-         * We consider each separately.
-         */
-		if (one == null && two == null) { // Both null, resulting list is null.
-			return null;
-		}
-		else if (one != null && two == null) { // Two is null, result is one.
-			return one;
-		}
-		else if (one == null && two != null) { // One is null, result is two.
-			return two;
-		}
-		else { // Both non-null; actually do the splice.
-            /* This is actually not as easy as it seems.  The idea is that we'll
-             * have two lists that look like this:
-             *
-             * +----+     +----+     +----+
-             * |    |--N->|one |--N->|    |
-             * |    |<-P--|    |<-P--|    |
-             * +----+     +----+     +----+
-             *
-             *
-             * +----+     +----+     +----+
-             * |    |--N->|two |--N->|    |
-             * |    |<-P--|    |<-P--|    |
-             * +----+     +----+     +----+
-             *
-             * And we want to relink everything to get
-             *
-             * +----+     +----+     +----+---+
-             * |    |--N->|one |     |    |   |
-             * |    |<-P--|    |     |    |<+ |
-             * +----+     +----+<-\  +----+ | |
-             *                  \  P        | |
-             *                   N  \       N |
-             * +----+     +----+  \->+----+ | |
-             * |    |--N->|two |     |    | | |
-             * |    |<-P--|    |     |    | | P
-             * +----+     +----+     +----+ | |
-             *              ^ |             | |
-             *              | +-------------+ |
-             *              +-----------------+
-             *
-             */
-			Entry<T> oneNext = one.mNext; // Cache this since we're about to overwrite it.
-			one.mNext = two.mNext;
-			one.mNext.mPrev = one;
-			two.mNext = oneNext;
-			two.mNext.mPrev = two;
-
-            /* Return a pointer to whichever's smaller. */
-			return one.mPriority < two.mPriority? one : two;
-		}
 	}
 
 	/**
 	 * Decreases the key of a node in the tree without doing any checking to ensure
 	 * that the new priority is valid.
 	 *
-	 * @param entry The node whose key should be decreased.
+	 * @param entry    The node whose key should be decreased.
 	 * @param priority The node's new priority.
 	 */
-	private void decreaseKeyUnchecked(Entry<T> entry, double priority) {
+	private void decreaseKeyUnchecked(Entry<T> entry, double priority)
+	{
         /* First, change the node's priority. */
 		entry.mPriority = priority;
 
@@ -527,7 +485,8 @@ public final class FibonacciHeap<T> {
 	 *
 	 * @param entry The node to cut from its parent.
 	 */
-	private void cutNode(Entry<T> entry) {
+	private void cutNode(Entry<T> entry)
+	{
         /* Begin by clearing the node's mark, since we just cut it. */
 		entry.mIsMarked = false;
 
@@ -535,7 +494,8 @@ public final class FibonacciHeap<T> {
 		if (entry.mParent == null) return;
 
         /* Rewire the node's siblings around it, if it has any siblings. */
-		if (entry.mNext != entry) { // Has siblings
+		if (entry.mNext != entry)
+		{ // Has siblings
 			entry.mNext.mPrev = entry.mPrev;
 			entry.mPrev.mNext = entry.mNext;
 		}
@@ -544,15 +504,18 @@ public final class FibonacciHeap<T> {
          * we need to rewrite that pointer to point to some arbitrary other
          * child.
          */
-		if (entry.mParent.mChild == entry) {
+		if (entry.mParent.mChild == entry)
+		{
             /* If there are any other children, pick one of them arbitrarily. */
-			if (entry.mNext != entry) {
+			if (entry.mNext != entry)
+			{
 				entry.mParent.mChild = entry.mNext;
 			}
             /* Otherwise, there aren't any children left and we should clear the
              * pointer and drop the node's degree.
              */
-			else {
+			else
+			{
 				entry.mParent.mChild = null;
 			}
 		}
@@ -576,5 +539,72 @@ public final class FibonacciHeap<T> {
 
         /* Clear the relocated node's parent; it's now a root. */
 		entry.mParent = null;
+	}
+
+	/* In order for all of the Fibonacci heap operations to complete in O(1),
+	 * clients need to have O(1) access to any element in the heap.  We make
+	 * this work by having each insertion operation produce a handle to the
+	 * node in the tree.  In actuality, this handle is the node itself, but
+	 * we guard against external modification by marking the internal fields
+	 * private.
+	 */
+	public static final class Entry<T>
+	{
+		private int mDegree = 0;       // Number of children
+		private boolean mIsMarked = false; // Whether this node is marked
+
+		private Entry<T> mNext;   // Next and previous elements in the list
+		private Entry<T> mPrev;
+
+		private Entry<T> mParent; // Parent in the tree, if any.
+
+		private Entry<T> mChild;  // Child node, if any.
+
+		private T mElem;     // Element being stored here
+		private double mPriority; // Its priority
+
+		/**
+		 * Constructs a new Entry that holds the given element with the indicated
+		 * priority.
+		 *
+		 * @param elem     The element stored in this node.
+		 * @param priority The priority of this element.
+		 */
+		private Entry(T elem, double priority)
+		{
+			mNext = mPrev = this;
+			mElem = elem;
+			mPriority = priority;
+		}
+
+		/**
+		 * Returns the element represented by this heap entry.
+		 *
+		 * @return The element represented by this heap entry.
+		 */
+		public T getValue()
+		{
+			return mElem;
+		}
+
+		/**
+		 * Sets the element associated with this heap entry.
+		 *
+		 * @param value The element to associate with this heap entry.
+		 */
+		public void setValue(T value)
+		{
+			mElem = value;
+		}
+
+		/**
+		 * Returns the priority of this element.
+		 *
+		 * @return The priority of this element.
+		 */
+		public double getPriority()
+		{
+			return mPriority;
+		}
 	}
 }

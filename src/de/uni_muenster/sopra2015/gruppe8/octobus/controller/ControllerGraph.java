@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+import sun.awt.image.ImageWatched;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -28,8 +29,17 @@ public class ControllerGraph
 	public ControllerGraph()
 	{
 		db = ControllerDatabase.getInstance();
-
 		init();
+	}
+
+	public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+
+
+		graph.dijkstra(75, 500, 88);
+
+
 	}
 
 	private void init()
@@ -43,8 +53,6 @@ public class ControllerGraph
 
 		buildAdjMatrix();
 	}
-
-
 
 	//iterates through all routes and stops
 	private void buildAdjMatrix()
@@ -81,10 +89,10 @@ public class ControllerGraph
 			}
 		}
 
-		System.out.println(weight(db.getBusStop(75), db.getBusStop(13), 500));
+		//System.out.println(weight(db.getBusStop(75), db.getBusStop(13), 500));
+		//dijkstra(db.getBusStop(75), 500, db.getBusStop(13));
 
 	}
-
 
 	/**
 	 * calculates edge weight or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2)
@@ -94,25 +102,11 @@ public class ControllerGraph
 	 * @param time earliest departure at s1 in unix timestamp
 	 * @return earliest arrival at s2 in unix timestamp
 	 */
-	private int weight(BusStop s1, BusStop s2, int time)
+	private int weight(int id1, int id2, int time)
 	{
-		//given: routes connecting s1 and s2 where s1 and s2 are direct neighbours HashMap<Tuple<Integer, Integer>, LinkedList<Routes>> ???
-		//would be helpful: another data structure where i can get start times of routes through stops
-		/*
-		*   for every route r connecting s1 and s2:
-		*       for every start time s of r on s1:
-		*           if s < time: //too early
-		*               continue
-		*           else: //first matching candidate is enough iff we look for one route !! if user wants more routes (f.ex. later, earlier) here is where it needs to be adjusted
-		*               //do something
-		*           //how do i calculate arrival at s2?
-		*           break;
-		*
-		 */
 
 		int arrival = -1;
 
-		int id1 = s1.getId(); int id2 = s2.getId();
 		LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2)); //connectors contains all routes directed from s1 to s2
 
 		for (Route connector : connectors)
@@ -199,6 +193,68 @@ public class ControllerGraph
 			// </editor-fold>
 		}
 		return arrival;
+	}
+
+	/**
+	 * Determines all direct neighbours of specified BusStop
+	 * @param s
+	 * @return
+	 */
+	private ArrayList<BusStop> getNeighbours(int stopId)
+	{
+		ArrayList<BusStop> neighbours = new ArrayList<>();
+
+		for (BusStop stop : stops)
+		{
+			if(adjSet.contains(new TupleInt(stopId, stop.getId())))
+			{
+				neighbours.add(stop);
+			}
+		}
+
+		return neighbours;
+	}
+
+	private void dijkstra(int startId, int startTime, int endId)
+	{
+		HashMap<Integer, Double> dist = new HashMap<>();
+		FibonacciHeap<Integer> fibHeap = new FibonacciHeap<>();
+
+		//dijkstra init
+		fibHeap.enqueue(startId, 0);
+		dist.put(startId, 0.0);
+		int time = startTime;
+
+		for (BusStop stop : stops)
+		{
+			if(stop.getId() == startId) continue;
+			dist.put(stop.getId(), Double.POSITIVE_INFINITY); //set all distances to infinity
+			fibHeap.enqueue(stop.getId(), Double.POSITIVE_INFINITY);
+		}
+
+		while(!fibHeap.isEmpty())
+		{
+			int stopId = fibHeap.dequeueMin().getValue();
+			if(stopId == endId)
+			{
+				System.out.println("Route found");
+				break;
+			}
+
+			ArrayList<BusStop> neighbours = this.getNeighbours(stopId);
+
+			for (BusStop neighbour : neighbours) //edge (v,w)
+			{
+				int neighbourId = neighbour.getId();
+				int weight = weight(stopId, neighbourId, time);
+				double distv = dist.get(stopId);
+				double distw = dist.get(neighbour.getId());
+				if(distv + weight < distw)
+				{
+					fibHeap.enqueue(neighbourId, distv + weight);
+				}
+			}
+		}
 	}
 
 
