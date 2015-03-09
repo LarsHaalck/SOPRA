@@ -228,6 +228,11 @@
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
   </target>
+
+  <!-- Generate javadocs for current project into ${doc.dir} -->
+  <target name="doc" depends="init" description="generate documentation">
+    <javadoc sourcepath="${basedir}/src" destdir="${sopra.output.dir}/doc"/>
+  </target>
   
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+  <target name="all" depends="build.modules, build.all.artifacts, doc" description="build all"/>
 </project>
