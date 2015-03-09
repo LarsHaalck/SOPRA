@@ -60,7 +60,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	 */
 	private void setBusInfo()
 	{
-		bus = controllerDatabase.getBus(objectID);
+		bus = controllerDatabase.getBusById(objectID);
 	}
 
 	/**

@@ -104,6 +104,7 @@ public class FormRouteStep1 extends JPanel
 		});
 		t1 = new JScrollPane(busStopCurrent);
 		t1.setPreferredSize(new Dimension(250, 400));
+		//busStopCurrent.setPreferredSize(new Dimension(250,500));
 		cTable.gridx = 1;
 		cTable.gridy = 0;
 		bottomPanel.add(t1, cTable);
@@ -193,6 +194,9 @@ public class FormRouteStep1 extends JPanel
 		model_1.setData(data);
 		revalidate();
 		repaint();
+		t1.invalidate();
+		t1.revalidate();
+		t1.repaint();
 	}
 
 	//--------------------------------------

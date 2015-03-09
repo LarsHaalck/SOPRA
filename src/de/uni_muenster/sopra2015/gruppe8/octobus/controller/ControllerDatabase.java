@@ -123,7 +123,9 @@ public class ControllerDatabase
      */
 	public int deleteBus(int id)
 	{
-		int numOfTours = deleteBusFromTours(id);
+		// Start by deleting references to this bus from all tours
+        int numOfTours = deleteToursUsingBus(id);
+        // Then delete the bus itself
 		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
 		return numOfTours;
 	}
@@ -198,7 +200,7 @@ public class ControllerDatabase
 	}
 
     /**
-     * Retrieves a list of Bus objects representing all bus entries stored in the database
+     * Retrieves a list of Bus objects representing all bus entries stored in the database.
      *
      * @return ArrayList containing Bus objects for every bus entry stored in the database
      */
@@ -233,7 +235,7 @@ public class ControllerDatabase
      * @param id unique ID of the bus to be retrieved
      * @return Bus object created from its corresponding entry the database, null if bus not found
      */
-    public Bus getBus(int id)
+    public Bus getBusById(int id)
     {
 
         Record busRecord = create.select().from(BUSES).where(BUSES.BUSES_ID.eq(id)).fetchOne();
@@ -293,12 +295,10 @@ public class ControllerDatabase
 		return(newStop.getBusstopsId());
 	}
 
-
-    // TODO: This must delete the bus stop everywhere it's references, that means Routes first and foremost!
-    // TODO: deleteBusStops sollte statt void eine ArrayList der Routen zurückgeben die von einer Löschung betroffen werden.
-    // (continued) Wir weigern uns daher diese Haltestellen zu löschen!!
     /**
-     * Removes a bus stop entry from the database using its unique id
+     * Removes a bus stop entry from the database using its unique id. If a bus stop is still
+     * in use by a route, the stop should NOT be deleted! Instead, the user ought to be
+     * notified that the bus stop is still in use
      *
      * @param id unique ID of the bus stop entry that is to be deleted from the database
      */
@@ -310,10 +310,10 @@ public class ControllerDatabase
 	/**
 	 * Deletes all stopping points of a specific bus stop.
 	 *
-	 * @param id unique ID of the bus stop whose stopping points to be deleted.
+	 * @param id unique ID of the bus stop whose stopping points ought to be deleted
 	 * @return number of stopping points deleted
 	 */
-	public int deleteBusStopFromStoppingPoints(int id)
+	public int deleteStoppingPointsUsingBusStopId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -321,7 +321,9 @@ public class ControllerDatabase
 				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(id))
 				.fetchOne();
 
-		create.delete(BUSSTOPS_STOPPINGPOINTS).where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id)).execute();
+		create.delete(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id))
+                .execute();
 
 		return (Integer) record.getValue(0);
 	}
@@ -396,7 +398,7 @@ public class ControllerDatabase
      * @param id unique ID of the bus stop to be retrieved
      * @return BusStop object created from its corresponding entry the database, null if bus stop not found
      */
-    public BusStop getBusStop(int id)
+    public BusStop getBusStopById(int id)
     {
         // Get desired bus from DB
         Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();
@@ -431,7 +433,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the stopping point
 	 * @return ArrayList of Strings containing names of routes
 	 */
-	public ArrayList<String> getRouteNamesUsingStoppingPoint(int id)
+	public ArrayList<String> getRouteNamesUsingStoppingPointId(int id)
 	{
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
@@ -480,7 +482,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the bus stop
 	 * @return ArrayList of Strings containing names of routes
 	 */
-	public ArrayList<String> getRouteNamesUsingBusStop(int id)
+	public ArrayList<String> getRouteNamesUsingBusStopId(int id)
 	{
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
@@ -912,8 +914,8 @@ public class ControllerDatabase
 			for (RoutesStopsRecord s : stopsRecords)
 			{
 				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
-				BusStop bstop = getBusStop(stopId);
-				StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
+				BusStop bstop = getBusStopById(stopId);
+				StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
 				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 			}
 
@@ -936,7 +938,7 @@ public class ControllerDatabase
      * @param id unique ID of the route to be retrieved
      * @return Route object created from its corresponding entry the database, null if route not found
      */
-	public Route getRoute(int id)
+	public Route getRouteById(int id)
 	{
 	    // Start by getting the desired route from the database
 		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
@@ -985,8 +987,8 @@ public class ControllerDatabase
 		for (RoutesStopsRecord s : stopsRecords)
 		{
 			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
-			BusStop bstop = getBusStop(stopId);
-			StoppingPoint spoint = getStoppingPoint(s.getBusstopsStoppingpointsId());
+			BusStop bstop = getBusStopById(stopId);
+			StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
 			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 		}
 
@@ -1003,10 +1005,10 @@ public class ControllerDatabase
 	/**
 	 * Deletes all stopping points of a specific route.
 	 *
-	 * @param id unique ID of the route whose stopping points to be deleted.
+	 * @param id unique ID of the route whose stopping points to be deleted
 	 * @return number of stopping points deleted
 	 */
-	public int deleteRouteFromRoutesStops(int id)
+	public int deleteRoutesStopsUsingRouteId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1025,7 +1027,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the route whose start times to be deleted.
 	 * @return number of stopping points deleted
 	 */
-	public int deleteRouteFromRoutesStartTimes(int id)
+	public int deleteStartTimesUsingRouteId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1044,7 +1046,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the route
 	 * @return ArrayList of Strings containing names of bus stops with stopping points
 	 */
-	public ArrayList<String> getBusStopNamesUsingRoute(int id)
+	public ArrayList<String> getBusStopNamesUsingRouteId(int id)
 	{
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
@@ -1095,7 +1097,7 @@ public class ControllerDatabase
     // Methods for "StoppingPoint"s //
     //////////////////////////////////
 
-    public StoppingPoint getStoppingPoint(int id)
+    public StoppingPoint getStoppingPointById(int id)
     {
         BusstopsStoppingpointsRecord spr = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
@@ -1109,7 +1111,7 @@ public class ControllerDatabase
      *
      * @return ArrayList of stopping point ids with compound name of bus stop name and stopping point name
      */
-    public ArrayList<Tuple<Integer, String>> getStoppingPoints()
+    public ArrayList<Tuple<Integer, String>> getBusStopNamesWithStoppingPointNames()
     {
         ArrayList<Tuple<Integer, String>> resultList = new ArrayList<>();
 
@@ -1190,27 +1192,6 @@ public class ControllerDatabase
 			soldTicketsList.add(sold);
 		}
 		return soldTicketsList;
-	}
-
-    /**
-     * Retrieves a single SoldTicket object from the database entry using its unique id
-     *
-     * @param id unique ID of the sold ticket to be retrieved
-     * @return SoldTicket object created from its corresponding entry the database, null if sold ticket not found
-     */
-    public SoldTicket getSoldTicket(int id)
-	{
-		Record rec = create.select().from(SOLDTICKETS).where(SOLDTICKETS.SOLDTICKETS_ID.eq(id)).fetchOne();
-
-        if (rec == null) return null;
-
-		SoldTicket sold = new SoldTicket(
-				rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
-				rec.getValue(SOLDTICKETS.NAME),
-				new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
-				rec.getValue(SOLDTICKETS.PRICE));
-		sold.setId(id);
-		return(sold);
 	}
 
 	///////////////////////////
@@ -1296,7 +1277,7 @@ public class ControllerDatabase
      * @param id unique ID of the name to be retrieved
      * @return Ticket object created from its corresponding entry the database, null if ticket not found
      */
-	public Ticket getTicket(int id)
+	public Ticket getTicketById(int id)
 	{
 		Record rec = create.select().from(TICKETS).where(TICKETS.TICKETS_ID.eq(id)).fetchOne();
 
@@ -1316,11 +1297,8 @@ public class ControllerDatabase
 	//  Methods for "Tour"s //
 	//////////////////////////
 
-	// TODO: Implementieren!
-    // TODO: 2015-03-05 - Most of this should work by now...
-
     /**
-     * Creates all trips for a given day
+     * Creates all trips for a given day.
      *
      * @param date date for which tours ought to be generated
      */
@@ -1382,8 +1360,8 @@ public class ControllerDatabase
             result.add(
                     new Tour(
                             new Date((long) t.getTimestamp()*1000),
-                            getRoute(t.getRoutesId()),
-                            getBus(t.getBusesId()),
+                            getRouteById(t.getRoutesId()),
+                            getBusById(t.getBusesId()),
                             getEmployeeById(t.getEmployeesId())
                     )
             );
@@ -1399,7 +1377,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the route whose tours to be deleted.
 	 * @return number of tours deleted
 	 */
-	public int deleteRouteFromTours(int id)
+	public int deleteToursUsingRoutesId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1454,7 +1432,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the bus
 	 * @return number of tours using the bus
 	 */
-	public int getNumberOfToursUsingBus(int id)
+	public int getNumberOfToursUsingBusId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1473,7 +1451,7 @@ public class ControllerDatabase
 	 */
 	public int deleteToursUsingBus(int id)
 	{
-		int numOfTours = getNumberOfToursUsingBus(id);
+		int numOfTours = getNumberOfToursUsingBusId(id);
 
 		create.delete(TOURS).where(TOURS.BUSES_ID.eq(id)).execute();
 
@@ -1486,7 +1464,7 @@ public class ControllerDatabase
 	 * @param id unique ID of the employee
 	 * @return number of tours using the employee
 	 */
-	public int getNumberOfToursUsingEmployee(int id)
+	public int getNumberOfToursUsingEmployeeId(int id)
 	{
 		Record record = create
 				.selectCount()
@@ -1505,7 +1483,7 @@ public class ControllerDatabase
 	 */
 	public int deleteToursUsingEmployee(int id)
 	{
-		int numOfTours = getNumberOfToursUsingEmployee(id);
+		int numOfTours = getNumberOfToursUsingEmployeeId(id);
 
 		create.delete(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).execute();
 
