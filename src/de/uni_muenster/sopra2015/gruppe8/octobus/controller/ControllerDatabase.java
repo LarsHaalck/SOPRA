@@ -328,10 +328,6 @@ public class ControllerDatabase
 		return (Integer) record.getValue(0);
 	}
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Modifies an existing bus stop entry in the database
      *
@@ -826,10 +822,14 @@ public class ControllerDatabase
      *
      * @param id unique ID of the route entry that is to be deleted from the database
      */
-	public void deleteRoute(int id)
+	public int deleteRoute(int id)
 	{
+		int numOfTours = deleteToursUsingRoutesId(id);
 		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
+		return(numOfTours);
 	}
+
+
 
     /**
      * Modifies an existing route entry in the database. Route entry ID will be changed if stopping points or starting
@@ -1146,11 +1146,8 @@ public class ControllerDatabase
 	 */
 	public void deleteStoppingPoint(int id)
 	{
-		if (getNumberOfRoutesUsingStoppingPoint(id) == 0)
-		{
-			create.delete(BUSSTOPS_STOPPINGPOINTS)
+		create.delete(BUSSTOPS_STOPPINGPOINTS)
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();
-		}
 	}
 
 	/**
@@ -1207,14 +1204,14 @@ public class ControllerDatabase
 	public int addTicket(Ticket tick)
 	{
 		TicketsRecord newTick = create.insertInto(TICKETS,
-                TICKETS.NAME,
-                TICKETS.PRICE,
-                TICKETS.NUMPASSENGERS,
-                TICKETS.DESCRIPTION)
+				TICKETS.NAME,
+				TICKETS.PRICE,
+				TICKETS.NUMPASSENGERS,
+				TICKETS.DESCRIPTION)
 				.values(tick.getName(),
-                        tick.getPrice(),
-                        tick.getNumPassengers(),
-                        tick.getDescription())
+						tick.getPrice(),
+						tick.getNumPassengers(),
+						tick.getDescription())
 				.returning(TICKETS.TICKETS_ID)
 				.fetchOne();
 
@@ -1438,6 +1435,23 @@ public class ControllerDatabase
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.BUSES_ID.equal(id))
+				.fetchOne();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * gets the number of tours with a specific route assigned.
+	 *
+	 * @param id unique ID of the route
+	 * @return number of tours using the route
+	 */
+	public int getNumberOfToursUsingRouteId(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.ROUTES_ID.equal(id))
 				.fetchOne();
 
 		return (Integer) record.getValue(0);
