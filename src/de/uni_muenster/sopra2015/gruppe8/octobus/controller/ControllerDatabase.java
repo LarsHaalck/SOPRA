@@ -116,13 +116,16 @@ public class ControllerDatabase
 	}
 
     /**
-     * Removes a bus entry from the database using its unique id
+     * Removes a bus entry from the database using its unique id. Assigned tours will also be deleted
      *
      * @param id unique ID of the bus entry that is to be deleted from the database
+	 * @return number of tours deleted due to bus deletion
      */
-	public void deleteBus(int id)
+	public int deleteBus(int id)
 	{
+		int numOfTours = deleteToursUsingBus(id);
 		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
+		return numOfTours;
 	}
 
     /**
@@ -499,14 +502,17 @@ public class ControllerDatabase
 		return(newEmp.getEmployeesId());
 	}
 
-    /**
-     * Removes an employee entry from the database using its unique id
-     *
-     * @param id unique ID of the employee entry that is to be deleted from the database
-     */
-	public void deleteEmployee(int id)
+	/**
+	 * Removes an employee entry from the database using its unique id. Assigned tours will be modified
+	 *
+	 * @param id unique ID of the employee entry to be deleted from the database
+	 * @return number of tours modified due to employee deletion
+	 */
+	public int deleteEmployee(int id)
 	{
+		int numOfTours = deleteEmployeeFromTours(id);
 		create.delete(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.equal(id)).execute();
+		return numOfTours;
 	}
 
     /**
@@ -635,6 +641,55 @@ public class ControllerDatabase
         return (rec == null) ? null : getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
     }
 
+	/**
+	 * Deletes a specific user from tours within a specific range of time.
+	 *
+	 * @param uid unique ID of the user being deleted from tours
+	 * @param begin point in time after which drivers ought to be deleted from tours
+	 * @param end point in time before which drivers ought to be deleted from tours
+	 * @return number of tours edited
+	 */
+	public int deleteEmployeeFromTours(int uid, Date begin, Date end)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.EMPLOYEES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.fetchOne();
+
+		create.update(TOURS)
+				.set(TOURS.EMPLOYEES_ID,(Integer) null)
+				.where(TOURS.EMPLOYEES_ID.equal(uid))
+				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.execute();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Deletes a specific user from tours.
+	 *
+	 * @param id unique ID of the user being deleted from tours
+	 * @return number of tours edited
+	 */
+	public int deleteEmployeeFromTours(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.EMPLOYEES_ID.equal(id))
+				.fetchOne();
+
+		create.update(TOURS)
+				.set(TOURS.EMPLOYEES_ID,(Integer) null)
+				.where(TOURS.EMPLOYEES_ID.equal(id))
+				.execute();
+
+		return (Integer) record.getValue(0);
+	}
 
 	//////////////////////////
 	// Methods for "Route"s //
@@ -1168,33 +1223,6 @@ public class ControllerDatabase
         return result;
     }
 
-	/**
-	 * Deletes a specific user from tours within a specific range of time.
-	 *
-	 * @param uid unique ID of the user being deleted from tours
-	 * @param begin point in time after which drivers ought to be deleted from tours
-	 * @param end point in time before which drivers ought to be deleted from tours
-	 * @return number of tours edited
-	 */
-	public int deleteUserFromTours(int uid, Date begin, Date end)
-	{
-		Record record = create
-				.selectCount()
-				.from(TOURS)
-				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
-				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
-				.fetchOne();
-
-		create.update(TOURS)
-				.set(TOURS.EMPLOYEES_ID,(Integer) null)
-				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
-				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
-				.execute();
-
-		return (Integer) record.getValue(0);
-	}
 
 	/**
 	 * Deletes all tours of a specific route.
@@ -1249,5 +1277,69 @@ public class ControllerDatabase
 		create.delete(TOURS).where(TOURS.TIMESTAMP.lessThan(deadline)).execute();
 
 		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * gets the number of tours with a specific bus assigned.
+	 *
+	 * @param id unique ID of the bus
+	 * @return number of tours using the bus
+	 */
+	public int getNumberOfToursUsingBus(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.BUSES_ID.equal(id))
+				.fetchOne();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * deletes all tours with a specific bus assigned.
+	 *
+	 * @param id unique ID of the bus
+	 * @return number of tours deleted
+	 */
+	public int deleteToursUsingBus(int id)
+	{
+		int numOfTours = getNumberOfToursUsingBus(id);
+
+		create.delete(TOURS).where(TOURS.BUSES_ID.eq(id)).execute();
+
+		return (Integer) numOfTours;
+	}
+
+	/**
+	 * gets the number of tours with a specific employee assigned.
+	 *
+	 * @param id unique ID of the employee
+	 * @return number of tours using the employee
+	 */
+	public int getNumberOfToursUsingEmployee(int id)
+	{
+		Record record = create
+				.selectCount()
+				.from(TOURS)
+				.where(TOURS.EMPLOYEES_ID.equal(id))
+				.fetchOne();
+
+		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * deletes all tours with a specific employee assigned.
+	 *
+	 * @param id unique ID of the employee
+	 * @return number of tours deleted
+	 */
+	public int deleteToursUsingEmployee(int id)
+	{
+		int numOfTours = getNumberOfToursUsingEmployee(id);
+
+		create.delete(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).execute();
+
+		return (Integer) numOfTours;
 	}
 }
