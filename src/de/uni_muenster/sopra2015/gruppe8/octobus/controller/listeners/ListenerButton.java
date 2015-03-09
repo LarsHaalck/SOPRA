@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
- *Listener used to manage button clicks.
+ * Listener used to manage button clicks.
  */
 public interface ListenerButton
 {

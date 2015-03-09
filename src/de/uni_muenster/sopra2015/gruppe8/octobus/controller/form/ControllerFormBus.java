@@ -91,6 +91,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		{
 			bus = new Bus();
 		}
+
 		String licencePlate = formBus.getLicencePlate();
 		int numberOfSeats = formBus.getNumberOfSeats();
 		int standingRoom = formBus.getStandingRoom();
@@ -100,6 +101,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		boolean articulatedBus = formBus.getArticulatedBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();
+
 		if(licencePlate == null)
 			errorFields.add("Ungültige Eingabe des Kennzeichen. Es wurden illegale Zeichen verwendet.");
 		else if(licencePlate.trim().length() == 0)
@@ -143,6 +145,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current bus to the DB.
+     *
 	 * @return
 	 */
 	private boolean saveToDB()
