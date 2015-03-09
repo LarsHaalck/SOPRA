@@ -11,57 +11,55 @@ import java.util.LinkedList;
 
 public class ControllerGraph
 {
-	ControllerDatabase db;
-	ArrayList<BusStop> stops;
-	ArrayList<Route> routes;
+	private ControllerDatabase db;
+	private ArrayList<BusStop> stops;
+	private ArrayList<Route> routes;
 
 	int numStops;
-	HashSet<TupleInt> adjSet; //stores all object id tuples which are connected
+	HashSet<TupleInt> adjSet;
 
 	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
-	HashMap<TupleInt, Route> bestRoutes;
-	HashMap<Integer, StoppingPoint> bestStoppingPoints;
 
 
-	/* something to store all routes per stop
-	* like routesPerStop.get(stopID) //getRouteNamesUsingBusStop
-	*/
-
+	/**
+	 * Establishes DB connection and calls init
+	 */
 	public ControllerGraph()
 	{
 		db = ControllerDatabase.getInstance();
 		init();
-		System.out.println(db.getBusStop(15).getName());
-		System.out.println(db.getBusStop(77).getName());
 	}
 
-	public static void main(String[] args)
+
+	/*public static void main(String[] args)
 	{
 		ControllerGraph graph = new ControllerGraph();
 
+		Connection con = graph.getConnection(15, 77, DayOfWeek.MONDAY, 573);
 
-		graph.dijkstra(15, 77, 573);
+		return;
 
-
-
-	}
-
+	}*/
+	/**
+	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
+	 */
 	private void init()
 	{
 		stops = db.getBusStops();
 		routes = db.getRoutes();
-		bestRoutes = new HashMap<>();
-		bestStoppingPoints = new HashMap<>();
 
 		numStops = stops.size();
 		adjSet = new HashSet<>(numStops * numStops); //size of fully connected graph (way more than needed)
 		routesConnecting = new HashMap<>();
 
-		buildAdjMatrix();
+		buildAdjSet();
 	}
 
-	//iterates through all routes and stops
-	private void buildAdjMatrix()
+
+	/**
+	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
+	 */
+	private void buildAdjSet()
 	{
 		for(Route route : routes)
 		{
@@ -94,222 +92,250 @@ public class ControllerGraph
 				prevId = currentId;
 			}
 		}
-
-		//System.out.println(arrivalTime(db.getBusStop(75), db.getBusStop(13), 500));
-
 	}
 
-	/**
-	 * calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2)
-	 * s2 is in neighbourhood of s1
-	 * @param id1 first Vertex in edge
-	 * @param id2 second Vertex in edge
-	 * @param time earliest departure at s1 in unix timestamp
-	 * @return earliest arrival at s2 in unix timestamp
-	 */
-	private int arrivalTime(int id1, int id2, int time)
+
+	public Connection getConnection(int id_start, int id_end, DayOfWeek day, int time)
 	{
+		ConnectionRequest request = new ConnectionRequest();
+		return request.findConnection(id_start, id_end, day, time);
+	}
 
-		int arrival = -1;
 
-		LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2)); //connectors contains all routes directed from s1 to s2
+	/**
+	 * ConnectionRequest stands for one specific 'search connection' - request which
+	 * uses the already initialized 'graph'
+	 */
+	private class ConnectionRequest
+	{
+		//somethings need to be global in this class because they are used by multiple functions
+		private HashMap<TupleInt, Route> bestRoutes; //contains "winning" routes on edges
+		private HashMap<Integer, StoppingPoint> bestStoppingPoints; //contains used StoppingPoints on "winning routes"
+		private HashMap<Integer, Double> dist; //contains dist of BusStop (via id) from starting point
+		private HashMap<Integer, Integer> prev; //contains previous BusStops from BusStop (via id) in "shortest" Path
+		int connectionStartTime;
+		int startId;
+		DayOfWeek day;
 
-
-		StoppingPoint stoppingPoint = null;
-		for (Route connector : connectors)
+		/**
+		 * Initializes HashMaps
+		 */
+		public ConnectionRequest()
 		{
-			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
+			bestRoutes = new HashMap<>();
+			bestStoppingPoints = new HashMap<>();
+			dist = new HashMap<>();
+			prev = new HashMap<>();
+		}
 
-			//TODO: remove hardcoded DayOfWeek (MONDAY)
-			DayOfWeek day = DayOfWeek.MONDAY;
-			LinkedList<Integer> startTimesOnDay = startTimes.get(day);
-			LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
+		/**
+		 * Calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2). s2 must be in neighbourhood of s1
+		 * @param id1 first Vertex in edge
+		 * @param id2 second Vertex in edge
+		 * @param time earliest departure at s1 in unix timestamp
+		 * @return earliest arrival at s2 in unix timestamp
+		 * @pre s2 is direct neighbour of s1
+		 */
+		private int arrivalTime(int id1, int id2, int time)
+		{
+			int arrival = -1;
+
+			//connectors contains all routes going from s1 to s2
+			LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2));
 
 
-			int currentArrival = 0;
-
-			int timeDiff = 0;
-			int timeDiffOnFirst = 0;
-
-			for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
+			StoppingPoint stoppingPoint1 = null;
+			StoppingPoint stoppingPoint2 = null;
+			for (Route connector : connectors)
 			{
-				timeDiff += routeStop.getThird();
+				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
 
-				BusStop currentStop = routeStop.getFirst();
+				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
+				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
 
-				if(currentStop.getId() == id1) //bus arrived at s1
-				{
-					timeDiffOnFirst = timeDiff;
-				}
-				else if (currentStop.getId() == id2) //bus arrived at s2 -> break
-				{
-					stoppingPoint = routeStop.getSecond();
-					break;
+				int currentArrival = 0;
 
-				}
-			}
-
-			for (Integer start : startTimesOnDay)
-			{
-				if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
-					continue;
-				currentArrival = start + timeDiff;
-				break; //break after first match
-			}
-
-			if(currentArrival < arrival || arrival == -1)
-			{
-				arrival = currentArrival;
-				TupleInt tuple = new TupleInt(id1, id2);
-				bestRoutes.put(tuple, connector);
-				bestStoppingPoints.put(id2, stoppingPoint);
-			}
-
-			// <editor-fold desc="muell">
-			/*for (Integer start : startTimesOnDay)
-			{
-				int currentTime = start;
+				int timeDiff = 0;
+				int timeDiffOnFirst = 0;
 
 				for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
 				{
-					currentTime += routeStop.getThird();
+					timeDiff += routeStop.getThird();
 
 					BusStop currentStop = routeStop.getFirst();
 
-					if(foundMatchingTour)
+					if(currentStop.getId() == id1) //bus arrived at s1
 					{
-						currentArrival += routeStop.getThird();
+						timeDiffOnFirst = timeDiff;
+						stoppingPoint1 = routeStop.getSecond();
 					}
-					if(currentStop == s1) //bus arrive at s1
+					else if (currentStop.getId() == id2) //bus arrived at s2 -> break
 					{
-						if(currentTime < time) break; //bus arrive at s1 before time -> choose another start time
-						foundMatchingTour = true;
-						currentArrival = currentTime;
-					}
-					else if (currentStop == s2) //bus arrived at s2 -> break
-					{
+						stoppingPoint2 = routeStop.getSecond();
 						break;
 					}
 				}
 
-				if(foundMatchingTour) //other start times are now irrelevant
+				for (Integer start : startTimesOnDay)
 				{
-					break;
+					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
+						continue;
+					currentArrival = start + timeDiff;
+
+					if(bestRoutes.size() == 0)
+						this.connectionStartTime = timeDiffOnFirst + start;
+
+					break; //break after first match
+				}
+
+				if(currentArrival < arrival || arrival == -1)
+				{
+					arrival = currentArrival;
+					TupleInt tuple = new TupleInt(id1, id2);
+					bestRoutes.put(tuple, connector);
+
+					//only add/modify existing entry, if new weight is smaller than existing weight
+					if(currentArrival < dist.get(id2))
+					{
+						bestStoppingPoints.put(id2, stoppingPoint2);
+						if(id1 == startId)
+							bestStoppingPoints.put(id1, stoppingPoint1);
+
+					}
+				}
+
+			}
+			return arrival;
+		}
+
+		/**
+		 * Determines all direct neighbours of specified BusStop
+		 * @param stopId
+		 * @return
+		 */
+		private ArrayList<BusStop> getNeighbours(int stopId)
+		{
+			ArrayList<BusStop> neighbours = new ArrayList<>();
+
+			for (BusStop stop : stops)
+			{
+				if(adjSet.contains(new TupleInt(stopId, stop.getId())))
+				{
+					neighbours.add(stop);
 				}
 			}
 
-			if(currentArrival < arrival || arrival == -1)
+			return neighbours;
+		}
+
+		/**
+		 * Implementation of dijkstra algorithm where distances are arrival times
+		 * @param startId id of BusStop which marks the start of the requested connection
+		 * @param endId id of BusStop which marks the end of the requested connection
+		 * @param startTime earliest starting time at startId
+		 * @return Connection object if connection exists, null otherwise
+		 * @pre startId and endId must be existing BusStop ids. startime must be in [0, 1439]
+		 */
+		public Connection findConnection(int startId, int endId, DayOfWeek day, int startTime)
+		{
+			this.startId = startId; //needed to determine StoppingPoint on start BusStop
+			this.day = day;
+
+			FibonacciHeap<Integer> fibHeap = new FibonacciHeap<>();
+
+			// <editor-fold desc="Dijkstra init">
+			fibHeap.enqueue(startId, startTime);
+			dist.put(startId, (double) startTime);
+
+			for (BusStop stop : stops)
 			{
-				arrival = currentArrival;
-			}*/
+				if(stop.getId() == startId) continue;
+				dist.put(stop.getId(), Double.POSITIVE_INFINITY); //set all distances to infinity
+				fibHeap.enqueue(stop.getId(), Double.POSITIVE_INFINITY);
+			}
 			// </editor-fold>
-		}
-		return arrival;
-	}
 
-	/**
-	 * Determines all direct neighbours of specified BusStop
-	 * @param stopId
-	 * @return
-	 */
-	private ArrayList<BusStop> getNeighbours(int stopId)
-	{
-		ArrayList<BusStop> neighbours = new ArrayList<>();
 
-		for (BusStop stop : stops)
-		{
-			if(adjSet.contains(new TupleInt(stopId, stop.getId())))
+			while(!fibHeap.isEmpty())
 			{
-				neighbours.add(stop);
-			}
-		}
+				int stopId = fibHeap.dequeueMin().getValue();
 
-		return neighbours;
-	}
-
-	private void dijkstra(int startId, int endId, int startTime)
-	{
-		HashMap<Integer, Double> dist = new HashMap<>();
-		FibonacciHeap<Integer> fibHeap = new FibonacciHeap<>();
-
-		HashMap<Integer, Integer> prev = new HashMap<>();
-
-		//dijkstra init
-		fibHeap.enqueue(startId, startTime);
-		dist.put(startId, (double) startTime);
-
-		for (BusStop stop : stops)
-		{
-			if(stop.getId() == startId) continue;
-			dist.put(stop.getId(), Double.POSITIVE_INFINITY); //set all distances to infinity
-			fibHeap.enqueue(stop.getId(), Double.POSITIVE_INFINITY);
-		}
-
-		while(!fibHeap.isEmpty())
-		{
-			int stopId = fibHeap.dequeueMin().getValue();
-
-			if(stopId == endId && !dist.get(stopId).isInfinite())
-			{
-				System.out.println("Route found");
-				System.out.println(dist.get(stopId).intValue()/60);
-				System.out.println(dist.get(stopId).intValue()%60);
-
-				int currentStop = endId;
-				int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
-
-				while(prevStop != -1)
+				if(stopId == endId && !dist.get(stopId).isInfinite())
 				{
-					//prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
-
-					System.out.println(bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
-					System.out.println(db.getBusStop(prevStop).getName() + ":" + bestStoppingPoints.get(prevStop).getName());
-
-					currentStop = prevStop;
-					prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
-
-					//System.out.println(db.getBusStop(current).getName() + ": " + dist.get(current));
-					//current = prev.get(current) == null ? -1 : prev.get(current);
+					return reconstructConnection(stopId);
 				}
 
-				return;
-			}
+				ArrayList<BusStop> neighbours = this.getNeighbours(stopId);
 
-			ArrayList<BusStop> neighbours = this.getNeighbours(stopId);
-
-			for (BusStop neighbour : neighbours) //edge (v,w)
-			{
-				int neighbourId = neighbour.getId();
-				double arrivalAtNeighbour;
-				if(Double.isInfinite(dist.get(stopId)))
-					arrivalAtNeighbour = Double.POSITIVE_INFINITY;
-				else
-					arrivalAtNeighbour = arrivalTime(stopId, neighbourId, dist.get(stopId).intValue()); //arrivalTime contains earliest arrival at w
-
-
-				if(arrivalAtNeighbour < dist.get(neighbour.getId()))
+				for (BusStop neighbour : neighbours) //edge (v,w)
 				{
-					fibHeap.enqueue(neighbourId, arrivalAtNeighbour);
-					dist.put(neighbourId, arrivalAtNeighbour);
-					prev.put(neighbourId, stopId);
+					int neighbourId = neighbour.getId();
+					double arrivalAtNeighbour;
+					if(Double.isInfinite(dist.get(stopId)))
+						arrivalAtNeighbour = Double.POSITIVE_INFINITY;
+					else
+						arrivalAtNeighbour = arrivalTime(stopId, neighbourId, dist.get(stopId).intValue()); //arrivalTime contains earliest arrival at w
+
+
+					if(arrivalAtNeighbour < dist.get(neighbour.getId()))
+					{
+						fibHeap.enqueue(neighbourId, arrivalAtNeighbour);
+						dist.put(neighbourId, arrivalAtNeighbour);
+						prev.put(neighbourId, stopId);
+					}
 				}
 			}
+
+			System.out.println("No route found");
+			return null;
 		}
 
-		System.out.println("no route found");
-	}
+
+		/**
+		 * Reconstructs Connection by stepping backwards through prev, after findConnection successfully found a connection
+		 * @param stopId last BusStop id in connection
+		 * @return Connection object containing all important connection information
+		 */
+		private Connection reconstructConnection(int stopId)
+		{
+			int time = this.connectionStartTime;
+			int duration = dist.get(stopId).intValue() - time; //arrival time - starting time
+
+			LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> trips = new LinkedList<>();
 
 
-	public Connection getConnection(int id_start, int id_end, int time)
-	{
-		Connection connection = new Connection();
+			int currentStop = stopId;
+			int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 
-		dijkstra(id_start, id_end, time);
+			//TODO: reconsider way of determining start times, because this seems very ineffective!
+			while(prevStop != -1) //reconstruct route
+			{
+				//Quadruple<Integer, StoppingPoint, Route, StoppingPoint> currentQuadrupel = new Quadruple<>();
+				/*Route r = bestRoutes.get(new TupleInt(prevStop, currentStop));
+				System.out.println("Start: " + (dist.get(currentStop).intValue() - r.getDuration(prevStop, currentStop)));
+				System.out.println("Stopping Point - Begin: " + db.getBusStop(prevStop).getName() + ": " + bestStoppingPoints.get(prevStop).getName());
+				System.out.println("Route taken: " + bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
+				System.out.println("Stopping Point - End: " + db.getBusStop(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
+
+				//add them in reverse order
+				trips.addFirst(new Quadruple<>(
+						(dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop)),
+						bestStoppingPoints.get(prevStop),
+						bestRoutes.get(new TupleInt(prevStop, currentStop)),
+						bestStoppingPoints.get(currentStop)
+				));
+
+				currentStop = prevStop;
+				prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
+				//System.out.println();
+			}
+
+			return new Connection(trips, duration, time);
+		}
 
 
 
 
-		return connection;
 	}
 
 
