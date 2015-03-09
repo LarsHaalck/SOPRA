@@ -74,7 +74,7 @@ public class DisplayTicket extends JPanel
 		cst.weightx = 1;
 		cst.anchor = GridBagConstraints.LINE_END; //does not work
 		JLabel lbPrice = new JLabel("Preis: "+price+"€");
-		lbPrice.setFont(new Font("Arial",Font.PLAIN,14));
+		lbPrice.setFont(new Font("Tahoma",Font.PLAIN,14));
 		plTickets.add(lbPrice, cst);
 		cst.gridx = 1;
 		cst.anchor = GridBagConstraints.LINE_START;
@@ -88,7 +88,7 @@ public class DisplayTicket extends JPanel
 			strNumPas = numPassengers+" Personen";
 		}
 		JLabel lbNumPassengers = new JLabel(strNumPas);
-		lbNumPassengers.setFont(new Font("Arial",Font.PLAIN,14));
+		lbNumPassengers.setFont(new Font("Arial",Font.PLAIN,14)); //TODO nicht arial
 		plTickets.add(lbNumPassengers, cst);
 		cst.gridx = 0;
 		cst.gridy = i+6;
