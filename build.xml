@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sopra" default="all">
   
-  
   <property file="build.properties"/>
   <property environment="env"/>
   <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}" />
@@ -228,6 +227,11 @@
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
   </target>
+
+  <!-- Generate javadocs for current project into ${doc.dir} -->
+  <target name="doc" depends="init" description="generate documentation">
+    <javadoc sourcepath="${basedir}/src" destdir="${sopra.output.dir}/doc" additionalparam="-taglet PreTaglet -taglet PostTaglet -taglet InvTaglet -tagletpath ${basedir}/lib/cbs_taglets.jar"/>
+  </target>
   
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+  <target name="all" depends="build.modules, build.all.artifacts, doc" description="build all"/>
 </project>
