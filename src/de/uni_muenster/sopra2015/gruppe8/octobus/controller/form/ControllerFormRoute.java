@@ -31,6 +31,12 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private JTable tableCurrent;
 	private int viewRow;
 
+	private FormDepartureTime formDepartureTime;
+	private int departureTimeStart;
+	private int departureTimeEnd;
+	private boolean[] departureDays;
+	private int departureFreqency;
+
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
 		super();
@@ -136,7 +142,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
-				new FormDepartureTime(formRoute, this);
+				formDepartureTime = new FormDepartureTime(formRoute);
+				formDepartureTime.setControllerFormRoute(this);
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
@@ -148,12 +155,80 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_DEPARTURE_SAVE:
+				if(parseValuesFromFormDeparture() == 1)
+				{
 
+				}
+				else if(parseValuesFromFormDeparture() == 2)
+				{
+
+				}
 				break;
 
 			case FORM_ROUTE_STEP2_DEPARTURE_CANCEL:
 
 				break;
+		}
+	}
+
+	/**
+	 * Parses values from FormDepartureTime.
+	 * @return Returns 0 on wrong input; 1 on only start time; 2 on start time, end time and frequency
+	 */
+	private int parseValuesFromFormDeparture()
+	{
+		System.out.println(formDepartureTime.toString());
+		int freqency = formDepartureTime.getFnFrequency();
+
+		boolean[] days = {formDepartureTime.getJcbMo(), formDepartureTime.getJcbDi(),
+							formDepartureTime.getJcbMi(), formDepartureTime.getJcbDo(),
+							formDepartureTime.getJcbFr(), formDepartureTime.getJcbSa(),
+							formDepartureTime.getJcbSo()};
+
+		ArrayList<String> errorFields = new ArrayList<>();
+		if(formDepartureTime.getFnStartTime_Hour() == -1 || formDepartureTime.getFnStartTime_Minute() == -1)
+			errorFields.add("Startzeit muss vollständig ausgefüllt sein..");
+		if(formDepartureTime.getFnEndTime_Hour() != -1 && formDepartureTime.getFnEndTime_Minute() != -1)
+		{
+			if(freqency == -1)
+				errorFields.add("Frequenz darf nicht leer sein, wenn eine Endzeit angegeben ist.");
+		}
+		else
+		{
+			if(freqency != -1)
+				errorFields.add("Frequenz muss zusammen mit einer vollständigen Endzeit angegeben werden.");
+		}
+		boolean minDaysChecked = false;
+		for (boolean day : days)
+		{
+			if(day)
+				minDaysChecked = true;
+		}
+		if(!minDaysChecked)
+			errorFields.add("Mindestens ein Tag muss ausgewählt sein.");
+
+		if(errorFields.size() > 0)
+		{
+			String errorMessage = "Die eingegeben Daten sind nicht gültig.\n";
+			errorMessage += errorListToString(errorFields);
+			formDepartureTime.showErrorForm(errorMessage);
+			return 0;
+		}
+		else
+		{
+			if(formDepartureTime.getFnEndTime_Hour() == -1 || formDepartureTime.getFnEndTime_Minute() == -1){
+				departureTimeStart = formDepartureTime.getFnStartTime_Hour() * 60 + formDepartureTime.getFnStartTime_Minute();
+				departureDays = days;
+				return 1;
+			}
+			else
+			{
+				departureTimeStart = formDepartureTime.getFnStartTime_Hour() * 60 + formDepartureTime.getFnStartTime_Minute();
+				departureTimeEnd = formDepartureTime.getFnEndTime_Hour() * 60 + formDepartureTime.getFnEndTime_Minute();
+				departureFreqency = freqency;
+				departureDays = days;
+				return 2;
+			}
 		}
 	}
 
@@ -198,7 +273,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	public void initTableAvailable()
 	{
-		ArrayList<Tuple<Integer, String>> stoppingPoints = controllerDatabase.getStoppingPoints();
+		ArrayList<Tuple<Integer, String>> stoppingPoints = controllerDatabase.getBusStopNamesWithStoppingPointNames();
 
 		Object[][] data = new Object[stoppingPoints.size()][2];
 		for(int i=0; i<stoppingPoints.size(); i++)
@@ -217,7 +292,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
-			BusStop busStop = controllerDatabase.getBusStopById(contentTableCurrent.get(i));
+			BusStop busStop = controllerDatabase.getBusStopById(contentTableCurrent.get(i).getFirst());
 			data[i][0] = busStop.getId();
 			data[i][1] = busStop.getName();
 		}

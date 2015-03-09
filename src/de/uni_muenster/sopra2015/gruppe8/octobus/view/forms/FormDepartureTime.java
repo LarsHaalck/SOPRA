@@ -20,10 +20,9 @@ public class FormDepartureTime extends FormGeneral
 	private FieldNumber fnStartTime_Hour, fnStartTime_Minute, fnEndTime_Hour, fnEndTime_Minute, fnFrequency;
 	private JCheckBox jcbMo, jcbDi, jcbMi, jcbDo, jcbFr, jcbSa, jcbSo;
 
-	public FormDepartureTime(JDialog parent, ControllerFormRoute controllerFormRoute)
+	public FormDepartureTime(JDialog parent)
 	{
 		super(parent, "Abfahrtszeiten Hinzufügen");
-		this.controllerFormRoute = controllerFormRoute;
 		setLayout(new BorderLayout());
 		setResizable(false);
 
@@ -137,6 +136,11 @@ public class FormDepartureTime extends FormGeneral
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	public void setControllerFormRoute(ControllerFormRoute controllerFormRoute)
+	{
+		this.controllerFormRoute = controllerFormRoute;
 	}
 
 	public int getFnStartTime_Hour()

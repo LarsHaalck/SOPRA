@@ -230,7 +230,77 @@ public class FormRouteStep2 extends JPanel
 		return times;
 	}
 
-	public Vector<Vector<String>> getTableData_dtmMo()
+	public DefaultTableModel getDtmMo()
+	{
+		return dtmMo;
+	}
+
+	public DefaultTableModel getDtmDi()
+	{
+		return dtmDi;
+	}
+
+	public DefaultTableModel getDtmMi()
+	{
+		return dtmMi;
+	}
+
+	public DefaultTableModel getDtmDo()
+	{
+		return dtmDo;
+	}
+
+	public DefaultTableModel getDtmSa()
+	{
+		return dtmSa;
+	}
+
+	public DefaultTableModel getDtmFr()
+	{
+		return dtmFr;
+	}
+
+	public DefaultTableModel getDtmSo()
+	{
+		return dtmSo;
+	}
+
+	public JTable getJtMo()
+	{
+		return jtMo;
+	}
+
+	public JTable getJtDi()
+	{
+		return jtDi;
+	}
+
+	public JTable getJtDo()
+	{
+		return jtDo;
+	}
+
+	public JTable getJtMi()
+	{
+		return jtMi;
+	}
+
+	public JTable getJtFr()
+	{
+		return jtFr;
+	}
+
+	public JTable getJtSa()
+	{
+		return jtSa;
+	}
+
+	public JTable getJtSo()
+	{
+		return jtSo;
+	}
+
+	/*public Vector<Vector<String>> getTableData_dtmMo()
 	{
 		return dtmMo.getDataVector();
 	}
@@ -263,11 +333,5 @@ public class FormRouteStep2 extends JPanel
 	public Vector<Vector<String>> getTableData_dtmSo()
 	{
 		return dtmSo.getDataVector();
-	}
-
-	//---------------------------------
-	//---------- Controller -----------
-	//---------------------------------
-
-
+	}*/
 }
