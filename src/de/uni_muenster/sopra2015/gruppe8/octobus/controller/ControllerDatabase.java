@@ -141,6 +141,7 @@ public class ControllerDatabase
 	 */
 	public int deleteBusFromTours(int uid, Date begin, Date end)
 	{
+		// get number of tours using the bus in specified time range
 		Record record = create
 				.selectCount()
 				.from(TOURS)
@@ -149,6 +150,7 @@ public class ControllerDatabase
 				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.fetchOne();
 
+		// reset bus attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID,(Integer) null)
 				.where(TOURS.BUSES_ID.equal(uid))
@@ -167,12 +169,14 @@ public class ControllerDatabase
 	 */
 	public int deleteBusFromTours(int id)
 	{
+		// get number of tours using the bus
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.BUSES_ID.equal(id))
 				.fetchOne();
 
+		// reset bus attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID,(Integer) null)
 				.where(TOURS.BUSES_ID.equal(id))
@@ -207,6 +211,7 @@ public class ControllerDatabase
      */
 	public ArrayList<Bus> getBuses()
 	{
+		// get all buses stored in database
 		Result<Record> busRecords = create.select().from(BUSES).fetch();
 
         // In case there are no buses - which is unlikely, but who knows
@@ -214,6 +219,7 @@ public class ControllerDatabase
 
 		ArrayList<Bus> busList = new ArrayList<>();
 
+		// create a bus object for each bus stored in database and add to list
 		for (Record rec : busRecords)
 		{
 			Bus bus = new Bus(
@@ -238,11 +244,12 @@ public class ControllerDatabase
      */
     public Bus getBusById(int id)
     {
-
         Record busRecord = create.select().from(BUSES).where(BUSES.BUSES_ID.eq(id)).fetchOne();
 
+		// if bus not found, return null
         if (busRecord == null) return null;
 
+		// create bus object
         Bus bus = new Bus(
                 busRecord.getValue(BUSES.LICENCEPLATE),
                 busRecord.getValue(BUSES.NUMBEROFSEATS),
@@ -279,8 +286,8 @@ public class ControllerDatabase
 				.returning(BUSSTOPS.BUSSTOPS_ID)
 				.fetchOne();
 
+		// insert stopping points' data into database
 		HashSet<StoppingPoint> points = bstop.getStoppingPoints();
-
 		for (StoppingPoint s : points)
 		{
 			create.insertInto(
@@ -316,12 +323,14 @@ public class ControllerDatabase
 	 */
 	public int deleteStoppingPointsUsingBusStopId(int id)
 	{
+		// get number of stopping points associated with bus stop...
 		Record record = create
 				.selectCount()
 				.from(BUSSTOPS_STOPPINGPOINTS)
 				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(id))
 				.fetchOne();
 
+		// ... and delete them
 		create.delete(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id))
                 .execute();
@@ -396,6 +405,8 @@ public class ControllerDatabase
 			}
 
 			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
+
+			// create bus stop objects belonging to that route
 			BusStop busStop = new BusStop(
 					rec.getValue(BUSSTOPS.NAME),
 					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
@@ -417,7 +428,7 @@ public class ControllerDatabase
      */
     public BusStop getBusStopById(int id)
     {
-        // Get desired bus from DB
+        // Get desired bus from data base
         Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();
         if (rec == null) return null;
 
@@ -433,6 +444,7 @@ public class ControllerDatabase
 			spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
 		}
 
+		// create all associated bus stop objects
 		BusStop busStop = new BusStop(
 				rec.getValue(BUSSTOPS.NAME),
 				new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
@@ -441,7 +453,6 @@ public class ControllerDatabase
 
 		busStop.setId(id);
         return busStop;
-
     }
 
 	/**
@@ -452,11 +463,13 @@ public class ControllerDatabase
 	 */
 	public ArrayList<String> getRouteNamesUsingStoppingPointId(int id)
 	{
+		// get all concerned route stops entries
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
 				.where(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
 				.fetch();
 
+		// fetch names of associated routes and put them into a list
 		ArrayList<String> names = new ArrayList<>();
 		for (RoutesStopsRecord rec : routes)
 		{
@@ -479,11 +492,13 @@ public class ControllerDatabase
 	 */
 	public ArrayList<Route> getRoutesUsingStoppingPoint(int id)
 	{
+		// get all concerned route stops entries
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
 				.where(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
 				.fetch();
 
+		// create all associated routes and put them into a list
 		ArrayList<Route> listOfRoutes = new ArrayList<>();
 		for (RoutesStopsRecord rec : routes)
 		{
@@ -501,12 +516,14 @@ public class ControllerDatabase
 	 */
 	public ArrayList<String> getRouteNamesUsingBusStopId(int id)
 	{
+		// get all concerned route stops entries
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
 				.where(ROUTES_STOPS.BUSSTOPS_ID.eq(id))
 				.groupBy(ROUTES_STOPS.ROUTES_ID)
 				.fetch();
 
+		// fetch names of associated routes and put them into a list
 		ArrayList<String> names = new ArrayList<>();
 		for (RoutesStopsRecord rec : routes)
 		{
@@ -553,7 +570,7 @@ public class ControllerDatabase
 	 */
 	public ArrayList<StoppingPoint> getStoppingPointsByBusStopId(int id)
 	{
-		// Start by getting all bus stops from the database
+		// get all concerned stopping point entries
 		Result<BusstopsStoppingpointsRecord> rows = create
 				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
 				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id))
@@ -562,9 +579,8 @@ public class ControllerDatabase
 		// In case there are no BusStops, which is unlikely, but who knows
 		if (rows == null) return null;
 
+		// create all stopping point objects and put them into a list
 		ArrayList<StoppingPoint> result = new ArrayList<>();
-
-		// For each bus retrieved...
 		for (BusstopsStoppingpointsRecord rec : rows)
 		{
 			result.add(getStoppingPointById(rec.getBusstopsStoppingpointsId()));
@@ -588,16 +604,14 @@ public class ControllerDatabase
         // Take care of creating a salt and hashing the default password with that salt
         SecureRandom random = new SecureRandom();
         String salt = new BigInteger(130, random).toString(32);
-        String password = "octobus";
+        String password = "octobus";			// TODO: This should be changed, right?
         String generatedHash;
 
         try
         {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
-
             digest.update(password.getBytes());
             digest.update(salt.getBytes());
-
             generatedHash = new BigInteger(1, digest.digest()).toString();
 
         } catch (NoSuchAlgorithmException e)
@@ -695,15 +709,17 @@ public class ControllerDatabase
      */
 	public ArrayList<Employee> getEmployees()
 	{
+		// get all employee entries from database
 		Result<Record> empRecords = create.select().from(EMPLOYEES).fetch();
 
         // In case we have no employees to return
         if (empRecords == null) return null;
 
+		// for each entry, create a employee object
 		ArrayList<Employee> empList = new ArrayList<>();
-
 		for (Record rec : empRecords)
 		{
+			// build HashSet containing roles of the current employee
 			HashSet<Role> roles = new HashSet<>();
 			if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
 				roles.add(Role.SCHEDULE_MANAGER);
@@ -749,6 +765,7 @@ public class ControllerDatabase
         // Return null if employee can not be found
         if (rec == null) return null;
 
+		// build HashSet containing roles
 		HashSet<Role> roles = new HashSet<>();
 		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
 			roles.add(Role.SCHEDULE_MANAGER);
@@ -795,6 +812,7 @@ public class ControllerDatabase
 	 */
 	public int deleteEmployeeFromTours(int uid, Date begin, Date end)
 	{
+		// count all tours using that employee in specified time range
 		Record record = create
 				.selectCount()
 				.from(TOURS)
@@ -803,6 +821,7 @@ public class ControllerDatabase
 				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.fetchOne();
 
+		// reset employee attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.EMPLOYEES_ID,(Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
@@ -821,12 +840,14 @@ public class ControllerDatabase
 	 */
 	public int deleteEmployeeFromTours(int id)
 	{
+		// count all tours using that employee
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.EMPLOYEES_ID.equal(id))
 				.fetchOne();
 
+		// reset employee attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(id))
@@ -847,6 +868,7 @@ public class ControllerDatabase
      */
 	public int addRoute(Route r)
 	{
+		// add route entry to routes table
 		RoutesRecord newRoute = create.insertInto(ROUTES,
                 ROUTES.NAME,
                 ROUTES.NOTE,
@@ -857,6 +879,7 @@ public class ControllerDatabase
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
+		// add associated bus stops to routes_stops table
 		LinkedList<Triple<BusStop,StoppingPoint,Integer>>  stops = r.getStops();
 		for (Triple<BusStop,StoppingPoint,Integer> triple : stops)
 		{
@@ -872,6 +895,7 @@ public class ControllerDatabase
 					.execute();
 		}
 
+		// add associated start times to routes_startTimes table
 		HashMap<DayOfWeek,LinkedList<Integer>> times = r.getStartTimes();
 		for (DayOfWeek day : times.keySet())
 		{
@@ -903,8 +927,6 @@ public class ControllerDatabase
 		return(numOfTours);
 	}
 
-
-
     /**
      * Modifies an existing route entry in the database. Route entry ID will be changed if stopping points or starting
 	 * times are changed
@@ -917,6 +939,7 @@ public class ControllerDatabase
 	{
 		if (!deleteTours)
 		{
+			// first case: stops or start times not changed --> no tours to delete!
 			create.update(ROUTES)
 					.set(ROUTES.NAME, r.getName())
 					.set(ROUTES.NOTE, r.getNote())
@@ -926,10 +949,11 @@ public class ControllerDatabase
 			return(r.getId());
 		} else
 		{
+			// second case: stops or start times changed --> rebuild all associated entries in database
 			deleteToursUsingRoutesId(r.getId());
 			deleteStartTimesUsingRouteId(r.getId());
 			deleteRoutesStopsUsingRouteId(r.getId());
-			return(addRoute(r));
+			return(addRoute(r));		// route gets a new ID here!
 		}
 	}
 
@@ -940,11 +964,11 @@ public class ControllerDatabase
      */
 	public ArrayList<Route> getRoutes()
 	{
-        // Start by getting all bus stops from the database
+        // Start by getting all routes table entries from the database
         Result<RoutesRecord> routesRecords = create.selectFrom(ROUTES).fetch();
 		ArrayList<Route> routesList = new ArrayList<>();
 
-        // For each bus stop retrieved...
+        // For each route entry retrieved...
         for (RoutesRecord rec : routesRecords)
 		{
             // ... get all corresponding start times ...
@@ -993,6 +1017,7 @@ public class ControllerDatabase
 				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 			}
 
+			// Finally, create Route object and add it to the ArrayList
 			Route route = new Route(
 					rec.getValue(ROUTES.NAME),
 					rec.getValue(ROUTES.NOTE),
@@ -1001,7 +1026,6 @@ public class ControllerDatabase
 					startTimes);
             route.setId(rec.getRoutesId());
 
-            // Finally, create Route object and add it to the ArrayList
             routesList.add(route);
 		}
 		return routesList;
@@ -1067,6 +1091,7 @@ public class ControllerDatabase
 			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
 		}
 
+		// create and return route object
 		Route route = new Route(
 				rec.getValue(ROUTES.NAME),
 				rec.getValue(ROUTES.NOTE),
@@ -1085,14 +1110,15 @@ public class ControllerDatabase
 	 */
 	public int deleteRoutesStopsUsingRouteId(int id)
 	{
+		// count all route stops associated to that route...
 		Record record = create
 				.selectCount()
 				.from(ROUTES_STOPS)
 				.where(ROUTES_STOPS.ROUTES_ID.equal(id))
 				.fetchOne();
 
+		// ... and delete them
 		create.delete(ROUTES_STOPS).where(ROUTES_STOPS.ROUTES_ID.eq(id)).execute();
-
 		return (Integer) record.getValue(0);
 	}
 
@@ -1104,14 +1130,15 @@ public class ControllerDatabase
 	 */
 	public int deleteStartTimesUsingRouteId(int id)
 	{
+		// count all start times associated to that route...
 		Record record = create
 				.selectCount()
 				.from(ROUTES_STARTTIMES)
 				.where(ROUTES_STARTTIMES.ROUTES_ID.equal(id))
 				.fetchOne();
 
+		// ... and delete them
 		create.delete(ROUTES_STARTTIMES).where(ROUTES_STARTTIMES.ROUTES_ID.eq(id)).execute();
-
 		return (Integer) record.getValue(0);
 	}
 
@@ -1123,15 +1150,18 @@ public class ControllerDatabase
 	 */
 	public ArrayList<String> getBusStopNamesUsingRouteId(int id)
 	{
+		// get all route stops entries associated to that route
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
 				.where(ROUTES_STOPS.ROUTES_ID.eq(id))
 				.groupBy(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID)
 				.fetch();
 
+		// concatenate bus stop name and stopping point name and add to list
 		ArrayList<String> names = new ArrayList<>();
 		for (RoutesStopsRecord rec : routes)
 		{
+			// fetch bus stop name from database
 			int stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_ID);
 			BusstopsRecord bstop = create
 					.selectFrom(BUSSTOPS)
@@ -1139,6 +1169,7 @@ public class ControllerDatabase
 					.fetchOne();
 			String nameString = bstop.getName() + " ";
 
+			// fetch stopping point name from database
 			stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID);
 			BusstopsStoppingpointsRecord bstoppoint = create
 					.selectFrom(BUSSTOPS_STOPPINGPOINTS)
