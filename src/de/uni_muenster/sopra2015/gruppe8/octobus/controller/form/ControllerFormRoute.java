@@ -217,9 +217,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
-			StoppingPoint stoppingPoint = controllerDatabase.getStoppingPoint(contentTableCurrent.get(i).getFirst());
-			data[i][0] = stoppingPoint.getId();
-			data[i][1] = contentTableCurrent.get(i).getSecond();
+			BusStop busStop = controllerDatabase.getBusStopById(contentTableCurrent.get(i));
+			data[i][0] = busStop.getId();
+			data[i][1] = busStop.getName();
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}

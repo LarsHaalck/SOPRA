@@ -4,7 +4,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
@@ -15,7 +14,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -120,7 +118,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	 */
 	private void setBusInfo()
 	{
-		busStop = controllerDatabase.getBusStop(objectID);
+		busStop = controllerDatabase.getBusStopById(objectID);
 	}
 
 	/**
