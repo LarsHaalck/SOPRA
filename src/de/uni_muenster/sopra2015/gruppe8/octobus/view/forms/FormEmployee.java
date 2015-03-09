@@ -228,6 +228,7 @@ public class FormEmployee extends FormGeneral
 		if(objectID != -1)
 		{
 			cstLabel.gridx = 2;
+			cstLabel.gridwidth = 3;
 			btPassword = new JButton("Passwort zurücksetzen");
 			add(btPassword, cstLabel);
 			btPassword.addActionListener(e->
@@ -236,7 +237,8 @@ public class FormEmployee extends FormGeneral
 			});
 		}
 
-		cstLabel.gridx = 4;
+		cstLabel.gridx = 5;
+		cstLabel.gridwidth = 1;
 		btCancel = new JButton("Abbrechen");
 		add(btCancel, cstLabel);
 

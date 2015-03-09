@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
+import javafx.scene.paint.Stop;
 import org.jooq.*;
 import org.jooq.impl.*;
 
@@ -328,6 +329,22 @@ public class ControllerDatabase
 		return (Integer) record.getValue(0);
 	}
 
+    /**
+     * Retrieves the bus stop associated with the given stopping point. Comes in handy for
+     * displaying the complete name of a stopping point.
+     *
+     * @param id StoppingPoint for which to retrieve the associated BusStop
+     * @return BusStop associated with the stopping point
+     */
+    public BusStop getBusStopByStoppingPointId(int id)
+    {
+        BusstopsStoppingpointsRecord r = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+                .fetchOne();
+
+        return getBusStopById(r.getBusstopsId());
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -502,6 +519,59 @@ public class ControllerDatabase
 		}
 		return(names);
 	}
+
+	/////////////////////////////
+	// Methods for "StoppingPoint"s //
+	/////////////////////////////
+
+	/**
+	 * Creates a new database entry for a StoppingPoint object
+	 *
+	 * @param id unique ID of bus stop to which the stopping point is assigned
+	 * @param sp StoppingPoint object to be stored in the database
+	 * @return unique ID of newly created stopping point entry in the database
+	 */
+	public int addStoppingPoint(int id, StoppingPoint sp)
+	{
+		BusstopsStoppingpointsRecord newStop = create.insertInto(
+				BUSSTOPS_STOPPINGPOINTS,
+				BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
+				BUSSTOPS_STOPPINGPOINTS.NAME)
+				.values(id,
+						sp.getName())
+				.returning(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID)
+				.fetchOne();
+
+		return(newStop.getBusstopsStoppingpointsId());
+	}
+
+	/**
+	 * Returns a list of stopping points which belong to a specific bus stop
+	 *
+	 * @param id unique ID of the bus stop
+	 * @return ArrayList of stopping points belonging to the bus stop
+	 */
+	public ArrayList<StoppingPoint> getStoppingPointsByBusStopId(int id)
+	{
+		// Start by getting all bus stops from the database
+		Result<BusstopsStoppingpointsRecord> rows = create
+				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.eq(id))
+				.fetch();
+
+		// In case there are no BusStops, which is unlikely, but who knows
+		if (rows == null) return null;
+
+		ArrayList<StoppingPoint> result = new ArrayList<>();
+
+		// For each bus retrieved...
+		for (BusstopsStoppingpointsRecord rec : rows)
+		{
+			result.add(getStoppingPointById(rec.getBusstopsId()));
+		}
+		return result;
+	}
+
 
 	/////////////////////////////
 	// Methods for "Employee"s //
@@ -841,7 +911,7 @@ public class ControllerDatabase
      *
      * @param r Route object whose entry is to be updated in the database
      * @param deleteTours true if associated tours ought to be deleted
-	 * @return new ID of the changed route entry
+	 * @return id of the changed route entry (new if deleteTours was true)
      */
 	public int modifyRoute(Route r, boolean deleteTours)
 	{
@@ -1148,7 +1218,7 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus entry that is to be deleted from the database
 	 */
-	public void deleteStoppingPoint(int id)
+	public void deleteStoppingPointById(int id)
 	{
 		create.delete(BUSSTOPS_STOPPINGPOINTS)
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();

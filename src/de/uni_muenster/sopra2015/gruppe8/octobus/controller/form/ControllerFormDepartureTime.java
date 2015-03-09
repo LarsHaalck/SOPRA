@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
@@ -45,10 +46,17 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					{
 						if(day.getSecond())
 						{
-							startTimes.get(day.getFirst()).add(departureTimeStart);
+							HashSet<Integer> tempSet = new HashSet<>();
+							LinkedList<Integer> tempList = new LinkedList<>();
+							tempList.addAll(startTimes.get(day.getFirst()));
+							tempList.add(departureTimeStart);
+							tempSet.addAll(tempList);
+							startTimes.get(day.getFirst()).clear();
+							startTimes.get(day.getFirst()).addAll(tempSet);
 						}
 					}
 					route.setStartTimes(startTimes);
+					ControllerManager.informWindowClose(EmitterWindow.FORM_ROUTE_STEP2_DEPARTURE_CLOSE);
 					closeDialog();
 				} else if (temp == 2)
 				{
@@ -56,7 +64,7 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					ArrayList<Integer> departures = new ArrayList<>();
 					departures.add(departureTimeStart);
 					int remaining = departureTimeStart;
-					while(remaining <= departureTimeEnd)
+					while(remaining < departureTimeEnd)
 					{
 						remaining += departureFreqency;
 						departures.add(remaining);
@@ -67,11 +75,14 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 						if(day.getSecond())
 						{
 							HashSet<Integer> tempSet = new HashSet<>();
+							departures.addAll(startTimes.get(day.getFirst()));
 							tempSet.addAll(departures);
+							startTimes.get(day.getFirst()).clear();
 							startTimes.get(day.getFirst()).addAll(tempSet);
 						}
 					}
 					route.setStartTimes(startTimes);
+					ControllerManager.informWindowClose(EmitterWindow.FORM_ROUTE_STEP2_DEPARTURE_CLOSE);
 					closeDialog();
 				}
 				break;
