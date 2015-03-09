@@ -20,6 +20,7 @@ public class ControllerGraph
 
 	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 	HashMap<TupleInt, Route> bestRoutes;
+	HashMap<Integer, StoppingPoint> bestStoppingPoints;
 
 
 	/* something to store all routes per stop
@@ -50,6 +51,7 @@ public class ControllerGraph
 		stops = db.getBusStops();
 		routes = db.getRoutes();
 		bestRoutes = new HashMap<>();
+		bestStoppingPoints = new HashMap<>();
 
 		numStops = stops.size();
 		adjSet = new HashSet<>(numStops * numStops); //size of fully connected graph (way more than needed)
@@ -112,6 +114,8 @@ public class ControllerGraph
 
 		LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2)); //connectors contains all routes directed from s1 to s2
 
+
+		StoppingPoint stoppingPoint = null;
 		for (Route connector : connectors)
 		{
 			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
@@ -139,7 +143,9 @@ public class ControllerGraph
 				}
 				else if (currentStop.getId() == id2) //bus arrived at s2 -> break
 				{
+					stoppingPoint = routeStop.getSecond();
 					break;
+
 				}
 			}
 
@@ -154,7 +160,9 @@ public class ControllerGraph
 			if(currentArrival < arrival || arrival == -1)
 			{
 				arrival = currentArrival;
-				bestRoutes.put(new TupleInt(id1, id2), connector);
+				TupleInt tuple = new TupleInt(id1, id2);
+				bestRoutes.put(tuple, connector);
+				bestStoppingPoints.put(id2, stoppingPoint);
 			}
 
 			// <editor-fold desc="muell">
@@ -201,7 +209,7 @@ public class ControllerGraph
 
 	/**
 	 * Determines all direct neighbours of specified BusStop
-	 * @param s
+	 * @param stopId
 	 * @return
 	 */
 	private ArrayList<BusStop> getNeighbours(int stopId)
@@ -255,6 +263,7 @@ public class ControllerGraph
 					//prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 
 					System.out.println(bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
+					System.out.println(db.getBusStop(prevStop).getName() + ":" + bestStoppingPoints.get(prevStop).getName());
 
 					currentStop = prevStop;
 					prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
