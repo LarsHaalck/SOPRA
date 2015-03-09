@@ -14,6 +14,6 @@ public class TabNetwork extends JPanel
 	{
 		setLayout(new BorderLayout(5,5));
 		DisplayNetwork displayNetwork = new DisplayNetwork();
-		add(new JScrollPane(new JLabel(displayNetwork.getNetwork())), BorderLayout.CENTER);
+		add(displayNetwork, BorderLayout.CENTER);
 	}
 }

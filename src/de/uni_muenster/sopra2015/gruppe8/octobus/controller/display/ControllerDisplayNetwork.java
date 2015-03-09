@@ -2,6 +2,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.display;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
 import javafx.scene.chart.XYChart;
@@ -12,7 +15,7 @@ import java.util.*;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerDisplayNetwork extends Controller
+public class ControllerDisplayNetwork extends Controller implements ListenerButton
 {
 	private DisplayNetwork displayNetwork;
 	private ControllerDatabase controllerDatabase;
@@ -20,11 +23,16 @@ public class ControllerDisplayNetwork extends Controller
 	private DataBusStop[] dataBusStops;
 	private DataRoute[] dataRoutes;
 
+	private int maxWidth;
+	private int maxHeight;
+
 	private Color colorDark = new Color(0,0,0);
 	private Color colorLight = new Color(120,120,120);
 
 	public ControllerDisplayNetwork(DisplayNetwork displayNetwork)
 	{
+		super();
+
 		this.displayNetwork = displayNetwork;
 		this.controllerDatabase = ControllerDatabase.getInstance();
 
@@ -42,6 +50,10 @@ public class ControllerDisplayNetwork extends Controller
 		{
 			BusStop busStop = busStops.get(i);
 			dataBusStops[i] = new DataBusStop(busStop.getLocation().getFirst(), busStop.getLocation().getSecond(), busStop.getName());
+			if(busStop.getLocation().getFirst() > maxWidth)
+				maxWidth = busStop.getLocation().getFirst();
+			if(busStop.getLocation().getSecond() > maxHeight)
+				maxHeight = busStop.getLocation().getSecond();
 		}
 
 		//Would contains name, colors and steps from every route
@@ -50,7 +62,7 @@ public class ControllerDisplayNetwork extends Controller
 		{
 			Route route = routes.get(i);
 			//Added new data-route with route-data
-			dataRoutes[i] = new DataRoute(colorDark, colorLight, route.getName());
+			dataRoutes[i] = new DataRoute(colorDark, colorLight, route.getName(), route.isNight());
 			//Get Stops from route
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = route.getStops();
 			//First bus-stop
@@ -68,6 +80,11 @@ public class ControllerDisplayNetwork extends Controller
 		}
 	}
 
+	public Tuple<Integer, Integer> getMaxSize()
+	{
+		return new Tuple<>(maxWidth, maxHeight);
+	}
+
 	public DataBusStop[] getBusStops()
 	{
 		return dataBusStops;
@@ -81,13 +98,26 @@ public class ControllerDisplayNetwork extends Controller
 	@Override
 	protected void addListeners()
 	{
-
+		ControllerManager.addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
+		ControllerManager.removeListener((ListenerButton) this);
+	}
 
+	@Override
+	public void buttonPressed(EmitterButton btn)
+	{
+		switch(btn)
+		{
+			case DISPLAY_NETWORK_NIGHT:
+				break;
+
+			case DISPLAY_NETWORK_DAY:
+				break;
+		}
 	}
 
 	public class DataRoute
@@ -96,12 +126,14 @@ public class ControllerDisplayNetwork extends Controller
 		private Color colorLight;
 		private String name;
 		private LinkedList<Quadruple<Integer, Integer, Integer, Integer>> steps;
+		private boolean nightline;
 
-		public DataRoute(Color colorDark, Color colorLight, String name)
+		public DataRoute(Color colorDark, Color colorLight, String name, boolean nightline)
 		{
 			this.colorDark = colorDark;
 			this.colorLight = colorLight;
 			this.name = name;
+			this.nightline = nightline;
 
 			steps = new LinkedList<>();
 		}
@@ -129,6 +161,11 @@ public class ControllerDisplayNetwork extends Controller
 		public void addStep(Quadruple<Integer, Integer, Integer, Integer> step)
 		{
 			steps.add(step);
+		}
+
+		public boolean isNightline()
+		{
+			return nightline;
 		}
 	}
 

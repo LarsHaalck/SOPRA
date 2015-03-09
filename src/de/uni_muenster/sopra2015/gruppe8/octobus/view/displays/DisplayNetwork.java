@@ -1,11 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplayNetwork;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Quadruple;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormGeneral;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -14,62 +16,106 @@ import java.awt.image.BufferedImage;
 public class DisplayNetwork extends JPanel
 {
 	//Components
-	private JButton dayNightSwitch;
-	private JPanel networkDisplay;
+	private JRadioButton rdBtnDay;
+	private JRadioButton rdBtnNight;
+	private JScrollPane scrollPane;
+	private JLabel lbDay;
+	private JLabel lbNight;
 	private ControllerDisplayNetwork controllerDisplayNetwork;
-	private BufferedImage bi;
+	private BufferedImage imageNetworkDay;
+	private BufferedImage imageNetworkNight;
     public DisplayNetwork()
 	{
 		controllerDisplayNetwork = new ControllerDisplayNetwork(this);
-		setPreferredSize(new Dimension(5000,5000));
-		bi = new BufferedImage(5000,5000,BufferedImage.TYPE_INT_RGB);
-		draw();
+
+		//Get max-size
+		Tuple<Integer, Integer> size = controllerDisplayNetwork.getMaxSize();
+
+		imageNetworkDay = new BufferedImage(size.getFirst()+100,size.getSecond()+100,BufferedImage.TYPE_INT_RGB);
+		imageNetworkNight = new BufferedImage(size.getFirst()+100, size.getSecond()+100, BufferedImage.TYPE_INT_RGB);
+
+		//0 for day
+		drawToImage(0);
+		//1 for day
+		drawToImage(1);
+
+		JRadioButton rdBtnDay = new JRadioButton("Tag");
+		rdBtnDay.setMnemonic(KeyEvent.VK_T);
+		rdBtnDay.addActionListener(e->
+		{
+			controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_DAY);
+		});
+		rdBtnDay.setSelected(true);
+
+		JRadioButton rdBtnNight = new JRadioButton("Nacht");
+		rdBtnNight.setMnemonic(KeyEvent.VK_N);
+		rdBtnNight.addActionListener(e->
+		{
+			controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_NIGHT);
+		});
+		rdBtnNight.setSelected(false);
+
+		ButtonGroup btnGroup = new ButtonGroup();
+		btnGroup.add(rdBtnDay);
+		btnGroup.add(rdBtnNight);
+
+		add(rdBtnDay, BorderLayout.NORTH);
+		add(rdBtnNight, BorderLayout.NORTH);
+
+		lbDay = new JLabel(new ImageIcon(imageNetworkDay));
+		lbNight = new JLabel(new ImageIcon(imageNetworkNight));
+
+		scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(size.getFirst()+100, size.getSecond()+100));
+		scrollPane.add(lbDay);
+		//add(lbDay, BorderLayout.CENTER);
+		add(scrollPane, BorderLayout.CENTER);
     }
 
     private void initComponents()
     {
-        dayNightSwitch = new JButton();
-        networkDisplay = new JPanel();
-
-
-
-        networkDisplay.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     }
 
 	public ImageIcon getNetwork()
 	{
-		return new ImageIcon(bi);
+		return new ImageIcon(imageNetworkDay);
 	}
 
-	private void draw()
+	/**
+	 * Draw network to buffered image
+	 * @param type 0 means day, 1 means night
+	 */
+	private void drawToImage(int type)
 	{
 		//Get Graphics from panel that will contain network-graphics
-		Graphics2D g2 = bi.createGraphics();
+		Graphics2D g2 = imageNetworkDay.createGraphics();
 
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, 5000, 5000);
+		Tuple<Integer, Integer> maxSize = controllerDisplayNetwork.getMaxSize();
+		g2.fillRect(0, 0, maxSize.getFirst()+100, maxSize.getSecond()+100);
 
 		g2.setColor(Color.black);
 
 		ControllerDisplayNetwork.DataBusStop[] dataBusStops = controllerDisplayNetwork.getBusStops();
 		ControllerDisplayNetwork.DataRoute[] dataRoutes = controllerDisplayNetwork.getRoutes();
 
+		//Draw routes
 		for (ControllerDisplayNetwork.DataRoute dataRoute : dataRoutes)
 		{
+			if (dataRoute.isNightline() && type != 0)
+				continue;
 			for (Quadruple<Integer,Integer,Integer,Integer> step : dataRoute.getSteps())
 			{
-				if(g2 == null || step == null || step.getFirst() == null || step.getSecond() == null || step.getThird() == null || step.getFourth() == null)
-					continue;
 				g2.drawLine(step.getFirst(), step.getSecond(), step.getThird(), step.getFourth());
 			}
 		}
 
+		//Draw bus-stops
 		for (ControllerDisplayNetwork.DataBusStop dataBusStop : dataBusStops)
 		{
-			if(g2 == null)
-				continue;
 			g2.fillOval(dataBusStop.getX()-10, dataBusStop.getY()-10, 20, 20);
-			g2.drawString(dataBusStop.getName(), dataBusStop.getX()+25, dataBusStop.getY() + 25);
+			int textWidth = g2.getFontMetrics().stringWidth(dataBusStop.getName());
+			g2.drawString(dataBusStop.getName(), dataBusStop.getX() - (textWidth/2), dataBusStop.getY()+25);
 		}
 	}
 }
