@@ -113,9 +113,11 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 		switch(btn)
 		{
 			case DISPLAY_NETWORK_NIGHT:
+				displayNetwork.setNetwork(1);
 				break;
 
 			case DISPLAY_NETWORK_DAY:
+				displayNetwork.setNetwork(0);
 				break;
 		}
 	}

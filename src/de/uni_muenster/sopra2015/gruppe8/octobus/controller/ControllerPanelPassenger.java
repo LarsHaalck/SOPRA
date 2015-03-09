@@ -35,7 +35,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_TICKET);
 				break;
 			case PANEL_PASSENGER_SHOW_NETWORK:
-				System.out.println("Show network");
+				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_NETWORK);
 				break;
 		}
 	}

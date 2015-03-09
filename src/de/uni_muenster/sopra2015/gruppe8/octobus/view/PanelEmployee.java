@@ -3,6 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PanelNavigation;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.choices.PaneTabs;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayTicket;
 
 import javax.swing.*;
 
@@ -36,6 +38,7 @@ public class PanelEmployee extends JPanel
 	{
 		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver, userId);
 	}
+
 
 	/*
 	 * TODO: delete before Deployment, only for DEBUGGING-purposes

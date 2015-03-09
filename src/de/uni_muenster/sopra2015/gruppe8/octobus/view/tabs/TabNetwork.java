@@ -14,6 +14,8 @@ public class TabNetwork extends JPanel
 	{
 		setLayout(new BorderLayout(5,5));
 		DisplayNetwork displayNetwork = new DisplayNetwork();
+		displayNetwork.init(555,995);
+
 		add(displayNetwork, BorderLayout.CENTER);
 	}
 }

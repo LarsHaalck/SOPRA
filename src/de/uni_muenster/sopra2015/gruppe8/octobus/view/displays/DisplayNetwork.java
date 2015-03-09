@@ -15,6 +15,10 @@ import java.awt.image.BufferedImage;
  */
 public class DisplayNetwork extends JPanel
 {
+	//Static buffered images, so we only have to draw it once
+	private static BufferedImage imageNetworkDay;
+	private static BufferedImage imageNetworkNight;
+
 	//Components
 	private JRadioButton rdBtnDay;
 	private JRadioButton rdBtnNight;
@@ -22,22 +26,13 @@ public class DisplayNetwork extends JPanel
 	private JLabel lbDay;
 	private JLabel lbNight;
 	private ControllerDisplayNetwork controllerDisplayNetwork;
-	private BufferedImage imageNetworkDay;
-	private BufferedImage imageNetworkNight;
+	private static double ZOOM = 0.9;
+
     public DisplayNetwork()
 	{
 		controllerDisplayNetwork = new ControllerDisplayNetwork(this);
 
-		//Get max-size
 		Tuple<Integer, Integer> size = controllerDisplayNetwork.getMaxSize();
-
-		imageNetworkDay = new BufferedImage(size.getFirst()+100,size.getSecond()+100,BufferedImage.TYPE_INT_RGB);
-		imageNetworkNight = new BufferedImage(size.getFirst()+100, size.getSecond()+100, BufferedImage.TYPE_INT_RGB);
-
-		//0 for day
-		drawToImage(0);
-		//1 for day
-		drawToImage(1);
 
 		JRadioButton rdBtnDay = new JRadioButton("Tag");
 		rdBtnDay.setMnemonic(KeyEvent.VK_T);
@@ -62,37 +57,80 @@ public class DisplayNetwork extends JPanel
 		add(rdBtnDay, BorderLayout.NORTH);
 		add(rdBtnNight, BorderLayout.NORTH);
 
-		lbDay = new JLabel(new ImageIcon(imageNetworkDay));
-		lbNight = new JLabel(new ImageIcon(imageNetworkNight));
+		if(getImageNight() == null)
+			drawToImage(size, true);
+
+		if(getImageDay() == null)
+			drawToImage(size, false);
+
+		lbDay = new JLabel(getImageDay());
+		lbNight = new JLabel(getImageNight());
+
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.CENTER);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(size.getFirst()+100, size.getSecond()+100));
-		scrollPane.add(lbDay);
-		//add(lbDay, BorderLayout.CENTER);
-		add(scrollPane, BorderLayout.CENTER);
-    }
 
-    private void initComponents()
-    {
-    }
+		panel.add(scrollPane, BorderLayout.CENTER);
 
-	public ImageIcon getNetwork()
+	}
+
+	public static ImageIcon getImageDay()
 	{
+		if(imageNetworkDay == null)
+			return null;
 		return new ImageIcon(imageNetworkDay);
+	}
+
+	public static ImageIcon getImageNight()
+	{
+		if(imageNetworkNight == null)
+			return null;
+		return new ImageIcon(imageNetworkNight);
+	}
+
+	public void init(int w, int h)
+	{
+
+		scrollPane.setPreferredSize(new Dimension(h, w));
+		setNetwork(0);
+	}
+
+	public void setNetwork(int network)
+	{
+		if(network == 1)
+			scrollPane.setViewportView(lbNight);
+		else
+			scrollPane.setViewportView(lbDay);
+
+		scrollPane.invalidate();
+		scrollPane.revalidate();
+		scrollPane.repaint();
 	}
 
 	/**
 	 * Draw network to buffered image
-	 * @param type 0 means day, 1 means night
+	 * @param nightline false means day, true night
 	 */
-	private void drawToImage(int type)
+	private void drawToImage(Tuple<Integer, Integer> size, boolean nightline)
 	{
+		if(imageNetworkDay == null && !nightline)
+			imageNetworkDay = new BufferedImage((int)(ZOOM*(size.getFirst()+100)),(int)(ZOOM*(size.getSecond()+100)),BufferedImage.TYPE_INT_RGB);
+
+		if(imageNetworkNight == null && nightline)
+			imageNetworkNight = new BufferedImage((int)(ZOOM*(size.getFirst()+100)),(int)(ZOOM*(size.getSecond()+100)),BufferedImage.TYPE_INT_RGB);
+
+
 		//Get Graphics from panel that will contain network-graphics
-		Graphics2D g2 = imageNetworkDay.createGraphics();
+		Graphics2D g2;
+		if(!nightline)
+			g2 = imageNetworkDay.createGraphics();
+		else
+			g2 = imageNetworkNight.createGraphics();
 
 		g2.setColor(Color.WHITE);
 		Tuple<Integer, Integer> maxSize = controllerDisplayNetwork.getMaxSize();
-		g2.fillRect(0, 0, maxSize.getFirst()+100, maxSize.getSecond()+100);
+		g2.fillRect(0, 0, (int)(ZOOM*(maxSize.getFirst()+100)), (int)(ZOOM*(maxSize.getSecond()+100)));
 
 		g2.setColor(Color.black);
 
@@ -102,20 +140,20 @@ public class DisplayNetwork extends JPanel
 		//Draw routes
 		for (ControllerDisplayNetwork.DataRoute dataRoute : dataRoutes)
 		{
-			if (dataRoute.isNightline() && type != 0)
+			if (dataRoute.isNightline() != nightline)
 				continue;
 			for (Quadruple<Integer,Integer,Integer,Integer> step : dataRoute.getSteps())
 			{
-				g2.drawLine(step.getFirst(), step.getSecond(), step.getThird(), step.getFourth());
+				g2.drawLine((int)(ZOOM*step.getFirst()), (int)(ZOOM*step.getSecond()), (int)(ZOOM*step.getThird()), (int)(ZOOM*step.getFourth()));
 			}
 		}
 
 		//Draw bus-stops
 		for (ControllerDisplayNetwork.DataBusStop dataBusStop : dataBusStops)
 		{
-			g2.fillOval(dataBusStop.getX()-10, dataBusStop.getY()-10, 20, 20);
+			g2.fillOval((int)(ZOOM*(dataBusStop.getX()-10)), (int)(ZOOM*dataBusStop.getY()-10), (int)(ZOOM*20), (int)(ZOOM*20));
 			int textWidth = g2.getFontMetrics().stringWidth(dataBusStop.getName());
-			g2.drawString(dataBusStop.getName(), dataBusStop.getX() - (textWidth/2), dataBusStop.getY()+25);
+			g2.drawString(dataBusStop.getName(), (int)(ZOOM*(dataBusStop.getX() - (textWidth/2))), (int)(ZOOM*dataBusStop.getY()+25));
 		}
 	}
 }
