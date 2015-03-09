@@ -9,6 +9,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
@@ -25,7 +27,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	FormRoute formRoute;
 	private int objectID;
 	private Route route;
-	private ArrayList<Integer> contentTableCurrent = new ArrayList<Integer>();
+	private ArrayList<Tuple<Integer, String>> contentTableCurrent = new ArrayList<>();
 	private JTable tableCurrent;
 	private int viewRow;
 
@@ -84,7 +86,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					break;
 				if (viewRow == 0)
 					break;
-				int contentOld = contentTableCurrent.get(viewRow - 1);
+				Tuple<Integer, String> contentOld = contentTableCurrent.get(viewRow - 1);
 				contentTableCurrent.remove(viewRow - 1);
 				contentTableCurrent.add(viewRow, contentOld);
 				initTableCurrent();
@@ -99,7 +101,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					break;
 				if (viewRow == contentTableCurrent.size() -1)
 					break;
-				int old = contentTableCurrent.get(viewRow + 1);
+				Tuple<Integer, String> old = contentTableCurrent.get(viewRow + 1);
 				contentTableCurrent.remove(viewRow + 1);
 				contentTableCurrent.add(viewRow, old);
 				initTableCurrent();
@@ -107,14 +109,19 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP1_ADD:
+
 				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
+				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
-				viewRow = tableAvailabe.getSelectedRow();
+				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_1();
+				int viewRow = tableAvailabe.getSelectedRow();
 				if (viewRow == -1)
 					break;
 				int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
 				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
-				contentTableCurrent.add(selectedID);
+				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
+				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
+				tableAvailabe.clearSelection();
 				initTableCurrent();
 				break;
 
@@ -177,21 +184,23 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		removeListeners();
 	}
 
+
 	/**
 	 * Initializes table Available with BusStops
 	 */
 	public void initTableAvailable()
 	{
-		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
-		Object[][] data = new Object[busStops.size()][2];
-		for(int i=0; i<busStops.size(); i++)
+		ArrayList<Tuple<Integer, String>> stoppingPoints = controllerDatabase.getStoppingPoints();
+
+		Object[][] data = new Object[stoppingPoints.size()][2];
+		for(int i=0; i<stoppingPoints.size(); i++)
 		{
-			BusStop busStop = busStops.get(i);
-			data[i][0] = busStop.getId();
-			data[i][1] = busStop.getName();
+			data[i][0] = stoppingPoints.get(i).getFirst();
+			data[i][1] =stoppingPoints.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableAvailable(data);
 	}
+
 	/**
 	 * Initializes table Current with BusStops
 	 */
@@ -200,13 +209,12 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
-			BusStop busStop = controllerDatabase.getBusStop(contentTableCurrent.get(i));
-			data[i][0] = busStop.getId();
-			data[i][1] = busStop.getName();
+			StoppingPoint stoppingPoint = controllerDatabase.getStoppingPoint(contentTableCurrent.get(i).getFirst());
+			data[i][0] = stoppingPoint.getId();
+			data[i][1] = contentTableCurrent.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}
-
 	/**
 	 * Initializes table with BusStops
 	 * @param id List of BusStop IDs to be excluded
