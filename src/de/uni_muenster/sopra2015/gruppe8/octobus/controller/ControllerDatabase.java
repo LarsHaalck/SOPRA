@@ -1380,10 +1380,8 @@ public class ControllerDatabase
 	 */
 	public int deleteToursUsingRoutesId(int id)
 	{
-        int numOfTours = getNumberOfToursUsingRoutesId();
-
+        int numOfTours = getNumberOfToursUsingRouteId(id);
 		create.delete(TOURS).where(TOURS.ROUTES_ID.eq(id)).execute();
-
 		return numOfTours;
 	}
 
