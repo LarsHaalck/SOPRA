@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
@@ -11,22 +13,27 @@ import java.awt.*;
  */
 public class FormDepartureTime extends FormGeneral
 {
+	private ControllerFormRoute controllerFormRoute;
 	private JPanel jpButton, jpMain, jpStartTime, jpEndTime, jpFrequency, jpCheckBox, jpButtonMain;
 	private JButton jbSave, jbCancel;
-	private JLabel jlStartTime, jlEndTime, jlFrequency;
+	private JLabel jlStartTime, jlEndTime, jlFrequency, jlInfo1, jlInfo2;
 	private FieldNumber fnStartTime_Hour, fnStartTime_Minute, fnEndTime_Hour, fnEndTime_Minute, fnFrequency;
 	private JCheckBox jcbMo, jcbDi, jcbMi, jcbDo, jcbFr, jcbSa, jcbSo;
 
-	public FormDepartureTime(JDialog parent)
+	public FormDepartureTime(JDialog parent, ControllerFormRoute controllerFormRoute)
 	{
 		super(parent, "Abfahrtszeiten Hinzufügen");
+		this.controllerFormRoute = controllerFormRoute;
 		setLayout(new BorderLayout());
 		setResizable(false);
 
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
 		jpMain.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
+		jlInfo1 = new JLabel("Entweder nur die Startzeit angeben,");
+		jpMain.add(jlInfo1);
+		jlInfo2 = new JLabel("oder alles ausfüllen.");
+		jpMain.add(jlInfo2);
 		jpStartTime = new JPanel();
 		jpStartTime.setLayout(new BoxLayout(jpStartTime, BoxLayout.X_AXIS));
 		jlStartTime = new JLabel("Startzeit: ");
@@ -104,11 +111,11 @@ public class FormDepartureTime extends FormGeneral
 
 		jbSave = new JButton("Speichern");
 		jbSave.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_SAVE);
 		});
 		jbCancel = new JButton("Abbrechen");
 		jbCancel.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_CANCEL);
 		});
 
 		jpButton.add(jbSave);

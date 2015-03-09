@@ -136,7 +136,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
-				new FormDepartureTime(formRoute);
+				new FormDepartureTime(formRoute, this);
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
@@ -144,6 +144,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
+
+				break;
+
+			case FORM_ROUTE_STEP2_DEPARTURE_SAVE:
+
+				break;
+
+			case FORM_ROUTE_STEP2_DEPARTURE_CANCEL:
 
 				break;
 		}
