@@ -70,7 +70,7 @@ public class FieldNumber extends FieldText
 
 	private void setInterval(int intervalMaximum)
 	{
-		this.addKeyListener(new IntervalKeyAdapter(this, intervalMaximum)
+		this.addKeyListener(new KeyAdapter()
 		{
 			public void keyTyped(KeyEvent e) //ignore some cases to prevent SQL-injections
 			{
@@ -81,41 +81,17 @@ public class FieldNumber extends FieldText
 				}
 				int i = Character.getNumericValue(c);
 				int value = i;
-				if (getFieldNumber().getNumber() != -1)
+				if (getNumber() != -1)
 				{
-					value = getFieldNumber().getNumber() * 10 + i;
+					value = getNumber() * 10 + i;
 				}
-				if (value > getIntervalMaximum())
+				if (value > intervalMaximum)
 				{
 					e.consume(); // ignore event
 				}
 			}
 		});
 	}
-
-	private class IntervalKeyAdapter extends KeyAdapter
-	{
-		FieldNumber fieldNumber;
-		private int intervalMaximum;
-
-		public IntervalKeyAdapter(FieldNumber fieldNumber,  int intervalMaximum)
-		{
-			super();
-			this.fieldNumber = fieldNumber;
-			this.intervalMaximum = intervalMaximum;
-		}
-
-		public FieldNumber getFieldNumber()
-		{
-			return fieldNumber;
-		}
-
-		public int getIntervalMaximum()
-		{
-			return intervalMaximum;
-		}
-	}
-
 
 	/**
      * Returns field's input / -1 if no number was entered.

@@ -9,6 +9,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
@@ -128,7 +129,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
-
+				new FormDepartureTime(formRoute);
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
