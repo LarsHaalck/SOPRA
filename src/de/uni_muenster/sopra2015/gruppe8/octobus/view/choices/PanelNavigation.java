@@ -11,13 +11,15 @@ import java.awt.*;
  */
 public class PanelNavigation extends JPanel
 {
+	private JLabel lbWelcomeText;
+
 	public PanelNavigation(String username)
 	{
 		super();
 
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		JLabel lbWelcomeText = new JLabel("Willkommen, " + username + "!");
+		lbWelcomeText = new JLabel("Willkommen, " + username + "!");
 		JButton btnChangePassword = new JButton("Passwort ändern");
 		JButton btnLogout = new JButton("Ausloggen");
 
@@ -39,5 +41,10 @@ public class PanelNavigation extends JPanel
 		{
 			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT);
 		});
+	}
+
+	public void setWelcomeText(String text)
+	{
+		lbWelcomeText.setText(text);
 	}
 }
