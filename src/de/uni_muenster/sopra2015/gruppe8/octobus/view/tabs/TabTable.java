@@ -32,6 +32,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private boolean enableMultiFilter = false;
 	private int filterColumn = 1;
 	private ArrayList listSortKeys;
+	private boolean sortKeySet = false;
 
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
 	{
@@ -112,19 +113,16 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 						public void changedUpdate(DocumentEvent e)
 						{
 							newFilter();
-							sorter.sort();
 						}
 
 						public void insertUpdate(DocumentEvent e)
 						{
 							newFilter();
-							sorter.sort();
 						}
 
 						public void removeUpdate(DocumentEvent e)
 						{
 							newFilter();
-							sorter.sort();
 						}
 					});
 		}
@@ -224,12 +222,17 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	{
 		table.clearSelection();
 		model.setData(data);
+
+		//TODO: check which if these are enough :D
 		table.revalidate();
-		/*ArrayList listSortKeys = new ArrayList();
-		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
-		sorter.setSortKeys(listSortKeys);*/
-		if(data.length > 0) //sort iff data is available
-			sorter.setSortKeys(listSortKeys);
 		table.repaint();
+		model.fireTableDataChanged();
+
+		if(data.length > 0 && !sortKeySet) //sort iff data is available
+		{
+			sorter.setSortKeys(listSortKeys);
+			sortKeySet = true;
+		}
+		if(sortKeySet) sorter.sort();
 	}
 }

@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
@@ -12,20 +15,23 @@ import java.util.Vector;
 /**
  * Created by Jonas on 04.03.2015.
  */
-public class FormTourStep1 extends JPanel
+public class FormRouteStep1 extends JPanel
 {
 	private JTable busStopCurrent, busStopAvailable;
 	private BasicArrowButton add, delete, up, down;
 	private Box boxTop;
-	private DefaultTableModel model_1,model_2;
+	private RouteTableModel model_1,model_2;
 	private JLabel name;
 	private JCheckBox nightLineClick;
 	private JPanel bottomPanel, space;
 	private FieldText nameTour;
 	private JScrollPane t1, t2;
+	private ControllerFormRoute controllerFormRoute;
 
-	public FormTourStep1()
+	public FormRouteStep1(ControllerFormRoute controllerFormRoute)
 	{
+		this.controllerFormRoute = controllerFormRoute;
+
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(new Insets(5, 10, 15, 10)));
 
@@ -62,7 +68,7 @@ public class FormTourStep1 extends JPanel
 
 		up = new BasicArrowButton(BasicArrowButton.NORTH);
 		up.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_UP);
 		});
 		cButton.gridx = 0;
 		cButton.gridy = 1;
@@ -71,15 +77,17 @@ public class FormTourStep1 extends JPanel
 
 		down = new BasicArrowButton(BasicArrowButton.SOUTH);
 		down.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DOWN);
 		});
 		cButton.gridx = 0;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(5, 0, 5, 50);
 		bottomPanel.add(down, cButton);
 
-		model_1 = new DefaultTableModel(null, new String[] {"Haltestelle"});
+		model_1 = new RouteTableModel();
 		busStopCurrent = new JTable(model_1);
+		busStopCurrent.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		busStopCurrent.removeColumn(busStopCurrent.getColumnModel().getColumn(0));
 		busStopCurrent.setFillsViewportHeight(true);
 		t1 = new JScrollPane(busStopCurrent);
 		t1.setPreferredSize(new Dimension(250, 400));
@@ -89,7 +97,7 @@ public class FormTourStep1 extends JPanel
 
 		add = new BasicArrowButton(BasicArrowButton.WEST);
 		add.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_ADD);
 		});
 		cButton.gridx = 2;
 		cButton.gridy = 1;
@@ -98,15 +106,17 @@ public class FormTourStep1 extends JPanel
 
 		delete = new BasicArrowButton(BasicArrowButton.EAST);
 		delete.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DELETE);
 		});
 		cButton.gridx = 2;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(20, 50, 5, 50);
 		bottomPanel.add(delete, cButton);
 
-		model_2 = new DefaultTableModel(null, new String[] {"Haltestelle"});
+		model_2 = new RouteTableModel();
 		busStopAvailable = new JTable(model_2);
+		busStopAvailable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		busStopAvailable.removeColumn(busStopAvailable.getColumnModel().getColumn(0));
 		busStopAvailable.setFillsViewportHeight(true);
 		t2 = new JScrollPane(busStopAvailable);
 		t2.setPreferredSize(new Dimension(250, 400));
@@ -123,13 +133,72 @@ public class FormTourStep1 extends JPanel
 		add(bottomPanel, BorderLayout.CENTER);
 	}
 
+	private class RouteTableModel extends ExtendedTableModel
+	{
+		public RouteTableModel()
+		{
+			columnNames = new String[]{"Haltestelle"};
+		}
+
+		@Override
+		public int getFirstSortColumn()
+		{
+			return 0;
+		}
+
+		@Override
+		public String[] getRefineableColumns()
+		{
+			return new String[0];
+		}
+	}
+
+	/**
+	 * Fills table available with data.
+	 */
+	public void fillTableAvailable(Object[][] data)
+	{
+		model_2.setData(data);
+	}
+
+	/**
+	 * Fills table current with data.
+	 */
+	public void fillTableCurrent(Object[][] data)
+	{
+		model_1.setData(data);
+	}
+
 	//--------------------------------------
 	//------------- getter -----------------
 	//--------------------------------------
 
-	public Vector<Vector<String>> getTableData() //TODO nochmal angucken
+	public JTable getBusStopCurrent()
 	{
-		return model_1.getDataVector();
+		return busStopCurrent;
+	}
+
+	public JTable getBusStopAvailable()
+	{
+		return busStopAvailable;
+	}
+
+	public RouteTableModel getModel_1()
+	{
+		return model_1;
+	}
+
+	public RouteTableModel getModel_2()
+	{
+		return model_2;
+	}
+
+	public String[] getTableData () {
+		int nRow = model_1.getRowCount();
+		String[] tableData = new String[nRow];
+		for (int i = 0 ; i < nRow ; i++)
+			tableData[i] = model_1.getValueAt(i,0).toString();
+		return tableData;
 	}
 
 	public String getName()
@@ -159,12 +228,12 @@ public class FormTourStep1 extends JPanel
 
 	public void setBusStopCurrent(String[][] rowdata_busStopCurrent)
 	{
-		model_1.setDataVector(rowdata_busStopCurrent, new String[] {"Haltestelle"});
+		//TODO model_1.setDataVector(rowdata_busStopCurrent, new String[] {"Haltestelle"});
 	}
 
 	public  void setBusStopAvailable(String[][] rowdata_busStopAvailable)
 	{
-		model_2.setDataVector(rowdata_busStopAvailable, new String[] {"Haltestelle"});
+		//TODO model_2.setDataVector(rowdata_busStopAvailable, new String[] {"Haltestelle"});
 	}
 
 }

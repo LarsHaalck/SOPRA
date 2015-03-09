@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 
@@ -10,8 +12,12 @@ public class EntryPoint
 {
 	public EntryPoint(String ep)
 	{
+
 		FrameMain frameMain = new FrameMain();
 		PanelEmployee panelEmployee = new PanelEmployee();
+
+		//Automatically login root-user
+		ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, 6);
 
 		switch (ep)
 		{
@@ -20,10 +26,10 @@ public class EntryPoint
 			case "PanelEmployee":
 				frameMain.getControllerFrameMain().displayContent(new PanelEmployee());
 				break;
-			/*case "TabExample":
+			case "TabExample":
 				panelEmployee.getPaneTabs().setSelectedIndex(0);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
-				break;*/
+				break;
 			case "TabNetwork":
 				panelEmployee.getPaneTabs().setSelectedIndex(0);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
@@ -32,27 +38,27 @@ public class EntryPoint
 				panelEmployee.getPaneTabs().setSelectedIndex(1);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabEmployee":
+			case "TabSchedule":
 				panelEmployee.getPaneTabs().setSelectedIndex(2);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabBusStop":
+			case "TabEmployee":
 				panelEmployee.getPaneTabs().setSelectedIndex(3);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabLine":
+			case "TabBusStop":
 				panelEmployee.getPaneTabs().setSelectedIndex(4);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabTicket":
+			case "TabLine":
 				panelEmployee.getPaneTabs().setSelectedIndex(5);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabWorkPlan":
+			case "TabTicket":
 				panelEmployee.getPaneTabs().setSelectedIndex(6);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;
-			case "TabSchedule":
+			case "TabWorkPlan":
 				panelEmployee.getPaneTabs().setSelectedIndex(7);
 				frameMain.getControllerFrameMain().displayContent(panelEmployee);
 				break;

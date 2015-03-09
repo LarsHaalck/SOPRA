@@ -3,9 +3,27 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+
+/**
+ * Customised FieldText exclusively for number inputs where all input except numbers is blocked.
+ */
 public class FieldNumber extends FieldText
 {
 
+	/**
+	 * Constructs FieldNumber with maximum input length of 9.
+	 */
+	public FieldNumber()
+	{
+		super(9);
+		setMask();
+	}
+
+	/**
+	 * Constructs FieldNumber with maximum input length of limit.
+     *
+	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
+	 */
 	public FieldNumber(int limit)
 	{
 		super();
@@ -17,29 +35,34 @@ public class FieldNumber extends FieldText
 	}
 
 
-	public FieldNumber(int width, int limit)
+	/**
+	 * Constructs FieldNumber with maximum input length of limit and specified number of columns.
+     *
+	 * @param columns numbers of columns to use to calculate preferred width
+	 * @param limit limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
+	 */
+	public FieldNumber(int columns, int limit)
 	{
 		super();
-		this.setColumns(width);
+		this.setColumns(columns);
 		if(limit >= 9 || limit == -1)
-			setLimit(9);
+		setLimit(9);
 		else
 			setLimit(limit);
 
 		setMask();
 	}
 
-	public FieldNumber()
-	{
-		super(9);
-		setMask();
-	}
 
+	/**
+	 * Blocks all inputs except numbers.
+	 */
 	private void setMask()
 	{
 		this.addKeyListener(new KeyAdapter()
 		{
-			public void keyTyped(KeyEvent e) //ignore some cases to prevent SQL-injections
+            // Ignore some cases to prevent SQL injections
+            public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
 				if (c < '0' || c > '9')
@@ -51,6 +74,11 @@ public class FieldNumber extends FieldText
 	}
 
 
+	/**
+     * Returns field's input / -1 if no number was entered.
+     *
+	 * @return -1 if no number was entered, returns input otherwise
+	 */
 	public int getNumber()
 	{
 		if(this.getText().length() == 0)
@@ -62,8 +90,8 @@ public class FieldNumber extends FieldText
 				return Integer.parseInt(this.getText());
 			} catch(Exception e)
 			{
-				System.out.println("Exception in FieldNumber parse");
-				return -1;
+                // Only for the compiler. This shouldn't happen!
+                return -1;
 			}
 		}
 	}
@@ -72,7 +100,4 @@ public class FieldNumber extends FieldText
 	{
 		this.setText(Integer.toString(number));
 	}
-
-	//TODO: setText() getText() Overrides
-
 }

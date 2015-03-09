@@ -78,8 +78,8 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 
                 if (generatedHash.equals(candidateHash))
 				{
-                    // TODO: How do we pass the now logged in user back to the caller?
 					ControllerManager.informUserStateChanged(EmitterUserState.LOGGED_IN);
+					ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, candidateEmployee.getId());
 					removeListeners();
 					dialog.dispose();
 				} else

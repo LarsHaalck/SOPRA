@@ -4,19 +4,22 @@ import javax.swing.*;
 import javax.swing.text.Document;
 import java.awt.*;
 
+
+/**
+ * Customised JTextArea which is limited to 2000 characters and uses the same font settings as a default JTextField
+ */
 public class AreaText extends JTextArea
 {
-	private int limit = 2000;
 	private LimitDocument limitDoc;
 
 	public AreaText()
 	{
 		super();
-
-		setFont(UIManager.getDefaults().getFont("JTextField.font"));
-		limitDoc.setLimit(this.limit);
+		setFont(new Font("Tahoma", Font.PLAIN, 11));
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
+
+		limitDoc.setLimit(2000);
 	}
 
 	@Override

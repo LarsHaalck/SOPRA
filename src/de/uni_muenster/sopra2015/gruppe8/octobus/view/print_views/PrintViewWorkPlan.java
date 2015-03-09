@@ -10,6 +10,7 @@ import java.awt.print.PrinterException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Florian on 06.03.2015.
@@ -41,11 +42,6 @@ public class PrintViewWorkPlan implements Printable
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws
 	PrinterException {
-
-		if (pageIndex > numPages)
-		{
-			return NO_SUCH_PAGE;
-		}
 		graphics2D = (Graphics2D) graphics;
 		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
@@ -53,6 +49,11 @@ public class PrintViewWorkPlan implements Printable
 		pageWidth = pageFormat.getImageableWidth();
 
 		calcEntriesPerPage();
+
+		if (pageIndex >= numPages)
+		{
+			return NO_SUCH_PAGE;
+		}
 
 		drawHeader();
 		drawContent(pageIndex);
@@ -70,7 +71,7 @@ public class PrintViewWorkPlan implements Printable
 
 	private void drawContent(int pageIndex)
 	{
-		SimpleDateFormat date = new SimpleDateFormat("dd.MM.YYYY");
+		SimpleDateFormat date = new SimpleDateFormat("E, d. MMM YYYY", Locale.GERMANY);
 		SimpleDateFormat hour = new SimpleDateFormat("HH:mm");
 
 		String lastDate = "";
@@ -81,8 +82,11 @@ public class PrintViewWorkPlan implements Printable
 		graphics2D.setFont(fontNormal);
 
 		ArrayList<Quadruple<String, Date, Integer, String>> tours = data.getTours();
-		for (int i = pageIndex*entriesPerPage; i<tours.size(); i++)
+		for (int i = pageIndex*entriesPerPage; i<entriesPerPage*(pageIndex + 1); i++)
 		{
+			if(i>= tours.size())
+				break;
+
 			Quadruple<String, Date, Integer, String> tour = tours.get(i);
 			String curDate = date.format(tour.getSecond());
 			if(!curDate.equals(lastDate))
@@ -107,8 +111,10 @@ public class PrintViewWorkPlan implements Printable
 
 	private void calcEntriesPerPage()
 	{
-		entriesPerPage = (int)pageHeight/entryHeight;
-		numPages = (int)Math.ceil(pageHeight/entriesPerPage);
+		entriesPerPage = ((int)(pageHeight)/entryHeight)-2;
+		numPages = data.numTours()/entriesPerPage;
+		if(data.numTours()%entriesPerPage != 0)
+			numPages++;
 	}
 
 	private void drawLines()

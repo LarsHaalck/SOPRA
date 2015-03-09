@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
@@ -14,7 +16,7 @@ import java.util.Vector;
  * Created by Jonas on 04.03.2015.
  */
 
-public class FormTourStep2 extends JPanel
+public class FormRouteStep2 extends JPanel
 {
 	private String[] busStops;
 
@@ -25,9 +27,12 @@ public class FormTourStep2 extends JPanel
 	private JScrollPane jspMo, jspDi, jspMi, jspDo, jspFr, jspSa, jspSo;
 	private DefaultTableModel dtmMo, dtmDi, dtmMi, dtmDo, dtmFr, dtmSa, dtmSo;
 	private JTable jtMo, jtDi, jtMi, jtDo, jtFr, jtSa, jtSo;
+	private ControllerFormRoute controllerFormRoute;
 
-	public FormTourStep2()
+	public FormRouteStep2(ControllerFormRoute controllerFormRoute)
 	{
+		this.controllerFormRoute = controllerFormRoute;
+
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(new Insets(5, 10, 15, 10)));
 
@@ -96,17 +101,17 @@ public class FormTourStep2 extends JPanel
 
 		addButton = new JButton("Hinzufügen");
 		addButton.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_ADD);
 		});
 		jpButton.add(addButton);
 		editButton = new JButton("Bearbeiten");
 		editButton.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_EDIT);
 		});
 		jpButton.add(editButton);
 		deleteButton = new JButton("Löschen");
 		deleteButton.addActionListener(e -> {
-
+			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DELETE);
 		});
 		jpButton.add(deleteButton);
 		jpRightMain.add(jpButton, BorderLayout.SOUTH);
@@ -163,17 +168,19 @@ public class FormTourStep2 extends JPanel
 		if (busStops.length > 7)
 			gridRow = busStops.length*2 - 1;
 		jpMain.setLayout(new GridLayout(gridRow, 1));
-		System.out.println(gridRow);
-		jpMain.add(new BusStop(busStops[0]));
-		for (int i = 1; i < busStops.length; i++)
+		if(busStops.length > 0)
 		{
-			DepartureTime dt = new DepartureTime();
-			departureTimes.add(dt);
-			jpMain.add(dt);
-			jpMain.add(new BusStop(busStops[i]));
+			jpMain.add(new BusStop(busStops[0]));
+			for (int i = 1; i < busStops.length; i++)
+			{
+				DepartureTime dt = new DepartureTime();
+				departureTimes.add(dt);
+				jpMain.add(dt);
+				jpMain.add(new BusStop(busStops[i]));
+			}
+			revalidate();
+			repaint();
 		}
-		revalidate();
-		repaint();
 	}
 
 	public void setTableData_dtmMo(String[][] rowdata_Mo)

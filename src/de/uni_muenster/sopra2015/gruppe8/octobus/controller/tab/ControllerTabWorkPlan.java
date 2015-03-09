@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
@@ -17,13 +15,15 @@ import java.util.ArrayList;
  */
 public class ControllerTabWorkPlan extends Controller implements ListenerButton
 {
-	ControllerDatabase controllerDatabase;
-	TabWorkPlan tabWorkPlan;
+	private ControllerDatabase controllerDatabase;
+	private TabWorkPlan tabWorkPlan;
+	private int userId;
 
-	public ControllerTabWorkPlan(TabWorkPlan tabWorkPlan)
+	public ControllerTabWorkPlan(TabWorkPlan tabWorkPlan, int userId)
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
+		this.userId = userId;
 		this.tabWorkPlan = tabWorkPlan;
 	}
 
@@ -48,16 +48,14 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 				break;
 
 			case TAB_WORK_PLAN_PRINT:
-				System.out.println("Butn pressed");
-				ControllerManager.informPrintRequested(EmitterPrint.WORK_PLAN, 1);
+				ControllerManager.informPrintRequested(EmitterPrint.WORK_PLAN, userId);
 				break;
 		}
 	}
 
 	public void fillTable()
 	{
-		//TODO Set logged-in user
-		ArrayList<Tour> tours = controllerDatabase.getUserTours(1);
+		ArrayList<Tour> tours = controllerDatabase.getUserTours(userId);
 		Object[][] data = new Object[tours.size()][7];
 		for(int i=0; i<tours.size(); i++)
 		{
@@ -71,5 +69,6 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 			data[i][6] = tour.getBus().getLicencePlate();
 		}
 		tabWorkPlan.fillTable(data);
+		tabWorkPlan.enableButtons(data.length > 0);
 	}
 }

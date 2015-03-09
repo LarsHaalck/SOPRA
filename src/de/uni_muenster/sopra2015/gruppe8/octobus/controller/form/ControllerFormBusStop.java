@@ -144,7 +144,8 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	/**
 	 *Checks if form input is correct and adds values to local busStop.
-	 * @return Returns true on correct input.
+     *
+	 * @return returns true on correct input
 	 */
 	private boolean parseValuesFromForm()
 	{
@@ -168,7 +169,9 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		boolean barrierFree = formBusStop.getBarrierFree();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(name.trim().length() == 0)
+		if(name == null)
+			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
+		else if(name.trim().length() == 0)
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(name.trim().length() < 5)
 			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
@@ -198,6 +201,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current busStop to the DB.
+     *
 	 * @return
 	 */
 	private boolean saveToDB()
