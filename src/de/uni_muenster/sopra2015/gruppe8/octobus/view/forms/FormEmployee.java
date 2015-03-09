@@ -33,10 +33,11 @@ public class FormEmployee extends FormGeneral
 	private JCheckBox cbHRManager;
 
 	/*
-	 * the buttons for save and cancel
+	 * the buttons for save, cancel and reset password
 	 */
 	private JButton btSave;
 	private JButton btCancel;
+	private JButton btPassword;
 
 	public FormEmployee(Frame parent, int objectID)
 	{
@@ -187,6 +188,9 @@ public class FormEmployee extends FormGeneral
 
 		cstTextField.gridy = 9;
 		tfUsername = new FieldText(10);
+		//Disable username-field if editing an employee
+		if(objectID != -1)
+			tfUsername.setEnabled(false);
 		add(tfUsername, cstTextField);
 
 		cstLabel.gridy = 10;
@@ -217,11 +221,22 @@ public class FormEmployee extends FormGeneral
 		cstLabel.gridy = 15;
 		cstLabel.ipadx = 0;
 		cstLabel.ipady = 0;
+		cstLabel.gridwidth = 2;
 		btSave = new JButton("Speichern");
 		add(btSave, cstLabel);
 
-		cstLabel.gridx = 3;
-		cstLabel.gridwidth = 3;
+		if(objectID != -1)
+		{
+			cstLabel.gridx = 2;
+			btPassword = new JButton("Passwort zurücksetzen");
+			add(btPassword, cstLabel);
+			btPassword.addActionListener(e->
+			{
+				controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_RESET_PASSWORD);
+			});
+		}
+
+		cstLabel.gridx = 4;
 		btCancel = new JButton("Abbrechen");
 		add(btCancel, cstLabel);
 

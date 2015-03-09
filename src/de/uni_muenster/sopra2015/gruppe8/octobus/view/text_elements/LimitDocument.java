@@ -5,9 +5,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * is used to limit content of ComponentText (sub-)classes (e.g. FieldText)
+ * Is used to limit content of ComponentText (sub-)classes (e.g. FieldText).
  */
-class LimitDocument extends PlainDocument //package class
+// Package class
+class LimitDocument extends PlainDocument
 {
 	private int limit = 200; //default limit
 

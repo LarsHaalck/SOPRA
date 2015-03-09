@@ -3,6 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.AreaText;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldPrice;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
@@ -19,7 +20,7 @@ public class FormTicket extends FormGeneral
 	private ControllerFormTicket controllerFormTicket;
 
 	private FieldText tfName;
-	private FieldNumber tfPrice;
+	private FieldPrice tfPrice;
 	private FieldNumber tfNumPassengers;
 	private AreaText taDescription;
 
@@ -82,7 +83,7 @@ public class FormTicket extends FormGeneral
 		add(lbPrice, cstLabel);
 
 		cstTextField.gridy = 2;
-		tfPrice = new FieldNumber(6);
+		tfPrice = new FieldPrice(6);
 		add(tfPrice, cstTextField);
 
 		cstLabel.gridy = 3;
@@ -146,12 +147,12 @@ public class FormTicket extends FormGeneral
 
 	public int getPrice()
 	{
-		return tfPrice.getNumber();
+		return tfPrice.getPrice();
 	}
 
 	public void setPrice(int price)
 	{
-		this.tfPrice.setNumber(price);
+		this.tfPrice.setPrice(price);
 	}
 
 	public String getDescription()

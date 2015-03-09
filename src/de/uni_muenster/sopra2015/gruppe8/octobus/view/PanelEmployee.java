@@ -27,20 +27,18 @@ public class PanelEmployee extends JPanel
 		add(panelNavigation);
 
 		paneTabs = new PaneTabs();
-		// ...
-		// Pretty much same as above
 		add(paneTabs);
 
 		setVisible(true);
 	}
 
-	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver)
+	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver, int userId)
 	{
-		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver);
+		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver, userId);
 	}
 
 	/*
-	* TODO: delete before Deployment, only for DEBUGGING-purposes
+	 * TODO: delete before Deployment, only for DEBUGGING-purposes
 	 */
 	public PaneTabs getPaneTabs()
 	{

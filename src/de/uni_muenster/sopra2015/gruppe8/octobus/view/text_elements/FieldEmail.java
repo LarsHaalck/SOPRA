@@ -5,12 +5,12 @@ import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
 /**
- * adjusted FieldText for email fields
+ * Customised FieldText for email fields
  */
 public class FieldEmail extends FieldText
 {
 	/**
-	 * constructs normal FieldText, limited to 200 characters
+	 * Constructs normal FieldText, limited to 200 characters
 	 */
 	public FieldEmail()
 	{
@@ -18,16 +18,19 @@ public class FieldEmail extends FieldText
 	}
 
 	/**
-	 * checks if email meets all requirements by checking it with the RFC 5322 regular expression for emails
+	 * Checks if email meets all requirements by checking it with the RFC 5322 regular expression for emails.
+     *
 	 * @param email email to be checked
 	 * @return true iff email is valid
 	 */
 	private boolean isValidEmail(String email)
 	{
-		if(email == null) //should only happen if FieldEmail is set directly from DB
+        // Should only happen if FieldEmail is set directly from DB
+        if(email == null)
 			return false;
 
-		if(super.isValidInput()) //check if it contains other malicious input
+        // Check if input contains other malicious content
+        if(super.isValidInput())
 		{
 			String pattern = "^([\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+[\\.]?)+[\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+@{1}((([0-9A-Za-z_-]+)([\\.]{1}[0-9A-Za-z_-]+)*\\.{1}([A-Za-z]){1,6})|(([0-9]{1,3}[\\.]{1}){3}([0-9]{1,3}){1}))$";
 			if (Pattern.compile(pattern).matcher(email).matches())
@@ -37,6 +40,8 @@ public class FieldEmail extends FieldText
 	}
 
 	/**
+     * Returns the text from the FieldText if the input is a correctly formatted email address.
+     *
 	 * @return text from field if text is valid email, null otherwise
 	 */
 	public String getEmail()

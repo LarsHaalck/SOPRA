@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.text.Document;
 
 /**
- * adjusted JPasswordField with limited input length of 32
+ * Customised JPasswordField with limited input length of 32 characters.
  */
 public class FieldPassword extends JPasswordField
 {
@@ -12,7 +12,7 @@ public class FieldPassword extends JPasswordField
 	private LimitDocument limitDoc;
 
 	/**
-	 * constructs FieldPassword with limit of 32
+	 * Constructs FieldPassword with limit of 32.
 	 */
 	public FieldPassword()
 	{
@@ -21,7 +21,8 @@ public class FieldPassword extends JPasswordField
 	}
 
 	/**
-	 * constructs FieldPassword with limit of 32 and specified column width
+	 * Constructs FieldPassword with limit of 32 characters and specified column width.
+     *
 	 * @param columns numbers of columns to use to calculate preferred width
 	 */
 	public FieldPassword(int columns)

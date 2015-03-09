@@ -14,7 +14,7 @@ public class PaneTabs extends JTabbedPane
 		super();
 	}
 
-	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver)
+	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver, int userId)
 	{
 		removeAll();
 
@@ -39,7 +39,7 @@ public class PaneTabs extends JTabbedPane
 			addTab("Fahrkarten", new TabTicket());
 
 		if(busDriver)
-			addTab("Arbeitsplan", new TabWorkPlan());
+			addTab("Arbeitsplan", new TabWorkPlan(userId));
 
 		revalidate();
 		repaint();
