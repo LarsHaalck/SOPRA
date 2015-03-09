@@ -16,6 +16,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
 import javax.swing.*;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 /**
@@ -31,15 +32,10 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private JTable tableCurrent;
 	private int viewRow;
 
-	private FormDepartureTime formDepartureTime;
-	private int departureTimeStart;
-	private int departureTimeEnd;
-	private boolean[] departureDays;
-	private int departureFreqency;
-
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
 		super();
+		route = new Route();
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.formRoute = formRoute;
 		this.objectID = objectID;
@@ -127,7 +123,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
 				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
 				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
-				tableAvailabe.clearSelection();
 				initTableCurrent();
 				break;
 
@@ -142,93 +137,16 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
-				formDepartureTime = new FormDepartureTime(formRoute);
-				formDepartureTime.setControllerFormRoute(this);
+				new FormDepartureTime(formRoute, route);
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
-
+				System.out.println(route.getStartTimes().get(DayOfWeek.FRIDAY).getFirst());
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
 
 				break;
-
-			case FORM_ROUTE_STEP2_DEPARTURE_SAVE:
-				if(parseValuesFromFormDeparture() == 1)
-				{
-
-				}
-				else if(parseValuesFromFormDeparture() == 2)
-				{
-
-				}
-				break;
-
-			case FORM_ROUTE_STEP2_DEPARTURE_CANCEL:
-
-				break;
-		}
-	}
-
-	/**
-	 * Parses values from FormDepartureTime.
-	 * @return Returns 0 on wrong input; 1 on only start time; 2 on start time, end time and frequency
-	 */
-	private int parseValuesFromFormDeparture()
-	{
-		System.out.println(formDepartureTime.toString());
-		int freqency = formDepartureTime.getFnFrequency();
-
-		boolean[] days = {formDepartureTime.getJcbMo(), formDepartureTime.getJcbDi(),
-							formDepartureTime.getJcbMi(), formDepartureTime.getJcbDo(),
-							formDepartureTime.getJcbFr(), formDepartureTime.getJcbSa(),
-							formDepartureTime.getJcbSo()};
-
-		ArrayList<String> errorFields = new ArrayList<>();
-		if(formDepartureTime.getFnStartTime_Hour() == -1 || formDepartureTime.getFnStartTime_Minute() == -1)
-			errorFields.add("Startzeit muss vollständig ausgefüllt sein..");
-		if(formDepartureTime.getFnEndTime_Hour() != -1 && formDepartureTime.getFnEndTime_Minute() != -1)
-		{
-			if(freqency == -1)
-				errorFields.add("Frequenz darf nicht leer sein, wenn eine Endzeit angegeben ist.");
-		}
-		else
-		{
-			if(freqency != -1)
-				errorFields.add("Frequenz muss zusammen mit einer vollständigen Endzeit angegeben werden.");
-		}
-		boolean minDaysChecked = false;
-		for (boolean day : days)
-		{
-			if(day)
-				minDaysChecked = true;
-		}
-		if(!minDaysChecked)
-			errorFields.add("Mindestens ein Tag muss ausgewählt sein.");
-
-		if(errorFields.size() > 0)
-		{
-			String errorMessage = "Die eingegeben Daten sind nicht gültig.\n";
-			errorMessage += errorListToString(errorFields);
-			formDepartureTime.showErrorForm(errorMessage);
-			return 0;
-		}
-		else
-		{
-			if(formDepartureTime.getFnEndTime_Hour() == -1 || formDepartureTime.getFnEndTime_Minute() == -1){
-				departureTimeStart = formDepartureTime.getFnStartTime_Hour() * 60 + formDepartureTime.getFnStartTime_Minute();
-				departureDays = days;
-				return 1;
-			}
-			else
-			{
-				departureTimeStart = formDepartureTime.getFnStartTime_Hour() * 60 + formDepartureTime.getFnStartTime_Minute();
-				departureTimeEnd = formDepartureTime.getFnEndTime_Hour() * 60 + formDepartureTime.getFnEndTime_Minute();
-				departureFreqency = freqency;
-				departureDays = days;
-				return 2;
-			}
 		}
 	}
 
@@ -269,7 +187,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 
 	/**
-	 * Initializes table Available with BusStops
+	 * Initializes table Available with StoppingPoints
 	 */
 	public void initTableAvailable()
 	{
@@ -279,22 +197,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		for(int i=0; i<stoppingPoints.size(); i++)
 		{
 			data[i][0] = stoppingPoints.get(i).getFirst();
-			data[i][1] =stoppingPoints.get(i).getSecond();
+			data[i][1] = stoppingPoints.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableAvailable(data);
 	}
 
 	/**
-	 * Initializes table Current with BusStops
+	 * Initializes table Current with StoppingPoints
 	 */
 	public void initTableCurrent()
 	{
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
-			BusStop busStop = controllerDatabase.getBusStopById(contentTableCurrent.get(i).getFirst());
-			data[i][0] = busStop.getId();
-			data[i][1] = busStop.getName();
+			data[i][0] = contentTableCurrent.get(i).getFirst();
+			data[i][1] = contentTableCurrent.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}

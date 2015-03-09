@@ -3,8 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetworkEmployee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplaySearchConnection;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
@@ -101,10 +101,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormRoute(frame, -1);
 				f.setVisible(true);
 				break;
-
-            case FORM_JOURNEY_SEARCH:
-                f = new FormJourneySearch(frame);
-                break;
 		}
 	}
 
@@ -159,6 +155,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 
 			case DISPLAY_NETWORK:
 				displayContent(new DisplayNetworkEmployee());
+				break;
+
+			case DISPLAY_CONNECTION:
+				displayContent(new DisplaySearchConnection());
 				break;
 
 			case DISPLAY_MAIN:

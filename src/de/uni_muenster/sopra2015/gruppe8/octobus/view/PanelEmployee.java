@@ -25,7 +25,7 @@ public class PanelEmployee extends JPanel
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		panelNavigation = new PanelNavigation("Günni");
+		panelNavigation = new PanelNavigation("");
 		add(panelNavigation);
 
 		paneTabs = new PaneTabs();
@@ -39,6 +39,10 @@ public class PanelEmployee extends JPanel
 		paneTabs.setTabs(ticketPlaner, scheduleManager, hrManager, networkPlaner, busDriver, userId);
 	}
 
+	public void setUsername(String username)
+	{
+		panelNavigation.setWelcomeText("Willkommen, "+username+"!");
+	}
 
 	/*
 	 * TODO: delete before Deployment, only for DEBUGGING-purposes

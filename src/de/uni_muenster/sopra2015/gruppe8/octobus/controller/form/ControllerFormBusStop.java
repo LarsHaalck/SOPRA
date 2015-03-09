@@ -24,6 +24,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	private FormBusStop formBusStop;
 	ControllerDatabase controllerDatabase;
 	BusStop busStop;
+    ArrayList<StoppingPoint> originalStoppingPoints;
 	int objectID;
 
 	public ControllerFormBusStop(FormBusStop formBusStop, int objectID)
@@ -35,10 +36,11 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		if(objectID != -1)
 		{
 			setBusInfo();
+            setStoppingPointInfo();
 		}
 	}
 
-	@Override
+    @Override
 	public void buttonPressed(EmitterButton emitter)
 	{
 		switch(emitter)
@@ -120,6 +122,14 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	{
 		busStop = controllerDatabase.getBusStopById(objectID);
 	}
+
+    /**
+     * Fetch a list of stopping point for the BusStop
+     */
+    private void setStoppingPointInfo()
+    {
+        originalStoppingPoints = ControllerDatabase.getInstance().getStoppingPointsByBusStopId(busStop.getId());
+    }
 
 	/**
 	 * Inserts the values of the BusStop which is going to
@@ -207,7 +217,38 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		if(objectID == -1)
 			controllerDatabase.addBusStop(busStop);
 		else
-			controllerDatabase.modifyBusStop(busStop);
+        {
+            // This only modifies data pertaining to the BusStop itself. StoppingPoints need
+            // to be handled separately.
+            controllerDatabase.modifyBusStop(busStop);
+
+            // Assemble HashSet from current table model
+            //...
+            HashSet<StoppingPoint> alteredStoppingPoints = new HashSet();
+
+            // Handle stopping points
+            for (StoppingPoint s : alteredStoppingPoints)
+            {
+                // Add entries for newly created stopping points
+                if (s.getId() <= 0)
+                    controllerDatabase.getInstance().addStoppingPoint(busStop.getId());
+                // Modify stopping points that already have entries in the database.
+                // Yes, this does overwrite unmodified entries with the same data.
+                else
+                    ControllerDatabase.getInstance().modifyStopppingPointById();
+            }
+
+            // Remove all altered stopping points (which have already been handled) from the original list.
+            // Those entries that remain must therefore be slated for deletion from the database.
+            originalStoppingPoints.removeAll(alteredStoppingPoints);
+            // Delete stopping points that remained in the original list
+            for (StoppingPoint s : originalStoppingPoints)
+            {
+                ControllerDatabase.getInstance().deleteStoppingPointById(s.getId());
+            }
+
+        }
+
 		return true;
 	}
 

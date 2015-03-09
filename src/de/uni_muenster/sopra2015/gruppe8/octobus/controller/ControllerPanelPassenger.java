@@ -29,7 +29,7 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_LOGIN);
 				break;
 			case PANEL_PASSENGER_SEARCH_CONNECTION:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_JOURNEY_SEARCH);
+				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_CONNECTION);
 				break;
 			case PANEL_PASSENGER_SHOW_TICKETS:
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_TICKET);

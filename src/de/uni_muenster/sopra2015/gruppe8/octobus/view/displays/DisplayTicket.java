@@ -55,7 +55,7 @@ public class DisplayTicket extends JPanel
 	public void addPanel(String name, int price, int numPassengers, String description, int i){
 	//noch umranden und vllt mit Farben und anderen schriftgrößen schöner machen
 		cst.gridy = i;
-		if(i>102)
+		if(i>32)
 		{
 			JPanel plDistance = new JPanel();
 			plDistance.setBackground(Color.LIGHT_GRAY);
