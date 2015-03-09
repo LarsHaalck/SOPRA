@@ -25,6 +25,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	ControllerDatabase controllerDatabase;
 	BusStop busStop;
     ArrayList<StoppingPoint> originalStoppingPoints;
+	ArrayList<StoppingPoint> alteredStoppingPoints;
 	int objectID;
 
 	public ControllerFormBusStop(FormBusStop formBusStop, int objectID)
@@ -166,12 +167,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		int x = formBusStop.getLocationX();
 		int y = formBusStop.getLocationY();
 
-		HashSet<StoppingPoint> stoppingPoints = new HashSet<>();
-		ArrayList<StoppingPoint> listStoppingPoints = formBusStop.getStoppingPoints();
-		for(int i = 0; i < listStoppingPoints.size(); i++)
-		{
-			//stoppingPoints.add(temp);
-		}
+		alteredStoppingPoints = formBusStop.getStoppingPoints();
 		boolean barrierFree = formBusStop.getBarrierFree();
 
 		ArrayList<String> errorFields = new ArrayList<>();
@@ -185,7 +181,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			errorFields.add("Die X Koordinate darf nicht leer sein.");
 		if(y == -1)
 			errorFields.add("Die Y Koordinate darf nicht leer sein.");
-		if(stoppingPoints.isEmpty())
+		if(alteredStoppingPoints.isEmpty())
 			errorFields.add("Es muss mindestens ein Haltepunkt existieren");
 
 		if(errorFields.size() > 0)
@@ -200,7 +196,6 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			busStop.setName(name);
 			busStop.setLocation(new Tuple<>(x, y));
 			busStop.setBarrierFree(barrierFree);
-			busStop.setStoppingPoints(stoppingPoints);
 			return true;
 		}
 	}
