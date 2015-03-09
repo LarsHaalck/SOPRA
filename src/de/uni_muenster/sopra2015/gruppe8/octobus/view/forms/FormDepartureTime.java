@@ -30,10 +30,18 @@ public class FormDepartureTime extends FormGeneral
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
 		jpMain.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		panel.setBorder(new EmptyBorder(new Insets(0, 0, 10, 0)));
 		jlInfo1 = new JLabel("Entweder nur die Startzeit angeben,");
-		jpMain.add(jlInfo1);
+		jlInfo1.setHorizontalAlignment(JLabel.CENTER);
+		panel.add(jlInfo1);
 		jlInfo2 = new JLabel("oder alles ausfüllen.");
-		jpMain.add(jlInfo2);
+		jlInfo2.setHorizontalAlignment(JLabel.CENTER);
+		panel.add(jlInfo2);
+		jpMain.add(panel);
+
 		jpStartTime = new JPanel();
 		jpStartTime.setLayout(new BoxLayout(jpStartTime, BoxLayout.X_AXIS));
 		jlStartTime = new JLabel("Startzeit: ");
