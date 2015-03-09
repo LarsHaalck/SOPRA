@@ -144,7 +144,8 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	/**
 	 *Checks if form input is correct and adds values to local busStop.
-	 * @return Returns true on correct input.
+     *
+	 * @return returns true on correct input
 	 */
 	private boolean parseValuesFromForm()
 	{
@@ -200,6 +201,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current busStop to the DB.
+     *
 	 * @return
 	 */
 	private boolean saveToDB()

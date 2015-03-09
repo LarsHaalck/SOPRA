@@ -68,7 +68,6 @@ public class ControllerFormChangePassword extends Controller implements Listener
 					throw new UnsupportedOperationException(e);
 				}
 
-
 				boolean oldPasswordInvalid = !generatedHash.equals(employeeHash);
 				boolean newPasswordInvalid = (dialog.getNewPassword().length() < 5);
 				boolean newPasswordCorrectInvalid = (!dialog.getNewPasswordCorrect().equals(dialog.getNewPassword()));
