@@ -230,8 +230,8 @@
 
   <!-- Generate javadocs for current project into ${doc.dir} -->
   <target name="doc" depends="init" description="generate documentation">
-    <javadoc sourcepath="${basedir}/src" destdir="${sopra.output.dir}/doc" additionalparam="-taglet PreTaglet -taglet PostTaglet -taglet InvTaglet -tagletpath ${basedir}/lib/cbs_taglets.jar"/>
+    <javadoc sourcepath="${basedir}/src" destdir="${sopra.output.dir}/doc" additionalparam="-private -taglet PreTaglet -taglet PostTaglet -taglet InvTaglet -tagletpath ${basedir}/lib/cbs_taglets.jar"/>
   </target>
   
-  <target name="all" depends="build.modules, build.all.artifacts, doc" description="build all"/>
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
