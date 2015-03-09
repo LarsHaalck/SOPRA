@@ -42,8 +42,9 @@ public class FormBusStop extends FormGeneral
 	private JButton btCancel;
 	private RowSorter<StoppingPointTableModel> sorter;
 
-	int selectedRow = -1;
-	int selectedID = -1;
+	private int selectedRow = -1;
+	private int selectedID = -1;
+    private int stoppingPointsIdCounter = -2;
 
 
 	public FormBusStop(Frame parent, int objectID)
@@ -130,8 +131,9 @@ public class FormBusStop extends FormGeneral
 
 		cstLabel.gridy = 5;
 		cstLabel.fill = GridBagConstraints.HORIZONTAL;
+        // TODO: An die Swing-Experten: Können wir das Panel bitte ein bisschen weniger hoch machen? GitHub issue #27.
 		JScrollPane spListStoppingPoints = new JScrollPane(tableStoppingPoints);
-		add(spListStoppingPoints, cstLabel);
+        add(spListStoppingPoints, cstLabel);
 
 		cstLabel.gridy = 6;
 		JPanel plButtons = new JPanel();
@@ -250,7 +252,7 @@ public class FormBusStop extends FormGeneral
 
 	public void addStoppingPoint(String name)
 	{
-		tmStoppingPoints.add(0, name);
+		tmStoppingPoints.add(stoppingPointsIdCounter--, name);
 		tableStoppingPoints.revalidate();
 		tableStoppingPoints.repaint();
 	}
@@ -271,7 +273,7 @@ public class FormBusStop extends FormGeneral
 
 	public void removeStoppingPoint(int index)
 	{
-		tmStoppingPoints.remove(index);
+        tmStoppingPoints.remove(index);
 		tableStoppingPoints.revalidate();
 		tableStoppingPoints.repaint();
 	}
@@ -306,9 +308,9 @@ public class FormBusStop extends FormGeneral
 		tfLocationY.setNumber(y);
 	}
 
+    //TODO: Fehlt noch. Benötigt?
 	public void setLocationBusStop(JPanel plLocation)
 	{
-		//TODO fehlt noch
 	}
 
 	public ArrayList<StoppingPoint> getStoppingPoints()
@@ -316,9 +318,9 @@ public class FormBusStop extends FormGeneral
 		ArrayList<StoppingPoint> list = new ArrayList<>();
 
 		/**
-		 * loop which reads the arguments of my list and gives them to a new list
+		 * Loop which retrieves the arguments of the current list and puts them into a new list
 		 */
-		for(int i = 0; i< tmStoppingPoints.getRowCount(); i++)
+		for(int i = 0; i < tmStoppingPoints.getRowCount(); i++)
 		{
 			list.add(new StoppingPoint((Integer)tmStoppingPoints.getValueAt(i,0), (String) tmStoppingPoints.getValueAt(i,1)));
 		}
@@ -377,19 +379,26 @@ public class FormBusStop extends FormGeneral
 
 		public void remove(int id)
 		{
-			Object[][] dataNew = new Object[data.length-1][2];
+            // Added this because otherwise clicking the delete button after already
+            // having deleted an entry throws and ArrayIndexOutOfBounds exception
+            // because the old id is still selected in the background.
+            tableStoppingPoints.clearSelection();
+
+			// Create new data array which holds one entry less than previous one
+            Object[][] dataNew = new Object[data.length-1][2];
 			int curIndex = 0;
+            // Copy over stuff that isn't being removed
 			for(Object[] obj : data)
 			{
-				if((int)obj[0] != id)
+                if((int) obj[0] != id)
 				{
-					dataNew[curIndex] = obj;
+                    dataNew[curIndex] = obj;
 					curIndex++;
 				}
 			}
 			data = dataNew;
-			fireTableDataChanged();
-			fireTableStructureChanged();
+            fireTableDataChanged();
+            fireTableStructureChanged();
 		}
 	}
 }

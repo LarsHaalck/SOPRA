@@ -12,9 +12,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by Lars on 02-Mar-15.
@@ -91,7 +89,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				break;
 
 			case FORM_BUS_STOP_EDIT_POINT:
-				//Don't do anything if no stop-point is selected
+				//Don't do anything if no stopping point is selected
 				if(formBusStop.getSelectedStoppingPoint() == -1)
 					break;
 				while(true)
@@ -144,7 +142,6 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			formBusStop.setLocationX(busStop.getLocation().getFirst());
 			formBusStop.setLocationY(busStop.getLocation().getSecond());
 
-			List list = new List();
 			for(StoppingPoint p: busStop.getStoppingPoints())
 				formBusStop.addStoppingPoint(p.getId(), p.getName());
 			formBusStop.setBarrierFree(busStop.isBarrierFree());
@@ -215,15 +212,11 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             // to be handled separately.
             controllerDatabase.modifyBusStop(busStop);
 
-            // Assemble HashSet from current table model
-            //...
-            HashSet<StoppingPoint> alteredStoppingPoints = new HashSet();
-
             // Handle stopping points
             for (StoppingPoint s : alteredStoppingPoints)
             {
                 // Add entries for newly created stopping points
-                if (s.getId() <= 0)
+                if (s.getId() <= -2)
                     controllerDatabase.getInstance().addStoppingPoint(busStop.getId(), s);
                 // Modify stopping points that already have entries in the database.
                 // Yes, this does overwrite unmodified entries with the same data.
@@ -234,7 +227,8 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             // Remove all altered stopping points (which have already been handled) from the original list.
             // Those entries that remain must therefore be slated for deletion from the database.
             originalStoppingPoints.removeAll(alteredStoppingPoints);
-            // Delete stopping points that remained in the original list
+
+            // Delete stopping points that remained in the original list (see lines above for more info).
             for (StoppingPoint s : originalStoppingPoints)
             {
                 ControllerDatabase.getInstance().deleteStoppingPointById(s.getId());
@@ -247,13 +241,13 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	@Override
 	protected  void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerButton) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 
 	private void closeDialog()

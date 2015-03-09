@@ -215,15 +215,16 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	protected abstract void editEntry();
 
 	/**
-	 * Fills the Table.
-	 * @param data Data the table is filled with.
+	 * Fills the table.
+     *
+	 * @param data data the table is to be filled with
 	 */
 	public void fillTable(Object[][] data)
 	{
 		table.clearSelection();
 		model.setData(data);
 
-		//TODO: check which if these are enough :D
+		// TODO: check which of these are enough :D
 		table.revalidate();
 		table.repaint();
 		model.fireTableDataChanged();

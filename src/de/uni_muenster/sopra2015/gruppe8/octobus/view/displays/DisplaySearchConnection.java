@@ -145,7 +145,7 @@ public class DisplaySearchConnection extends JPanel
         };
 
 
-        //Let's the user only select one row at time
+        // Limits user to only select one row at time
         class ForcedListSelectionModel extends DefaultListSelectionModel
         {
             public ForcedListSelectionModel () {
