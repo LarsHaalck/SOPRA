@@ -1,7 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormDepartureTime;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
@@ -13,16 +15,21 @@ import java.awt.*;
  */
 public class FormDepartureTime extends FormGeneral
 {
-	private ControllerFormRoute controllerFormRoute;
+	private ControllerFormDepartureTime controllerFormDepartureTime;
 	private JPanel jpButton, jpMain, jpStartTime, jpEndTime, jpFrequency, jpCheckBox, jpButtonMain;
 	private JButton jbSave, jbCancel;
 	private JLabel jlStartTime, jlEndTime, jlFrequency, jlInfo1, jlInfo2;
 	private FieldNumber fnStartTime_Hour, fnStartTime_Minute, fnEndTime_Hour, fnEndTime_Minute, fnFrequency;
 	private JCheckBox jcbMo, jcbDi, jcbMi, jcbDo, jcbFr, jcbSa, jcbSo;
+	private Route route;
 
-	public FormDepartureTime(JDialog parent)
+	public FormDepartureTime(JDialog parent, Route route)
 	{
 		super(parent, "Abfahrtszeiten Hinzufügen");
+
+		this.route = route;
+		controllerFormDepartureTime = new ControllerFormDepartureTime(this, route);
+
 		setLayout(new BorderLayout());
 		setResizable(false);
 
@@ -118,11 +125,11 @@ public class FormDepartureTime extends FormGeneral
 
 		jbSave = new JButton("Speichern");
 		jbSave.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_SAVE);
+			controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_SAVE);
 		});
 		jbCancel = new JButton("Abbrechen");
 		jbCancel.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_CANCEL);
+			controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_CANCEL);
 		});
 
 		jpButton.add(jbSave);
@@ -136,11 +143,6 @@ public class FormDepartureTime extends FormGeneral
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	public void setControllerFormRoute(ControllerFormRoute controllerFormRoute)
-	{
-		this.controllerFormRoute = controllerFormRoute;
 	}
 
 	public int getFnStartTime_Hour()
