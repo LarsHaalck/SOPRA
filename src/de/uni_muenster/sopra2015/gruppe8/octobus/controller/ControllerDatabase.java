@@ -1148,7 +1148,7 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus entry that is to be deleted from the database
 	 */
-	public void deleteStoppingPoint(int id)
+	public void deleteStoppingPointById(int id)
 	{
 		create.delete(BUSSTOPS_STOPPINGPOINTS)
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();
