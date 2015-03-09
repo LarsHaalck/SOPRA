@@ -135,6 +135,28 @@ public class Route
 		return duration;
 	}
 
+	/**
+	 * Returns duration between start and end by id
+	 * @param start
+	 * @param end
+	 * @return duration in minutes
+	 */
+	public int getDuration(int start, int end)
+	{
+		int duration = 0;
+		boolean sumUp = false;
+		for(Triple<BusStop, StoppingPoint,Integer> t : stops)
+		{
+			if(sumUp)
+				duration += t.getThird();
+			if(t.getFirst().getId() == start)
+				sumUp = true;
+			if(t.getFirst().getId() == end)
+				break;
+		}
+		return duration;
+	}
+
 	public int getId()
 	{
 		return id;

@@ -19,12 +19,14 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 {
 	private FrameMain frame;
 	private ControllerPrint controllerPrint;
+	private ControllerGraph controllerGraph;
 
 	public ControllerFrameMain(FrameMain frame)
 	{
 		super();
 		this.frame = frame;
 		this.controllerPrint = new ControllerPrint();
+		this.controllerGraph = new ControllerGraph();
 	}
 
 	@Override
