@@ -27,8 +27,6 @@ public class PanelEmployee extends JPanel
 		add(panelNavigation);
 
 		paneTabs = new PaneTabs();
-		// ...
-		// Pretty much same as above
 		add(paneTabs);
 
 		setVisible(true);
@@ -40,7 +38,7 @@ public class PanelEmployee extends JPanel
 	}
 
 	/*
-	* TODO: delete before Deployment, only for DEBUGGING-purposes
+	 * TODO: delete before Deployment, only for DEBUGGING-purposes
 	 */
 	public PaneTabs getPaneTabs()
 	{

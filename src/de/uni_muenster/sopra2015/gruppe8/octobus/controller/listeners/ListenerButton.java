@@ -7,7 +7,8 @@ public interface ListenerButton
 {
 	/**
 	 * Implements the action happening after a button is pressed.
-	 * @param btn Pressed button.
+     *
+	 * @param btn pressed button
 	 */
 	public void buttonPressed(EmitterButton btn);
 }

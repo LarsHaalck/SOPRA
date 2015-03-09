@@ -6,13 +6,14 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 
 /**
- * adjusted FieldText for price inputs (f.ex. 4,56€)
+ * Customised FieldText for price inputs (e.g. "4,56 €").
  */
 public class FieldPrice extends FieldText
 {
 	public FieldPrice()
 	{
-		super(8); //xxxx,xx€ -> 8 chars should be enough
+        // xxxx,xx €  -> 8 characters should be enough
+        super(8);
 		setMask();
 	}
 
@@ -30,7 +31,8 @@ public class FieldPrice extends FieldText
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if ((c < '0' || c > '9') && (c != ',')) //only allow numbers and comma
+                // Only allow digits and one comma
+                if ((c < '0' || c > '9') && (c != ','))
 				{
 					e.consume();  // ignore event
 					return;
@@ -42,10 +44,11 @@ public class FieldPrice extends FieldText
 					return;
 				}
 
-				//check for inputs like 44,817
+				// Check for inputs like "44,817"
 				String input = getText().trim();
 				int index = input.indexOf(',');
-				if(index != -1 && input.substring(index + 1).trim().length() > 1) //input contains ","
+                // Input contains ","
+                if(index != -1 && input.substring(index + 1).trim().length() > 1)
 				{
 					e.consume();
 				}
@@ -54,6 +57,8 @@ public class FieldPrice extends FieldText
 	}
 
 	/**
+     * Retrieve the value entered in cents.
+     *
 	 * @return price in cents
 	 */
 	public int getPrice()
@@ -66,7 +71,8 @@ public class FieldPrice extends FieldText
 			return -1;
 
 		int indexComma = input.indexOf(',');
-		if(indexComma == -1) //no comma at all, input like 55
+        // No comma at all, i.e. input is something like "55"
+        if(indexComma == -1)
 		{
 			try
 			{
@@ -79,11 +85,13 @@ public class FieldPrice extends FieldText
 		}
 
 		euroString = input.substring(0, indexComma);
-		if(euroString.length() == 0) //input like ,55
+        // Input is something like ",55"
+        if(euroString.length() == 0)
 		{
 			euro = 0;
 		}
-		else //input like 13, or 13,45
+        // Input is something like "13," or "13,45"
+        else
 		{
 			try
 			{
@@ -95,7 +103,8 @@ public class FieldPrice extends FieldText
 		}
 
 		centString = input.substring(indexComma + 1);
-		if(centString.length() == 0) //input like 13,
+        // Input is something like "13,"
+        if(centString.length() == 0)
 		{
 			cent = 0;
 		}
@@ -118,7 +127,8 @@ public class FieldPrice extends FieldText
 
 
 	/**
-	 * sets field with specified price
+	 * Sets field with specified price.
+     *
 	 * @param cents cents to be set
 	 */
 	public void setPrice(int cents)

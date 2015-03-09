@@ -6,7 +6,7 @@ import java.awt.*;
 
 
 /**
- * adjusted JTextArea which is limited to 2000 characters and uses the same font settings as a defualt JTextField
+ * Customised JTextArea which is limited to 2000 characters and uses the same font settings as a default JTextField
  */
 public class AreaText extends JTextArea
 {

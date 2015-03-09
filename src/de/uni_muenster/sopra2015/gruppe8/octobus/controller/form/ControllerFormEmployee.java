@@ -52,10 +52,12 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 					if(saveToDb())
 					{
 						if(objectID == -1) //only show if user is new user
-							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt.\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
+							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt." +
+                                    "\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
 						if(objectID != -1)
-							ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
+							ControllerManager
+                                    .informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
 						closeDialog();
 					}
 				}
@@ -87,7 +89,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 
 				controllerDatabase.modifyEmployee(employee);
 
-				formEmployee.showInformationForm("Das Passwort des Benutzers wurde auf \"octobus\" zurück gesetzt!");
+				formEmployee.showInformationForm("Das Passwort des Benutzers wurde" +
+                        " auf \"octobus\" zurückgesetzt!");
 				break;
 
 			case FORM_EMPLOYEE_CANCEL:
