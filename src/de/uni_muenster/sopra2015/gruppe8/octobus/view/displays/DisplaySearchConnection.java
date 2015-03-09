@@ -1,6 +1,6 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
+package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormJourneySearch;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplaySearchConnection;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 
@@ -13,33 +13,37 @@ import java.util.Calendar;
 /**
  * Created by Steen Sziegaud.
  */
-public class FormJourneySearch extends FormGeneral
+public class DisplaySearchConnection extends JPanel
 {
     //Konstants
+	final private int WIDTH = 1000;
     final private Dimension textFieldSize = new Dimension(WIDTH/2 - 10, 23);
     final private Dimension maxGridDimensions = new Dimension(WIDTH/2 - 10, 270);
     final private int halfDefaultWidth = WIDTH/2;
 
     //Controller
-    ControllerFormJourneySearch controllerFormJourneySearch;
+    ControllerDisplaySearchConnection controllerDisplaySearchConnection;
 
     //ParentJPanels for left and right side.
     private JPanel rightParentGridPanel;
 
     //Components
-    private JButton searchButton;
-    private JButton earlierButton;
-    private JButton firstButton;
-    private JButton laterButton;
-    private JButton lastButton;
-    private JTextField originTextField;
-    private JTextField destinationTextField;
-    private JComboBox<String> dateSelection;
-    private JComboBox<Integer> hourSelection;
-    private JComboBox<Integer> minuteSelection;
-    private JTable journeySearchResultTable;
-    private JScrollPane tableScrollPane;
-    private JPanel selectedJourney;
+	private JButton btnBack;
+    private JButton btnSearch;
+    private JButton btnEarlier;
+    private JButton btnFirst;
+    private JButton btnLater;
+    private JButton btnLast;
+    private JTextField tfOrigin;
+    private JTextField tfDestination;
+    private JComboBox<String> cbDateSelection;
+    private JComboBox<Integer> cbHourSelection;
+    private JComboBox<Integer> cbMinuteSelection;
+    private JTable tableSearchResults;
+    private JScrollPane scrollPaneTable;
+    private JPanel panelSelectedConnection;
+
+	private JPanel display;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
@@ -49,24 +53,29 @@ public class FormJourneySearch extends FormGeneral
     //private JButton
 
     //TODO: Add functionality to buttons.
-    public FormJourneySearch(Frame parent)
+    public DisplaySearchConnection()
     {
-        super(parent, "Verbindung suchen");
-
-        controllerFormJourneySearch = new ControllerFormJourneySearch(this);
+        controllerDisplaySearchConnection = new ControllerDisplaySearchConnection(this);
+		JPanel display = new JPanel();
 
         initComponents();
 
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(0, 2));
-        add(createLeftGridPanel());
+		display.setLayout(new GridLayout(0, 2));
+        display.add(createLeftGridPanel());
         rightParentGridPanel = createTransparentRightGridPanel();
-        add(rightParentGridPanel);
-        setResizable(false);
-        pack();
+        display.add(rightParentGridPanel);
 
-        setLocationRelativeTo(null);
-        setVisible(true);
+		add(display, BorderLayout.CENTER);
+
+		btnBack = new JButton("Zurück");
+		btnBack.addActionListener(e->{
+			controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_BACK);
+		});
+
+		JPanel plButton = new JPanel();
+		plButton.setLayout(new BorderLayout());
+		plButton.add(btnBack, BorderLayout.EAST);
+		add(plButton, BorderLayout.PAGE_END);
     }
 
 
@@ -76,47 +85,47 @@ public class FormJourneySearch extends FormGeneral
         rightParentGridPanel = new JPanel();
 
         //Button to make a searchrequest
-        searchButton = new JButton("Suchen");
-        searchButton.addActionListener(e ->
-                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_SEARCH));
+        btnSearch = new JButton("Suchen");
+        btnSearch.addActionListener(e ->
+				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SEARCH));
 
         //Button to show (add) earlier results in the journeytable
-        earlierButton = new JButton("Früher");
-        earlierButton.addActionListener(e ->
-                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_EARLIER));
+        btnEarlier = new JButton("Früher");
+        btnEarlier.addActionListener(e ->
+				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_EARLIER));
 
         //Button to show (add) the earliest journey in the journeytable.
-        firstButton = new JButton("Erster Fahrt");
-        firstButton.addActionListener(e ->
-                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_FIRST));
+        btnFirst = new JButton("Erster Fahrt");
+        btnFirst.addActionListener(e ->
+				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_FIRST));
 
         //Analog to earlier
-        laterButton = new JButton("Später");
-        laterButton.addActionListener(e ->
-                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_LATER));
+        btnLater = new JButton("Später");
+        btnLater.addActionListener(e ->
+				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LATER));
 
         //Analog to first
-        lastButton = new JButton("Letzte Fahrt");
-        lastButton.addActionListener(e ->
-                controllerFormJourneySearch.buttonPressed(EmitterButton.FORM_JOURNEY_SEARCH_LAST));
+        btnLast = new JButton("Letzte Fahrt");
+        btnLast.addActionListener(e ->
+				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
         //Comboboxes to choose date and time.
         //TODO: Add listeners and functionality
-        //TODO: Implement dateSelection?
+        //TODO: Implement cbDateSelection?
 
-        //dateSelection = new JComboBox<>();
-        hourSelection = new JComboBox<>();
-        minuteSelection = new JComboBox<>();
+        //cbDateSelection = new JComboBox<>();
+        cbHourSelection = new JComboBox<>();
+        cbMinuteSelection = new JComboBox<>();
 
 
         //JPanel to display details about the selected
-        selectedJourney = new JPanel();
+        panelSelectedConnection = new JPanel();
 
 
-        originTextField = new JTextField(20);
-        originTextField.setToolTipText("Starthaltestelle eingeben");
-        destinationTextField = new JTextField(20);
-        destinationTextField.setToolTipText("Zielhaltestelle eingeben");
+        tfOrigin = new JTextField(20);
+        tfOrigin.setToolTipText("Starthaltestelle eingeben");
+        tfDestination = new JTextField(20);
+        tfDestination.setToolTipText("Zielhaltestelle eingeben");
 
 
         createTable();
@@ -152,14 +161,14 @@ public class FormJourneySearch extends FormGeneral
             }
         }
 
-        journeySearchResultTable = new JTable(tableModel);
-        journeySearchResultTable.setSelectionModel(new ForcedListSelectionModel());
-        journeySearchResultTable.getSelectionModel().addListSelectionListener(e ->
-                controllerFormJourneySearch.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT));
-        journeySearchResultTable.setPreferredSize(new Dimension(512, 400));
-        tableScrollPane = new JScrollPane(journeySearchResultTable);
-        tableScrollPane.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
-        tableScrollPane.setMaximumSize(new Dimension(halfDefaultWidth - 10, 494));
+        tableSearchResults = new JTable(tableModel);
+        tableSearchResults.setSelectionModel(new ForcedListSelectionModel());
+        tableSearchResults.getSelectionModel().addListSelectionListener(e ->
+                controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT));
+        tableSearchResults.setPreferredSize(new Dimension(512, 400));
+        scrollPaneTable = new JScrollPane(tableSearchResults);
+        scrollPaneTable.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
+        scrollPaneTable.setMaximumSize(new Dimension(halfDefaultWidth - 10, 494));
     }
 
 
@@ -187,8 +196,8 @@ public class FormJourneySearch extends FormGeneral
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
-        originTextField.setPreferredSize(textFieldSize);
-        leftGridPanel.add(originTextField, c);
+        tfOrigin.setPreferredSize(textFieldSize);
+        leftGridPanel.add(tfOrigin, c);
 
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -202,8 +211,8 @@ public class FormJourneySearch extends FormGeneral
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 2;
-        destinationTextField.setPreferredSize(textFieldSize);
-        leftGridPanel.add(destinationTextField, c);
+        tfDestination.setPreferredSize(textFieldSize);
+        leftGridPanel.add(tfDestination, c);
 
 
         //DateSelectionPanel - Date: DAY.MONTH.YEAR HOURS:MINUTES
@@ -220,7 +229,7 @@ public class FormJourneySearch extends FormGeneral
         leftGridPanel.add(new JLabel("Datum:"), c);
 
         //String[] dummyCal = {"1.Januar.2015", "2.Januar.2013"};
-        //dateSelection = new JComboBox<>(dummyCal);
+        //cbDateSelection = new JComboBox<>(dummyCal);
 
 
 
@@ -231,15 +240,15 @@ public class FormJourneySearch extends FormGeneral
         for (int i = 0; i < minutes.length; i++)
             minutes[i] = i;
 
-        hourSelection = new JComboBox<>(hours);
-        hourSelection.setSelectedIndex(Calendar.HOUR_OF_DAY);
-        minuteSelection = new JComboBox<>(minutes);
-        minuteSelection.setSelectedIndex(Calendar.MINUTE);
+        cbHourSelection = new JComboBox<>(hours);
+        cbHourSelection.setSelectedIndex(Calendar.HOUR_OF_DAY);
+        cbMinuteSelection = new JComboBox<>(minutes);
+        cbMinuteSelection.setSelectedIndex(Calendar.MINUTE);
 
 
-        //dateSelectionPanel.add(dateSelection);
-        dateSelectionPanel.add(hourSelection);
-        dateSelectionPanel.add(minuteSelection);
+        //dateSelectionPanel.add(cbDateSelection);
+        dateSelectionPanel.add(cbHourSelection);
+        dateSelectionPanel.add(cbMinuteSelection);
 
         //Add the dateSlectionPanel created above to the leftGridPanel.
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -251,7 +260,7 @@ public class FormJourneySearch extends FormGeneral
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 5;
-        leftGridPanel.add(searchButton, c);
+        leftGridPanel.add(btnSearch, c);
 
 
 
@@ -260,9 +269,9 @@ public class FormJourneySearch extends FormGeneral
         c.gridy = 6;
         c.gridwidth = 2;
         c.gridheight = 2;
-        selectedJourney.setPreferredSize(new Dimension(halfDefaultWidth - 110, 320));
-        selectedJourney.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        leftGridPanel.add(selectedJourney, c);
+        panelSelectedConnection.setPreferredSize(new Dimension(halfDefaultWidth - 110, 320));
+        panelSelectedConnection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        leftGridPanel.add(panelSelectedConnection, c);
 
 
         return leftGridPanel;
@@ -302,21 +311,21 @@ public class FormJourneySearch extends FormGeneral
         //Earlier and later Buttons to look for earlier/later Journeys
         JPanel earlierButtonsPanel = new JPanel();
         earlierButtonsPanel.setLayout(new BoxLayout(earlierButtonsPanel, BoxLayout.X_AXIS));
-        earlierButtonsPanel.add(earlierButton);
-        earlierButtonsPanel.add(firstButton);
+        earlierButtonsPanel.add(btnEarlier);
+        earlierButtonsPanel.add(btnFirst);
 
 
         JPanel laterButtonsPanel = new JPanel();
         laterButtonsPanel.setLayout(new BoxLayout(laterButtonsPanel, BoxLayout.X_AXIS));
-        laterButtonsPanel.add(laterButton);
-        laterButtonsPanel.add(lastButton);
+        laterButtonsPanel.add(btnLater);
+        laterButtonsPanel.add(btnLast);
 
 
         JPanel rightTransparent = new JPanel();
         rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
         rightTransparent.setBorder(BorderFactory.createEmptyBorder());
         rightParentGridPanel.add(earlierButtonsPanel);
-        rightParentGridPanel.add(tableScrollPane);
+        rightParentGridPanel.add(scrollPaneTable);
         rightParentGridPanel.add(laterButtonsPanel);
         rightParentGridPanel.revalidate();
         rightParentGridPanel.repaint();
@@ -331,7 +340,7 @@ public class FormJourneySearch extends FormGeneral
     public void displayInformationInBox(String[] journey)
     {
         JTextPane textPane = new JTextPane();
-        selectedJourney.removeAll();
+        panelSelectedConnection.removeAll();
 
     }
 
@@ -340,19 +349,19 @@ public class FormJourneySearch extends FormGeneral
         return rightParentGridPanel;
     }
 
-    public JTable getJourneySearchResultTable()
+    public JTable getTableSearchResults()
     {
-        return journeySearchResultTable;
+        return tableSearchResults;
     }
 
     public String getOrigin()
     {
-        return originTextField.getText();
+        return tfOrigin.getText();
     }
 
     public String getDestination()
     {
-        return destinationTextField.getText();
+        return tfDestination.getText();
     }
 
 
