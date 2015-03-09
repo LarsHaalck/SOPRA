@@ -707,8 +707,9 @@ public class ControllerDatabase
      * Modifies an existing route entry in the database
      *
      * @param r Route object whose entry is to be updated in the database
+     * @param deleteTours true if associated tours ought to be deleted
      */
-	public void modifyRoute(Route r)
+	public void modifyRoute(Route r, boolean deleteTours)
 	{
 	}
 
@@ -939,6 +940,39 @@ public class ControllerDatabase
                 .fetchOne();
 
         return new StoppingPoint(id, spr.getName());
+    }
+
+    /**
+     * Retrieves list of all stopping points together with the names of their respective bus stops.
+     *
+     * @return ArrayList of stopping point ids with compound name of bus stop name and stopping point name
+     */
+    public ArrayList<Tuple<Integer, String>> getStoppingPoints()
+    {
+        ArrayList<Tuple<Integer, String>> resultList = new ArrayList<>();
+
+        Result<Record3<Integer, String, String>> result = create.
+                select(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID,
+                        BUSSTOPS.NAME,
+                        BUSSTOPS_STOPPINGPOINTS.NAME)
+                .from(BUSSTOPS)
+                .join(BUSSTOPS_STOPPINGPOINTS)
+                .using(BUSSTOPS.BUSSTOPS_ID)
+                .fetch();
+
+        for (Record r : result)
+        {
+            String busStopName = r.getValue(BUSSTOPS.NAME);
+            String stoppingPointName = r.getValue(BUSSTOPS_STOPPINGPOINTS.NAME);
+            String compoundName;
+
+            compoundName = busStopName.equals(stoppingPointName) ? busStopName : busStopName + " " + stoppingPointName;
+
+            resultList.add(new Tuple<>(r.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),
+                    compoundName));
+        }
+
+        return resultList;
     }
 
 	///////////////////////////////
