@@ -101,7 +101,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 							formBusStop.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
 						} else
 						{
-							formBusStop.editStoppingPoint(formBusStop.getSelectedStoppingPoint(), newAnswer);
+							formBusStop.editStoppingPoint(formBusStop.getSelectedRow(), newAnswer);
 							break;
 						}
 					}
@@ -135,7 +135,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 			List list = new List();
 			for(StoppingPoint p: busStop.getStoppingPoints())
-				formBusStop.addStoppingPoint(p.getName());
+				formBusStop.addStoppingPoint(p.getId(), p.getName());
 			formBusStop.setBarrierFree(busStop.isBarrierFree());
 		}
 	}
@@ -157,12 +157,10 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		int y = formBusStop.getLocationY();
 
 		HashSet<StoppingPoint> stoppingPoints = new HashSet<>();
-		List listStoppingPoints = formBusStop.getStoppingPoints();
-		for(int i = 0; i < listStoppingPoints.getItemCount(); i++)
+		ArrayList<StoppingPoint> listStoppingPoints = formBusStop.getStoppingPoints();
+		for(int i = 0; i < listStoppingPoints.size(); i++)
 		{
-			StoppingPoint temp = new StoppingPoint();
-			temp.setName(listStoppingPoints.getItem(i));
-			stoppingPoints.add(temp);
+			//stoppingPoints.add(temp);
 		}
 		boolean barrierFree = formBusStop.getBarrierFree();
 
