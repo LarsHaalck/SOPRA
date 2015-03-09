@@ -2,9 +2,11 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplayTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import javafx.scene.text.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Font;
 
 /**
  * @author Patricia Schinke
@@ -17,7 +19,7 @@ public class DisplayTicket extends JPanel
 	private JPanel plTickets;
 	private JButton btnBack;
 	private ControllerDisplayTicket controller;
-	private  GridBagConstraints cst;
+	private GridBagConstraints cst;
 
 	public DisplayTicket()
 	{
@@ -66,15 +68,15 @@ public class DisplayTicket extends JPanel
 		cst.gridy = i+1;
 		cst.gridwidth = 2;
 		JLabel lbName = new JLabel(name);
-		lbName.setFont(new Font("Arial", Font.BOLD, 16));
+		lbName.setFont(new Font(lbName.getFont().getFontName(), Font.BOLD, 18));
 		plTickets.add(lbName, cst);
 		cst.gridx = 0;
 		cst.gridy = i+2;
 		cst.gridwidth = 1;
 		cst.weightx = 1;
 		cst.anchor = GridBagConstraints.LINE_END; //does not work
-		JLabel lbPrice = new JLabel("Preis: "+price+"€");
-		lbPrice.setFont(new Font("Tahoma",Font.PLAIN,14));
+		JLabel lbPrice = new JLabel("Preis: "+formatPrice(price)+"€");
+		lbPrice.setFont(new Font(lbPrice.getFont().getFontName(), Font.PLAIN, 14));
 		plTickets.add(lbPrice, cst);
 		cst.gridx = 1;
 		cst.anchor = GridBagConstraints.LINE_START;
@@ -88,7 +90,7 @@ public class DisplayTicket extends JPanel
 			strNumPas = numPassengers+" Personen";
 		}
 		JLabel lbNumPassengers = new JLabel(strNumPas);
-		lbNumPassengers.setFont(new Font("Arial",Font.PLAIN,14)); //TODO nicht arial
+		lbNumPassengers.setFont(new Font(lbNumPassengers.getFont().getFontName(), Font.PLAIN, 14));
 		plTickets.add(lbNumPassengers, cst);
 		cst.gridx = 0;
 		cst.gridy = i+6;
@@ -102,5 +104,13 @@ public class DisplayTicket extends JPanel
 			i++;
 			cst.gridy = i+2;
 		}
+	}
+
+	public String formatPrice(int price)
+	{
+		int euro = price/100;
+		int cent = price%100;
+
+		return euro+","+cent;
 	}
 }
