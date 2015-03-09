@@ -20,6 +20,13 @@ public class Route
 	{
 		stops = new LinkedList<>();
 		startTimes = new HashMap<>();
+		startTimes.put(DayOfWeek.MONDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.TUESDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.WEDNESDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.THURSDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.FRIDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.SATURDAY, new LinkedList<>());
+		startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 	}
 
 	public Route(String name, String note, LinkedList<Triple<BusStop, StoppingPoint,Integer>> stops, boolean night, HashMap<DayOfWeek, LinkedList<Integer>> startTimes)
