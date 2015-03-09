@@ -9,6 +9,7 @@ import javax.swing.*;
  */
 public class PaneTabs extends JTabbedPane
 {
+
 	public PaneTabs()
 	{
 		super();
@@ -44,4 +45,6 @@ public class PaneTabs extends JTabbedPane
 		revalidate();
 		repaint();
 	}
+
+
 }

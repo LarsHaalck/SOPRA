@@ -3,6 +3,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelPassenger;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetworkEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
@@ -30,7 +32,9 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	{
 		switch (emitter)
 		{
-
+			case DISPLAY_NETWORK_BACK:
+				displayContent(new PanelPassenger());
+				break;
 		}
 	}
 
@@ -59,7 +63,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	{
 		switch (emitter)
 		{
-
 		}
 	}
 
@@ -154,6 +157,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				displayContent(new DisplayTicket());
 				break;
 
+			case DISPLAY_NETWORK:
+				displayContent(new DisplayNetworkEmployee());
+				break;
+
 			case DISPLAY_MAIN:
 				displayContent(new PanelPassenger());
 				break;
@@ -171,6 +178,7 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 		frame.setContentPane(container);
 		frame.setVisible(true);
 	}
+
 
 	@Override
 	protected void addListeners()
