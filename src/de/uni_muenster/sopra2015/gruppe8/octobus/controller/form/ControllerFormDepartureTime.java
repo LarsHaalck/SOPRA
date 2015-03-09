@@ -9,10 +9,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Controller for FormDepartureTime class.
@@ -55,7 +52,27 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					closeDialog();
 				} else if (temp == 2)
 				{
+					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
+					ArrayList<Integer> departures = new ArrayList<>();
+					departures.add(departureTimeStart);
+					int remaining = departureTimeStart;
+					while(remaining <= departureTimeEnd)
+					{
+						remaining += departureFreqency;
+						departures.add(remaining);
+					}
 
+					for (Tuple<DayOfWeek, Boolean> day : departureDays)
+					{
+						if(day.getSecond())
+						{
+							HashSet<Integer> tempSet = new HashSet<>();
+							tempSet.addAll(departures);
+							startTimes.get(day.getFirst()).addAll(tempSet);
+						}
+					}
+					route.setStartTimes(startTimes);
+					closeDialog();
 				}
 				break;
 

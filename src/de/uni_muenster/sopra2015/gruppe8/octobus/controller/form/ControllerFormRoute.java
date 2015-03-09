@@ -123,7 +123,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
 				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
 				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
-				tableAvailabe.clearSelection();
 				initTableCurrent();
 				break;
 
@@ -188,7 +187,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 
 	/**
-	 * Initializes table Available with BusStops
+	 * Initializes table Available with StoppingPoints
 	 */
 	public void initTableAvailable()
 	{
@@ -198,22 +197,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		for(int i=0; i<stoppingPoints.size(); i++)
 		{
 			data[i][0] = stoppingPoints.get(i).getFirst();
-			data[i][1] =stoppingPoints.get(i).getSecond();
+			data[i][1] = stoppingPoints.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableAvailable(data);
 	}
 
 	/**
-	 * Initializes table Current with BusStops
+	 * Initializes table Current with StoppingPoints
 	 */
 	public void initTableCurrent()
 	{
 		Object[][] data = new Object[contentTableCurrent.size()][2];
 		for(int i=0; i<data.length; i++)
 		{
-			BusStop busStop = controllerDatabase.getBusStopById(contentTableCurrent.get(i).getFirst());
-			data[i][0] = busStop.getId();
-			data[i][1] = busStop.getName();
+			data[i][0] = contentTableCurrent.get(i).getFirst();
+			data[i][1] = contentTableCurrent.get(i).getSecond();
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}
