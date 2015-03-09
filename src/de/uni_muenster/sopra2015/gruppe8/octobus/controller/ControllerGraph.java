@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
-import sun.awt.image.ImageWatched;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ public class ControllerGraph
 	HashSet<TupleInt> adjSet; //stores all object id tuples which are connected
 
 	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
+	HashMap<TupleInt, Route> bestRoutes;
 
 
 	/* something to store all routes per stop
@@ -30,6 +30,8 @@ public class ControllerGraph
 	{
 		db = ControllerDatabase.getInstance();
 		init();
+		System.out.println(db.getBusStop(15).getName());
+		System.out.println(db.getBusStop(77).getName());
 	}
 
 	public static void main(String[] args)
@@ -37,7 +39,8 @@ public class ControllerGraph
 		ControllerGraph graph = new ControllerGraph();
 
 
-		graph.dijkstra(75, 500, 88);
+		graph.dijkstra(15, 77, 573);
+
 
 
 	}
@@ -46,6 +49,7 @@ public class ControllerGraph
 	{
 		stops = db.getBusStops();
 		routes = db.getRoutes();
+		bestRoutes = new HashMap<>();
 
 		numStops = stops.size();
 		adjSet = new HashSet<>(numStops * numStops); //size of fully connected graph (way more than needed)
@@ -89,20 +93,19 @@ public class ControllerGraph
 			}
 		}
 
-		//System.out.println(weight(db.getBusStop(75), db.getBusStop(13), 500));
-		//dijkstra(db.getBusStop(75), 500, db.getBusStop(13));
+		//System.out.println(arrivalTime(db.getBusStop(75), db.getBusStop(13), 500));
 
 	}
 
 	/**
-	 * calculates edge weight or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2)
+	 * calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2)
 	 * s2 is in neighbourhood of s1
-	 * @param s1 first Vertex in edge
-	 * @param s2 second Vertex in edge
+	 * @param id1 first Vertex in edge
+	 * @param id2 second Vertex in edge
 	 * @param time earliest departure at s1 in unix timestamp
 	 * @return earliest arrival at s2 in unix timestamp
 	 */
-	private int weight(int id1, int id2, int time)
+	private int arrivalTime(int id1, int id2, int time)
 	{
 
 		int arrival = -1;
@@ -151,6 +154,7 @@ public class ControllerGraph
 			if(currentArrival < arrival || arrival == -1)
 			{
 				arrival = currentArrival;
+				bestRoutes.put(new TupleInt(id1, id2), connector);
 			}
 
 			// <editor-fold desc="muell">
@@ -215,15 +219,16 @@ public class ControllerGraph
 		return neighbours;
 	}
 
-	private void dijkstra(int startId, int startTime, int endId)
+	private void dijkstra(int startId, int endId, int startTime)
 	{
 		HashMap<Integer, Double> dist = new HashMap<>();
 		FibonacciHeap<Integer> fibHeap = new FibonacciHeap<>();
 
+		HashMap<Integer, Integer> prev = new HashMap<>();
+
 		//dijkstra init
-		fibHeap.enqueue(startId, 0);
-		dist.put(startId, 0.0);
-		int time = startTime;
+		fibHeap.enqueue(startId, startTime);
+		dist.put(startId, (double) startTime);
 
 		for (BusStop stop : stops)
 		{
@@ -235,10 +240,30 @@ public class ControllerGraph
 		while(!fibHeap.isEmpty())
 		{
 			int stopId = fibHeap.dequeueMin().getValue();
-			if(stopId == endId)
+
+			if(stopId == endId && !dist.get(stopId).isInfinite())
 			{
 				System.out.println("Route found");
-				break;
+				System.out.println(dist.get(stopId).intValue()/60);
+				System.out.println(dist.get(stopId).intValue()%60);
+
+				int currentStop = endId;
+				int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
+
+				while(prevStop != -1)
+				{
+					//prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
+
+					System.out.println(bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
+
+					currentStop = prevStop;
+					prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
+
+					//System.out.println(db.getBusStop(current).getName() + ": " + dist.get(current));
+					//current = prev.get(current) == null ? -1 : prev.get(current);
+				}
+
+				return;
 			}
 
 			ArrayList<BusStop> neighbours = this.getNeighbours(stopId);
@@ -246,16 +271,39 @@ public class ControllerGraph
 			for (BusStop neighbour : neighbours) //edge (v,w)
 			{
 				int neighbourId = neighbour.getId();
-				int weight = weight(stopId, neighbourId, time);
-				double distv = dist.get(stopId);
-				double distw = dist.get(neighbour.getId());
-				if(distv + weight < distw)
+				double arrivalAtNeighbour;
+				if(Double.isInfinite(dist.get(stopId)))
+					arrivalAtNeighbour = Double.POSITIVE_INFINITY;
+				else
+					arrivalAtNeighbour = arrivalTime(stopId, neighbourId, dist.get(stopId).intValue()); //arrivalTime contains earliest arrival at w
+
+
+				if(arrivalAtNeighbour < dist.get(neighbour.getId()))
 				{
-					fibHeap.enqueue(neighbourId, distv + weight);
+					fibHeap.enqueue(neighbourId, arrivalAtNeighbour);
+					dist.put(neighbourId, arrivalAtNeighbour);
+					prev.put(neighbourId, stopId);
 				}
 			}
 		}
+
+		System.out.println("no route found");
 	}
+
+
+	public Connection getConnection(int id_start, int id_end, int time)
+	{
+		Connection connection = new Connection();
+
+		dijkstra(id_start, id_end, time);
+
+
+
+
+		return connection;
+	}
+
+
 
 
 }
