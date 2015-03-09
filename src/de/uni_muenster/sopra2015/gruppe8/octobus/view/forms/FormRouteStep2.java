@@ -51,43 +51,85 @@ public class FormRouteStep2 extends JPanel
 		jpTables = new JPanel();
 		jpTables.setLayout(new BoxLayout(jpTables, BoxLayout.X_AXIS));
 		
-		dtmMo = new DefaultTableModel(null, new String[] {"Montag"});
+		dtmMo = new DefaultTableModel(null, new String[] {"Montag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtMo = new JTable(dtmMo);
 		jtMo.setFillsViewportHeight(true);
 		jspMo = new JScrollPane(jtMo);
 		jpTables.add(jspMo);
 
-		dtmDi = new DefaultTableModel(null, new String[] {"Dienstag"});
+		dtmDi = new DefaultTableModel(null, new String[] {"Dienstag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtDi = new JTable(dtmDi);
 		jtDi.setFillsViewportHeight(true);
 		jspDi = new JScrollPane(jtDi);
 		jpTables.add(jspDi);
 
-		dtmMi = new DefaultTableModel(null, new String[] {"Mittwoch"});
+		dtmMi = new DefaultTableModel(null, new String[] {"Mittwoch"})
+		{
+				public boolean isCellEditable(int row, int column)
+				{
+					return false;//This causes all cells to be not editable
+				}
+		};
 		jtMi = new JTable(dtmMi);
 		jtMi.setFillsViewportHeight(true);
 		jspMi = new JScrollPane(jtMi);
 		jpTables.add(jspMi);
 
-		dtmDo = new DefaultTableModel(null, new String[] {"Donnerstag"});
+		dtmDo = new DefaultTableModel(null, new String[] {"Donnerstag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtDo = new JTable(dtmDo);
 		jtDo.setFillsViewportHeight(true);
 		jspDo = new JScrollPane(jtDo);
 		jpTables.add(jspDo);
 
-		dtmFr = new DefaultTableModel(null, new String[] {"Freitag"});
+		dtmFr = new DefaultTableModel(null, new String[] {"Freitag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtFr = new JTable(dtmFr);
 		jtFr.setFillsViewportHeight(true);
 		jspFr = new JScrollPane(jtFr);
 		jpTables.add(jspFr);
 
-		dtmSa = new DefaultTableModel(null, new String[] {"Samstag"});
+		dtmSa = new DefaultTableModel(null, new String[] {"Samstag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtSa = new JTable(dtmSa);
 		jtSa.setFillsViewportHeight(true);
 		jspSa = new JScrollPane(jtSa);
 		jpTables.add(jspSa);
 
-		dtmSo = new DefaultTableModel(null, new String[] {"Sonntag"});
+		dtmSo = new DefaultTableModel(null, new String[] {"Sonntag"})
+		{
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
 		jtSo = new JTable(dtmSo);
 		jtSo.setFillsViewportHeight(true);
 		jspSo = new JScrollPane(jtSo);
