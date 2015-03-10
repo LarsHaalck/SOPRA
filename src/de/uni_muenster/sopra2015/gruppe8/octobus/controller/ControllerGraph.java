@@ -182,12 +182,15 @@ public class ControllerGraph
 				ArrayList<Integer> temp = new ArrayList<>();
 				for (Integer start : startTimesOnDay)
 				{
-					//TODO: quatsch bei Mitternacht
-					//Check if timediffonFirst  + start is over midnight
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
+					{
 						temp.add(timeDiffOnFirst + start + 1440);
+					}
 					else
-					 	temp.add(start + timeDiff);
+					{
+						temp.add(start + timeDiff);
+						break;
+					}
 				}
 
 				currentArrival = Collections.min(temp);
@@ -282,11 +285,6 @@ public class ControllerGraph
 					else
 						arrivalAtNeighbour = arrivalTime(stopId, neighbourId, dist.get(stopId).intValue()); //arrivalTime contains earliest arrival at w
 
-					/*if(arrivalAtNeighbour < 0)
-					{
-						System.out.println("derp");
-						return null;
-					}*/
 
 					if(arrivalAtNeighbour < dist.get(neighbour.getId()))
 					{
@@ -344,14 +342,18 @@ public class ControllerGraph
 					trips.remove(prevQuintuple);
 				}
 
+				int calcStart = (dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop));
+				calcStart = calcStart >= 1440 ? calcStart - 1440 : calcStart;
 
-				//TODO: mabye use Math.abs() for time differences
+				int calcEnd = dist.get(currentStop).intValue();
+				calcEnd = calcEnd >= 1440 ? calcEnd - 1440 : calcEnd;
+				
 				prevQuintuple = new Quintuple<>(
-						(dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop)),
+						calcStart,
 						bestStoppingPoints.get(prevStop),
 						bestRoutes.get(new TupleInt(prevStop, currentStop)),
 						end,
-						dist.get(currentStop).intValue()
+						calcEnd
 				);
 				//add them in reverse order
 				trips.addFirst(prevQuintuple);
