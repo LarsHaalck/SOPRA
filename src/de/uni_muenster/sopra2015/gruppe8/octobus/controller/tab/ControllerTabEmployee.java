@@ -18,14 +18,16 @@ import java.util.ArrayList;
  */
 public class ControllerTabEmployee extends Controller implements ListenerButton, ListenerTable
 {
+	int uid;
 	private ControllerDatabase controllerDatabase;
 	private TabEmployee tabEmployee;
 
-	public ControllerTabEmployee(TabEmployee tabEmployee)
+	public ControllerTabEmployee(TabEmployee tabEmployee, int uid)
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.tabEmployee = tabEmployee;
+		this.uid = uid;
 	}
 
 	@Override
@@ -51,6 +53,12 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 			case TAB_EMPLOYEE_DELETE:
 				if(tabEmployee.getSelectedID() != -1)
 				{
+					if (tabEmployee.getSelectedID() == uid)
+					{
+						tabEmployee.showMessageDialog("Sie können sich nicht selbst löschen!");
+						break;
+					}
+
 					if(tabEmployee.showConfirmDialog("Wirklich löschen?"))
 					{
 						controllerDatabase.deleteEmployee(tabEmployee.getSelectedID());
@@ -75,14 +83,10 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
-		ControllerManager.addListener((ListenerTable)this);
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerTable) this);
 	}
 
-	private void saveWorkplanToIcal()
-	{
-
-	}
 
 	public void fillTable()
 	{
@@ -124,4 +128,5 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	{
 
 	}
+
 }
