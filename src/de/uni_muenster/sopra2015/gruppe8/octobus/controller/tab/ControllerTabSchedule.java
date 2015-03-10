@@ -58,25 +58,30 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 
 	private void fillTable()
 	{
-		ArrayList<Tuple<Tour, Boolean>> tours = controllerDatabase.getToursWithinDateRange(1425966900, 1425981300);
+        controllerDatabase.createTours(tabSchedule.getDateStart());
+		ArrayList<Object[]> tours = controllerDatabase.getToursForDate(tabSchedule.getDateStart());
+
 		Object data[][] = new Object[tours.size()][7];
-		for (int i=0; i<tours.size(); i++)
+		for (int i=0; i < tours.size(); i++)
 		{
-			Tuple<Tour, Boolean> tuple = tours.get(i);
-			Tour tour = tuple.getFirst();
-			data[i][0] = tour.getId();
-			data[i][1] = tour.getRoute().getName();
-			data[i][2] = new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME);
-			data[i][3] = tour.getRoute().getStart().getName();
-			data[i][4] = tour.getRoute().getEnd().getName();
-			if(tour.getBus() == null)
-				data[i][5] = "";
+			Object[] content = tours.get(i);
+			data[i][0] = content[0];
+			data[i][1] = content[1];
+			data[i][2] = content[2];
+			data[i][3] = content[3];
+			data[i][4] = content[4];
+            data[i][5] = content[5];
+            data[i][6] = content[6];
+
+			/*if(tour.getBus() == null)
+				data[i][3] = "";
 			else
 				data[i][5] = tour.getBus().getLicencePlate();
+
 			if(tour.getDriver() == null)
 				data[i][6] = "";
 			else
-				data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();
+				data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();*/
 		}
 		tabSchedule.fillTable(data);
 	}

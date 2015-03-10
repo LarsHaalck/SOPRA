@@ -235,8 +235,8 @@ public class ControllerDatabase
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID, (Integer) null)
 				.where(TOURS.BUSES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
-				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -997,8 +997,8 @@ public class ControllerDatabase
 		create.update(TOURS)
 				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
-				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -1763,6 +1763,7 @@ public class ControllerDatabase
                             .execute();
                 }
             }
+            System.out.println("Creation finished.");
         }
 
         // Finally execute all the previously queued queries
@@ -1786,65 +1787,62 @@ public class ControllerDatabase
         return null;
     }
 
-    public ArrayList<Tuple<Tour, Boolean>> getToursWithinDateRange(int dateFrom, int dateUntil)
+    public ArrayList<Object[]> getToursForDate(Date date) {
+
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        Date from = new Date(date.getTime());
+
+        calendar.setTime(from);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return getToursWithinDateRange((int) (calendar.getTimeInMillis() / 1000),
+                (int) ((calendar.getTimeInMillis() + DAY_IN_MILLIS) / 1000));
+    }
+
+    private ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
     {
-        ArrayList<Tuple<Tour, Boolean>> result = new ArrayList<>();
+        ArrayList<Object[]> result = new ArrayList<>();
 
         Result<Record> records = create
                 .select()
                 .from(TOURS)
-                // TODO: Siehe unten.
-                /*.leftOuterJoin(EMPLOYEES)
+                .leftOuterJoin(EMPLOYEES)
                 .using(EMPLOYEES.EMPLOYEES_ID)
                 .leftOuterJoin(BUSES)
-                .using(BUSES.BUSES_ID)*/
+                .using(BUSES.BUSES_ID)
+                .leftOuterJoin(ROUTES)
+                .using(ROUTES.ROUTES_ID)
                 .where(TOURS.TIMESTAMP
                         .between(dateFrom, dateUntil))
                 .fetch();
 
-        System.out.println(records.size());
-
         for (Record r : records)
         {
-            // TODO: Question is: Can this be done more efficiently? We create a LOT of objects...
-            // The following would be the code for creating a bus as an alternative to using getBusById().
-            /*Bus bus;
-            if (r.getValue(BUSES.BUSES_ID) == null)
-            {
-                bus = null;
-            }
-            else
-            {
-                bus = r.getValue(BUSES.BUSES_ID) == null ? null :
-                        new Bus(
-                                r.getValue(BUSES.LICENCEPLATE),
-                                r.getValue(BUSES.NUMBEROFSEATS),
-                                r.getValue(BUSES.STANDINGROOM),
-                                r.getValue(BUSES.MANUFACTURER),
-                                r.getValue(BUSES.MODEL),
-                                new Date((long) r.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
-                                r.getValue(BUSES.ARTICULATEDBUS));
-                bus.setId(r.getValue(BUSES.BUSES_ID));
-            }*/
+            Object[] content = new Object[7];
 
-            Bus bus = r.getValue(BUSES.BUSES_ID) == null ? null : getBusById(r.getValue(BUSES.BUSES_ID));
-            Route route = r.getValue(ROUTES.ROUTES_ID) == null ? null : getRouteById(r.getValue(ROUTES.ROUTES_ID));
-            Employee employee = r.getValue(EMPLOYEES.EMPLOYEES_ID) == null ? null : getEmployeeById(r.getValue(EMPLOYEES.EMPLOYEES_ID));
+            // Tour ID
+            content[0] = r.getValue(TOURS.TOURS_ID);
+            // Route's name
+            content[1] = r.getValue(ROUTES.NAME);
+            // Start time
+            content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
+            // Starting stop
+            content[3] = new String("Blub");
+            // Starting stop
+            content[4] = new String("Blub");
+            // Starting stop
+            content[5] = r.getValue(BUSES.LICENCEPLATE);
+            // Starting stop
+            content[6] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
-            result.add(
-                    new Tuple<>(
-                            new Tour(
-                                    new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000),
-                                    route,
-                                    bus,
-                                    employee),
-							(bus == null || employee == null) ? false : true
-                    )
-            );
-
+            result.add(content);
         }
 
-        System.out.println("Done");
+        System.out.println("Fertig.");
 
         return result;
     }
@@ -1866,7 +1864,8 @@ public class ControllerDatabase
 				.orderBy(TOURS.TIMESTAMP)
 				.fetch();
 
-		if (tours == null) return result; // return empty list if no tours found
+        // Return empty list if no tours found
+        if (tours == null) return result;
         for (ToursRecord t : tours){
             result.add(
                     new Tour(
