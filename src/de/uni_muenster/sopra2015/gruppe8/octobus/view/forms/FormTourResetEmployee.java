@@ -4,6 +4,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -12,13 +14,71 @@ import java.util.ArrayList;
  */
 public class FormTourResetEmployee extends FormGeneral
 {
+
+	private JPanel jpMain, jpButtonMain, jpButton, jpStart, jpEnd, jpBusDriver;
+	private JLabel jlStart, jlEnd, jlBusDriver;
 	private FieldDate tfDateStart;
 	private FieldDate tfDateEnd;
 	private JComboBox<TupleIntString> cbEmployees;
+	private JButton jbSave, jbCancel;
 
-	public FormTourResetEmployee(Frame parent)
+	public FormTourResetEmployee(Frame parent, int objectId)
 	{
 		super(parent, "Mitarbeiter zurücksetzen");
+		setLayout(new BorderLayout());
+
+		jpMain = new JPanel();
+		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
+
+		jpStart = new JPanel();
+		jpStart.setLayout(new BoxLayout(jpStart, BoxLayout.X_AXIS));
+		jpStart.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+		jlStart = new JLabel("Erster Tag: ");
+		tfDateStart = new FieldDate();
+		jpStart.add(jlStart);
+		jpStart.add(Box.createHorizontalStrut(5));
+		jpStart.add(tfDateStart);
+		jpMain.add(jpStart);
+
+		jpEnd = new JPanel();
+		jpEnd.setLayout(new BoxLayout(jpEnd, BoxLayout.X_AXIS));
+		jpEnd.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+		jlEnd = new JLabel("Letzter Tag: ");
+		tfDateEnd = new FieldDate();
+		jpEnd.add(jlEnd);
+		jpEnd.add(tfDateEnd);
+		jpMain.add(jpEnd);
+
+		jpBusDriver = new JPanel();
+		jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
+		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
+		jlBusDriver = new JLabel("Busfahrer: ");
+		cbEmployees = new JComboBox<TupleIntString>();
+		jpBusDriver.add(jlBusDriver);
+		jpBusDriver.add(Box.createHorizontalStrut(8));
+		jpBusDriver.add(cbEmployees);
+		jpMain.add(jpBusDriver);
+
+		add(jpMain);
+
+		jpButtonMain = new JPanel();
+		jpButtonMain.setLayout(new BorderLayout());
+
+		jpButton = new JPanel();
+		jpButton.setLayout(new FlowLayout());
+		jpButton.setBorder(new EmptyBorder(new Insets(5,0,5,0)));
+		jbSave = new JButton("Speichern");
+		jbCancel = new JButton("Abbrechen");
+		jpButton.add(jbSave);
+		jpButton.add(jbCancel);
+
+		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
+		jpButtonMain.add(jpButton, BorderLayout.CENTER);
+
+		add(jpButtonMain, BorderLayout.SOUTH);
+
+		pack();
+		setLocationRelativeTo(null);
 	}
 
 	public void fillEmployees(ArrayList<TupleIntString> employees)

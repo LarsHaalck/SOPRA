@@ -53,6 +53,10 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 			case TAB_SCHEDULE_FILTER:
 				newFilterSelected();
 				break;
+
+			case TAB_SCHEDULE_RESET_EMPLOYEE:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_RESET_EMPLOYEE);
+				break;
 		}
 	}
 
