@@ -11,14 +11,12 @@ import java.util.LinkedList;
 
 public class ControllerGraph
 {
+	int numStops;
+	HashSet<TupleInt> adjSet;
+	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 	private ControllerDatabase db;
 	private ArrayList<BusStop> stops;
 	private ArrayList<Route> routes;
-
-	int numStops;
-	HashSet<TupleInt> adjSet;
-
-	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 
 
 	/**
@@ -30,16 +28,6 @@ public class ControllerGraph
 		init();
 	}
 
-
-	/*public static void main(String[] args)
-	{
-		ControllerGraph graph = new ControllerGraph();
-
-		Connection con = graph.getConnection(7, 26, DayOfWeek.MONDAY, 540);
-
-		return;
-
-	}*/
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
@@ -95,6 +83,15 @@ public class ControllerGraph
 	}
 
 
+	/**
+	 * Calculates connection between specified BusStop ids on day starting on time (earliest departure)
+	 * @param id_start id of BusStop which marks the start of the requested connection
+	 * @param id_end id of BusStop which marks the end of the requested connection
+	 * @param day DayOfWeek of requested connection
+	 * @param time earliest starting time at startId
+	 * @return Connection object if connection exists, null otherwise
+	 * @pre id_start and id_end must be existing BusStop ids. time must be in [0, 1439]
+	 */
 	public Connection getConnection(int id_start, int id_end, DayOfWeek day, int time)
 	{
 		ConnectionRequest request = new ConnectionRequest();
@@ -108,14 +105,14 @@ public class ControllerGraph
 	 */
 	private class ConnectionRequest
 	{
+		int connectionStartTime;
+		int startId;
+		DayOfWeek day;
 		//somethings need to be global in this class because they are used by multiple functions
 		private HashMap<TupleInt, Route> bestRoutes; //contains "winning" routes on edges
 		private HashMap<Integer, StoppingPoint> bestStoppingPoints; //contains used StoppingPoints on "winning routes"
 		private HashMap<Integer, Double> dist; //contains dist of BusStop (via id) from starting point
 		private HashMap<Integer, Integer> prev; //contains previous BusStops from BusStop (via id) in "shortest" Path
-		int connectionStartTime;
-		int startId;
-		DayOfWeek day;
 
 		/**
 		 * Initializes HashMaps
