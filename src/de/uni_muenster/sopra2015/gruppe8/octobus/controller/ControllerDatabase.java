@@ -2101,4 +2101,31 @@ public class ControllerDatabase
 
 		return (Integer) record.getValue(0);
 	}
+
+	/**
+	 * Retrieves a single Tour object from the database entry using its unique id
+	 *
+	 * @param id unique ID of the tour to be retrieved
+	 * @return Tour object created from its corresponding entry the database, null if tour not found.
+	 * @pre true
+	 * @post true
+	 */
+
+	public Tour getTourById(int id)
+	{
+		ToursRecord rec = create
+				.selectFrom(TOURS)
+				.where(TOURS.TOURS_ID.eq(id))
+				.fetchOne();
+
+		if (rec == null) return null;
+
+		Tour result = new Tour(
+				new Date(rec.getTimestamp()*1000),
+				getRouteById(rec.getRoutesId()),
+				(rec.getBusesId() == null) ? null : getBusById(rec.getBusesId()),
+				(rec.getEmployeesId() == null) ? null : getEmployeeById(rec.getEmployeesId()));
+		result.setId(id);
+		return result;
+	}
 }
