@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab.ControllerTabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSchedule;
@@ -98,5 +99,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	@Override
 	protected void editEntry()
 	{
+		controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT);
 	}
 }
