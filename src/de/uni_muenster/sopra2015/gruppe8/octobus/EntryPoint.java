@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
@@ -16,6 +17,7 @@ public class EntryPoint
 	{
 
 		FrameMain frameMain = new FrameMain();
+		ControllerDatabase.getInstance();
 		PanelEmployee panelEmployee = new PanelEmployee();
 
 		//Automatically login root-user
