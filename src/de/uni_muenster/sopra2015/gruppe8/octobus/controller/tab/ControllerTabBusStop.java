@@ -71,6 +71,16 @@ public class ControllerTabBusStop extends Controller implements ListenerButton, 
 					tabBusStop.showMessageDialog("Um eine Haltestelle zu löschen wählen Sie bitte einen Eintrag aus der Tabelle.");
 				}
 				break;
+
+			case TAB_BUS_STOP_PRINT:
+				if(tabBusStop.getSelectedID() != -1)
+				{
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_BUS_STOP_PRINT, tabBusStop.getSelectedID());
+				}
+				else
+				{
+					tabBusStop.showMessageDialog("Um eine Haltestelle zu drucken wählen Sie bitte einen Eintrag aus der Tabelle.");
+				}
 		}
 	}
 

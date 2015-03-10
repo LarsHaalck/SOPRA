@@ -16,7 +16,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 	private JButton btnDelete;
 	private JButton btnEdit;
 	private JButton btnNew;
-
+	private JButton btnPrint;
 
 	public TabBusStop()
 	{
@@ -41,6 +41,11 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_NEW);
 		});
 
+		btnPrint = new JButton("Drucken...");
+		btnPrint.addActionListener(e-> {
+			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_PRINT);
+		});
+
 		if(super.isRefineable())
 		{
 			JPanel plFilter = new JPanel();
@@ -54,6 +59,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		plButtons.add(btnNew);
 		plButtons.add(btnEdit);
 		plButtons.add(btnDelete);
+		plButtons.add(btnPrint);
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);

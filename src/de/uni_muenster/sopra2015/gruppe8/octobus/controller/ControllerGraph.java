@@ -11,14 +11,12 @@ import java.util.LinkedList;
 
 public class ControllerGraph
 {
+	int numStops;
+	HashSet<TupleInt> adjSet;
+	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 	private ControllerDatabase db;
 	private ArrayList<BusStop> stops;
 	private ArrayList<Route> routes;
-
-	int numStops;
-	HashSet<TupleInt> adjSet;
-
-	HashMap<TupleInt, LinkedList<Route>> routesConnecting;
 
 
 	/**
@@ -31,15 +29,6 @@ public class ControllerGraph
 	}
 
 
-	/*public static void main(String[] args)
-	{
-		ControllerGraph graph = new ControllerGraph();
-
-		Connection con = graph.getConnection(7, 26, DayOfWeek.MONDAY, 540);
-
-		return;
-
-	}*/
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
@@ -61,6 +50,7 @@ public class ControllerGraph
 	 */
 	private void buildAdjSet()
 	{
+		if(routes == null || stops == null) return;
 		for(Route route : routes)
 		{
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = route.getStops();
@@ -95,8 +85,18 @@ public class ControllerGraph
 	}
 
 
+	/**
+	 * Calculates connection between specified BusStop ids on day starting on time (earliest departure)
+	 * @param id_start id of BusStop which marks the start of the requested connection
+	 * @param id_end id of BusStop which marks the end of the requested connection
+	 * @param day DayOfWeek of requested connection
+	 * @param time earliest starting time at startId
+	 * @return Connection object if connection exists, null otherwise
+	 * @pre id_start and id_end must be existing BusStop ids. time must be in [0, 1439]
+	 */
 	public Connection getConnection(int id_start, int id_end, DayOfWeek day, int time)
 	{
+		if(routes == null || stops == null) return null;
 		ConnectionRequest request = new ConnectionRequest();
 		return request.findConnection(id_start, id_end, day, time);
 	}
@@ -108,14 +108,13 @@ public class ControllerGraph
 	 */
 	private class ConnectionRequest
 	{
+		int startId;
+		DayOfWeek day;
 		//somethings need to be global in this class because they are used by multiple functions
 		private HashMap<TupleInt, Route> bestRoutes; //contains "winning" routes on edges
 		private HashMap<Integer, StoppingPoint> bestStoppingPoints; //contains used StoppingPoints on "winning routes"
 		private HashMap<Integer, Double> dist; //contains dist of BusStop (via id) from starting point
 		private HashMap<Integer, Integer> prev; //contains previous BusStops from BusStop (via id) in "shortest" Path
-		int connectionStartTime;
-		int startId;
-		DayOfWeek day;
 
 		/**
 		 * Initializes HashMaps
@@ -176,14 +175,12 @@ public class ControllerGraph
 					}
 				}
 
+
 				for (Integer start : startTimesOnDay)
 				{
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
 						continue;
 					currentArrival = start + timeDiff;
-
-					if(bestRoutes.size() == 0)
-						this.connectionStartTime = timeDiffOnFirst + start;
 
 					break; //break after first match
 				}
@@ -200,7 +197,6 @@ public class ControllerGraph
 						bestStoppingPoints.put(id2, stoppingPoint2);
 						if(id1 == startId)
 							bestStoppingPoints.put(id1, stoppingPoint1);
-
 					}
 				}
 
@@ -296,11 +292,10 @@ public class ControllerGraph
 		 */
 		private Connection reconstructConnection(int stopId)
 		{
-			int time = this.connectionStartTime;
-			int duration = dist.get(stopId).intValue() - time; //arrival time - starting time
+			int time = 0;
+			int duration = 0;
 
 			LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> trips = new LinkedList<>();
-
 
 			int currentStop = stopId;
 			int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
@@ -313,11 +308,17 @@ public class ControllerGraph
 			while(prevStop != -1) //reconstruct route
 			{
 				Route currentRoute = bestRoutes.get(new TupleInt(prevStop, currentStop));
+				if(prev.get(prevStop) == null)
+				{
+					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
+					duration = dist.get(stopId).intValue() - time;
+				}
+
 				/*System.out.println("Start: " + (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop)));
 				System.out.println("Arrival at 2nd BusStop: " + dist.get(currentStop).intValue());
-				System.out.println("Stopping Point - Begin: " + db.getBusStop(prevStop).getName() + ": " + bestStoppingPoints.get(prevStop).getName());
+				System.out.println("Stopping Point - Begin: " + db.getBusStopById(prevStop).getName() + ": " + bestStoppingPoints.get(prevStop).getName());
 				System.out.println("Route taken: " + bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
-				System.out.println("Stopping Point - End: " + db.getBusStop(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
+				System.out.println("Stopping Point - End: " + db.getBusStopById(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
 
 
 				//no change of route -> no transition -> delete old Quadruple but save its end stopping point
@@ -329,8 +330,7 @@ public class ControllerGraph
 				}
 
 
-
-
+				//TODO: mabye use Math.abs() for time differences
 				prevQuadruple = new Quadruple<>(
 						(dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop)),
 						bestStoppingPoints.get(prevStop),
