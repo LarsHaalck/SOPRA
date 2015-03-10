@@ -18,7 +18,6 @@ public class PrintViewStoppingPoint implements Printable
 	private Graphics2D graphics2D;
 	private double pageHeight;
 	private double pageWidth;
-	private int numPages;
 	private Font fontHeader;
 	private Font fontHeader2;
 	private Font fontNormal;
@@ -36,7 +35,7 @@ public class PrintViewStoppingPoint implements Printable
 		this.data = data;
 
 		fontHeader = new Font("Serif", Font.BOLD, 50);
-		fontHeader2 = new Font("Serif", Font.BOLD, 20);
+		fontHeader2 = new Font("Serif", Font.BOLD, 10);
 		fontNormal = new Font("Serif", Font.BOLD, 12);
 
 		stop = data.getStoppingPoint();
@@ -49,7 +48,7 @@ public class PrintViewStoppingPoint implements Printable
 
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
-		if (pageIndex >= numPages)
+		if (pageIndex >= 1)
 		{
 			return NO_SUCH_PAGE;
 		}
@@ -87,7 +86,7 @@ public class PrintViewStoppingPoint implements Printable
 					graphics2D.drawString(curDate, curX, curY);
 					curY += 20;
 				}
-				curX += 60;
+				curX += pageWidth/5;
 				curY = entryYStart;
 			}
 		}
