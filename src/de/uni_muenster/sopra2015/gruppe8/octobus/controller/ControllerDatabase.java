@@ -1808,14 +1808,15 @@ public class ControllerDatabase
     }
 
     /**
-     * Creates all trips for a given range of days.
+     * Creates all tours for a given range of days.
      *
      * @param dateFrom date from which tours ought to be generated
      * @param dateUntil date until which tours ought to be generated
+	 * @pre dateForm is prior to dateUntil
+	 * @post database contains all tours for the specified range of days
      */
     public void createTours(Date dateFrom, Date dateUntil)
     {
-        // TODO: Check to see if this is negative? Does the UI take care of that check?
         int daysBetween = daysBetween(dateFrom, dateUntil);
 
         // Notify database of loads of incoming queries
