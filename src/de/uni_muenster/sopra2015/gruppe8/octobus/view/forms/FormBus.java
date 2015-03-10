@@ -28,6 +28,12 @@ public class FormBus extends FormGeneral
 	private JButton btSave;
 	private JButton btCancel;
 
+	/**
+	 * Creates a new FormBus-Object.
+	 *
+	 * @param parent the parentFrame
+	 * @param objectID the id of the selected bus
+	 */
 	public FormBus(Frame parent, int objectID)
 	{
 		super(parent, "");
