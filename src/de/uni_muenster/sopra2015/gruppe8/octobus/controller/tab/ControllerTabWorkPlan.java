@@ -97,7 +97,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 			bw.newLine();
 			for(Tour tour : tours)
 			{
-				Date start = tour.getTimestamp();
+				Date start = tour.getStartTimestamp();
 
 				bw.write("BEGIN:VEVENT");
 				bw.newLine();
@@ -154,7 +154,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 		{
 			Tour tour = tours.get(i);
 			data[i][0] = tour.getId();
-			data[i][1] = new TableDate(tour.getTimestamp(), TableDate.Type.DATE_TIME);
+			data[i][1] = new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME);
 			data[i][2] = tour.getRoute().getName();
 			data[i][3] = tour.getRoute().getStart().getName();
 			data[i][4] = tour.getRoute().getEnd().getName();

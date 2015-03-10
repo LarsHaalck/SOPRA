@@ -9,22 +9,25 @@ public class Tour
 {
     // ID assigned to the object in the database (set on first write to DB)
     private int id;
-	private Date timestamp;
+	private Date startTimestamp;
+    private Date endTimestamp;
 	private Route route;
 	private Bus bus;
 	private Employee driver;
 
 	public Tour()
 	{
-		this.timestamp = new Date(0);
+		this.startTimestamp = new Date(0);
 	}
 
-	public Tour(Date timestamp, Route route, Bus bus, Employee driver)
+	public Tour(Date startTimestamp, Route route, Bus bus, Employee driver)
 	{
-		this.timestamp = timestamp;
+		this.startTimestamp = startTimestamp;
 		this.route = route;
 		this.bus = bus;
 		this.driver = driver;
+
+        endTimestamp = new Date(this.startTimestamp.getTime() + ((long) route.getDuration()*1000));
 	}
 
 	public Bus getBus()
@@ -37,14 +40,24 @@ public class Tour
 		this.bus = bus;
 	}
 
-	public Date getTimestamp()
+	public Date getStartTimestamp()
 	{
-		return timestamp;
+		return startTimestamp;
 	}
 
-	public void setTimestamp(Date timestamp)
+    public int getStartTimestampAsInt()
+    {
+        return (int) (startTimestamp.getTime()/1000);
+    }
+
+    public int getEndTimestampAsInt()
+    {
+        return (int) (endTimestamp.getTime()/1000);
+    }
+
+	public void setStartTimestamp(Date startTimestamp)
 	{
-		this.timestamp = timestamp;
+		this.startTimestamp = startTimestamp;
 	}
 
 	public Route getRoute()

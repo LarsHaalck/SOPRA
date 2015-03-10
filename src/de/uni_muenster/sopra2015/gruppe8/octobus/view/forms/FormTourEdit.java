@@ -6,12 +6,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.Extended
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 /**
- * Created by Florian on 10.03.2015.
+ * Form used to edit a tour
  */
 public class FormTourEdit extends FormGeneral
 {
@@ -26,6 +24,7 @@ public class FormTourEdit extends FormGeneral
 	private TableModelTourData tmBuses;
 	private TableModelTourData tmBusDriver;
 
+	//Saves table-selections
 	private int selectedBusRow;
 	private int selectedBusId;
 	private int selectedBusDriverRow;
@@ -39,11 +38,11 @@ public class FormTourEdit extends FormGeneral
 
 		setLayout(new BorderLayout(5,10));
 
-		//Description of form
+		//Descriptions
 		JPanel plTourDesc = new JPanel();
 		plTourDesc.setLayout(new BorderLayout());
-		JLabel lbTourDesc = new JLabel("Beschreibung");
-		JLabel lbTourTime = new JLabel("Zeit");
+		lbTourDesc = new JLabel("Beschreibung");
+		lbTourTime = new JLabel("Zeit");
 		plTourDesc.add(lbTourDesc, BorderLayout.NORTH);
 		plTourDesc.add(lbTourTime, BorderLayout.SOUTH);
 
@@ -51,7 +50,7 @@ public class FormTourEdit extends FormGeneral
 		JPanel plContent = new JPanel();
 		plContent.setLayout(new GridLayout(1,2,10,10));
 
-		tmBuses = new TableModelTourData("Bus");
+		tmBuses = new TableModelTourData("Zum Zeitpunkt freie Busse");
 		tbBuses = new JTable(tmBuses);
 		tbBuses.removeColumn(tbBuses.getColumnModel().getColumn(0));
 		tbBuses.getSelectionModel().addListSelectionListener(e -> {
@@ -67,7 +66,7 @@ public class FormTourEdit extends FormGeneral
 				selectedBusId = (int) tmBuses.getValueAt(selectedBusRow, 0);
 			}
 		});
-		tmBusDriver = new TableModelTourData("Fahrer");
+		tmBusDriver = new TableModelTourData("Zum Zeitpunkt freie Fahrer");
 		tbBusDriver = new JTable(tmBusDriver);
 		tbBusDriver.removeColumn(tbBusDriver.getColumnModel().getColumn(0));
 		tbBusDriver.getSelectionModel().addListSelectionListener(e -> {
@@ -109,6 +108,16 @@ public class FormTourEdit extends FormGeneral
 		controllerFormTourEdit.fillForm();
 	}
 
+	public void setLabelTourDesc(String text)
+	{
+		lbTourDesc.setText(text);
+	}
+
+	public void setLabelTourTime(String text)
+	{
+		lbTourTime.setText(text);
+	}
+
 	public int getSelectedBus()
 	{
 		return selectedBusId;
@@ -119,6 +128,11 @@ public class FormTourEdit extends FormGeneral
 		return selectedBusDriverId;
 	}
 
+	/**
+	 * Set selection in bus-table to given id
+	 * @param id bus-id
+	 * @pre parameter id is in table
+	 */
 	public void setSelectedBus(int id)
 	{
 		int i = 0;
@@ -130,6 +144,11 @@ public class FormTourEdit extends FormGeneral
 		tbBuses.getSelectionModel().setSelectionInterval(i,i);
 	}
 
+	/**
+	 * Set selection in bus-driver-table to given id
+	 * @param id bus-driver-id
+	 * @pre parameter id is in table
+	 */
 	public void setSelectedBusDriver(int id)
 	{
 		int i = 0;
@@ -141,8 +160,15 @@ public class FormTourEdit extends FormGeneral
 		tbBusDriver.getSelectionModel().setSelectionInterval(i,i);
 	}
 
+	/**
+	 * Just a small table-model for FormTourEdit-tables
+	 */
 	private class TableModelTourData extends ExtendedTableModel
 	{
+		/**.
+		 * Create a new instance with one column
+		 * @param name name of column
+		 */
 		public TableModelTourData(String name)
 		{
 			columnNames = new String[]{name};
