@@ -58,7 +58,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 
 	private void fillTable()
 	{
-		ArrayList<Tuple<Tour, Boolean>> tours = controllerDatabase.getToursWithinDateRange(1426004896,1426210096);
+		ArrayList<Tuple<Tour, Boolean>> tours = controllerDatabase.getToursWithinDateRange(1425966900, 1425981300);
 		Object data[][] = new Object[tours.size()][7];
 		for (int i=0; i<tours.size(); i++)
 		{
@@ -69,8 +69,14 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 			data[i][2] = new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME);
 			data[i][3] = tour.getRoute().getStart().getName();
 			data[i][4] = tour.getRoute().getEnd().getName();
-			data[i][5] = tour.getBus().getLicencePlate();
-			data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();
+			if(tour.getBus() == null)
+				data[i][5] = "";
+			else
+				data[i][5] = tour.getBus().getLicencePlate();
+			if(tour.getDriver() == null)
+				data[i][6] = "";
+			else
+				data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();
 		}
 		tabSchedule.fillTable(data);
 	}
