@@ -66,7 +66,9 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 		{
 			if(stop.getFirst().isSelected())
 			{
-				ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, new ArrayList<Integer>());
+				ArrayList<Integer> ids = new ArrayList<Integer>();
+				ids.add(stop.getSecond());
+				ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
 			}
 		}
 	}
