@@ -122,6 +122,8 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 		{
 			if(formDepartureTime.getFnEndTime_Hour() == -1 || formDepartureTime.getFnEndTime_Minute() == -1)
 				errorFields.add("Endzeit muss vollständig angegeben werden.");
+			if(formDepartureTime.getFnEndTime_Hour() <= formDepartureTime.getFnEndTime_Hour() && formDepartureTime.getFnEndTime_Minute() <= formDepartureTime.getFnStartTime_Minute())
+				errorFields.add("Endzeit muss später als Startzeit sein.");
 			if(freqency == -1)
 				errorFields.add("Frequenz darf nicht leer sein, wenn eine Endzeit angegeben ist.");
 			if(freqency == 0)
