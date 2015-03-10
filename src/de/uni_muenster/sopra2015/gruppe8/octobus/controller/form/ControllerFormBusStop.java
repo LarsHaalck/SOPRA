@@ -143,7 +143,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			formBusStop.setLocationX(busStop.getLocation().getFirst());
 			formBusStop.setLocationY(busStop.getLocation().getSecond());
 
-			for(StoppingPoint p: busStop.getStoppingPoints())
+			for(StoppingPoint p: originalStoppingPoints)
 				formBusStop.addStoppingPoint(p.getId(), p.getName());
 			formBusStop.setBarrierFree(busStop.isBarrierFree());
 		}
