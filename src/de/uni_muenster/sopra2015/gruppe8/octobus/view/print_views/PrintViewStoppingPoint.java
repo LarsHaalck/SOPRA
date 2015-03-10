@@ -16,19 +16,14 @@ import java.util.ArrayList;
  */
 public class PrintViewStoppingPoint implements Printable
 {
-	private final int entryHeight = 70;
 	private final int entryXStart = 80;
 	private final int entryYStart = 180;
 	private Graphics2D graphics2D;
-	private double pageHeight;
-	private double pageWidth;
 	private Font fontHeader;
 	private Font fontHeader2;
 	private Font fontNormalHead;
 	private Font fontNormal;
 	private PrintStoppingPoint data;
-	private int entriesPerPage;
-	private StoppingPoint stop;
 	private ArrayList<PrintStoppingPoint.RouteEntry> routes;
 
 	public PrintViewStoppingPoint(PrintStoppingPoint data)
@@ -39,21 +34,18 @@ public class PrintViewStoppingPoint implements Printable
 		fontHeader2 = new Font("Serif", Font.BOLD, 10);
 		fontNormalHead = new Font("Serif", Font.BOLD, 8);
 		fontNormal = new Font("Serif", Font.PLAIN, 8);
-
-		stop = data.getStoppingPoint();
-		routes = data.getRouteEntries();
 	}
 
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 	{
 		graphics2D = (Graphics2D) graphics;
 
-		pageHeight = pageFormat.getImageableHeight();
-		pageWidth = pageFormat.getImageableWidth();
 		if (pageIndex >= calcNumPages())
 		{
 			return NO_SUCH_PAGE;
 		}
+
+		routes = data.getRouteEntries();
 
 		for(PrintStoppingPoint.RouteEntry routeEntry: routes)
 		{
@@ -69,7 +61,7 @@ public class PrintViewStoppingPoint implements Printable
 		graphics2D.setFont(fontHeader);
 		graphics2D.drawString("OctoBUS", 140, 110);
 		graphics2D.setFont(fontHeader2);
-		graphics2D.drawString("Abfahrtszeiten von "+routeEntry.getRoute().getName()+" für Linie "+routeEntry.getRoute().getName(), 140,135);//zB Zeiten von Hbf für Linie 11
+		graphics2D.drawString("Abfahrtszeiten von "+routeEntry.getBusStop().getName()+routeEntry.getStopPoint().getName()+" für Linie "+routeEntry.getRoute().getName(), entryXStart,135);//zB Zeiten von Hbf für Linie 11
 	}
 
 	private void drawContent(int pageIndex, PrintStoppingPoint.RouteEntry routeEntry)
@@ -94,8 +86,11 @@ public class PrintViewStoppingPoint implements Printable
 			curY += 20;
 			for (int time : routeEntry.getStartTimes(day))
 			{
-				curDate = time / 60 + ":" + time % 60;
-				//TODO: 00 wird zu 0
+				String min = time%60+"";
+				if(min.length()==1){min = "0"+min;}
+				String hour = time/60+"";
+				if(hour.length()==1){hour = "0"+hour;}
+				curDate = hour + ":" + min;
 				graphics2D.drawString(curDate, curX, curY);
 				curY += 10;
 			}
@@ -114,6 +109,8 @@ public class PrintViewStoppingPoint implements Printable
 			curY += 20;
 			graphics2D.drawString(curDate, curX, curY);
 		}
+
+		//TODO: Seitenumbruch bei zu vielen Einträgen
 
 	}
 
