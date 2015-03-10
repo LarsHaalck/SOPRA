@@ -1,15 +1,29 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
+
+import java.util.Date;
 
 /**
  * Created by Lars on 02-Mar-15.
  */
 public class ControllerTabSchedule extends Controller implements ListenerButton
 {
+	private TabSchedule tabSchedule;
+	private ControllerDatabase controllerDatabase;
+
+	public ControllerTabSchedule(TabSchedule tabSchedule)
+	{
+		super();
+		this.tabSchedule = tabSchedule;
+		controllerDatabase = ControllerDatabase.getInstance();
+	}
+
 	@Override
 	protected void addListeners()
 	{
@@ -19,16 +33,44 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener((ListenerButton) this);
 	}
 
 	@Override
 	public void buttonPressed(EmitterButton btn)
 	{
+		switch(btn)
+		{
+			case TAB_SCHEDULE_EDIT:
+				break;
+
+			case TAB_SCHEDULE_FILTER:
+				newFilterSelected();
+				break;
+		}
 	}
 
 	public void fillTable()
 	{
+
+	}
+
+	private void newFilterSelected()
+	{
+		Date start = tabSchedule.getDateStart();
+		Date end = tabSchedule.getDateEnd();
+		boolean onlyUnassigned = tabSchedule.getOnlyUnassigned();
+
+		//Check if start-date is invalid
+		if(start == null)
+			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");
+		else {
+			//Check if end-date is null -> end-date is empty
+			if(end == null)
+				end = start;
+
+			//TODO: Get them from db
+		}
 
 	}
 }
