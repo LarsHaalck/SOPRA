@@ -46,7 +46,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 			model = (TM) new DefaultExtendedTableModel();
 		}
 
-		sorter = new TableRowSorter<>((TM)model);
+		sorter = new TableRowSorter<>((type.cast(model)));
 		table = new JTable((TM)model);
 		table.setFillsViewportHeight(true);
 
