@@ -20,8 +20,8 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				ControllerDatabase.getInstance();  // check database file existence
 				new FrameMain();
+				ControllerDatabase.getInstance();  // check database file existence
 			}
 		});
 		drawASCII();
