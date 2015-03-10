@@ -1142,6 +1142,7 @@ public class ControllerDatabase
 			deleteToursUsingRoutesId(r.getId());
 			deleteStartTimesUsingRouteId(r.getId());
 			deleteRoutesStopsUsingRouteId(r.getId());
+			deleteRoute(r.getId());
 			return(addRoute(r));		// route gets a new ID here!
 		}
 	}

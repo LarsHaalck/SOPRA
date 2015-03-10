@@ -27,12 +27,14 @@ public class ControllerTabRoute extends Controller implements ListenerButton, Li
 	protected void addListeners()
 	{
 		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener((ListenerTable) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
 		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerTable) this);
 	}
 
 	@Override
