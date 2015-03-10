@@ -4,16 +4,14 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.ExpandVetoException;
 import java.lang.reflect.Array;
 import java.text.Collator;
 import java.time.DayOfWeek;
@@ -35,6 +33,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private JTable tableCurrent;
 	private int viewRow;
 	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
+	private boolean stopsChanged;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
@@ -43,6 +42,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.formRoute = formRoute;
 		this.objectID = objectID;
+		stopsChanged = false;
 		if(objectID != -1)
 		{
 			//TODO
@@ -88,9 +88,15 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					}
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
-					//Step 2
-					//TODO lese informationen aus
-					closeDialog();
+					if(parseValuesFromFormRouteStep2())
+					{
+						if (saveToDB())
+						{
+							ControllerManager.informTableContentChanged(EmitterTable.TAB_ROUTE);
+							closeDialog();
+						}
+					}
+					break;
 				}
 				formRoute.getCl().next(formRoute.getCardPanel());
 				formRoute.setPanelCounter(formRoute.getPanelCounter() + 1);
@@ -149,11 +155,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			case FORM_ROUTE_STEP1_DELETE:
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
-				if (viewRow == -1)
-					break;
-				contentTableCurrent.remove(viewRow);
-				tableCurrent.clearSelection();
-				initTableCurrent();
+				try
+				{
+					if (viewRow == -1)
+						break;
+					contentTableCurrent.remove(viewRow);
+					initTableCurrent();
+				}
+				catch (IndexOutOfBoundsException e){}
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
@@ -161,25 +170,58 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
-				JTable active = formRoute.getStep2().getTableActive();
-				if(active != null)
+				JTable activeEdit = formRoute.getStep2().getTableActive();
+				if(activeEdit != null)
 				{
-					if (active.getSelectedRowCount() > 1)
+					if (activeEdit.getSelectedRowCount() > 1)
 					{
 						String errorMessage = "Die eingegeben Daten sind nicht gültig:\n	" +
 								"Bitte nur einen Eintrag zum ändern wählen.";
 						formRoute.showErrorForm(errorMessage);
-					} else if (active.getSelectedRowCount() != 0)
+					} else if (activeEdit.getSelectedRowCount() != 0)
 					{
 						LinkedList<Integer> tempTimes = route.getStartTimes().get(formRoute.getStep2().getActiveDay());
-						Tuple<Integer, Integer> test = formRoute.getStep2().showEditDialog(12,12);
-						System.out.println(test.getFirst());
+						String editedTimeString = activeEdit.getModel().getValueAt(activeEdit.getSelectedRow(), 0).toString();
+						int editedHours = Integer.parseInt(editedTimeString.substring(0, 2));
+						int editedMinutes = Integer.parseInt(editedTimeString.substring(3, 5));
+						int editedTime = editedHours * 60 + editedMinutes;
+						Tuple<Integer, Integer> newTimeTuple = formRoute.getStep2().showEditDialog(editedHours, editedMinutes);
+						if(newTimeTuple != null)
+						{
+							tempTimes.remove((Object) editedTime);
+							int newTime = newTimeTuple.getFirst() * 60 + newTimeTuple.getSecond();
+							tempTimes.add(newTime);
+							route.getStartTimes().put(formRoute.getStep2().getActiveDay(), tempTimes);
+							refreshTablesStep2();
+						}
 					}
 				}
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
-
+				JTable activeDel = formRoute.getStep2().getTableActive();
+				DayOfWeek activeDelDay = formRoute.getStep2().getActiveDay();
+				int[] selectedRows = activeDel.getSelectedRows();
+				if(formRoute.getStep2().showDeleteDialog() == JOptionPane.YES_OPTION)
+				{
+					if (activeDel != null)
+					{
+						if (selectedRows.length != 0)
+						{
+							LinkedList<Integer> tempTimes = route.getStartTimes().get(activeDelDay);
+							for (int row : selectedRows)
+							{
+								String delTimeString = activeDel.getModel().getValueAt(row, 0).toString();
+								int delHours = Integer.parseInt(delTimeString.substring(0, 2));
+								int delMinutes = Integer.parseInt(delTimeString.substring(3, 5));
+								int delTime = delHours * 60 + delMinutes;
+								tempTimes.remove((Object) delTime);
+							}
+							route.getStartTimes().put(activeDelDay, tempTimes);
+							refreshTablesStep2();
+						}
+					}
+				}
 				break;
 		}
 	}
@@ -226,7 +268,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 		}
-
 	}
 
 	@Override
@@ -269,8 +310,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	}
 
 	/**
+	 * Saves the current route to the DB.
+	 * @return
+	 */
+	private boolean saveToDB()
+	{
+		if(objectID == -1)
+			controllerDatabase.addRoute(route);
+		else
+			controllerDatabase.modifyRoute(route, stopsChanged);
+		return true;
+	}
+
+	/**
 	 * Parses values from FormRouteStep1.
-	 * @return Returns 0 on wrong input; 1 on only start time; 2 on start time, end time and frequency
+	 * @return Returns false on wrong input.
 	 */
 	private boolean parseValuesFromFormRouteStep1()
 	{
@@ -301,6 +355,54 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			route.setName(name);
 			route.setNight(night);
 			routeStoppingPoints = stoppingPoints;
+			return true;
+		}
+	}
+
+	/**
+	 * Parses values from FormRouteStep2.
+	 * @return Returns false on wrong input
+	 */
+	private boolean parseValuesFromFormRouteStep2()
+	{
+		int[] departureTimes = formRoute.getStep2().getDepartureTime();
+
+
+		ArrayList<String> errorFields = new ArrayList<>();
+		boolean departureEmpty = false;
+		for (int departureTime : departureTimes)
+		{
+			if(departureTime == -1)
+				departureEmpty = true;
+		}
+		if(departureEmpty)
+			errorFields.add("Alle Zwischenzeiten müssen angegeben sein.");
+		if(errorFields.size() > 0)
+		{
+			String errorMessage = "Die eingegeben Daten sind nicht gültig:\n";
+			errorMessage += errorListToString(errorFields);
+			formRoute.showErrorForm(errorMessage);
+			return false;
+		}
+		else
+		{
+			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stoppingPoints = new LinkedList<>();
+			int id = routeStoppingPoints.get(0).getFirst();
+			BusStop busStop = controllerDatabase.getBusStopByStoppingPointId(id);
+			StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(id);
+			int time = 0;
+			stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+			for (int i = 0; i < departureTimes.length; i++)
+			{
+				id = routeStoppingPoints.get(i+1).getFirst();
+				busStop = controllerDatabase.getBusStopByStoppingPointId(id);
+				stoppingPoint = controllerDatabase.getStoppingPointById(id);
+				time = departureTimes[i];
+				stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+			}
+			route.setStops(stoppingPoints);
+			route.setNote(null);
+
 			return true;
 		}
 	}
