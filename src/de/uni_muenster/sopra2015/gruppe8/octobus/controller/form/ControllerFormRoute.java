@@ -161,25 +161,54 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
-				JTable active = formRoute.getStep2().getTableActive();
-				if(active != null)
+				JTable activeEdit = formRoute.getStep2().getTableActive();
+				if(activeEdit != null)
 				{
-					if (active.getSelectedRowCount() > 1)
+					if (activeEdit.getSelectedRowCount() > 1)
 					{
 						String errorMessage = "Die eingegeben Daten sind nicht gültig:\n	" +
 								"Bitte nur einen Eintrag zum ändern wählen.";
 						formRoute.showErrorForm(errorMessage);
-					} else if (active.getSelectedRowCount() != 0)
+					} else if (activeEdit.getSelectedRowCount() != 0)
 					{
 						LinkedList<Integer> tempTimes = route.getStartTimes().get(formRoute.getStep2().getActiveDay());
-						Tuple<Integer, Integer> test = formRoute.getStep2().showEditDialog(12,12);
-						System.out.println(test.getFirst());
+						String editedTimeString = activeEdit.getModel().getValueAt(activeEdit.getSelectedRow(), 0).toString();
+						int editedHours = Integer.parseInt(editedTimeString.substring(0, 2));
+						int editedMinutes = Integer.parseInt(editedTimeString.substring(3, 5));
+						int editedTime = editedHours * 60 + editedMinutes;
+						Tuple<Integer, Integer> newTimeTuple = formRoute.getStep2().showEditDialog(editedHours, editedMinutes);
+						if(newTimeTuple != null)
+						{
+							tempTimes.remove((Object) editedTime);
+							int newTime = newTimeTuple.getFirst() * 60 + newTimeTuple.getSecond();
+							tempTimes.add(newTime);
+							route.getStartTimes().put(formRoute.getStep2().getActiveDay(), tempTimes);
+							refreshTablesStep2();
+						}
 					}
 				}
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
-
+				JTable activeDel = formRoute.getStep2().getTableActive();
+				if(activeDel != null)
+				{
+					if (activeDel.getSelectedRowCount() != 0)
+					{
+						LinkedList<Integer> tempTimes = route.getStartTimes().get(formRoute.getStep2().getActiveDay());
+						int[] selectedRows = activeDel.getSelectedRows();
+						for (int row : selectedRows)
+						{
+							String delTimeString = activeDel.getModel().getValueAt(row, 0).toString();
+							int delHours = Integer.parseInt(delTimeString.substring(0, 2));
+							int delMinutes = Integer.parseInt(delTimeString.substring(3, 5));
+							int delTime = delHours * 60 + delMinutes;
+							tempTimes.remove((Object) delTime);
+						}
+						route.getStartTimes().put(formRoute.getStep2().getActiveDay(), tempTimes);
+						refreshTablesStep2();
+					}
+				}
 				break;
 		}
 	}
