@@ -1,10 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourEdit;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 /**
@@ -22,6 +25,11 @@ public class FormTourEdit extends FormGeneral
 	private JTable tbBusDriver;
 	private TableModelTourData tmBuses;
 	private TableModelTourData tmBusDriver;
+
+	private int selectedBusRow;
+	private int selectedBusId;
+	private int selectedBusDriverRow;
+	private int selectedBusDriverId;
 
 	public FormTourEdit(Frame parent, int objectId)
 	{
@@ -46,9 +54,35 @@ public class FormTourEdit extends FormGeneral
 		tmBuses = new TableModelTourData("Bus");
 		tbBuses = new JTable(tmBuses);
 		tbBuses.removeColumn(tbBuses.getColumnModel().getColumn(0));
+		tbBuses.getSelectionModel().addListSelectionListener(e -> {
+			int viewRow = tbBuses.getSelectedRow();
+			if (viewRow < 0)
+			{
+				selectedBusRow = -1;
+				selectedBusId = -1;
+
+			} else
+			{
+				selectedBusRow = tbBuses.convertRowIndexToModel(viewRow);
+				selectedBusId = (int) tmBuses.getValueAt(selectedBusRow, 0);
+			}
+		});
 		tmBusDriver = new TableModelTourData("Fahrer");
 		tbBusDriver = new JTable(tmBusDriver);
 		tbBusDriver.removeColumn(tbBusDriver.getColumnModel().getColumn(0));
+		tbBusDriver.getSelectionModel().addListSelectionListener(e -> {
+		int viewRow = tbBusDriver.getSelectedRow();
+		if (viewRow < 0)
+		{
+			selectedBusDriverRow = -1;
+			selectedBusDriverId = -1;
+
+		} else
+		{
+			selectedBusDriverRow = tbBusDriver.convertRowIndexToModel(viewRow);
+			selectedBusDriverId = (int) tbBusDriver.getValueAt(selectedBusDriverRow, 0);
+		}
+		});
 		plContent.add(new JScrollPane(tbBuses));
 		plContent.add(new JScrollPane(tbBusDriver));
 
@@ -56,7 +90,13 @@ public class FormTourEdit extends FormGeneral
 		JPanel plButtons = new JPanel();
 		plButtons.setLayout(new BorderLayout(5,5));
 		btnCancel = new JButton("Abbrechen");
+		btnCancel.addActionListener(e-> {
+			controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_CANCEL);
+		});
 		btnSave = new JButton("Speichern");
+		btnSave.addActionListener(e-> {
+			controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_SAVE);
+		});
 		plButtons.add(btnSave, BorderLayout.WEST);
 		plButtons.add(btnCancel, BorderLayout.EAST);
 
@@ -65,6 +105,16 @@ public class FormTourEdit extends FormGeneral
 		add(plButtons, BorderLayout.SOUTH);
 
 		getRootPane().setBorder(new EmptyBorder(5,5,5,5));
+	}
+
+	public int getSelectedBus()
+	{
+		return selectedBusId;
+	}
+
+	public int getSelectedBusDriver()
+	{
+		return selectedBusDriverId;
 	}
 
 	private class TableModelTourData extends ExtendedTableModel

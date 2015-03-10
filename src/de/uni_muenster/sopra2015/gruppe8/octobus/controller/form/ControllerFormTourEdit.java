@@ -5,8 +5,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourEdit;
+
+import java.util.ArrayList;
 
 /**
  * Created by Florian on 10.03.2015.
@@ -43,7 +46,30 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 	@Override
 	public void buttonPressed(EmitterButton btn)
 	{
+		switch(btn)
+		{
+			case FORM_TOUR_EDIT_CANCEL:
+				close();
+				break;
 
+			case FORM_TOUR_EDIT_SAVE:
+				ArrayList<String> errors = new ArrayList<>();
+				if(formTourEdit.getSelectedBus() == -1)
+					errors.add("Es wurde kein Bus ausgewählt.");
+				if(formTourEdit.getSelectedBusDriver() == -1)
+					errors.add("Es wurde kein Bus-Fahrer ausgewählt.");
+
+				//controllerDatabase.modifyRoute(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDrive()
+
+				close();
+				break;
+		}
+	}
+
+	private void close()
+	{
+		removeListeners();
+		formTourEdit.dispose();
 	}
 
 	private void getDataFromDB()
