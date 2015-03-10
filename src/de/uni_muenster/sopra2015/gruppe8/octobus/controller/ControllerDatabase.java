@@ -6,7 +6,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
-import javafx.scene.paint.Stop;
 import org.jooq.*;
 import org.jooq.impl.*;
 
@@ -34,6 +33,11 @@ public class ControllerDatabase
      * Name of the database file which ought to be loaded
      */
     private static final String DB_NAME = "Octobus.db";
+
+    /**
+     * Used for date conversions
+     */
+    private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
     private static ControllerDatabase controllerDatabase = null;
 
@@ -713,7 +717,7 @@ public class ControllerDatabase
 	{
 		// get all employee entries from database
 		Result<Record> empRecords = create.select().from(EMPLOYEES)
-				.orderBy(EMPLOYEES.NAME.asc(),EMPLOYEES.FIRSTNAME.asc()).fetch();
+				.orderBy(EMPLOYEES.NAME.asc(), EMPLOYEES.FIRSTNAME.asc()).fetch();
 
         // In case we have no employees to return
         if (empRecords == null) return null;
@@ -1403,52 +1407,162 @@ public class ControllerDatabase
 	//  Methods for "Tour"s //
 	//////////////////////////
 
+    private int daysBetween(Date d1, Date d2){
+        return (int) ((d2.getTime() - d1.getTime()) / DAY_IN_MILLIS);
+    }
+
     /**
      * Creates all trips for a given day.
      *
-     * @param date date for which tours ought to be generated
+     * @param date date for which to create all tours
      */
     public void createTours(Date date)
     {
-		// fetch all route IDs from database
-        Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
+        createTours(date, date);
+    }
 
-        // Modify given date to represent midnight
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        // Reset hour, minutes, seconds and milliseconds
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+    /**
+     * Creates all trips for a given range of days.
+     *
+     * @param dateFrom date from which tours ought to be generated
+     * @param dateUntil date until which tours ought to be generated
+     */
+    public void createTours(Date dateFrom, Date dateUntil)
+    {
+        // TODO: Check to see if this is negative? Does the UI take care of that check?
+        int daysBetween = daysBetween(dateFrom, dateUntil);
 
-		// get selected day of week in uppercase english format, e.g. MONDAY, TUESDAY, ...
-        String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
-        int timestamp = (int) (calendar.getTimeInMillis()/1000);
-
+        // Notify database of loads of incoming queries
         create.execute("BEGIN");
-		// for every route...
-        for (Record1<Integer> route : routes)
+
+        // Variable to modify during the loop, so as not to change the original fromDate
+        Date loopDate = new Date();
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        // Repeat the same thing for every day within the given range
+        for (int i = 0; i <= daysBetween; i++)
         {
-			// ... get all start times belonging to selected day of weeek ...
-            Result<Record1<Integer>> startingTimes = create
-                    .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
-                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek)).fetch();
+            // Modify given date to represent midnight
+            // Create for each start of day
+            loopDate.setTime(dateFrom.getTime() + DAY_IN_MILLIS * i);
+            calendar.setTime(loopDate);
+            // Reset hour, minutes, seconds and milliseconds
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
 
-			// ... and add each one to the current date to get the timestamp.
-            for (Record1<Integer> startingTime : startingTimes)
+            // Get selected day of week in uppercase english format, e.g. MONDAY, TUESDAY, ...
+            String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
+            // Get timestamp for the start of that particular day
+            int timestamp = (int) (calendar.getTimeInMillis()/1000);
+
+            // Fetch all route IDs from database
+            Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
+
+            // for every route...
+            for (Record1<Integer> route : routes)
             {
+                // ... get all starting times belonging to selected day of week ...
+                Result<Record1<Integer>> startingTimes = create
+                        .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
+                        .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek))
+                        .and(ROUTES_STARTTIMES.ROUTES_ID.eq(route.getValue(ROUTES.ROUTES_ID)))
+                        .fetch();
 
-                create.insertInto(TOURS,
-                        TOURS.TIMESTAMP,
-                        TOURS.ROUTES_ID)
-                        .values(
-                                timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
-                                route.getValue(ROUTES.ROUTES_ID))
-                        .execute();
+                // ... and add each one to the current date to get the timestamp.
+                for (Record1<Integer> startingTime : startingTimes)
+                {
+                    create.insertInto(TOURS,
+                            TOURS.TIMESTAMP,
+                            TOURS.ROUTES_ID)
+                            .values(
+                                    timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
+                                    route.getValue(ROUTES.ROUTES_ID))
+                            .execute();
+                }
             }
-            create.execute("END");		// TODO: is this supposed to appear INSIDE the for-loop?
         }
+
+        // Finally execute all the previously queued queries
+        create.execute("END");
+    }
+
+    public ArrayList<Bus> getAvailableBusesForTour(Tour tour)
+    {
+        tour.getStartTimestamp();
+        return null;
+    }
+
+    public ArrayList<Employee> getAvailableBusDriversForTour(Tour tour)
+    {
+        // get duration of all shifts within the last 24 hours
+
+        // check to see if there's a tour in the last 24 hours that overlaps
+
+        // get all tours within the last 24 hours
+
+        return null;
+    }
+
+    public ArrayList<Tuple<Tour, Boolean>> getToursWithinDateRange(int dateFrom, int dateUntil)
+    {
+        ArrayList<Tuple<Tour, Boolean>> result = new ArrayList<>();
+
+        Result<Record> records = create
+                .select()
+                .from(TOURS)
+                // TODO: Siehe unten.
+                /*.leftOuterJoin(EMPLOYEES)
+                .using(EMPLOYEES.EMPLOYEES_ID)
+                .leftOuterJoin(BUSES)
+                .using(BUSES.BUSES_ID)*/
+                .where(TOURS.TIMESTAMP
+                        .between(dateFrom, dateUntil))
+                .fetch();
+
+        System.out.println(records.size());
+
+        for (Record r : records)
+        {
+            // TODO: Question is: Can this be done more efficiently? We create a LOT of objects...
+            // The following would be the code for creating a bus as an alternative to using getBusById().
+            /*Bus bus;
+            if (r.getValue(BUSES.BUSES_ID) == null) {
+                bus = null;
+            }
+            else
+            {
+                bus = r.getValue(BUSES.BUSES_ID) == null ? null :
+                        new Bus(
+                                r.getValue(BUSES.LICENCEPLATE),
+                                r.getValue(BUSES.NUMBEROFSEATS),
+                                r.getValue(BUSES.STANDINGROOM),
+                                r.getValue(BUSES.MANUFACTURER),
+                                r.getValue(BUSES.MODEL),
+                                new Date((long) r.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
+                                r.getValue(BUSES.ARTICULATEDBUS));
+                bus.setId(r.getValue(BUSES.BUSES_ID));
+            }*/
+
+            Bus bus = r.getValue(BUSES.BUSES_ID) == null ? null : getBusById(r.getValue(BUSES.BUSES_ID));
+            Route route = r.getValue(ROUTES.ROUTES_ID) == null ? null : getRouteById(r.getValue(ROUTES.ROUTES_ID));
+            Employee employee = r.getValue(EMPLOYEES.EMPLOYEES_ID) == null ? null : getEmployeeById(r.getValue(EMPLOYEES.EMPLOYEES_ID));
+
+            result.add(
+                    new Tuple<>(
+                            new Tour(
+                                    new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000),
+                                    route,
+                                    bus,
+                                    employee),
+                            (bus == null || employee == null) ? false : true));
+
+        }
+
+        System.out.println("Done");
+
+        return result;
     }
 
     /**
@@ -1490,7 +1604,7 @@ public class ControllerDatabase
 	}
 
 	/**
-	 * deletes all tours before today.
+	 * Deletes all tours before today.
 	 *
 	 * @return number of deleted tours
 	 */
@@ -1500,7 +1614,7 @@ public class ControllerDatabase
 	}
 
 	/**
-	 * deletes all tours before a specific date.
+	 * Deletes all tours before a specific date.
 	 *
 	 * @return number of deleted tours
 	 */

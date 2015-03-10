@@ -5,8 +5,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
  */
 public class Tuple<X, Y>
 {
-	private X first;
-	private Y second;
+	protected X first;
+	protected Y second;
 
 	public Tuple(X first, Y second)
 	{

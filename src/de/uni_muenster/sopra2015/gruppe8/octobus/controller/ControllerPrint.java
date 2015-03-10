@@ -8,7 +8,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
-import java.awt.*;
 import java.awt.print.PrinterJob;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -91,7 +90,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 					//Build strings for printing
 					String tourDesc = tour.getRoute().getName() + " (" + tour.getRoute().getStart().getName() + " - " + tour.getRoute().getEnd().getName()+")";
 					String busName = tour.getBus().getLicencePlate();
-					tourData.add(new Quadruple<>(tourDesc, tour.getTimestamp(), tour.getRoute().getDuration(), busName));
+					tourData.add(new Quadruple<>(tourDesc, tour.getStartTimestamp(), tour.getRoute().getDuration(), busName));
 				}
 
 				//Create new print-job
