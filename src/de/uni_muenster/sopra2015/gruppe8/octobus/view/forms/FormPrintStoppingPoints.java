@@ -18,6 +18,7 @@ public class FormPrintStoppingPoints extends FormGeneral
 	private JButton btPrint;
 	private JButton btCancel;
 
+	//gets the selected BusStop
 	public FormPrintStoppingPoints(Frame parent, BusStop busStop)
 	{
 		super(parent);
@@ -36,7 +37,7 @@ public class FormPrintStoppingPoints extends FormGeneral
 
 		cst.gridy = 1;
 
-		for(StoppingPoint stop: stoppingPoints)
+		for (StoppingPoint stop : stoppingPoints)
 		{
 			JCheckBox cbStop = new JCheckBox(stop.getName());
 			stops.add(cbStop);

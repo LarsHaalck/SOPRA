@@ -29,6 +29,7 @@ public class DisplayTicket extends JPanel
 		plTable = new JPanel();
 		plTickets = new JPanel();
 		JScrollPane scrollPane = new JScrollPane(plTable);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //increase scroll speed
 		add(scrollPane, BorderLayout.CENTER);
 
 		//all Tickets shown vertical
