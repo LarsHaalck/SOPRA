@@ -17,6 +17,7 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	private JButton btnEdit;
 	private JButton btnFilter;
 	private JButton btnResetEmployee;
+	private JButton btnResetBus;
 	private FieldDate tfDateStart;
 	private JCheckBox cbOnlyUnassigned;
 	private ControllerTabSchedule controllerTabSchedule;
@@ -75,9 +76,16 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_EMPLOYEE);
 		});
 
+		btnResetBus = new JButton("Bus zurücksetzen");
+		btnResetBus.addActionListener(e->
+		{
+			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_BUS);
+		});
+
 		JPanel plButtons = new JPanel();
 		plButtons.add(btnEdit);
 		plButtons.add(btnResetEmployee);
+		plButtons.add(btnResetBus);
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
@@ -98,5 +106,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	@Override
 	protected void editEntry()
 	{
+		controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT);
 	}
 }

@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
-
+import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -57,6 +57,7 @@ public class ControllerDatabase
         return controllerDatabase;
     }
 
+
 	/**
 	 * Initializes database for use inside this class
 	 */
@@ -64,6 +65,9 @@ public class ControllerDatabase
 	{
 		try
 		{
+			// check if database file exists
+			boolean newFile = !checkDatabaseFile();
+
             String url = "jdbc:sqlite:" + DB_NAME;
             Connection conn;
 
@@ -71,6 +75,10 @@ public class ControllerDatabase
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
+
+			// create tables in case of a new file
+			if (newFile)
+				createDatabaseTables();
 		}
 
 		catch (ClassNotFoundException e)
@@ -89,7 +97,18 @@ public class ControllerDatabase
     /**
      * Creates a database with necessary schema if no file with preexisting data is found.
      */
-    public void startWithNewDatabase()
+    public boolean checkDatabaseFile()
+	{
+		File f = new File(DB_NAME);
+		if (f.exists() && !f.isDirectory())
+		{
+			return true;
+		}
+		System.out.println("Database file not found!");
+		return false;
+	}
+
+	public void createDatabaseTables()
 	{
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
@@ -151,8 +170,45 @@ public class ControllerDatabase
 				"employees (employees_id), UNIQUE (timestamp, routes_id) ON CONFLICT IGNORE);");
 
 		// create root user
-		// Employee root = new Employee()
-
+		create
+				.insertInto(EMPLOYEES,
+						EMPLOYEES.NAME,
+						EMPLOYEES.FIRSTNAME,
+						EMPLOYEES.ADDRESS,
+						EMPLOYEES.ZIPCODE,
+						EMPLOYEES.CITY,
+						EMPLOYEES.DATEOFBIRTH,
+						EMPLOYEES.PHONE,
+						EMPLOYEES.EMAIL,
+						EMPLOYEES.USERNAME,
+						EMPLOYEES.SALT,
+						EMPLOYEES.PASSWORD,
+						EMPLOYEES.NOTE,
+						EMPLOYEES.ISBUSDRIVER,
+						EMPLOYEES.ISNETWORK_PLANNER,
+						EMPLOYEES.ISTICKET_PLANNER,
+						EMPLOYEES.ISHR_MANAGER,
+						EMPLOYEES.ISSCHEDULE_MANAGER)
+				.values(
+						"root",
+						"root",
+						"",
+						"",
+						"",
+						(int) ((new Date()).getTime() / 1000),
+						"",
+						"",
+						"root",
+						"ijr45c1rv2m95kbi00u0ruqo52",
+						"610475909569363416215711383102987484971637154606543703577386484556278824048427523924086531" +
+								"2823167479747659082414963498490032193710285658277974290508907051",
+						"",
+						true,
+						true,
+						true,
+						true,
+						true)
+				.execute();
 	}
 
 	/////////////////////////
@@ -235,8 +291,8 @@ public class ControllerDatabase
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID, (Integer) null)
 				.where(TOURS.BUSES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
-				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -997,8 +1053,8 @@ public class ControllerDatabase
 		create.update(TOURS)
 				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
-				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
+				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -1028,6 +1084,55 @@ public class ControllerDatabase
 				.execute();
 
 		return (Integer) record.getValue(0);
+	}
+
+	/**
+	 * Retrieves a list of Employee objects from database having a specified role
+	 *
+	 * @param role Role of requested employees
+	 * @return ArrayList containing Employee objects that have the specified role
+	 * @pre true
+	 * @post true
+	 */
+	public ArrayList<Employee> getEmployeesByRole(Role role)
+	{
+		TableField<EmployeesRecord,Boolean> roleAttribute;
+
+		switch (role)
+		{
+			case BUSDRIVER:
+				roleAttribute = EMPLOYEES.ISBUSDRIVER;
+				break;
+			case HR_MANAGER:
+				roleAttribute = EMPLOYEES.ISHR_MANAGER;
+				break;
+			case NETWORK_PLANNER:
+				roleAttribute = EMPLOYEES.ISNETWORK_PLANNER;
+				break;
+			case SCHEDULE_MANAGER:
+				roleAttribute = EMPLOYEES.ISSCHEDULE_MANAGER;
+				break;
+			case TICKET_PLANNER:
+				roleAttribute = EMPLOYEES.ISTICKET_PLANNER;
+				break;
+			default:
+				return new ArrayList<Employee>();
+		}
+
+		Result<EmployeesRecord> rows = create
+				.selectFrom(EMPLOYEES)
+				.where(roleAttribute.eq(true))
+				.fetch();
+
+		ArrayList<Employee> result = new ArrayList<>();
+		if (rows == null) return null;
+
+		for (EmployeesRecord rec : rows)
+		{
+			result.add(getEmployeeById(rec.getEmployeesId()));
+		}
+		return result;
+
 	}
 
 	//////////////////////////
@@ -1763,6 +1868,7 @@ public class ControllerDatabase
                             .execute();
                 }
             }
+            System.out.println("Creation finished.");
         }
 
         // Finally execute all the previously queued queries
@@ -1786,65 +1892,58 @@ public class ControllerDatabase
         return null;
     }
 
-    public ArrayList<Tuple<Tour, Boolean>> getToursWithinDateRange(int dateFrom, int dateUntil)
+    public ArrayList<Object[]> getToursForDate(Date date) {
+
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        Date from = new Date(date.getTime());
+
+        calendar.setTime(from);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return getToursWithinDateRange((int) (calendar.getTimeInMillis() / 1000),
+                (int) ((calendar.getTimeInMillis() + DAY_IN_MILLIS) / 1000));
+    }
+
+    private ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
     {
-        ArrayList<Tuple<Tour, Boolean>> result = new ArrayList<>();
+        ArrayList<Object[]> result = new ArrayList<>();
 
         Result<Record> records = create
                 .select()
                 .from(TOURS)
-                // TODO: Siehe unten.
-                /*.leftOuterJoin(EMPLOYEES)
+                .leftOuterJoin(EMPLOYEES)
                 .using(EMPLOYEES.EMPLOYEES_ID)
                 .leftOuterJoin(BUSES)
-                .using(BUSES.BUSES_ID)*/
+                .using(BUSES.BUSES_ID)
+                .leftOuterJoin(ROUTES)
+                .using(ROUTES.ROUTES_ID)
                 .where(TOURS.TIMESTAMP
-                        .between(dateFrom, dateUntil))
+						.between(dateFrom, dateUntil))
                 .fetch();
-
-        System.out.println(records.size());
 
         for (Record r : records)
         {
-            // TODO: Question is: Can this be done more efficiently? We create a LOT of objects...
-            // The following would be the code for creating a bus as an alternative to using getBusById().
-            /*Bus bus;
-            if (r.getValue(BUSES.BUSES_ID) == null)
-            {
-                bus = null;
-            }
-            else
-            {
-                bus = r.getValue(BUSES.BUSES_ID) == null ? null :
-                        new Bus(
-                                r.getValue(BUSES.LICENCEPLATE),
-                                r.getValue(BUSES.NUMBEROFSEATS),
-                                r.getValue(BUSES.STANDINGROOM),
-                                r.getValue(BUSES.MANUFACTURER),
-                                r.getValue(BUSES.MODEL),
-                                new Date((long) r.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
-                                r.getValue(BUSES.ARTICULATEDBUS));
-                bus.setId(r.getValue(BUSES.BUSES_ID));
-            }*/
+            Object[] content = new Object[5];
 
-            Bus bus = r.getValue(BUSES.BUSES_ID) == null ? null : getBusById(r.getValue(BUSES.BUSES_ID));
-            Route route = r.getValue(ROUTES.ROUTES_ID) == null ? null : getRouteById(r.getValue(ROUTES.ROUTES_ID));
-            Employee employee = r.getValue(EMPLOYEES.EMPLOYEES_ID) == null ? null : getEmployeeById(r.getValue(EMPLOYEES.EMPLOYEES_ID));
+            // Tour ID
+            content[0] = r.getValue(TOURS.TOURS_ID);
+            // Route's name
+            content[1] = r.getValue(ROUTES.NAME);
+            // Start time
+            content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
+            // Starting stop
+            content[3] = r.getValue(BUSES.LICENCEPLATE);
+            // Starting stop
+            content[4] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
-            result.add(
-                    new Tuple<>(
-                            new Tour(
-                                    new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000),
-                                    route,
-                                    bus,
-                                    employee),
-							(bus == null || employee == null) ? false : true
-                    )
-            );
-
+            result.add(content);
         }
 
-        System.out.println("Done");
+        System.out.println("Fertig.");
 
         return result;
     }
@@ -1866,7 +1965,8 @@ public class ControllerDatabase
 				.orderBy(TOURS.TIMESTAMP)
 				.fetch();
 
-		if (tours == null) return result; // return empty list if no tours found
+        // Return empty list if no tours found
+        if (tours == null) return result;
         for (ToursRecord t : tours){
             result.add(
                     new Tour(

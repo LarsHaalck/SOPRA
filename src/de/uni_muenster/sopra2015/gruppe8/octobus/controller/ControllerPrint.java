@@ -44,12 +44,8 @@ public class ControllerPrint extends Controller implements ListenerPrint
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
 					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-			//		ArrayList<PrintStoppingPoint.RouteEntry> routes = printStoppingPoint.getRouteEntries();
-			//		for (PrintStoppingPoint.RouteEntry routeEntry:routes)
-			//		{
-						bookStoppingPoints.append(printViewStoppingPoint, new PageFormat());
-						//TODO: zweites Book überschreibt das erste
-			//		}
+					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat());
+					//TODO: zweites Book überschreibt das erste
 				}
 
 				PrinterJob job = PrinterJob.getPrinterJob();
