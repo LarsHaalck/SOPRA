@@ -6,8 +6,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -52,9 +56,29 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 		}
 	}
 
-	public void fillTable()
+	private void fillTable()
 	{
-
+		ArrayList<Tuple<Tour, Boolean>> tours = controllerDatabase.getToursWithinDateRange(1425966900, 1425981300);
+		Object data[][] = new Object[tours.size()][7];
+		for (int i=0; i<tours.size(); i++)
+		{
+			Tuple<Tour, Boolean> tuple = tours.get(i);
+			Tour tour = tuple.getFirst();
+			data[i][0] = tour.getId();
+			data[i][1] = tour.getRoute().getName();
+			data[i][2] = new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME);
+			data[i][3] = tour.getRoute().getStart().getName();
+			data[i][4] = tour.getRoute().getEnd().getName();
+			if(tour.getBus() == null)
+				data[i][5] = "";
+			else
+				data[i][5] = tour.getBus().getLicencePlate();
+			if(tour.getDriver() == null)
+				data[i][6] = "";
+			else
+				data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();
+		}
+		tabSchedule.fillTable(data);
 	}
 
 	private void newFilterSelected()
@@ -66,7 +90,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 		if(start == null)
 			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");
 		else {
-			//TODO: Get them from db
+			fillTable();
 		}
 
 	}

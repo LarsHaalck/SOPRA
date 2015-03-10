@@ -19,12 +19,12 @@ public class TableModelSchedule extends ExtendedTableModel
 	@Override
 	public int getFirstSortColumn()
 	{
-		return getColumnIndex(ColumnsRoute.START.toString());
+		return getColumnIndex(ColumnsSchedule.TIME.toString());
 	}
 
 	@Override
 	public String[] getRefineableColumns()
 	{
-		return new String[]{ColumnsSchedule.LINE.toString(), ColumnsSchedule.TIME.toString(), ColumnsSchedule.START.toString(), ColumnsSchedule.END.toString(), ColumnsSchedule.BUS.toString(), ColumnsSchedule.BUS_DRIVER.toString()};
+		return new String[]{ColumnsSchedule.LINE.toString(), ColumnsSchedule.START.toString(), ColumnsSchedule.END.toString(), ColumnsSchedule.BUS.toString(), ColumnsSchedule.BUS_DRIVER.toString()};
 	}
 }

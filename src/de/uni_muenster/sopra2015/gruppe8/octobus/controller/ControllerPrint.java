@@ -27,6 +27,8 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
+
+		//controllerDatabase.createTours(new Date((long)1425966900*1000), new Date((long)1425981300*1000));
 	}
 
 	@Override

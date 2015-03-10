@@ -74,8 +74,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
 
-		controllerTabSchedule.fillTable();
-
 		setVisible(true);
 	}
 
