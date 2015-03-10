@@ -111,6 +111,10 @@ public class DisplayTicket extends JPanel
 		int euro = price/100;
 		int cent = price%100;
 
-		return euro+","+cent;
+		String centString = cent+"";
+		if(cent == 0)
+			centString += "0";
+
+		return euro+","+centString;
 	}
 }
