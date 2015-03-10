@@ -2,6 +2,8 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
@@ -9,6 +11,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -50,55 +57,128 @@ public class FormRouteStep2 extends JPanel
 		
 		jpTables = new JPanel();
 		jpTables.setLayout(new BoxLayout(jpTables, BoxLayout.X_AXIS));
-		
+
+		//Monday
 		dtmMo = new DefaultTableModel(null, new String[] {"Montag"})
 		{
+			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtMo = new JTable(dtmMo);
+		jtMo = new JTable(dtmMo)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtMo.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_MONDAY);
+			}
+		});
 		jtMo.setFillsViewportHeight(true);
 		jspMo = new JScrollPane(jtMo);
 		jpTables.add(jspMo);
 
+		//Tuesday
 		dtmDi = new DefaultTableModel(null, new String[] {"Dienstag"})
 		{
+			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtDi = new JTable(dtmDi);
+		jtDi = new JTable(dtmDi)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtDi.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_TUESDAY);
+			}
+		});
 		jtDi.setFillsViewportHeight(true);
 		jspDi = new JScrollPane(jtDi);
 		jpTables.add(jspDi);
 
+		//Wednesday
 		dtmMi = new DefaultTableModel(null, new String[] {"Mittwoch"})
 		{
-				public boolean isCellEditable(int row, int column)
-				{
-					return false;//This causes all cells to be not editable
-				}
-		};
-		jtMi = new JTable(dtmMi);
-		jtMi.setFillsViewportHeight(true);
-		jspMi = new JScrollPane(jtMi);
-		jpTables.add(jspMi);
-
-		dtmDo = new DefaultTableModel(null, new String[] {"Donnerstag"})
-		{
+			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtDo = new JTable(dtmDo);
+		jtMi = new JTable(dtmMi)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtMi.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_WEDNESDAY);
+			}
+		});
+		jtMi.setFillsViewportHeight(true);
+		jspMi = new JScrollPane(jtMi);
+		jpTables.add(jspMi);
+
+		//Thursday
+		dtmDo = new DefaultTableModel(null, new String[] {"Donnerstag"})
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;//This causes all cells to be not editable
+			}
+		};
+		jtDo = new JTable(dtmDo)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtDo.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_THURSDAY);
+			}
+		});
 		jtDo.setFillsViewportHeight(true);
 		jspDo = new JScrollPane(jtDo);
 		jpTables.add(jspDo);
 
+		//Friday
 		dtmFr = new DefaultTableModel(null, new String[] {"Freitag"})
 		{
 			public boolean isCellEditable(int row, int column)
@@ -106,31 +186,83 @@ public class FormRouteStep2 extends JPanel
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtFr = new JTable(dtmFr);
+		jtFr = new JTable(dtmFr)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtFr.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_FRIDAY);
+			}
+		});
 		jtFr.setFillsViewportHeight(true);
 		jspFr = new JScrollPane(jtFr);
 		jpTables.add(jspFr);
 
+		//Saturday
 		dtmSa = new DefaultTableModel(null, new String[] {"Samstag"})
 		{
+			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtSa = new JTable(dtmSa);
+		jtSa = new JTable(dtmSa)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtSa.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_SATURDAY);
+			}
+		});
 		jtSa.setFillsViewportHeight(true);
 		jspSa = new JScrollPane(jtSa);
 		jpTables.add(jspSa);
 
+		//Sunday
 		dtmSo = new DefaultTableModel(null, new String[] {"Sonntag"})
 		{
+			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;//This causes all cells to be not editable
 			}
 		};
-		jtSo = new JTable(dtmSo);
+		jtSo = new JTable(dtmSo)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
+		jtSo.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_SUNDAY);
+			}
+		});
 		jtSo.setFillsViewportHeight(true);
 		jspSo = new JScrollPane(jtSo);
 		jpTables.add(jspSo);
@@ -171,7 +303,11 @@ public class FormRouteStep2 extends JPanel
 		{
 			setLayout(new FlowLayout());
 			border = BorderFactory.createLineBorder(Color.GRAY);
-			lbBusStop = new JLabel(name);
+			String shortened = name;
+			if(shortened.length() > 25)
+				shortened = shortened.substring(0,25) + "...";
+
+			lbBusStop = new JLabel(shortened);
 			lbBusStop.setHorizontalAlignment(JLabel.CENTER);
 			add(lbBusStop);
 		}
@@ -341,39 +477,4 @@ public class FormRouteStep2 extends JPanel
 	{
 		return jtSo;
 	}
-
-	/*public Vector<Vector<String>> getTableData_dtmMo()
-	{
-		return dtmMo.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmDi()
-	{
-		return dtmDi.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmMi()
-	{
-		return dtmMi.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmDo()
-	{
-		return dtmDo.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmFr()
-	{
-		return dtmFr.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmSa()
-	{
-		return dtmSa.getDataVector();
-	}
-
-	public Vector<Vector<String>> getTableData_dtmSo()
-	{
-		return dtmSo.getDataVector();
-	}*/
 }

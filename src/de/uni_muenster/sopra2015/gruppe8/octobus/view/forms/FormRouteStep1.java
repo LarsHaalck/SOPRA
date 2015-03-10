@@ -1,17 +1,23 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -87,7 +93,14 @@ public class FormRouteStep1 extends JPanel
 		bottomPanel.add(down, cButton);
 
 		model_1 = new RouteTableModel();
-		busStopCurrent = new JTable(model_1);
+		busStopCurrent = new JTable(model_1)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
 		busStopCurrent.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		busStopCurrent.removeColumn(busStopCurrent.getColumnModel().getColumn(0));
 		busStopCurrent.setFillsViewportHeight(true);
@@ -102,9 +115,17 @@ public class FormRouteStep1 extends JPanel
 				}
 			}
 		});
+		busStopCurrent.addFocusListener(new FocusAdapter()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP1_CURRENT);
+			}
+		});
 		t1 = new JScrollPane(busStopCurrent);
 		t1.setPreferredSize(new Dimension(250, 400));
-		//busStopCurrent.setPreferredSize(new Dimension(250,500));
 		cTable.gridx = 1;
 		cTable.gridy = 0;
 		bottomPanel.add(t1, cTable);
@@ -128,7 +149,14 @@ public class FormRouteStep1 extends JPanel
 		bottomPanel.add(delete, cButton);
 
 		model_2 = new RouteTableModel();
-		busStopAvailable = new JTable(model_2);
+		busStopAvailable = new JTable(model_2)
+		{
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
 		busStopAvailable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		busStopAvailable.removeColumn(busStopAvailable.getColumnModel().getColumn(0));
 		busStopAvailable.setFillsViewportHeight(true);
@@ -141,6 +169,14 @@ public class FormRouteStep1 extends JPanel
 				{
 					controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_ADD);
 				}
+			}
+		});
+		busStopAvailable.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP1_AVAILABLE);
 			}
 		});
 		t2 = new JScrollPane(busStopAvailable);
@@ -223,21 +259,20 @@ public class FormRouteStep1 extends JPanel
 		return model_2;
 	}
 
-	public String[] getTableData () {
+	public ArrayList<Tuple<Integer, String>> getTableData () {
 		int nRow = model_1.getRowCount();
-		String[] tableData = new String[nRow];
+		ArrayList<Tuple<Integer, String>> tableData = new ArrayList<>();
 		for (int i = 0 ; i < nRow ; i++)
-			tableData[i] = model_1.getValueAt(i,1).toString();
+			tableData.add(new Tuple<Integer, String>((int) model_1.getValueAt(i,0),model_1.getValueAt(i,1).toString()));
 		return tableData;
 	}
 
-	public String getName()
+	public String getNameRoute()
 	{
-		System.out.println(nameTour.getText());
 		return nameTour.getText();
 	}
 
-	public boolean getIsNightLine()
+	public boolean isNightLine()
 	{
 		return nightLineClick.isSelected();
 	}
@@ -246,12 +281,12 @@ public class FormRouteStep1 extends JPanel
 	//------------- setter -----------------
 	//--------------------------------------
 
-	public void setIsNightLine(boolean isNightLine)
+	public void setNightLine(boolean isNightLine)
 	{
 		nightLineClick.setSelected(isNightLine);
 	}
 
-	public void setNameTour(String setNameTour)
+	public void setNameRoute(String setNameTour)
 	{
 		nameTour.setText(setNameTour);
 	}

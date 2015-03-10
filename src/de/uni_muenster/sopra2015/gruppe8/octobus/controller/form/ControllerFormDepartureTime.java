@@ -62,13 +62,13 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 				{
 					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
 					ArrayList<Integer> departures = new ArrayList<>();
-					departures.add(departureTimeStart);
 					int remaining = departureTimeStart;
-					while(remaining < departureTimeEnd)
+					do
 					{
-						remaining += departureFreqency;
 						departures.add(remaining);
+						remaining += departureFreqency;
 					}
+					while(remaining <= departureTimeEnd);
 
 					for (Tuple<DayOfWeek, Boolean> day : departureDays)
 					{
@@ -124,6 +124,8 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 				errorFields.add("Endzeit muss vollständig angegeben werden.");
 			if(freqency == -1)
 				errorFields.add("Frequenz darf nicht leer sein, wenn eine Endzeit angegeben ist.");
+			if(freqency == 0)
+				errorFields.add("Frequenz darf nicht Null sein.");
 		}
 		boolean minDaysChecked = false;
 		for (Tuple<DayOfWeek, Boolean> day : days)

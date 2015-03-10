@@ -87,7 +87,7 @@ public class PrintViewStoppingPoint implements Printable
 					graphics2D.drawString(curDate, curX, curY);
 					curY += 20;
 				}
-				curX += 100;
+				curX += 60;
 				curY = entryYStart;
 			}
 		}

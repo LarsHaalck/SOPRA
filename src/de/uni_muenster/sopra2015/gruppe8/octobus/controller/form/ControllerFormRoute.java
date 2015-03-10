@@ -14,6 +14,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.Extended
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.lang.reflect.Array;
 import java.text.Collator;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private ArrayList<Tuple<Integer, String>> contentTableCurrent = new ArrayList<>();
 	private JTable tableCurrent;
 	private int viewRow;
+	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
@@ -65,12 +67,28 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 			case FORM_ROUTE_NEXT:
 				if (formRoute.getPanelCounter() == 0)
-					formRoute.getBackButton().setEnabled(true);
-				if (formRoute.getPanelCounter() == formRoute.getPanelMax() - 1)
-					formRoute.getNextButton().setText("Fertig");
-					formRoute.getStep2().fillJpMain(formRoute.getStep1().getTableData());
+					//Step 1
+					if(parseValuesFromFormRouteStep1())
+					{
+						formRoute.getBackButton().setEnabled(true);
+						formRoute.getNextButton().setText("Fertig");
+
+						String[] busStops = new String[routeStoppingPoints.size()];
+
+						for (int i = 0; i < busStops.length; i++)
+						{
+							busStops[i] = routeStoppingPoints.get(i).getSecond();
+						}
+
+						formRoute.getStep2().fillJpMain(busStops);
+					}
+					else
+					{
+						break;
+					}
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
+					//Step 2
 					//TODO lese informationen aus
 					closeDialog();
 				}
@@ -143,13 +161,57 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
-				System.out.println(route.getStartTimes().get(DayOfWeek.FRIDAY));
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
 
 				break;
 		}
+	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case FORM_ROUTE_STEP1_CURRENT:
+				formRoute.getStep1().getBusStopCurrent().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP1_AVAILABLE:
+				formRoute.getStep1().getBusStopAvailable().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_MONDAY:
+				formRoute.getStep2().getJtMo().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_TUESDAY :
+				formRoute.getStep2().getJtDi().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_WEDNESDAY:
+				formRoute.getStep2().getJtMi().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_THURSDAY:
+				formRoute.getStep2().getJtDo().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_FRIDAY:
+				formRoute.getStep2().getJtFr().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_SATURDAY:
+				formRoute.getStep2().getJtSa().clearSelection();
+				break;
+
+			case FORM_ROUTE_STEP2_SUNDAY:
+				formRoute.getStep2().getJtSo().clearSelection();
+				break;
+
+		}
+
 	}
 
 	@Override
@@ -170,6 +232,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		ControllerManager.addListener((ListenerButton) this);
 		ControllerManager.addListener((ListenerTable) this);
 		ControllerManager.addListener((ListenerWindow) this);
+		ControllerManager.addListener((ListenerTable) this);
 	}
 
 	@Override
@@ -178,6 +241,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		ControllerManager.removeListener((ListenerButton) this);
 		ControllerManager.removeListener((ListenerTable) this);
 		ControllerManager.removeListener((ListenerWindow) this);
+		ControllerManager.removeListener((ListenerTable) this);
 	}
 
 	/**
@@ -187,6 +251,43 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	{
 		formRoute.dispose();
 		removeListeners();
+	}
+
+	/**
+	 * Parses values from FormRouteStep1.
+	 * @return Returns 0 on wrong input; 1 on only start time; 2 on start time, end time and frequency
+	 */
+	private boolean parseValuesFromFormRouteStep1()
+	{
+		String name = formRoute.getStep1().getNameRoute();
+		boolean night = formRoute.getStep1().isNightLine();
+		ArrayList<Tuple<Integer, String>> stoppingPoints = formRoute.getStep1().getTableData();
+
+		ArrayList<String> errorFields = new ArrayList<>();
+		if(name == null)
+			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
+		else if(name.trim().length() == 0)
+			errorFields.add("Der Name darf nicht leer sein.");
+		else if (name.trim().length() < 5)
+			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
+		if(stoppingPoints.size() < 2)
+		{
+			errorFields.add("Es müssen mindestens zwei Haltepunkte angegeben werden.");
+		}
+		if(errorFields.size() > 0)
+		{
+			String errorMessage = "Die eingegeben Daten sind nicht gültig:\n";
+			errorMessage += errorListToString(errorFields);
+			formRoute.showErrorForm(errorMessage);
+			return false;
+		}
+		else
+		{
+			route.setName(name);
+			route.setNight(night);
+			routeStoppingPoints = stoppingPoints;
+			return true;
+		}
 	}
 
 
@@ -241,6 +342,10 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		formRoute.getStep1().fillTableAvailable(data);
 	}
+
+	/**
+	 * Refreshes the tables in the second step displaying the starting times.
+	 */
 	private void refreshTablesStep2()
 	{
 		ArrayList<Tuple<DayOfWeek, DefaultTableModel>> models = new ArrayList<>();
@@ -319,7 +424,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		switch (wd)
 		{
 			case FORM_ROUTE_STEP2_DEPARTURE_CLOSE:
-				System.out.println("check");
 				refreshTablesStep2();
 				break;
 		}
