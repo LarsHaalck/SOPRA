@@ -8,7 +8,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Lars on 02-Mar-15.
@@ -39,12 +45,99 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 		ControllerManager.removeListener((ListenerButton)this);
 	}
 
+	private void exportToIcal()
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMdd");
+		SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
+		ArrayList<Tour> tours = controllerDatabase.getUserTours(userId);
+		JFileChooser fc = new JFileChooser();
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("iCal-Datei", "ical"));
+		int returnVal = fc.showSaveDialog(null);
+		if(returnVal == JFileChooser.CANCEL_OPTION)
+			return;
+		try {
+			FileWriter fileWriter = new FileWriter(fc.getSelectedFile());
+			BufferedWriter bw = new BufferedWriter(fileWriter);
+			bw.write("BEGIN:VCALENDAR");
+			bw.newLine();
+			bw.write("VERSION:2.0");
+			bw.newLine();
+			bw.write("BEGIN:VTIMEZONE");
+			bw.newLine();
+			bw.write("TZID:Europe/Berlin");
+			bw.newLine();
+			bw.write("X-LIC-LOCATION:Europe/Berlin");
+			bw.newLine();
+			bw.write("BEGIN:DAYLIGHT");
+			bw.newLine();
+			bw.write("TZOFFSETFROM:+0100");
+			bw.newLine();
+			bw.write("TZOFFSETTO:+0200");
+			bw.newLine();
+			bw.write("TZNAME:CEST");
+			bw.newLine();
+			bw.write("DTSTART:19700329T020000");
+			bw.newLine();
+			bw.write("END:DAYLIGHT");
+			bw.newLine();
+			bw.write("BEGIN:STANDARD");
+			bw.newLine();
+			bw.write("TZOFFSETFROM:+0200");
+			bw.newLine();
+			bw.write("TZOFFSETTO:+0100");
+			bw.newLine();
+			bw.write("TZNAME:CET");
+			bw.newLine();
+			bw.write("DTSTART:19701025T030000");
+			bw.newLine();
+			bw.write("END:STANDARD");
+			bw.newLine();
+			bw.write("END:VTIMEZONE");
+			bw.newLine();
+			for(Tour tour : tours)
+			{
+				Date start = tour.getTimestamp();
+
+				bw.write("BEGIN:VEVENT");
+				bw.newLine();
+				bw.write("LOCATION:" + tour.getRoute().getStart().getName());
+				bw.newLine();
+				bw.write("SUMMARY:" + tour.getRoute().getName());
+				bw.newLine();
+				bw.write("DESCRIPTION:" + tour.getRoute().getName() + " von " + tour.getRoute().getStart().getName() + " bis " + tour.getRoute().getEnd().getName() + " - Bus: " + tour.getBus().getLicencePlate());
+				bw.newLine();
+				bw.write("CLASS:PRIVATE");
+				bw.newLine();
+				bw.write("DTSTART;TZID=Europe/Berlin:" + dateFormat.format(start) + "T" + timeFormat.format(start));
+				bw.newLine();
+				Date end = new Date();
+				end.setTime(start.getTime()+tour.getRoute().getDuration()*60*1000);
+				bw.write("DTEND;TZID=Europe/Berlin:" + dateFormat.format(end)+"T"+timeFormat.format(end));
+				bw.newLine();
+				bw.write("DTSTAMP:20150309T170741");
+				bw.newLine();
+				bw.write("END:VEVENT");
+				bw.newLine();
+			}
+			bw.write("END:VCALENDAR");
+
+			bw.close();
+			fileWriter.close();
+		}
+		catch (Exception e)
+		{
+			tabWorkPlan.showMessageDialog("iCal-Datei konnte nicht erstellt werden.");
+		}
+	}
+
 	@Override
 	public void buttonPressed(EmitterButton btn)
 	{
 		switch (btn)
 		{
 			case TAB_WORK_PLAN_EXPORT:
+				exportToIcal();
 				break;
 
 			case TAB_WORK_PLAN_PRINT:

@@ -40,7 +40,7 @@ public class FormBusStop extends FormGeneral
 	 */
 	private JButton btSave;
 	private JButton btCancel;
-	private RowSorter<StoppingPointTableModel> sorter;
+	//private RowSorter<StoppingPointTableModel> sorter;
 
 	private int selectedRow = -1;
 	private int selectedID = -1;
@@ -164,9 +164,9 @@ public class FormBusStop extends FormGeneral
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
 
-		sorter = new TableRowSorter<>(tmStoppingPoints);
+		//sorter = new TableRowSorter<>(tmStoppingPoints);
 		tableStoppingPoints.removeColumn(tableStoppingPoints.getColumnModel().getColumn(0));
-		tableStoppingPoints.setRowSorter(sorter);
+		//tableStoppingPoints.setRowSorter(sorter);
 		tableStoppingPoints.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -234,7 +234,6 @@ public class FormBusStop extends FormGeneral
 
 	public int getSelectedStoppingPoint()
 	{
-
 		return selectedID;
 	}
 
@@ -269,9 +268,9 @@ public class FormBusStop extends FormGeneral
 		tableStoppingPoints.repaint();
 	}
 
-	public void removeStoppingPoint(int index)
+	public void removeStoppingPoint(int id)
 	{
-        tmStoppingPoints.remove(index);
+        tmStoppingPoints.remove(id);
 		tableStoppingPoints.revalidate();
 		tableStoppingPoints.repaint();
 	}
@@ -291,24 +290,19 @@ public class FormBusStop extends FormGeneral
 		return tfLocationX.getNumber();
 	}
 
-	public int getLocationY()
-	{
-		return tfLocationY.getNumber();
-	}
-
 	public void setLocationX(int x)
 	{
 		tfLocationX.setNumber(x);
 	}
 
+	public int getLocationY()
+	{
+		return tfLocationY.getNumber();
+	}
+
 	public void setLocationY(int y)
 	{
 		tfLocationY.setNumber(y);
-	}
-
-    //TODO: Fehlt noch. Benötigt?
-	public void setLocationBusStop(JPanel plLocation)
-	{
 	}
 
 	public ArrayList<StoppingPoint> getStoppingPoints()
@@ -363,9 +357,7 @@ public class FormBusStop extends FormGeneral
 				dataNew[i][1] = data[i][1];
 			}
 			dataNew[data.length] = new Object[]{id, name};
-			data = dataNew;
-			fireTableDataChanged();
-			fireTableStructureChanged();
+			setData(dataNew);
 		}
 
 		public void setElementAt(int index, String value)
@@ -394,9 +386,7 @@ public class FormBusStop extends FormGeneral
 					curIndex++;
 				}
 			}
-			data = dataNew;
-            fireTableDataChanged();
-            fireTableStructureChanged();
+			setData(dataNew);
 		}
 	}
 }

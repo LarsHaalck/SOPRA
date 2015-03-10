@@ -7,6 +7,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabEmployee;
 
+import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
@@ -73,6 +77,11 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	{
 		ControllerManager.addListener((ListenerButton)this);
 		ControllerManager.addListener((ListenerTable)this);
+	}
+
+	private void saveWorkplanToIcal()
+	{
+
 	}
 
 	public void fillTable()
