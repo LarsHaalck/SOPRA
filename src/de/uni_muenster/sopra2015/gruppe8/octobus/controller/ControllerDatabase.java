@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
@@ -104,7 +105,7 @@ public class ControllerDatabase
 		{
 			return true;
 		}
-		System.out.println("Database file not found!");
+		ControllerManager.informWindowOpen(EmitterWindow.DIALOG_NO_DB);
 		return false;
 	}
 
@@ -1939,7 +1940,7 @@ public class ControllerDatabase
             // Starting stop
             content[3] = r.getValue(BUSES.LICENCEPLATE);
             // Starting stop
-            content[4] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
+            content[4] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
             result.add(content);
         }

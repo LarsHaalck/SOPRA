@@ -5,6 +5,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBusStop;
@@ -86,7 +87,22 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				if(formBusStop.getSelectedStoppingPoint() == -1)
 					break;
 				if(formBusStop.showDeleteStoppingPointDialog() == JOptionPane.YES_OPTION)
-					formBusStop.removeStoppingPoint(formBusStop.getSelectedStoppingPoint());
+				{
+					ArrayList<Route> routes = controllerDatabase.getRoutesUsingStoppingPoint(formBusStop.getSelectedStoppingPoint());
+					if (routes.size() == 0)
+						formBusStop.removeStoppingPoint(formBusStop.getSelectedStoppingPoint());
+					else
+					{
+						String routesNames = "";
+						routesNames += routes.get(0).getName();
+						for (int i=1; i<routes.size(); i++)
+						{
+							routesNames += "\n"+routes.get(i).getName();
+						}
+
+						formBusStop.showErrorForm("Haltepunkt kann nicht gelöscht werden, da er in folgenden Routen noch verwendet wird: \n"+routesNames);
+					}
+				}
 				break;
 
 			case FORM_BUS_STOP_EDIT_POINT:

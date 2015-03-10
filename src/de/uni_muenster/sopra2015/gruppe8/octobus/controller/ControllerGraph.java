@@ -3,10 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 
 
 public class ControllerGraph
@@ -28,6 +25,14 @@ public class ControllerGraph
 		init();
 	}
 
+	public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+		Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 1332);
+		//Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 540);
+
+		return;
+	}
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -43,7 +48,6 @@ public class ControllerGraph
 
 		buildAdjSet();
 	}
-
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -175,21 +179,28 @@ public class ControllerGraph
 					}
 				}
 
-
+				ArrayList<Integer> temp = new ArrayList<>();
 				for (Integer start : startTimesOnDay)
 				{
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
-						continue;
-					currentArrival = start + timeDiff;
-
-					break; //break after first match
+					{
+						temp.add(timeDiffOnFirst + start + 1440);
+					}
+					else
+					{
+						temp.add(start + timeDiff);
+						break;
+					}
 				}
+
+				currentArrival = Collections.min(temp);
 
 				if(currentArrival < arrival || arrival == -1)
 				{
 					arrival = currentArrival;
 					TupleInt tuple = new TupleInt(id1, id2);
 					bestRoutes.put(tuple, connector);
+
 
 					//only add/modify existing entry, if new weight is smaller than existing weight
 					if(currentArrival < dist.get(id2))
@@ -201,6 +212,8 @@ public class ControllerGraph
 				}
 
 			}
+			if(arrival - dist.get(id1).intValue() < 0)
+				System.out.println("hier passiert scheisse");
 			return arrival;
 		}
 
@@ -311,6 +324,7 @@ public class ControllerGraph
 				if(prev.get(prevStop) == null)
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
+					time = time >= 1440 ? time - 1440 : time;
 					duration = dist.get(stopId).intValue() - time;
 				}
 
@@ -329,14 +343,18 @@ public class ControllerGraph
 					trips.remove(prevQuintuple);
 				}
 
+				int calcStart = (dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop));
+				calcStart = calcStart >= 1440 ? calcStart - 1440 : calcStart;
 
-				//TODO: mabye use Math.abs() for time differences
+				int calcEnd = dist.get(currentStop).intValue();
+				calcEnd = calcEnd >= 1440 ? calcEnd - 1440 : calcEnd;
+
 				prevQuintuple = new Quintuple<>(
-						(dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop)),
+						calcStart,
 						bestStoppingPoints.get(prevStop),
 						bestRoutes.get(new TupleInt(prevStop, currentStop)),
 						end,
-						dist.get(currentStop).intValue()
+						calcEnd
 				);
 				//add them in reverse order
 				trips.addFirst(prevQuintuple);

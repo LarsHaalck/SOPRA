@@ -17,8 +17,7 @@ import java.util.ArrayList;
 
 /**
  * @author Patricia Schinke
- * lenght of textfield
- * needs getter and setter
+ *
  */
 public class FormBusStop extends FormGeneral
 {
@@ -46,7 +45,12 @@ public class FormBusStop extends FormGeneral
 	private int selectedID = -1;
     private int stoppingPointsIdCounter = -2;
 
-
+	/**
+	 * Creates a FormBusStop-object.
+	 *
+	 * @param parent the parent-frame
+	 * @param objectID the id of the selected busStop
+	 */
 	public FormBusStop(Frame parent, int objectID)
 	{
 		super(parent, "");
@@ -217,16 +221,32 @@ public class FormBusStop extends FormGeneral
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Sets the name of a new stopPoint.
+	 *
+	 * @return new Name of stopPoint
+	 */
 	public String showNewStoppingPointDialog()
 	{
 		return JOptionPane.showInputDialog(null, "Bitte geben Sie den Namen eines neuen Haltepunktes ein");
 	}
 
+	/**
+	 * Changes the name of a stopPoint..
+	 *
+	 * @param value a String with the old ame od the stopPoint
+	 * @return new name of stopPoint
+	 */
 	public String showEditStoppingPointDialog(String value)
 	{
 		return JOptionPane.showInputDialog(null, "Bitte geben Sie den neuen Namen des Haltepunktes ein", value);
 	}
 
+	/**
+	 * Deletes a stopPoint.
+	 *
+	 * @return yes or no to delete stopPoint
+	 */
 	public int showDeleteStoppingPointDialog()
 	{
 		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -247,6 +267,11 @@ public class FormBusStop extends FormGeneral
 		return selectedRow;
 	}
 
+	/**
+	 * Adds a stopPoint to a busSTop.
+	 *
+	 * @param name of the new stopPoint
+	 */
 	public void addStoppingPoint(String name)
 	{
 		tmStoppingPoints.add(stoppingPointsIdCounter--, name);
@@ -254,6 +279,12 @@ public class FormBusStop extends FormGeneral
 		tableStoppingPoints.repaint();
 	}
 
+	/**
+	 * Adds a stopPoint to a busStop with id.
+	 *
+	 * @param id of new stopPoint
+	 * @param name of new stopPoint
+	 */
 	public void addStoppingPoint(int id, String name)
 	{
 		tmStoppingPoints.add(id, name);
@@ -261,6 +292,13 @@ public class FormBusStop extends FormGeneral
 		tableStoppingPoints.repaint();
 	}
 
+	/**
+	 * Edits a stopPoint.
+	 *
+	 * @precondition stopPoint is selected
+	 * @param index of old stopPoint in table
+	 * @param name of new stopPoint
+	 */
 	public void editStoppingPoint(int index, String name)
 	{
 		tmStoppingPoints.setElementAt(index, name);
@@ -268,6 +306,12 @@ public class FormBusStop extends FormGeneral
 		tableStoppingPoints.repaint();
 	}
 
+	/**
+	 * deletes a stopPoint
+	 *
+	 * @precondtion stopPoint is sellected
+	 * @param id of stopPint which will be deleted
+	 */
 	public void removeStoppingPoint(int id)
 	{
         tmStoppingPoints.remove(id);

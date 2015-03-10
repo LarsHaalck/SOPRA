@@ -108,6 +108,13 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormTourResetEmployee(frame, -1);
 				f.setVisible(true);
 				break;
+			case FORM_TOUR_RESET_BUS:
+				f = new FormTourResetBus(frame, -1);
+				f.setVisible(true);
+				break;
+			case DIALOG_NO_DB:
+				JOptionPane.showMessageDialog(frame, "Es konnte keine Datenbank gefunden werden. Bitte schauen Sie für Details in das Benutzerhandbuch.", "Fehler", JOptionPane.ERROR_MESSAGE);
+				break;
 		}
 	}
 
