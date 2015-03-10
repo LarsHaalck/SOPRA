@@ -13,7 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.lang.reflect.Array;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +37,7 @@ public class FormRouteStep2 extends JPanel
 	private DefaultTableModel dtmMo, dtmDi, dtmMi, dtmDo, dtmFr, dtmSa, dtmSo;
 	private JTable jtMo, jtDi, jtMi, jtDo, jtFr, jtSa, jtSo;
 	private ControllerFormRoute controllerFormRoute;
+	private JTable tableActive;
 
 	public FormRouteStep2(ControllerFormRoute controllerFormRoute)
 	{
@@ -54,7 +57,7 @@ public class FormRouteStep2 extends JPanel
 		jpRightMain = new JPanel();
 		jpRightMain.setLayout(new BorderLayout());
 		jpRightMain.setBorder(new EmptyBorder(new Insets(0, 10, 0, 0)));
-		
+
 		jpTables = new JPanel();
 		jpTables.setLayout(new BoxLayout(jpTables, BoxLayout.X_AXIS));
 
@@ -75,8 +78,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtMo.addFocusListener(new FocusAdapter()
+		jtMo.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtMo;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -105,8 +114,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtDi.addFocusListener(new FocusAdapter()
+		jtDi.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtDi;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -135,8 +150,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtMi.addFocusListener(new FocusAdapter()
+		jtMi.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtMi;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -165,8 +186,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtDo.addFocusListener(new FocusAdapter()
+		jtDo.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtDo;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -194,8 +221,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtFr.addFocusListener(new FocusAdapter()
+		jtFr.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtFr;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -224,8 +257,14 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtSa.addFocusListener(new FocusAdapter()
+		jtSa.addFocusListener(new  FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtSa;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
@@ -254,13 +293,19 @@ public class FormRouteStep2 extends JPanel
 				super.changeSelection(rowIndex,columnIndex,true,false);
 			}
 		};
-		jtSo.addFocusListener(new FocusAdapter()
+		jtSo.addFocusListener(new FocusListener()
 		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				tableActive = jtSo;
+			}
 
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_SUNDAY);
+					controllerFormRoute.tableFocusLost(EmitterTable.FORM_ROUTE_STEP2_SUNDAY);
 			}
 		});
 		jtSo.setFillsViewportHeight(true);
@@ -268,7 +313,7 @@ public class FormRouteStep2 extends JPanel
 		jpTables.add(jspSo);
 
 		jpRightMain.add(jpTables, BorderLayout.CENTER);
-		
+
 
 		jpButton = new JPanel();
 		jpButton.setLayout(new FlowLayout());
@@ -279,11 +324,13 @@ public class FormRouteStep2 extends JPanel
 		});
 		jpButton.add(addButton);
 		editButton = new JButton("Bearbeiten");
+		editButton.setFocusable(false);
 		editButton.addActionListener(e -> {
 			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_EDIT);
 		});
 		jpButton.add(editButton);
 		deleteButton = new JButton("Löschen");
+		deleteButton.setFocusable(false);
 		deleteButton.addActionListener(e -> {
 			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DELETE);
 		});
@@ -334,10 +381,39 @@ public class FormRouteStep2 extends JPanel
 		}
 	}
 
+	public Tuple<Integer, Integer> showEditDialog(int h, int m)
+	{
+		JPanel p = new JPanel(new BorderLayout());
+		JLabel label = new JLabel("Bitte ändern sie den Wert");
+		JPanel fieldWrapper = new JPanel();
+		fieldWrapper.setLayout(new BoxLayout(fieldWrapper, BoxLayout.LINE_AXIS));
+		FieldNumber hours = new FieldNumber(3,2,23);
+		hours.setNumber(h);
+		FieldNumber minutes = new FieldNumber(3,2,59);
+		minutes.setNumber(m);
+		p.add(label, BorderLayout.NORTH);
+		fieldWrapper.add(Box.createHorizontalStrut(50));
+		fieldWrapper.add(hours);
+		fieldWrapper.add(new Label(" :"));
+		fieldWrapper.add(minutes);
+		fieldWrapper.add(Box.createHorizontalStrut(50));
+		p.add(fieldWrapper, BorderLayout.CENTER);
+		int test = JOptionPane.showConfirmDialog(null, p, "Startzeit ändern", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if(test == JOptionPane.OK_OPTION)
+		{
+			return new Tuple<Integer, Integer>(hours.getNumber(),minutes.getNumber());
+		}
+		else
+		{
+			return null;
+		}
+
+	}
+
 	//--------------------------------------
 	//------------- setter -----------------
 	//--------------------------------------
-	
+
 	public void fillJpMain(String[] busStops)
 	{
 		jpMain.removeAll();
@@ -399,6 +475,28 @@ public class FormRouteStep2 extends JPanel
 	//--------------------------------------
 	//------------- getter -----------------
 	//--------------------------------------
+
+	public JTable getTableActive()
+	{
+		return tableActive;
+	}
+
+	public DayOfWeek getActiveDay()
+	{
+		String active = tableActive.getColumnName(0);
+		DayOfWeek day = null;
+		switch(active)
+		{
+			case "Montag": day = DayOfWeek.MONDAY; break;
+			case "Dienstag": day = DayOfWeek.TUESDAY; break;
+			case "Mittwoch": day = DayOfWeek.WEDNESDAY; break;
+			case "Donnerstag": day = DayOfWeek.THURSDAY; break;
+			case "Freitag": day = DayOfWeek.FRIDAY; break;
+			case "Samstag": day = DayOfWeek.SATURDAY; break;
+			case "Sonntag": day = DayOfWeek.SUNDAY; break;
+		}
+		return day;
+	}
 
 	public int[] getDepartureTime()
 	{
