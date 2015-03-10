@@ -4,10 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
@@ -36,6 +33,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private JTable tableCurrent;
 	private int viewRow;
 	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
+	private boolean stopsChanged;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
@@ -44,6 +42,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.formRoute = formRoute;
 		this.objectID = objectID;
+		stopsChanged = false;
 		if(objectID != -1)
 		{
 			//TODO
@@ -89,9 +88,15 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					}
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
-					//Step 2
-					//TODO lese informationen aus
-					closeDialog();
+					if(parseValuesFromFormRouteStep2())
+					{
+						if (saveToDB())
+						{
+							ControllerManager.informTableContentChanged(EmitterTable.TAB_ROUTE);
+							closeDialog();
+						}
+					}
+					break;
 				}
 				formRoute.getCl().next(formRoute.getCardPanel());
 				formRoute.setPanelCounter(formRoute.getPanelCounter() + 1);
@@ -263,7 +268,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 		}
-
 	}
 
 	@Override
@@ -306,8 +310,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	}
 
 	/**
+	 * Saves the current route to the DB.
+	 * @return
+	 */
+	private boolean saveToDB()
+	{
+		if(objectID == -1)
+			controllerDatabase.addRoute(route);
+		else
+			controllerDatabase.modifyRoute(route, stopsChanged);
+		return true;
+	}
+
+	/**
 	 * Parses values from FormRouteStep1.
-	 * @return Returns 0 on wrong input; 1 on only start time; 2 on start time, end time and frequency
+	 * @return Returns false on wrong input.
 	 */
 	private boolean parseValuesFromFormRouteStep1()
 	{
@@ -338,6 +355,54 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			route.setName(name);
 			route.setNight(night);
 			routeStoppingPoints = stoppingPoints;
+			return true;
+		}
+	}
+
+	/**
+	 * Parses values from FormRouteStep2.
+	 * @return Returns false on wrong input
+	 */
+	private boolean parseValuesFromFormRouteStep2()
+	{
+		int[] departureTimes = formRoute.getStep2().getDepartureTime();
+
+
+		ArrayList<String> errorFields = new ArrayList<>();
+		boolean departureEmpty = false;
+		for (int departureTime : departureTimes)
+		{
+			if(departureTime == -1)
+				departureEmpty = true;
+		}
+		if(departureEmpty)
+			errorFields.add("Alle Zwischenzeiten müssen angegeben sein.");
+		if(errorFields.size() > 0)
+		{
+			String errorMessage = "Die eingegeben Daten sind nicht gültig:\n";
+			errorMessage += errorListToString(errorFields);
+			formRoute.showErrorForm(errorMessage);
+			return false;
+		}
+		else
+		{
+			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stoppingPoints = new LinkedList<>();
+			int id = routeStoppingPoints.get(0).getFirst();
+			BusStop busStop = controllerDatabase.getBusStopByStoppingPointId(id);
+			StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(id);
+			int time = 0;
+			stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+			for (int i = 0; i < departureTimes.length; i++)
+			{
+				id = routeStoppingPoints.get(i+1).getFirst();
+				busStop = controllerDatabase.getBusStopByStoppingPointId(id);
+				stoppingPoint = controllerDatabase.getStoppingPointById(id);
+				time = departureTimes[i];
+				stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+			}
+			route.setStops(stoppingPoints);
+			route.setNote(null);
+
 			return true;
 		}
 	}
