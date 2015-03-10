@@ -34,7 +34,7 @@ public class PrintViewStoppingPoint implements Printable
 	{
 		this.data = data;
 
-		fontHeader = new Font("Serif", Font.BOLD, 50);
+		fontHeader = new Font("Serif", Font.BOLD, 30);
 		fontHeader2 = new Font("Serif", Font.BOLD, 10);
 		fontNormal = new Font("Serif", Font.BOLD, 12);
 
@@ -45,10 +45,11 @@ public class PrintViewStoppingPoint implements Printable
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 	{
 		graphics2D = (Graphics2D) graphics;
+		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
-		if (pageIndex >= 1)
+		if (pageIndex >= 4)
 		{
 			return NO_SUCH_PAGE;
 		}
@@ -60,9 +61,9 @@ public class PrintViewStoppingPoint implements Printable
 	private void drawHeader()
 	{
 		graphics2D.setFont(fontHeader);
-		graphics2D.drawString("OctoBUS", 140, 110);
+		graphics2D.drawString("OctoBUS", 150, 60);
 		graphics2D.setFont(fontHeader2);
-		graphics2D.drawString("Abfahrtszeiten von "+data.getStoppingPoint().getName()+" für Linie "+data.getRoute().getName(), 140,135);//zB Zeiten von Hbf für Linie 11
+		graphics2D.drawString("Abfahrtszeiten von "+data.getBusStopNameByStoppingPointId(data.getStoppingPoint().getId())+" "+data.getStoppingPoint().getName()+" für Linie "+data.getRoute().getName(), 150,90);//zB Zeiten von Hbf für Linie 11
 	}
 
 	private void drawContent(int pageIndex)

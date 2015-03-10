@@ -72,4 +72,9 @@ public class PrintStoppingPoint
 	{
 		return departureTimes;
 	}
+
+	public String getBusStopNameByStoppingPointId(Integer id)
+	{
+		return controllerDatabase.getBusStopByStoppingPointId(id).getName();
+	}
 }
