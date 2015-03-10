@@ -128,7 +128,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		}
 
 		listSortKeys = new ArrayList();
-		listSortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
 	}
 
 	public boolean isRefineable()

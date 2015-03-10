@@ -18,10 +18,10 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 
 	private ControllerTabEmployee controllerTabEmployee;
 
-	public TabEmployee()
+	public TabEmployee(int uid)
 	{
 		super(TableModelEmployee.class, true, true);
-		controllerTabEmployee = new ControllerTabEmployee(this);
+		controllerTabEmployee = new ControllerTabEmployee(this, uid);
 
 		setLayout(new BorderLayout(5,5));
 

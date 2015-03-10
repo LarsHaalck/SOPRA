@@ -129,6 +129,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormBusStop(frame, objectID);
 				f.setVisible(true);
 				break;
+			case FORM_BUS_STOP_PRINT:
+				f = new FormBusStopPrint(frame, objectID);
+				f.setVisible(true);
+				break;
 			case FORM_ROUTE_EDIT:
 				f = new FormRoute(frame, objectID);
 				f.setVisible(true);
