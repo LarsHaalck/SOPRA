@@ -24,7 +24,7 @@ public class PrintStoppingPoint
 		this.stoppingPoint = stoppingPoint;
 	}
 
-	public ArrayList<RouteEntry> getRouteRecords()
+	public ArrayList<RouteEntry> getRouteEntries()
 	{
 		ArrayList<Route> routes = controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
 		ArrayList<RouteEntry> routeRecords = new ArrayList<>();
