@@ -98,5 +98,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	@Override
 	protected void editEntry()
 	{
+		controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT);
 	}
 }
