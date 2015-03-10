@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabRoute;
 
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerTabRoute extends Controller implements ListenerButton
+public class ControllerTabRoute extends Controller implements ListenerButton, ListenerTable
 {
 	private TabRoute tabRoute;
 	private ControllerDatabase controllerDatabase;
@@ -89,5 +87,28 @@ public class ControllerTabRoute extends Controller implements ListenerButton
 			data[i][4] = route.isNight();
 		}
 		tabRoute.fillTable(data);
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case TAB_ROUTE:
+				fillTable();
+				break;
+		}
+	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
 	}
 }

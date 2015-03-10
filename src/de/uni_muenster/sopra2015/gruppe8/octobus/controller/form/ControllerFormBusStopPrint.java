@@ -62,13 +62,16 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 
 	public void printBusStop(){
 		ArrayList<Tuple<JCheckBox, Integer>> stops = formBusStopPrint.getStops();
+		ArrayList<Integer> ids = new ArrayList<>();
+
 		for(Tuple<JCheckBox, Integer> stop: stops)
 		{
 			if(stop.getFirst().isSelected())
 			{
-				ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, new ArrayList<Integer>());
+				ids.add(stop.getSecond());
 			}
 		}
+		ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
 	}
 
 	private void closeDialog()

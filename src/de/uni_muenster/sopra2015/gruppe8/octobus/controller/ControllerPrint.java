@@ -2,6 +2,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerPrint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
@@ -9,6 +10,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStopp
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
 import java.awt.*;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -33,11 +36,23 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case STOPPING_POINT:
-				int objectId = objectIds.get(0);
+				Book book = new Book();
 
-				StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
+				for (Integer objectId : objectIds)
+				{
+					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
+					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
+					book.append(printViewStoppingPoint, new PageFormat());
+				}
+
+				PrinterJob job = PrinterJob.getPrinterJob();
+				job.setPageable(book);
+
+
+				//int objectId = objectIds.get(0);
+
+				/*StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
 				Route route = controllerDatabase.getRouteById(objectId);
-				DayOfWeek day = DayOfWeek.MONDAY;
 
 
 				//Create new print-job
@@ -47,7 +62,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 				//PrintViewWorkPlan is only for managing data to print
 				PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-				job.setPrintable(printViewStoppingPoint);
+				job.setPrintable(printViewStoppingPoint);*/
 
 
 				//Show dialog to user, select printer

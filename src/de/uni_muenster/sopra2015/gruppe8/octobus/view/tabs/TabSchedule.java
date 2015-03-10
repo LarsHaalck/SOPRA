@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 
 /**
  * @author Patricia Schinke
@@ -24,7 +25,7 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	{
 		super(TableModelSchedule.class, true, true);
 
-		controllerTabSchedule = new ControllerTabSchedule();
+		controllerTabSchedule = new ControllerTabSchedule(this);
 
 		setLayout(new BorderLayout(5,5));
 
@@ -82,6 +83,21 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		controllerTabSchedule.fillTable();
 
 		setVisible(true);
+	}
+
+	public Date getDateStart()
+	{
+		return tfDateStart.getDate();
+	}
+
+	public Date getDateEnd()
+	{
+		return tfDateEnd.getDate();
+	}
+
+	public boolean getOnlyUnassigned()
+	{
+		return cbOnlyUnassigned.isSelected();
 	}
 
 	@Override

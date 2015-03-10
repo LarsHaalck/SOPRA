@@ -141,6 +141,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormChangePassword(frame, objectID);
 				f.setVisible(true);
 				break;
+			case FORM_TOUR_EDIT:
+				f = new FormTourEdit(frame, objectID);
+				f.setVisible(true);
+				break;
 		}
 	}
 

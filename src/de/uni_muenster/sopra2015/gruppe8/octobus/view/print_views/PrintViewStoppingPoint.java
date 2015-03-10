@@ -15,19 +15,17 @@ import java.time.DayOfWeek;
  */
 public class PrintViewStoppingPoint implements Printable
 {
+	private final int entryHeight = 70;
+	private final int entryXStart = 60;
+	private final int entryYStart = 180;
 	private Graphics2D graphics2D;
 	private double pageHeight;
 	private double pageWidth;
-	private int numPages;
 	private Font fontHeader;
 	private Font fontHeader2;
 	private Font fontNormal;
 	private PrintStoppingPoint data;
 	private int entriesPerPage;
-	private final int entryHeight = 70;
-	private final int entryXStart = 60;
-	private final int entryYStart = 180;
-
 	private StoppingPoint stop;
 	private Route route;
 
@@ -36,11 +34,11 @@ public class PrintViewStoppingPoint implements Printable
 		this.data = data;
 
 		fontHeader = new Font("Serif", Font.BOLD, 50);
-		fontHeader2 = new Font("Serif", Font.BOLD, 20);
+		fontHeader2 = new Font("Serif", Font.BOLD, 10);
 		fontNormal = new Font("Serif", Font.BOLD, 12);
 
 		stop = data.getStoppingPoint();
-		route = data.getRoute();
+		//route = data.getRoute();
 	}
 
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
@@ -49,7 +47,7 @@ public class PrintViewStoppingPoint implements Printable
 
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
-		if (pageIndex >= numPages)
+		if (pageIndex >= 1)
 		{
 			return NO_SUCH_PAGE;
 		}
@@ -63,7 +61,7 @@ public class PrintViewStoppingPoint implements Printable
 		graphics2D.setFont(fontHeader);
 		graphics2D.drawString("OctoBUS", 140, 110);
 		graphics2D.setFont(fontHeader2);
-		graphics2D.drawString("Abfahrtszeiten von "+data.getStoppingPoint().getName()+" für Linie "+data.getRoute().getName(), 140,135);//zB Zeiten von Hbf für Linie 11
+		//graphics2D.drawString("Abfahrtszeiten von "+data.getStoppingPoint().getName()+" für Linie "+data.getRoute().getName(), 140,135);//zB Zeiten von Hbf für Linie 11
 	}
 
 	private void drawContent(int pageIndex)
@@ -77,7 +75,7 @@ public class PrintViewStoppingPoint implements Printable
 		{
 			for (DayOfWeek day:DayOfWeek.values())
 			{
-				data = new PrintStoppingPoint(stop, route, day);
+				//data = new PrintStoppingPoint(stop, route, day);
 				String curDate = day + ":";
 				graphics2D.drawString(curDate, curX, curY);
 				curY += 20;
@@ -87,7 +85,7 @@ public class PrintViewStoppingPoint implements Printable
 					graphics2D.drawString(curDate, curX, curY);
 					curY += 20;
 				}
-				curX += 60;
+				curX += pageWidth/5;
 				curY = entryYStart;
 			}
 		}
