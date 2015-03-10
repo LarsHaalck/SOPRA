@@ -161,6 +161,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
+				JTable active = formRoute.getStep2().getTableActive();
+				if(active != null)
+				{
+					if (active.getSelectedRowCount() > 1)
+					{
+						String errorMessage = "Die eingegeben Daten sind nicht gültig:\n	" +
+								"Bitte nur einen Eintrag zum ändern wählen.";
+						formRoute.showErrorForm(errorMessage);
+					} else if (active.getSelectedRowCount() != 0)
+					{
+						LinkedList<Integer> tempTimes = route.getStartTimes().get(formRoute.getStep2().getActiveDay());
+						Tuple<Integer, Integer> test = formRoute.getStep2().showEditDialog(12,12);
+						System.out.println(test.getFirst());
+					}
+				}
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
