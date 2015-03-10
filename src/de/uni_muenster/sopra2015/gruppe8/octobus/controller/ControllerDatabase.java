@@ -86,7 +86,10 @@ public class ControllerDatabase
 		}
 	}
 
-	public void startWithNewDatabase()
+    /**
+     * Creates a database with necessary schema if no file with preexisting data is found.
+     */
+    public void startWithNewDatabase()
 	{
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
