@@ -27,6 +27,8 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
+
+		//controllerDatabase.createTours(new Date((long)1425966900*1000), new Date((long)1425981300*1000));
 	}
 
 	@Override
@@ -36,34 +38,22 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case STOPPING_POINT:
-				Book book = new Book();
+				Book bookStoppingPoints = new Book();
 
 				for (Integer objectId : objectIds)
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
 					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-					book.append(printViewStoppingPoint, new PageFormat());
+			//		ArrayList<PrintStoppingPoint.RouteEntry> routes = printStoppingPoint.getRouteEntries();
+			//		for (PrintStoppingPoint.RouteEntry routeEntry:routes)
+			//		{
+						bookStoppingPoints.append(printViewStoppingPoint, new PageFormat());
+						//TODO: zweites Book überschreibt das erste
+			//		}
 				}
 
 				PrinterJob job = PrinterJob.getPrinterJob();
-				job.setPageable(book);
-
-
-				//int objectId = objectIds.get(0);
-
-				/*StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
-				Route route = controllerDatabase.getRouteById(objectId);
-
-
-				//Create new print-job
-				PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(stoppingPoint, route, day);
-
-				PrinterJob job = PrinterJob.getPrinterJob();
-
-				//PrintViewWorkPlan is only for managing data to print
-				PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-				job.setPrintable(printViewStoppingPoint);*/
-
+				job.setPageable(bookStoppingPoints);
 
 				//Show dialog to user, select printer
 				boolean doPrint = job.printDialog();

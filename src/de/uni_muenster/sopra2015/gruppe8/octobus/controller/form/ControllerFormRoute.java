@@ -167,14 +167,12 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			case FORM_ROUTE_STEP1_DELETE:
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
-				try
-				{
-					if (viewRow == -1)
-						break;
-					contentTableCurrent.remove(viewRow);
-					initTableCurrent();
-				}
-				catch (IndexOutOfBoundsException e){}
+				if(tableCurrent.getModel().getRowCount() == 0)
+					break;
+				if (viewRow == -1)
+					break;
+				contentTableCurrent.remove(viewRow);
+				initTableCurrent();
 				stopsChanged = true;
 				stopsChangedOnEdit = true;
 				break;

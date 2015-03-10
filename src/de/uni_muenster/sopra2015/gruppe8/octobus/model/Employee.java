@@ -194,4 +194,9 @@ public class Employee
 	{
 		this.username = username;
 	}
+
+	public String toString()
+	{
+		return name + ", "+ firstName;
+	}
 }
