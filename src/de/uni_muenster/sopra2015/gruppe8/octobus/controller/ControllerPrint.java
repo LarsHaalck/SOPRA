@@ -9,6 +9,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStopp
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
 import java.awt.*;
+import java.awt.print.Book;
 import java.awt.print.PrinterJob;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -33,11 +34,17 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case STOPPING_POINT:
-				int objectId = objectIds.get(0);
+				Book book = new Book();
 
-				StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
+				for (Integer objectId : objectIds)
+				{
+					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
+				}
+
+				//int objectId = objectIds.get(0);
+
+				/*StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(objectId);
 				Route route = controllerDatabase.getRouteById(objectId);
-				DayOfWeek day = DayOfWeek.MONDAY;
 
 
 				//Create new print-job
@@ -62,7 +69,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 						System.out.println(e.getMessage());
 						System.out.println("Don't print");
 					}
-				}
+				}*/
 				break;
 
 		}
