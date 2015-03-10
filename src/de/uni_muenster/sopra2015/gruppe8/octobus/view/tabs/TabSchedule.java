@@ -52,7 +52,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		plFilterDate.add(btnFilter);
 		plFilter.add(plFilterDate, BorderLayout.PAGE_START);
 
-
 		//Table-filter-panel
 		if(super.isRefineable())
 		{

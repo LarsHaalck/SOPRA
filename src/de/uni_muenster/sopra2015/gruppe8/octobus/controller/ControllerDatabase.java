@@ -1938,7 +1938,7 @@ public class ControllerDatabase
             // Starting stop
             content[3] = r.getValue(BUSES.LICENCEPLATE);
             // Starting stop
-            content[4] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
+            content[4] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
             result.add(content);
         }

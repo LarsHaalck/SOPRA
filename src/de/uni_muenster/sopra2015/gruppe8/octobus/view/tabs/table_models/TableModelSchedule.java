@@ -27,4 +27,27 @@ public class TableModelSchedule extends ExtendedTableModel
 	{
 		return new String[]{ColumnsSchedule.LINE.toString(), ColumnsSchedule.BUS.toString(), ColumnsSchedule.BUS_DRIVER.toString()};
 	}
+
+    @Override
+    public Class getColumnClass(int column)
+    {
+        switch (column)
+        {
+            case 0:
+                return Integer.class;
+
+            case 1:
+                return String.class;
+
+            case 2:
+                return TableDate.class;
+
+            case 3:
+                return String.class;
+
+            case 4:
+                return String.class;
+        }
+        return null;
+    }
 }
