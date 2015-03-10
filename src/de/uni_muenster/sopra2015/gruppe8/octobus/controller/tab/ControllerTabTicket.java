@@ -108,4 +108,10 @@ public class ControllerTabTicket extends Controller implements ListenerButton, L
 				break;
 		}
 	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
+	}
 }
