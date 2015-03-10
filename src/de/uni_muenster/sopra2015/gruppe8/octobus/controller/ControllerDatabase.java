@@ -82,6 +82,20 @@ public class ControllerDatabase
 		}
 	}
 
+	public void startWithNewDatabase()
+	{
+		// CREATE TABLE busStops (
+		// 		busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+		// 		name TEXT (200),
+		// 		locationX INTEGER,
+		// 		locationY INTEGER,
+		// 		barrierFree BOOLEAN NOT NULL);
+
+		// String sql = "CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
+		//"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);";
+		create.fetch("CREATE TABLE blabla (busStops_id INTEGER);");
+	}
+
 	/////////////////////////
 	// Methods for "Bus"es //
 	/////////////////////////
@@ -1050,7 +1064,7 @@ public class ControllerDatabase
 	 * @return id of the changed route entry (new if deleteTours was true)
 	 * @pre true
 	 * @post properties of specified route are changed if existing
-     */
+	 */
 	public int modifyRoute(Route r, boolean deleteTours)
 	{
 		if (!deleteTours)
