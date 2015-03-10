@@ -91,6 +91,13 @@ public class ControllerDatabase
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
 				"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);");
+		// create bus_stops table
+		create.fetch("CREATE TABLE busStops_stoppingPoints (busStops_stoppingPoints_id INTEGER PRIMARY KEY " +
+				"AUTOINCREMENT UNIQUE NOT NULL, busStops_id INTEGER, name TEXT (200), CONSTRAINT " +
+				"fk__busStops_stoppingPoints__busStops_id__busStops__busStops_id FOREIGN KEY (busStops_id) " +
+				"REFERENCES busStops (busStops_id));");
+
+		// create buses table
 		create.fetch("CREATE TABLE buses (buses_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, " +
 				"licencePlate TEXT (10) NOT NULL UNIQUE, numberOfSeats INTEGER (3) NOT NULL, standingRoom INTEGER (3), " +
 				"manufacturer TEXT (200), model TEXT (200), nextInspectionDue INTEGER NOT NULL, " +
@@ -1345,6 +1352,23 @@ public class ControllerDatabase
 			names.add(nameString);
 		}
 		return(names);
+	}
+
+	public String getCompleteStoppingPointName(int id)
+	{
+		// get all route stops entries associated to that route
+		BusstopsStoppingpointsRecord rec = create
+				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+				.fetchOne();
+
+		int busStopID = rec.getBusstopsId();
+		BusstopsRecord stoprecord = create
+				.selectFrom(BUSSTOPS)
+				.where(BUSSTOPS.BUSSTOPS_ID.eq(busStopID))
+				.fetchOne();
+
+		return stoprecord.getName() + " " + rec.getName();
 	}
 
 	/**
