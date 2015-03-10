@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 
@@ -42,6 +43,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 		switch(btn)
 		{
 			case TAB_SCHEDULE_EDIT:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_EDIT, -1);
 				break;
 
 			case TAB_SCHEDULE_FILTER:
