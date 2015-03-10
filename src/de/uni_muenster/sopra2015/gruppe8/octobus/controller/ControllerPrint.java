@@ -106,7 +106,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 					//Build strings for printing
 					String tourDesc = tour.getRoute().getName() + " (" + tour.getRoute().getStart().getName() + " - " + tour.getRoute().getEnd().getName()+")";
 					String busName = tour.getBus().getLicencePlate();
-					tourData.add(new Quadruple<>(tourDesc, tour.getTimestamp(), tour.getRoute().getDuration(), busName));
+					tourData.add(new Quadruple<>(tourDesc, tour.getStartTimestamp(), tour.getRoute().getDuration(), busName));
 				}
 
 				//Create new print-job
