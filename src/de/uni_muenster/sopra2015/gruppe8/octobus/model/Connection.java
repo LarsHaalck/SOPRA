@@ -35,4 +35,16 @@ public class Connection
 	{
 		return time;
 	}
+
+	/**
+	 * Returns total number of transitions needed in connection
+	 * @return number of transitions if trips contains more than one Quadruple, -1 otherwise
+	 */
+	public int getNumberOfTransitions()
+	{
+		if(trips != null && trips.size() > 0)
+			return trips.size()-1;
+		else
+			return -1;
+	}
 }
