@@ -379,6 +379,10 @@ public class FormRouteStep2 extends JPanel
 		{
 			return jtfDepartureTime.getNumber();
 		}
+		public void setTime(int time)
+		{
+			jtfDepartureTime.setNumber(time);
+		}
 	}
 
 	/**
@@ -462,6 +466,14 @@ public class FormRouteStep2 extends JPanel
 			}
 			revalidate();
 			repaint();
+		}
+	}
+
+	public void setDepartureTimes(int[] times)
+	{
+		for (int i = 0; i < times.length; i++)
+		{
+			departureTimes.get(i).setTime(times[i]);
 		}
 	}
 

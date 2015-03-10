@@ -94,6 +94,7 @@ public class ControllerDatabase
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
 				"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);");
+
 		// create bus_stops table
 		create.fetch("CREATE TABLE busStops_stoppingPoints (busStops_stoppingPoints_id INTEGER PRIMARY KEY " +
 				"AUTOINCREMENT UNIQUE NOT NULL, busStops_id INTEGER, name TEXT (200), CONSTRAINT " +
@@ -105,6 +106,53 @@ public class ControllerDatabase
 				"licencePlate TEXT (10) NOT NULL UNIQUE, numberOfSeats INTEGER (3) NOT NULL, standingRoom INTEGER (3), " +
 				"manufacturer TEXT (200), model TEXT (200), nextInspectionDue INTEGER NOT NULL, " +
 				"articulatedBus BOOLEAN NOT NULL);");
+
+		// create employees table
+		create.fetch("CREATE TABLE employees (employees_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, name " +
+				"TEXT (200), firstName TEXT (200), address TEXT (200), zipCode TEXT (10), city TEXT (200), dateOfBirth " +
+				"INTEGER, phone TEXT (200), email TEXT (200), username TEXT (10) UNIQUE NOT NULL, salt TEXT, password " +
+				"TEXT, note TEXT (2000), isBUSDRIVER BOOLEAN NOT NULL, isNETWORK_PLANNER BOOLEAN NOT NULL, " +
+				"isTICKET_PLANNER BOOLEAN NOT NULL, isHR_MANAGER BOOLEAN NOT NULL, " +
+				"isSCHEDULE_MANAGER BOOLEAN NOT NULL);");
+
+		// create routes table
+		create.fetch("CREATE TABLE routes (routes_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, name " +
+				"TEXT (200), note TEXT (2000), night BOOLEAN NOT NULL);");
+
+		// create routes_startTimes table
+		create.fetch("CREATE TABLE routes_startTimes (routes_startTimes_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE " +
+				"NOT NULL, routes_id INTEGER, dayOfWeek TEXT, startTime INTEGER, CONSTRAINT " +
+				"fk__routes_startTimes__routes_id__routes__routes_id FOREIGN KEY (routes_id) REFERENCES " +
+				"routes (routes_id));");
+
+		// create routes_stops table
+		create.fetch("CREATE TABLE routes_stops (routes_stops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, " +
+				"routes_id INTEGER, busStops_id INTEGER, busStops_stoppingPoints_id INTEGER, timeToPrevious INTEGER " +
+				"(3), CONSTRAINT fk__routes_stops__routes_id__routes__routes_id FOREIGN KEY (routes_id) REFERENCES " +
+				"routes (routes_id), CONSTRAINT fk__routes_stops__busStops_id__busStops__busStops_id FOREIGN KEY " +
+				"(busStops_id) REFERENCES busStops (busStops_id), CONSTRAINT " +
+				"fk__routes_stops__busStops_stoppingPoints_id__busStops_stoppingPoints__stoppingPoints_id FOREIGN KEY " +
+				"(busStops_stoppingPoints_id) REFERENCES busStops_stoppingPoints (busStops_stoppingPoints_id));");
+
+		// create soldTickets table
+		create.fetch("CREATE TABLE soldTickets (soldTickets_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, " +
+				"name TEXT (200), timestamp INTEGER, price INTEGER (6));");
+
+		// create tickets table
+		create.fetch("CREATE TABLE tickets (tickets_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, name TEXT " +
+				"(200), price INTEGER (6), numPassengers INTEGER (3), description TEXT (2000));");
+
+		// create tours table
+		create.fetch("CREATE TABLE tours (tours_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, timestamp " +
+				"INTEGER, routes_id INTEGER, buses_id INTEGER, employees_id INTEGER, CONSTRAINT " +
+				"fk__tours__routes_id__routes__routes_id FOREIGN KEY (routes_id) REFERENCES routes (routes_id), " +
+				"CONSTRAINT fk__tours__buses_id__buses__buses_id FOREIGN KEY (buses_id) REFERENCES buses (buses_id), " +
+				"CONSTRAINT fk__tours__employees_id__employees__employees_id FOREIGN KEY (employees_id) REFERENCES " +
+				"employees (employees_id), UNIQUE (timestamp, routes_id) ON CONFLICT IGNORE);");
+
+		// create root user
+		// Employee root = new Employee()
+
 	}
 
 	/////////////////////////
@@ -1094,6 +1142,7 @@ public class ControllerDatabase
 			deleteToursUsingRoutesId(r.getId());
 			deleteStartTimesUsingRouteId(r.getId());
 			deleteRoutesStopsUsingRouteId(r.getId());
+			deleteRoute(r.getId());
 			return(addRoute(r));		// route gets a new ID here!
 		}
 	}
@@ -1263,7 +1312,7 @@ public class ControllerDatabase
 				stops,
 				rec.getNight(),
 				startTimes);
-
+		route.setId(rec.getRoutesId());
 		return route;
 	}
 
