@@ -295,13 +295,13 @@ public class ControllerGraph
 			int time = 0;
 			int duration = 0;
 
-			LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> trips = new LinkedList<>();
+			LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = new LinkedList<>();
 
 			int currentStop = stopId;
 			int prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 
 			Route prevRoute = null;
-			Quadruple<Integer, StoppingPoint, Route, StoppingPoint> prevQuadruple = null;
+			Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> prevQuintuple = null;
 			StoppingPoint end;
 
 			//TODO: reconsider way of determining start times, because this seems very ineffective!
@@ -325,20 +325,21 @@ public class ControllerGraph
 				end = bestStoppingPoints.get(currentStop);
 				if(prevRoute != null && currentRoute.getId() == prevRoute.getId()) //prevRoute != null -> prevQuadruple != null
 				{
-					end = prevQuadruple.getFourth();
-					trips.remove(prevQuadruple);
+					end = prevQuintuple.getFourth();
+					trips.remove(prevQuintuple);
 				}
 
 
 				//TODO: mabye use Math.abs() for time differences
-				prevQuadruple = new Quadruple<>(
+				prevQuintuple = new Quintuple<>(
 						(dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop)),
 						bestStoppingPoints.get(prevStop),
 						bestRoutes.get(new TupleInt(prevStop, currentStop)),
-						end
+						end,
+						dist.get(currentStop).intValue()
 				);
 				//add them in reverse order
-				trips.addFirst(prevQuadruple);
+				trips.addFirst(prevQuintuple);
 
 				prevRoute = currentRoute;
 

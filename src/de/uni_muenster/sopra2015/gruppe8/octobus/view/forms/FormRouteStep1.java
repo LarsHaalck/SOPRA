@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -96,6 +97,15 @@ public class FormRouteStep1 extends JPanel
 		busStopCurrent = new JTable(model_1)
 		{
 			@Override
+			public Component prepareRenderer(TableCellRenderer renderer,int row, int col) {
+				Component comp = super.prepareRenderer(renderer, row, col);
+				JComponent jcomp = (JComponent)comp;
+				if (comp == jcomp) {
+					jcomp.setToolTipText((String)getValueAt(row, col));
+				}
+				return comp;
+			}
+			@Override
 			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
 			{
 				super.changeSelection(rowIndex,columnIndex,true,false);
@@ -151,6 +161,16 @@ public class FormRouteStep1 extends JPanel
 		model_2 = new RouteTableModel();
 		busStopAvailable = new JTable(model_2)
 		{
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer,int row, int col) {
+				Component comp = super.prepareRenderer(renderer, row, col);
+				JComponent jcomp = (JComponent)comp;
+				if (comp == jcomp) {
+					jcomp.setToolTipText((String)getValueAt(row, col));
+				}
+				return comp;
+			}
+
 			@Override
 			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
 			{

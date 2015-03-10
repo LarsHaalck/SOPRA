@@ -11,21 +11,14 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.Extended
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.ExpandVetoException;
-import java.lang.reflect.Array;
-import java.text.Collator;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Controller for FormRoute class.
  */
 public class ControllerFormRoute extends Controller implements ListenerButton, ListenerTable, ListenerWindow
 {
-	private ControllerDatabase controllerDatabase;
 	FormRoute formRoute;
 	private int objectID;
 	private Route route;
@@ -34,19 +27,20 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private int viewRow;
 	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
 	private boolean stopsChanged;
+	private boolean stopsChangedOnEdit;
+	private int[] initialDepartureTimes;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
 	{
 		super();
 		route = new Route();
-		controllerDatabase = ControllerDatabase.getInstance();
 		this.formRoute = formRoute;
 		this.objectID = objectID;
 		stopsChanged = false;
+		stopsChangedOnEdit = false;
 		if(objectID != -1)
 		{
-			//TODO
-			//setRouteInfo();
+			setRouteInfo();
 		}
 	}
 
@@ -79,8 +73,20 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 						{
 							busStops[i] = routeStoppingPoints.get(i).getSecond();
 						}
-
-						formRoute.getStep2().fillJpMain(busStops);
+						if(stopsChanged)
+						{
+							formRoute.getStep2().fillJpMain(busStops);
+							stopsChanged = false;
+						}
+						else
+						{
+							if(objectID != -1)
+							{
+								formRoute.getStep2().fillJpMain(busStops);
+							}
+							insertDepartureTimes();
+						}
+						refreshTablesStep2();
 					}
 					else
 					{
@@ -120,6 +126,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				initTableCurrent();
 				tableCurrent.clearSelection();
 				tableCurrent.changeSelection(viewRow - 1, 1, true, false);
+				stopsChanged = true;
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP1_DOWN:
@@ -134,6 +142,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				contentTableCurrent.add(viewRow, old);
 				initTableCurrent();
 				tableCurrent.changeSelection(viewRow + 1, 1, true, false);
+				stopsChanged = true;
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP1_ADD:
@@ -150,23 +160,26 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
 				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
 				initTableCurrent();
+				stopsChanged = true;
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP1_DELETE:
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
-				try
-				{
-					if (viewRow == -1)
-						break;
-					contentTableCurrent.remove(viewRow);
-					initTableCurrent();
-				}
-				catch (IndexOutOfBoundsException e){}
+				if(tableCurrent.getModel().getRowCount() == 0)
+					break;
+				if (viewRow == -1)
+					break;
+				contentTableCurrent.remove(viewRow);
+				initTableCurrent();
+				stopsChanged = true;
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
 				new FormDepartureTime(formRoute, route);
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
@@ -196,6 +209,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 						}
 					}
 				}
+				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
@@ -222,6 +236,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 						}
 					}
 				}
+				stopsChangedOnEdit = true;
 				break;
 		}
 	}
@@ -310,15 +325,62 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	}
 
 	/**
+	 * Fetch route object from DB
+	 */
+	private void setRouteInfo()
+	{
+		route = ControllerDatabase.getInstance().getRouteById(objectID);
+		int[] times = new int[route.getStops().size() - 1];
+		for (int i = 0; i < times.length; i++)
+		{
+			times[i] = route.getStops().get(i+1).getThird();
+		}
+		initialDepartureTimes = times;
+	}
+
+	/**
+	 * Inserts the values of the Route which is going to
+	 * be changed into the form.
+	 */
+	public void insertValuesIntoForm()
+	{
+		if(objectID != -1)
+		{
+			formRoute.getStep1().setNameRoute(route.getName());
+			formRoute.getStep1().setNightLine(route.isNight());
+			for (Triple<BusStop,StoppingPoint,Integer> stops : route.getStops())
+			{
+				String name = ControllerDatabase.getInstance().getCompleteStoppingPointName(stops.getSecond().getId());
+				contentTableCurrent.add(new Tuple<Integer, String>(stops.getSecond().getId(),name));
+			}
+			initTableCurrent();
+		}
+	}
+
+	/**
+	 * Used when a route is edited. This method inserts the existing departure times into the form.
+	 */
+	private void insertDepartureTimes()
+	{
+		int[] times = new int[route.getStops().size() - 1];
+		for (int i = 0; i < times.length; i++)
+		{
+			times[i] = route.getStops().get(i+1).getThird();
+		}
+		formRoute.getStep2().setDepartureTimes(times);
+		refreshTablesStep2();
+	}
+
+	/**
 	 * Saves the current route to the DB.
 	 * @return
 	 */
 	private boolean saveToDB()
 	{
 		if(objectID == -1)
-			controllerDatabase.addRoute(route);
+			ControllerDatabase.getInstance().addRoute(route);
 		else
-			controllerDatabase.modifyRoute(route, stopsChanged);
+			ControllerDatabase.getInstance().modifyRoute(route, stopsChangedOnEdit);
 		return true;
 	}
 
@@ -367,6 +429,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	{
 		int[] departureTimes = formRoute.getStep2().getDepartureTime();
 
+		if(!Arrays.equals(departureTimes,initialDepartureTimes))
+			stopsChangedOnEdit = true;
 
 		ArrayList<String> errorFields = new ArrayList<>();
 		boolean departureEmpty = false;
@@ -388,15 +452,15 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		{
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stoppingPoints = new LinkedList<>();
 			int id = routeStoppingPoints.get(0).getFirst();
-			BusStop busStop = controllerDatabase.getBusStopByStoppingPointId(id);
-			StoppingPoint stoppingPoint = controllerDatabase.getStoppingPointById(id);
+			BusStop busStop = ControllerDatabase.getInstance().getBusStopByStoppingPointId(id);
+			StoppingPoint stoppingPoint = ControllerDatabase.getInstance().getStoppingPointById(id);
 			int time = 0;
 			stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
 			for (int i = 0; i < departureTimes.length; i++)
 			{
 				id = routeStoppingPoints.get(i+1).getFirst();
-				busStop = controllerDatabase.getBusStopByStoppingPointId(id);
-				stoppingPoint = controllerDatabase.getStoppingPointById(id);
+				busStop = ControllerDatabase.getInstance().getBusStopByStoppingPointId(id);
+				stoppingPoint = ControllerDatabase.getInstance().getStoppingPointById(id);
 				time = departureTimes[i];
 				stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
 			}
@@ -413,7 +477,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	public void initTableAvailable()
 	{
-		ArrayList<Tuple<Integer, String>> stoppingPoints = controllerDatabase.getBusStopNamesWithStoppingPointNames();
+		ArrayList<Tuple<Integer, String>> stoppingPoints = ControllerDatabase.getInstance().getBusStopNamesWithStoppingPointNames();
 
 		Object[][] data = new Object[stoppingPoints.size()][2];
 		for(int i=0; i<stoppingPoints.size(); i++)
@@ -444,7 +508,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	public void initTableAvailable(ArrayList<Integer> id)
 	{
-		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();
+		ArrayList<BusStop> busStops = ControllerDatabase.getInstance().getBusStops();
 		Object[][] data = new Object[busStops.size() - id.size()][2];
 		int k = 0;
 		for(int i=0; i<busStops.size(); i++)

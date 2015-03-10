@@ -27,7 +27,7 @@ public class FormRoute extends FormGeneral
 	{
 		super(parent, "");
 
-		if(objectId != -1)
+		if(objectId == -1)
 			setTitle("Neue Linie anlegen");
 		else
 			setTitle("Linie bearbeiten");
@@ -39,6 +39,7 @@ public class FormRoute extends FormGeneral
 
 		initComponents();
 		nextButton.requestFocus();
+		controllerFormRoute.insertValuesIntoForm();
 	}
 
 	public void initComponents()

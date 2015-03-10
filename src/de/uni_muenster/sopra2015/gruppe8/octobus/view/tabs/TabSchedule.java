@@ -16,6 +16,7 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 {
 	private JButton btnEdit;
 	private JButton btnFilter;
+	private JButton btnResetEmployee;
 	private FieldDate tfDateStart;
 	private JCheckBox cbOnlyUnassigned;
 	private ControllerTabSchedule controllerTabSchedule;
@@ -40,7 +41,7 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		tfDateStart.setPreferredSize(new Dimension(80,20));
 		cbOnlyUnassigned = new JCheckBox("Nur freie Fahrten anzeigen");
 		btnFilter = new JButton("Anzeigen");
-		btnFilter.addActionListener(e->{
+		btnFilter.addActionListener(e -> {
 			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_FILTER);
 		});
 		plFilterDate.add(lbFilterDateFirst);
@@ -68,13 +69,18 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT);
 		});
 
+		btnResetEmployee = new JButton("Busfahrer zurücksetzen");
+		btnResetEmployee.addActionListener(e->
+		{
+			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_EMPLOYEE);
+		});
+
 		JPanel plButtons = new JPanel();
 		plButtons.add(btnEdit);
+		plButtons.add(btnResetEmployee);
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);
-
-		controllerTabSchedule.fillTable();
 
 		setVisible(true);
 	}

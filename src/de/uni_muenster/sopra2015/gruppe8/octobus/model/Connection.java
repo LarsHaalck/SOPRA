@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 public class Connection
 {
-
-	private LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> trips;
+	//Quintuple: (startingTime, start StoppingPoint, Route, end StoppingPoint, arrivalTime)
+	private LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips;
 	private int duration;
 	private int time;
 
@@ -14,14 +14,14 @@ public class Connection
 		trips = new LinkedList<>();
 	}
 
-	public Connection(LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> trips, int duration, int time)
+	public Connection(LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips, int duration, int time)
 	{
 		this.trips = trips;
 		this.duration = duration;
 		this.time = time;
 	}
 
-	public LinkedList<Quadruple<Integer, StoppingPoint, Route, StoppingPoint>> getTrips()
+	public LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> getTrips()
 	{
 		return trips;
 	}
@@ -47,4 +47,20 @@ public class Connection
 		else
 			return -1;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Connection that = (Connection) o;
+
+		if (duration != that.duration) return false;
+		if (time != that.time) return false;
+		if (trips != null ? !trips.equals(that.trips) : that.trips != null) return false;
+
+		return true;
+	}
+
 }
