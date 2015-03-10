@@ -88,16 +88,13 @@ public class ControllerDatabase
 
 	public void startWithNewDatabase()
 	{
-		// CREATE TABLE busStops (
-		// 		busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
-		// 		name TEXT (200),
-		// 		locationX INTEGER,
-		// 		locationY INTEGER,
-		// 		barrierFree BOOLEAN NOT NULL);
-
-		// String sql = "CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
-		//"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);";
-		create.fetch("CREATE TABLE blabla (busStops_id INTEGER);");
+		// create bus stops table
+		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
+				"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);");
+		create.fetch("CREATE TABLE buses (buses_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL, " +
+				"licencePlate TEXT (10) NOT NULL UNIQUE, numberOfSeats INTEGER (3) NOT NULL, standingRoom INTEGER (3), " +
+				"manufacturer TEXT (200), model TEXT (200), nextInspectionDue INTEGER NOT NULL, " +
+				"articulatedBus BOOLEAN NOT NULL);");
 	}
 
 	/////////////////////////
@@ -147,7 +144,7 @@ public class ControllerDatabase
 	public int deleteBus(int id)
 	{
 		// Start by deleting references to this bus from all tours
-        int numOfTours = deleteBusFromTours(id);
+		int numOfTours = deleteBusFromTours(id);
         // Then delete the bus itself
 		create.delete(BUSES)
 				.where(BUSES.BUSES_ID.equal(id))
@@ -178,7 +175,7 @@ public class ControllerDatabase
 
 		// reset bus attribute in those tours
 		create.update(TOURS)
-				.set(TOURS.BUSES_ID,(Integer) null)
+				.set(TOURS.BUSES_ID, (Integer) null)
 				.where(TOURS.BUSES_ID.equal(uid))
 				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
 				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
@@ -940,7 +937,7 @@ public class ControllerDatabase
 
 		// reset employee attribute in those tours
 		create.update(TOURS)
-				.set(TOURS.EMPLOYEES_ID,(Integer) null)
+				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
 				.and(TOURS.TIMESTAMP.lessOrEqual( (int) (end.getTime()/1000) ))
 				.and(TOURS.TIMESTAMP.greaterOrEqual( (int) (begin.getTime()/1000) ))
@@ -1765,7 +1762,7 @@ public class ControllerDatabase
                                     route,
                                     bus,
                                     employee),
-                            (bus == null || employee == null) ? false : true
+							(bus == null || employee == null) ? false : true
                     )
             );
 
