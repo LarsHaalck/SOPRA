@@ -30,6 +30,12 @@ public class FormTicket extends FormGeneral
 	private JButton btSave;
 	private JButton btCancel;
 
+	/**
+	 * Creates a new FormTicket-Object.
+	 *
+	 * @param parent the prent-frame
+	 * @param objectID the id of the selected ticket
+	 */
 	public FormTicket(Frame parent, int objectID)
 	{
 		super(parent, "");
