@@ -393,17 +393,23 @@ public class FormRouteStep2 extends JPanel
 		fieldWrapper.setLayout(new BoxLayout(fieldWrapper, BoxLayout.LINE_AXIS));
 		FieldNumber hours = new FieldNumber(3,2,23);
 		hours.setHorizontalAlignment(JLabel.CENTER);
-		hours.setNumber(h);
+		String hour = String.valueOf(h);
+		if (h < 10)
+			hour = "0" + hour;
+		hours.setText(hour);
 		FieldNumber minutes = new FieldNumber(3,2,59);
 		minutes.setHorizontalAlignment(JLabel.CENTER);
-		minutes.setNumber(m);
-		fieldWrapper.add(Box.createHorizontalStrut(90));
+		String minute = String.valueOf(m);
+		if (m < 10)
+			hour = "0" + minute;
+		hours.setText(minute);
+		fieldWrapper.add(Box.createHorizontalStrut(70));
 		fieldWrapper.add(hours);
-		fieldWrapper.add(Box.createHorizontalStrut(10));
-		fieldWrapper.add(new Label(":"));
-		//fieldWrapper.add(Box.createHorizontalStrut(2));
+		fieldWrapper.add(Box.createHorizontalStrut(3));
+		fieldWrapper.add(new JLabel(":"));
+		fieldWrapper.add(Box.createHorizontalStrut(2));
 		fieldWrapper.add(minutes);
-		fieldWrapper.add(Box.createHorizontalStrut(100));
+		fieldWrapper.add(Box.createHorizontalStrut(70));
 		p.add(fieldWrapper, BorderLayout.CENTER);
 		int test = JOptionPane.showConfirmDialog(null, p, "Startzeit ändern", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if(test == JOptionPane.OK_OPTION)
