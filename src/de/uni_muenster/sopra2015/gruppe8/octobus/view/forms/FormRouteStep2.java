@@ -381,6 +381,12 @@ public class FormRouteStep2 extends JPanel
 		}
 	}
 
+	/**
+	 * Shows a dialog that returns its input after you confirm.
+	 * @param h hours to be initially displayed.
+	 * @param m minuts to be initially displayed.
+	 * @return returns the input as a Tuple of integers
+	 */
 	public Tuple<Integer, Integer> showEditDialog(int h, int m)
 	{
 		JPanel p = new JPanel(new BorderLayout());
@@ -421,6 +427,15 @@ public class FormRouteStep2 extends JPanel
 			return null;
 		}
 
+	}
+
+	/**
+	 * Displays an option dialog asking the user to confirm his action.
+	 * @return true on confirmation
+	 */
+	public int showDeleteDialog()
+	{
+		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 
 	//--------------------------------------

@@ -191,22 +191,26 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 			case FORM_ROUTE_STEP2_DELETE:
 				JTable activeDel = formRoute.getStep2().getTableActive();
-				if(activeDel != null)
+				DayOfWeek activeDelDay = formRoute.getStep2().getActiveDay();
+				int[] selectedRows = activeDel.getSelectedRows();
+				if(formRoute.getStep2().showDeleteDialog() == JOptionPane.YES_OPTION)
 				{
-					if (activeDel.getSelectedRowCount() != 0)
+					if (activeDel != null)
 					{
-						LinkedList<Integer> tempTimes = route.getStartTimes().get(formRoute.getStep2().getActiveDay());
-						int[] selectedRows = activeDel.getSelectedRows();
-						for (int row : selectedRows)
+						if (selectedRows.length != 0)
 						{
-							String delTimeString = activeDel.getModel().getValueAt(row, 0).toString();
-							int delHours = Integer.parseInt(delTimeString.substring(0, 2));
-							int delMinutes = Integer.parseInt(delTimeString.substring(3, 5));
-							int delTime = delHours * 60 + delMinutes;
-							tempTimes.remove((Object) delTime);
+							LinkedList<Integer> tempTimes = route.getStartTimes().get(activeDelDay);
+							for (int row : selectedRows)
+							{
+								String delTimeString = activeDel.getModel().getValueAt(row, 0).toString();
+								int delHours = Integer.parseInt(delTimeString.substring(0, 2));
+								int delMinutes = Integer.parseInt(delTimeString.substring(3, 5));
+								int delTime = delHours * 60 + delMinutes;
+								tempTimes.remove((Object) delTime);
+							}
+							route.getStartTimes().put(activeDelDay, tempTimes);
+							refreshTablesStep2();
 						}
-						route.getStartTimes().put(formRoute.getStep2().getActiveDay(), tempTimes);
-						refreshTablesStep2();
 					}
 				}
 				break;
