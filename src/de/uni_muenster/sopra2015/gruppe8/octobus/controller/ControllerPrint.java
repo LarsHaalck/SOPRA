@@ -10,6 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkP
 
 import java.awt.*;
 import java.awt.print.Book;
+import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -39,7 +40,13 @@ public class ControllerPrint extends Controller implements ListenerPrint
 				for (Integer objectId : objectIds)
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
+					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
+					book.append(printViewStoppingPoint, new PageFormat());
 				}
+
+				PrinterJob job = PrinterJob.getPrinterJob();
+				job.setPageable(book);
+
 
 				//int objectId = objectIds.get(0);
 
@@ -54,7 +61,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 				//PrintViewWorkPlan is only for managing data to print
 				PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-				job.setPrintable(printViewStoppingPoint);
+				job.setPrintable(printViewStoppingPoint);*/
 
 
 				//Show dialog to user, select printer
@@ -69,7 +76,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 						System.out.println(e.getMessage());
 						System.out.println("Don't print");
 					}
-				}*/
+				}
 				break;
 
 		}
