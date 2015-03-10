@@ -71,17 +71,17 @@ public class FormTourEdit extends FormGeneral
 		tbBusDriver = new JTable(tmBusDriver);
 		tbBusDriver.removeColumn(tbBusDriver.getColumnModel().getColumn(0));
 		tbBusDriver.getSelectionModel().addListSelectionListener(e -> {
-		int viewRow = tbBusDriver.getSelectedRow();
-		if (viewRow < 0)
-		{
-			selectedBusDriverRow = -1;
-			selectedBusDriverId = -1;
+			int viewRow = tbBusDriver.getSelectedRow();
+			if (viewRow < 0)
+			{
+				selectedBusDriverRow = -1;
+				selectedBusDriverId = -1;
 
-		} else
-		{
-			selectedBusDriverRow = tbBusDriver.convertRowIndexToModel(viewRow);
-			selectedBusDriverId = (int) tbBusDriver.getValueAt(selectedBusDriverRow, 0);
-		}
+			} else
+			{
+				selectedBusDriverRow = tbBusDriver.convertRowIndexToModel(viewRow);
+				selectedBusDriverId = (int) tbBusDriver.getValueAt(selectedBusDriverRow, 0);
+			}
 		});
 		plContent.add(new JScrollPane(tbBuses));
 		plContent.add(new JScrollPane(tbBusDriver));
@@ -105,6 +105,8 @@ public class FormTourEdit extends FormGeneral
 		add(plButtons, BorderLayout.SOUTH);
 
 		getRootPane().setBorder(new EmptyBorder(5,5,5,5));
+
+		controllerFormTourEdit.fillForm();
 	}
 
 	public int getSelectedBus()
@@ -115,6 +117,28 @@ public class FormTourEdit extends FormGeneral
 	public int getSelectedBusDriver()
 	{
 		return selectedBusDriverId;
+	}
+
+	public void setSelectedBus(int id)
+	{
+		int i = 0;
+		for(i=0; i<tmBuses.getRowCount(); i++)
+		{
+			if((int)tmBuses.getValueAt(i,0) == id)
+				break;
+		}
+		tbBuses.getSelectionModel().setSelectionInterval(i,i);
+	}
+
+	public void setSelectedBusDriver(int id)
+	{
+		int i = 0;
+		for(i=0; i<tmBusDriver.getRowCount(); i++)
+		{
+			if((int)tmBusDriver.getValueAt(i,0) == id)
+				break;
+		}
+		tbBusDriver.getSelectionModel().setSelectionInterval(i,i);
 	}
 
 	private class TableModelTourData extends ExtendedTableModel

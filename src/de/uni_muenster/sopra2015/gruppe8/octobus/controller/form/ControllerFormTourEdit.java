@@ -6,7 +6,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourEdit;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 	private FormTourEdit formTourEdit;
 	private ControllerDatabase controllerDatabase;
 	private int objectId;
+	private Route route;
 
 	public ControllerFormTourEdit(FormTourEdit formTourEdit, int objectId)
 	{
@@ -74,12 +74,14 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 	private void getDataFromDB()
 	{
-		//Tour tour = controllerDatabase.getTour(objectId);
+		//tour = controllerDatabase.getTour(objectId);
 
 	}
 
 	public void fillForm()
 	{
-
+		//Fill tables
+		formTourEdit.setSelectedBus(0);
+		formTourEdit.setSelectedBusDriver(0);
 	}
 }
