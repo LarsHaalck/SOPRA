@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
-
+import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -57,6 +57,7 @@ public class ControllerDatabase
         return controllerDatabase;
     }
 
+
 	/**
 	 * Initializes database for use inside this class
 	 */
@@ -64,6 +65,8 @@ public class ControllerDatabase
 	{
 		try
 		{
+			boolean newFile = !checkDatabaseFile();
+
             String url = "jdbc:sqlite:" + DB_NAME;
             Connection conn;
 
@@ -71,6 +74,9 @@ public class ControllerDatabase
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
+
+			if (newFile)
+				createDatabaseTables();
 		}
 
 		catch (ClassNotFoundException e)
@@ -89,8 +95,21 @@ public class ControllerDatabase
     /**
      * Creates a database with necessary schema if no file with preexisting data is found.
      */
-    public void startWithNewDatabase()
+    public boolean checkDatabaseFile()
 	{
+		File f = new File(DB_NAME);
+		if (f.exists() && !f.isDirectory())
+		{
+			System.out.println("Database file found!");
+			return true;
+		}
+		System.out.println("Database file not found!");
+		return false;
+	}
+
+	public void createDatabaseTables()
+	{
+		System.out.println("Create database tables...");
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
 				"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);");
@@ -151,8 +170,46 @@ public class ControllerDatabase
 				"employees (employees_id), UNIQUE (timestamp, routes_id) ON CONFLICT IGNORE);");
 
 		// create root user
-		// Employee root = new Employee()
-
+		create
+				.insertInto(EMPLOYEES,
+						EMPLOYEES.NAME,
+						EMPLOYEES.FIRSTNAME,
+						EMPLOYEES.ADDRESS,
+						EMPLOYEES.ZIPCODE,
+						EMPLOYEES.CITY,
+						EMPLOYEES.DATEOFBIRTH,
+						EMPLOYEES.PHONE,
+						EMPLOYEES.EMAIL,
+						EMPLOYEES.USERNAME,
+						EMPLOYEES.SALT,
+						EMPLOYEES.PASSWORD,
+						EMPLOYEES.NOTE,
+						EMPLOYEES.ISBUSDRIVER,
+						EMPLOYEES.ISNETWORK_PLANNER,
+						EMPLOYEES.ISTICKET_PLANNER,
+						EMPLOYEES.ISHR_MANAGER,
+						EMPLOYEES.ISSCHEDULE_MANAGER)
+				.values(
+						"root",
+						"root",
+						"",
+						"",
+						"",
+						(int) ((new Date()).getTime() / 1000),
+						"",
+						"",
+						"root",
+						"ijr45c1rv2m95kbi00u0ruqo52",
+						"610475909569363416215711383102987484971637154606543703577386484556278824048427523924086531" +
+								"2823167479747659082414963498490032193710285658277974290508907051",
+						"",
+						true,
+						true,
+						true,
+						true,
+						true)
+				.execute();
+		System.out.println("Database tables created!!!");
 	}
 
 	/////////////////////////
