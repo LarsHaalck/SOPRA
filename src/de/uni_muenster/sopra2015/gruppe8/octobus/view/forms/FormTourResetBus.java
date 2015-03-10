@@ -1,14 +1,17 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourResetBus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourResetEmployee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,13 +25,16 @@ public class FormTourResetBus extends FormGeneral
 	private JLabel jlStart, jlEnd, jlBusDriver;
 	private FieldDate tfDateStart;
 	private FieldDate tfDateEnd;
-	private JComboBox<TupleIntString> cbEmployees;
+	private JComboBox cbBuses;
 	private JButton jbSave, jbCancel;
+	private TupleIntString[] arrayBuses;
 	ControllerFormTourResetBus controllerFormTourResetBus;
 
 	public FormTourResetBus(Frame parent, int objectId)
 	{
 		super(parent, "Busse zurücksetzen");
+
+		controllerFormTourResetBus = new ControllerFormTourResetBus(this);
 
 		setLayout(new BorderLayout());
 
@@ -58,10 +64,11 @@ public class FormTourResetBus extends FormGeneral
 		jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
 		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
 		jlBusDriver = new JLabel("Kennzeichen: ");
-		cbEmployees = new JComboBox<TupleIntString>();
+		cbBuses = new JComboBox(arrayBuses);
+		System.out.println(cbBuses.getItemCount());
 		jpBusDriver.add(jlBusDriver);
 		jpBusDriver.add(Box.createHorizontalStrut(8));
-		jpBusDriver.add(cbEmployees);
+		jpBusDriver.add(cbBuses);
 		jpMain.add(jpBusDriver);
 
 		add(jpMain);
@@ -92,16 +99,15 @@ public class FormTourResetBus extends FormGeneral
 		});
 
 		setLocationRelativeTo(null);
-
-		controllerFormTourResetBus = new ControllerFormTourResetBus(this);
 	}
 
-	public void fillEmployees(ArrayList<TupleIntString> employees)
+	/**
+	 * Fills the combobox with buses.
+	 * @param buses
+	 */
+	public void fillBuses(TupleIntString[] buses)
 	{
-		for (TupleIntString employee : employees)
-		{
-			cbEmployees.addItem(employee);
-		}
+		arrayBuses = buses;
 	}
 
 	public Date getDateStart()
@@ -116,6 +122,6 @@ public class FormTourResetBus extends FormGeneral
 
 	public TupleIntString getBus()
 	{
-		return (TupleIntString) cbEmployees.getSelectedItem();
+		return (TupleIntString) cbBuses.getSelectedItem();
 	}
 }

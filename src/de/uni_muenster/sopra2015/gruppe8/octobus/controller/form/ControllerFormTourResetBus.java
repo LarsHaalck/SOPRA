@@ -29,14 +29,15 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 	public ControllerFormTourResetBus(FormTourResetBus formTourResetBus)
 	{
 		this.formTourResetBus = formTourResetBus;
-		ArrayList<TupleIntString> busesFinal = new ArrayList<>();
 		ArrayList<Bus> busesDirect = ControllerDatabase.getInstance().getBuses();
+		TupleIntString[] busesFinal = new TupleIntString[busesDirect.size()];
 		System.out.println(busesDirect.toString());
+		int i = 0;
 		for (Bus bus : busesDirect)
 		{
-			busesFinal.add(new TupleIntString(bus.getId(), bus.getLicencePlate()/* + ", " + employee.getFirstName()*/));
+			busesFinal[i++] = new TupleIntString(bus.getId(), bus.getLicencePlate());
 		}
-		formTourResetBus.fillEmployees(busesFinal);
+		formTourResetBus.fillBuses(busesFinal);
 	}
 
 	@Override
@@ -94,8 +95,10 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 		TupleIntString tempBus = formTourResetBus.getBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(startDate == null || endDate == null)
-			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
+		if(startDate == null)
+			errorFields.add("Ungültige Eingabe der Startzeit.");
+		if(endDate == null)
+			errorFields.add("Ungültige Eingabe der Endzeit.");
 
 
 		if(errorFields.size() > 0)

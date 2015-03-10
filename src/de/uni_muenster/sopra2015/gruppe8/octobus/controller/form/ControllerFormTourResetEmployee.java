@@ -29,10 +29,9 @@ public class ControllerFormTourResetEmployee extends Controller implements Liste
 		this.formTourResetEmployee = formTourResetEmployee;
 		ArrayList<TupleIntString> employeesFinal = new ArrayList<>();
 		ArrayList<Employee> employeesDirect = ControllerDatabase.getInstance().getEmployeesByRole(Role.BUSDRIVER);
-		System.out.println(employeesDirect.toString());
 		for (Employee employee : employeesDirect)
 		{
-			employeesFinal.add(new TupleIntString(employee.getId(),employee.getName()/* + ", " + employee.getFirstName()*/));
+			employeesFinal.add(new TupleIntString(employee.getId(),employee.getName() + ", " + employee.getFirstName()));
 		}
 		formTourResetEmployee.fillEmployees(employeesFinal);
 	}
@@ -92,9 +91,10 @@ public class ControllerFormTourResetEmployee extends Controller implements Liste
 		TupleIntString temployee = formTourResetEmployee.getEmployee();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(startDate == null || endDate == null)
-			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
-
+		if(startDate == null)
+			errorFields.add("Ungültige Eingabe der Startzeit.");
+		if(endDate == null)
+			errorFields.add("Ungültige Eingabe der Endzeit.");
 
 		if(errorFields.size() > 0)
 		{

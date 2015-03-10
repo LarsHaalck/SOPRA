@@ -22,7 +22,7 @@ public class FormTourResetEmployee extends FormGeneral
 	private JLabel jlStart, jlEnd, jlBusDriver;
 	private FieldDate tfDateStart;
 	private FieldDate tfDateEnd;
-	private JComboBox<TupleIntString> cbEmployees;
+	private JComboBox cbEmployees;
 	private JButton jbSave, jbCancel;
 	ControllerFormTourResetEmployee controllerFormTourResetEmployee;
 
@@ -58,7 +58,7 @@ public class FormTourResetEmployee extends FormGeneral
 		jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
 		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
 		jlBusDriver = new JLabel("Busfahrer: ");
-		cbEmployees = new JComboBox<TupleIntString>();
+		cbEmployees = new JComboBox();
 		jpBusDriver.add(jlBusDriver);
 		jpBusDriver.add(Box.createHorizontalStrut(8));
 		jpBusDriver.add(cbEmployees);

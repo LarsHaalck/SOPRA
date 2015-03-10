@@ -11,7 +11,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourEdit;
 import java.util.ArrayList;
 
 /**
- * Created by Florian on 10.03.2015.
+ * Controller for FormTourEdit class.
  */
 public class ControllerFormTourEdit extends Controller implements ListenerButton
 {
