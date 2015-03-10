@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
@@ -18,7 +16,7 @@ import java.util.Date;
 /**
  * Created by Lars on 02-Mar-15.
  */
-public class ControllerTabSchedule extends Controller implements ListenerButton
+public class ControllerTabSchedule extends Controller implements ListenerButton, ListenerTable
 {
 	private TabSchedule tabSchedule;
 	private ControllerDatabase controllerDatabase;
@@ -58,6 +56,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 			case TAB_SCHEDULE_RESET_EMPLOYEE:
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_RESET_EMPLOYEE);
 				break;
+			case TAB_SCHEDULE_RESET_BUS:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_RESET_BUS);
+				break;
 		}
 	}
 
@@ -90,6 +91,29 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 		else {
 			fillTable();
 		}
+
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case TAB_SCHEDULE:
+				fillTable();
+				break;
+		}
+	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
 
 	}
 }

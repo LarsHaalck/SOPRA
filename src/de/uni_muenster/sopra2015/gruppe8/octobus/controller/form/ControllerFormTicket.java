@@ -85,7 +85,6 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	 */
 	private boolean saveToDB()
 	{
-		//TODO tickets -> ticket
 		if(objectID == -1)
 			controllerDatabase.addTicket(ticket);
 		else
@@ -102,8 +101,7 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	{
 		if(objectID == -1)
 		{
-			//TODO empty constructor
-			ticket = new Ticket(0,"",0,"",0);
+			ticket = new Ticket();
 		}
 		String name = formTicket.getName();
 		int price = formTicket.getPrice();

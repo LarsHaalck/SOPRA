@@ -9,7 +9,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,8 +19,6 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
 import java.util.Date;
-
-import javax.swing.*;
 
 /**
  * jOOQ Controller class for database access.
@@ -68,6 +65,7 @@ public class ControllerDatabase
 	{
 		try
 		{
+			// check if database file exists
 			boolean newFile = !checkDatabaseFile();
 
             String url = "jdbc:sqlite:" + DB_NAME;
@@ -78,6 +76,7 @@ public class ControllerDatabase
 			conn = DriverManager.getConnection(url);
 			create = DSL.using(conn, SQLDialect.SQLITE);
 
+			// create tables in case of a new file
 			if (newFile)
 				createDatabaseTables();
 		}
@@ -103,12 +102,9 @@ public class ControllerDatabase
 		File f = new File(DB_NAME);
 		if (f.exists() && !f.isDirectory())
 		{
-			System.out.println("Database file found!");
 			return true;
 		}
 		System.out.println("Database file not found!");
-		JOptionPane.showMessageDialog(null,"Datenbankdatei nicht gefunden!\nBeginne mit leerer Datenbank.",
-				"Datenbank nicht gefunden",JOptionPane.OK_OPTION);
 		return false;
 	}
 
@@ -1090,6 +1086,14 @@ public class ControllerDatabase
 		return (Integer) record.getValue(0);
 	}
 
+	/**
+	 * Retrieves a list of Employee objects from database having a specified role
+	 *
+	 * @param role Role of requested employees
+	 * @return ArrayList containing Employee objects that have the specified role
+	 * @pre true
+	 * @post true
+	 */
 	public ArrayList<Employee> getEmployeesByRole(Role role)
 	{
 		TableField<EmployeesRecord,Boolean> roleAttribute;
@@ -1918,7 +1922,7 @@ public class ControllerDatabase
                 .leftOuterJoin(ROUTES)
                 .using(ROUTES.ROUTES_ID)
                 .where(TOURS.TIMESTAMP
-                        .between(dateFrom, dateUntil))
+						.between(dateFrom, dateUntil))
                 .fetch();
 
         for (Record r : records)

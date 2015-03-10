@@ -39,6 +39,12 @@ public class FormEmployee extends FormGeneral
 	private JButton btCancel;
 	private JButton btPassword;
 
+	/**
+	 * Creates a new FormEmployee-Object
+	 *
+	 * @param parent the parent-frame
+	 * @param objectID the id of the selected employee
+	 */
 	public FormEmployee(Frame parent, int objectID)
 	{
 		//super(parent, "Mitarbeiter verwalten");

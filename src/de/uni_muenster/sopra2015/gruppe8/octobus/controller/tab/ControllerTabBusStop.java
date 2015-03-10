@@ -5,6 +5,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBusStop;
 
 import java.util.ArrayList;
@@ -62,8 +63,24 @@ public class ControllerTabBusStop extends Controller implements ListenerButton, 
 				{
 					if(tabBusStop.showConfirmDialog("Wirklich löschen?"))
 					{
-						controllerDatabase.deleteBusStop(tabBusStop.getSelectedID());
-						fillTable();
+						ArrayList<String> routes = controllerDatabase.getRouteNamesUsingBusStopId(tabBusStop.getSelectedID());
+						if (routes.size() == 0)
+						{
+							controllerDatabase.deleteBusStop(tabBusStop.getSelectedID());
+							fillTable();
+						}
+						else
+						{
+							String routesNames = "";
+							routesNames += routes.get(0);
+							for (int i=1; i<routes.size(); i++)
+							{
+								routesNames += "\n"+routes.get(i);
+							}
+
+							tabBusStop.showMessageDialog("Haltestelle kann nicht gelöscht werden, da sie in folgenden Routen noch verwendet wird: \n"+routesNames);
+						}
+
 					}
 				}
 				else
