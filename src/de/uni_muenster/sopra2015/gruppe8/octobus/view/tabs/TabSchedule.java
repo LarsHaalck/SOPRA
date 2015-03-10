@@ -17,7 +17,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	private JButton btnEdit;
 	private JButton btnFilter;
 	private FieldDate tfDateStart;
-	private FieldDate tfDateEnd;
 	private JCheckBox cbOnlyUnassigned;
 	private ControllerTabSchedule controllerTabSchedule;
 
@@ -35,13 +34,10 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 
 		//Data-filter-panel
 		JPanel plFilterDate = new JPanel();
-		JLabel lbFilterDateFirst = new JLabel("Alle Fahrten zwischen ");
-		JLabel lbFilterDateSecond = new JLabel(" und ");
-		JLabel lbFilterDateThird = new JLabel(" anzeigen. Für nur einen Tag das zweite Feld leer lassen.");
+		JLabel lbFilterDateFirst = new JLabel("Alle Fahrten vom ");
+		JLabel lbFilterDateSecond = new JLabel(" anzeigen.");
 		tfDateStart = new FieldDate();
 		tfDateStart.setPreferredSize(new Dimension(80,20));
-		tfDateEnd = new FieldDate();
-		tfDateEnd.setPreferredSize(new Dimension(80,20));
 		cbOnlyUnassigned = new JCheckBox("Nur freie Fahrten anzeigen");
 		btnFilter = new JButton("Anzeigen");
 		btnFilter.addActionListener(e->{
@@ -50,8 +46,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		plFilterDate.add(lbFilterDateFirst);
 		plFilterDate.add(tfDateStart);
 		plFilterDate.add(lbFilterDateSecond);
-		plFilterDate.add(tfDateEnd);
-		plFilterDate.add(lbFilterDateThird);
 		plFilterDate.add(cbOnlyUnassigned);
 		plFilterDate.add(btnFilter);
 		plFilter.add(plFilterDate, BorderLayout.PAGE_START);
@@ -88,11 +82,6 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	public Date getDateStart()
 	{
 		return tfDateStart.getDate();
-	}
-
-	public Date getDateEnd()
-	{
-		return tfDateEnd.getDate();
 	}
 
 	public boolean getOnlyUnassigned()

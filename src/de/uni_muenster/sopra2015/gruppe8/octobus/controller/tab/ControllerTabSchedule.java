@@ -60,17 +60,12 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 	private void newFilterSelected()
 	{
 		Date start = tabSchedule.getDateStart();
-		Date end = tabSchedule.getDateEnd();
 		boolean onlyUnassigned = tabSchedule.getOnlyUnassigned();
 
 		//Check if start-date is invalid
 		if(start == null)
 			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");
 		else {
-			//Check if end-date is null -> end-date is empty
-			if(end == null)
-				end = start;
-
 			//TODO: Get them from db
 		}
 

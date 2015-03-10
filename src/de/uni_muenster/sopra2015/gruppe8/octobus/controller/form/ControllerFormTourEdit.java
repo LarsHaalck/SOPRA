@@ -81,7 +81,9 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 	public void fillForm()
 	{
 		//Fill tables
-		formTourEdit.setSelectedBus(0);
-		formTourEdit.setSelectedBusDriver(0);
+		//formTourEdit.setSelectedBus(0);
+		//formTourEdit.setSelectedBusDriver(0);
+		formTourEdit.setLabelTourDesc("Desc vom Controller");
+		formTourEdit.setLabelTourTime("Time vom Controller");
 	}
 }
