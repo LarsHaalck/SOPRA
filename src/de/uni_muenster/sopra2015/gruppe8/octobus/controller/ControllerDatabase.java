@@ -1250,7 +1250,6 @@ public class ControllerDatabase
 	public ArrayList<SoldTicket> getSoldTickets()
 	{
 		Result<Record> soldTicketRecords = create.select().from(SOLDTICKETS).fetch();
-
 		ArrayList<SoldTicket> soldTicketsList = new ArrayList<>();
 
 		for (Record rec : soldTicketRecords)
@@ -1326,7 +1325,6 @@ public class ControllerDatabase
 	public ArrayList<Ticket> getTickets()
 	{
 		Result<Record> ticketRecords = create.select().from(TICKETS).fetch();
-
 		ArrayList<Ticket> ticketList = new ArrayList<>();
 
 		for (Record rec : ticketRecords)
@@ -1351,7 +1349,6 @@ public class ControllerDatabase
 	public Ticket getTicketById(int id)
 	{
 		Record rec = create.select().from(TICKETS).where(TICKETS.TICKETS_ID.eq(id)).fetchOne();
-
         if (rec == null) return null;
 
 		Ticket tick = new Ticket(
@@ -1375,7 +1372,7 @@ public class ControllerDatabase
      */
     public void createTours(Date date)
     {
-
+		// fetch all route IDs from database
         Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
         // Modify given date to represent midnight
@@ -1387,18 +1384,20 @@ public class ControllerDatabase
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
+		// get selected day of week in uppercase english format, e.g. MONDAY, TUESDAY, ...
         String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase();
-
         int timestamp = (int) (calendar.getTimeInMillis()/1000);
 
         create.execute("BEGIN");
-
+		// for every route...
         for (Record1<Integer> route : routes)
         {
+			// ... get all start times belonging to selected day of weeek ...
             Result<Record1<Integer>> startingTimes = create
                     .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
                     .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek)).fetch();
 
+			// ... and add each one to the current date to get the timestamp.
             for (Record1<Integer> startingTime : startingTimes)
             {
 
@@ -1410,8 +1409,7 @@ public class ControllerDatabase
                                 route.getValue(ROUTES.ROUTES_ID))
                         .execute();
             }
-
-            create.execute("END");
+            create.execute("END");		// TODO: is this supposed to appear INSIDE the for-loop?
         }
     }
 
@@ -1424,7 +1422,6 @@ public class ControllerDatabase
     public ArrayList<Tour> getUserTours(int id)
     {
         ArrayList<Tour> result = new ArrayList<>();
-
         Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).orderBy(TOURS.TIMESTAMP).fetch();
 
         for (ToursRecord t : tours){
@@ -1440,7 +1437,6 @@ public class ControllerDatabase
 
         return result;
     }
-
 
 	/**
 	 * Deletes all tours of a specific route.
@@ -1472,6 +1468,7 @@ public class ControllerDatabase
 	 */
 	public int purgeTours(Date date)
 	{
+		// set specific date to midnight
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -1480,14 +1477,15 @@ public class ControllerDatabase
 		calendar.set(Calendar.MILLISECOND, 0);
 		int deadline = (int) (calendar.getTimeInMillis()/1000);
 
+		// get number of all tours before selected date
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.TIMESTAMP.lessThan(deadline))
 				.fetchOne();
 
+		// ... and delete them
 		create.delete(TOURS).where(TOURS.TIMESTAMP.lessThan(deadline)).execute();
-
 		return (Integer) record.getValue(0);
 	}
 
@@ -1552,9 +1550,7 @@ public class ControllerDatabase
 	public int deleteToursUsingEmployee(int id)
 	{
 		int numOfTours = getNumberOfToursUsingEmployeeId(id);
-
 		create.delete(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).execute();
-
 		return (Integer) numOfTours;
 	}
 }
