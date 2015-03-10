@@ -1,6 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStopPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 
 import javax.swing.*;
@@ -11,20 +11,21 @@ import java.util.HashSet;
 /**
  * Created by Patricia on 10.03.2015.
  */
-public class FormPrintStoppingPoints extends FormGeneral
+public class FormBusStopPrint extends FormGeneral
 {
-	private BusStop busStop;
-	private ArrayList<JCheckBox> stops;
+	private ArrayList<JCheckBox> stops = new ArrayList<>();
 	private JButton btPrint;
 	private JButton btCancel;
+	private ControllerFormBusStopPrint controllerFormBusStopPrint;
 
 	//gets the selected BusStop
-	public FormPrintStoppingPoints(Frame parent, BusStop busStop)
+	public FormBusStopPrint(Frame parent, int objectId)
 	{
 		super(parent);
 
-		this.busStop = busStop;
-		HashSet<StoppingPoint> stoppingPoints = this.busStop.getStoppingPoints();
+		controllerFormBusStopPrint = new ControllerFormBusStopPrint(objectId);
+
+		ArrayList<StoppingPoint> stoppingPoints = controllerFormBusStopPrint.getStoppingPoints();
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints cst = new GridBagConstraints();
