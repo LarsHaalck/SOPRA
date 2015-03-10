@@ -9,6 +9,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +20,8 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
 import java.util.Date;
+
+import javax.swing.*;
 
 /**
  * jOOQ Controller class for database access.
@@ -104,12 +107,13 @@ public class ControllerDatabase
 			return true;
 		}
 		System.out.println("Database file not found!");
+		JOptionPane.showMessageDialog(null,"Datenbankdatei nicht gefunden!\nBeginne mit leerer Datenbank.",
+				"Datenbank nicht gefunden",JOptionPane.OK_OPTION);
 		return false;
 	}
 
 	public void createDatabaseTables()
 	{
-		System.out.println("Create database tables...");
 		// create bus stops table
 		create.fetch("CREATE TABLE busStops (busStops_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL ," +
 				"name TEXT (200), locationX INTEGER, locationY INTEGER, barrierFree BOOLEAN NOT NULL);");
@@ -209,7 +213,6 @@ public class ControllerDatabase
 						true,
 						true)
 				.execute();
-		System.out.println("Database tables created!!!");
 	}
 
 	/////////////////////////
@@ -1085,6 +1088,47 @@ public class ControllerDatabase
 				.execute();
 
 		return (Integer) record.getValue(0);
+	}
+
+	public ArrayList<Employee> getEmployeesByRole(Role role)
+	{
+		TableField<EmployeesRecord,Boolean> roleAttribute;
+
+		switch (role)
+		{
+			case BUSDRIVER:
+				roleAttribute = EMPLOYEES.ISBUSDRIVER;
+				break;
+			case HR_MANAGER:
+				roleAttribute = EMPLOYEES.ISHR_MANAGER;
+				break;
+			case NETWORK_PLANNER:
+				roleAttribute = EMPLOYEES.ISNETWORK_PLANNER;
+				break;
+			case SCHEDULE_MANAGER:
+				roleAttribute = EMPLOYEES.ISSCHEDULE_MANAGER;
+				break;
+			case TICKET_PLANNER:
+				roleAttribute = EMPLOYEES.ISTICKET_PLANNER;
+				break;
+			default:
+				return new ArrayList<Employee>();
+		}
+
+		Result<EmployeesRecord> rows = create
+				.selectFrom(EMPLOYEES)
+				.where(roleAttribute.eq(true))
+				.fetch();
+
+		ArrayList<Employee> result = new ArrayList<>();
+		if (rows == null) return null;
+
+		for (EmployeesRecord rec : rows)
+		{
+			result.add(getEmployeeById(rec.getEmployeesId()));
+		}
+		return result;
+
 	}
 
 	//////////////////////////
