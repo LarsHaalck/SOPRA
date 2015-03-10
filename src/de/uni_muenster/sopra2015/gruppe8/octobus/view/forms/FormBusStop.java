@@ -131,9 +131,10 @@ public class FormBusStop extends FormGeneral
 
 		cstLabel.gridy = 5;
 		cstLabel.fill = GridBagConstraints.HORIZONTAL;
-		JScrollPane spListStoppingPoints = new JScrollPane(tableStoppingPoints);
-		spListStoppingPoints.setPreferredSize(new Dimension(300, 150));
-        add(spListStoppingPoints, cstLabel);
+        // TODO: An die Swing-Experten: Können wir das Panel bitte ein bisschen weniger hoch machen? GitHub issue #27.
+		JScrollPane spTableStoppingPoints = new JScrollPane(tableStoppingPoints);
+		spTableStoppingPoints.setPreferredSize(new Dimension(300, 300));
+        add(spTableStoppingPoints, cstLabel);
 
 		cstLabel.gridy = 6;
 		JPanel plButtons = new JPanel();
