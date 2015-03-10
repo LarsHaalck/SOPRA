@@ -103,6 +103,11 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 				f = new FormRoute(frame, -1);
 				f.setVisible(true);
 				break;
+
+			case FORM_TOUR_RESET_EMPLOYEE:
+				f = new FormTourResetEmployee(frame, -1);
+				f.setVisible(true);
+				break;
 		}
 	}
 

@@ -16,9 +16,13 @@ public class FormTourResetEmployee extends FormGeneral
 	private FieldDate tfDateEnd;
 	private JComboBox<TupleIntString> cbEmployees;
 
-	public FormTourResetEmployee(Frame parent)
+	public FormTourResetEmployee(Frame parent, int objectId)
 	{
 		super(parent, "Mitarbeiter zurücksetzen");
+
+		tfDateEnd = new FieldDate();
+		tfDateEnd = new FieldDate();
+		cbEmployees = new JComboBox<>();
 	}
 
 	public void fillEmployees(ArrayList<TupleIntString> employees)
