@@ -3,9 +3,17 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Customised FieldText for number input only. Everything except numbers
+ */
 public class FieldNumber extends FieldText
 {
 
+	/**
+	 * Construct FieldNumber with maximum input length of limit
+	 *
+	 * @param limit  limit to be set. If limit exceeds 9, 9 will be set nonetheless to prevent integer overflow
+	 */
 	public FieldNumber(int limit)
 	{
 		super();
@@ -35,11 +43,17 @@ public class FieldNumber extends FieldText
 		setMask();
 	}
 
-	public FieldNumber(int widht, int limit, int intervalMaximum)
+	/**
+	 * Constructs FieldNumber with maximum input length of limit, specified number of columns and sets maximum number of intervalMaximum
+	 * @param columns
+	 * @param limit
+	 * @param intervalMaximum
+	 */
+	public FieldNumber(int columns, int limit, int intervalMaximum)
 	{
 		super();
 		setLimit(limit);
-		this.setColumns(widht);
+		this.setColumns(columns);
 		setInterval(intervalMaximum);
 	}
 
@@ -56,8 +70,8 @@ public class FieldNumber extends FieldText
 	{
 		this.addKeyListener(new KeyAdapter()
 		{
-            // Ignore some cases to prevent SQL injections
-            public void keyTyped(KeyEvent e)
+			// Ignore some cases to prevent SQL injections
+			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
 				if (c < '0' || c > '9')
@@ -68,6 +82,10 @@ public class FieldNumber extends FieldText
 		});
 	}
 
+	/**
+	 * Blocks all inputs except numbers and sets maximum number to intervalMaximum
+	 * @param intervalMaximum maximum number
+	 */
 	private void setInterval(int intervalMaximum)
 	{
 		this.addKeyListener(new KeyAdapter()
