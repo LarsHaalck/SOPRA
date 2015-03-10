@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourResetEmployee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
@@ -8,6 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Form to remove an employee from every tour during an duration
@@ -21,10 +24,12 @@ public class FormTourResetEmployee extends FormGeneral
 	private FieldDate tfDateEnd;
 	private JComboBox<TupleIntString> cbEmployees;
 	private JButton jbSave, jbCancel;
+	ControllerFormTourResetEmployee controllerFormTourResetEmployee;
 
 	public FormTourResetEmployee(Frame parent, int objectId)
 	{
 		super(parent, "Mitarbeiter zurücksetzen");
+
 		setLayout(new BorderLayout());
 
 		jpMain = new JPanel();
@@ -78,15 +83,39 @@ public class FormTourResetEmployee extends FormGeneral
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		pack();
+
+		jbSave.addActionListener(e -> {
+			controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_SAVE);
+		});
+		jbCancel.addActionListener(e -> {
+			controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_CANCEL);
+		});
+
 		setLocationRelativeTo(null);
+
+		controllerFormTourResetEmployee = new ControllerFormTourResetEmployee(this);
 	}
 
-	//bla
 	public void fillEmployees(ArrayList<TupleIntString> employees)
 	{
 		for (TupleIntString employee : employees)
 		{
 			cbEmployees.addItem(employee);
 		}
+	}
+
+	public Date getDateStart()
+	{
+		return tfDateStart.getDate();
+	}
+
+	public Date getDateEnd()
+	{
+		return tfDateEnd.getDate();
+	}
+
+	public TupleIntString getEmployee()
+	{
+		return (TupleIntString) cbEmployees.getSelectedItem();
 	}
 }
