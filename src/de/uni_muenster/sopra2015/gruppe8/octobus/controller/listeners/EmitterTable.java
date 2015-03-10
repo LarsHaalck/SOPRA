@@ -18,5 +18,6 @@ public enum EmitterTable {
 	TAB_TICKET,
 	TAB_BUSSTOP,
 	TAB_EMPLOYEE,
-	TAB_ROUTE
+	TAB_ROUTE,
+	TAB_SCHEDULE
 }
