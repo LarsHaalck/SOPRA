@@ -324,6 +324,7 @@ public class ControllerGraph
 				if(prev.get(prevStop) == null)
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
+					time = time >= 1440 ? time - 1440 : time;
 					duration = dist.get(stopId).intValue() - time;
 				}
 
@@ -347,7 +348,7 @@ public class ControllerGraph
 
 				int calcEnd = dist.get(currentStop).intValue();
 				calcEnd = calcEnd >= 1440 ? calcEnd - 1440 : calcEnd;
-				
+
 				prevQuintuple = new Quintuple<>(
 						calcStart,
 						bestStoppingPoints.get(prevStop),
