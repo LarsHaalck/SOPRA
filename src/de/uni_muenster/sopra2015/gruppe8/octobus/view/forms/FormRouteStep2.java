@@ -407,8 +407,8 @@ public class FormRouteStep2 extends JPanel
 		minutes.setHorizontalAlignment(JLabel.CENTER);
 		String minute = String.valueOf(m);
 		if (m < 10)
-			hour = "0" + minute;
-		hours.setText(minute);
+			minute = "0" + minute;
+		minutes.setText(minute);
 		fieldWrapper.add(Box.createHorizontalStrut(70));
 		fieldWrapper.add(hours);
 		fieldWrapper.add(Box.createHorizontalStrut(3));

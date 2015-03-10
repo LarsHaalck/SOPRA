@@ -14,6 +14,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.Extended
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.ExpandVetoException;
 import java.lang.reflect.Array;
 import java.text.Collator;
 import java.time.DayOfWeek;
@@ -149,11 +150,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			case FORM_ROUTE_STEP1_DELETE:
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
-				if (viewRow == -1)
-					break;
-				contentTableCurrent.remove(viewRow);
-				tableCurrent.clearSelection();
-				initTableCurrent();
+				try
+				{
+					if (viewRow == -1)
+						break;
+					contentTableCurrent.remove(viewRow);
+					initTableCurrent();
+				}
+				catch (IndexOutOfBoundsException e){}
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
