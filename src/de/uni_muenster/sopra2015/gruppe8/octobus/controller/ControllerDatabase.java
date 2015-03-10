@@ -1879,7 +1879,7 @@ public class ControllerDatabase
 
         for (Record r : records)
         {
-            Object[] content = new Object[7];
+            Object[] content = new Object[5];
 
             // Tour ID
             content[0] = r.getValue(TOURS.TOURS_ID);
@@ -1888,13 +1888,9 @@ public class ControllerDatabase
             // Start time
             content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
             // Starting stop
-            content[3] = new String("Blub");
+            content[3] = r.getValue(BUSES.LICENCEPLATE);
             // Starting stop
-            content[4] = new String("Blub");
-            // Starting stop
-            content[5] = r.getValue(BUSES.LICENCEPLATE);
-            // Starting stop
-            content[6] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
+            content[4] = r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
             result.add(content);
         }
