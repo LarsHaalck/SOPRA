@@ -10,6 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
+import org.jooq.Table;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,23 +70,11 @@ public class ControllerTabSchedule extends Controller implements ListenerButton
 		for (int i=0; i < tours.size(); i++)
 		{
 			Object[] content = tours.get(i);
-			data[i][0] = content[0];
-			data[i][1] = content[1];
-			data[i][2] = content[2];
-			data[i][3] = content[3];
-			data[i][4] = content[4];
-            data[i][5] = content[5];
-            data[i][6] = content[6];
-
-			/*if(tour.getBus() == null)
-				data[i][3] = "";
-			else
-				data[i][5] = tour.getBus().getLicencePlate();
-
-			if(tour.getDriver() == null)
-				data[i][6] = "";
-			else
-				data[i][6] = tour.getDriver().getName() +", "+ tour.getDriver().getFirstName();*/
+			data[i][0] = (Integer)content[0];
+			data[i][1] = (String)content[1];
+			data[i][2] = new TableDate((Date) content[2], TableDate.Type.TIME);
+			data[i][3] = (String)content[3];
+			data[i][4] = (String)content[4];
 		}
 		tabSchedule.fillTable(data);
 	}
