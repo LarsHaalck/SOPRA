@@ -24,23 +24,18 @@ public class PrintStoppingPoint
 		this.stoppingPoint = stoppingPoint;
 	}
 
-	public ArrayList<RouteRecord> getRouteRecords()
+	public ArrayList<RouteEntry> getRouteRecords()
 	{
 		ArrayList<Route> routes = controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
-		ArrayList<RouteRecord> routeRecords = new ArrayList<>();
+		ArrayList<RouteEntry> routeRecords = new ArrayList<>();
 
 		for (Route route : routes)
 		{
-			RouteRecord rec = new RouteRecord(route, stoppingPoint);
+			RouteEntry rec = new RouteEntry(route, stoppingPoint);
 			routeRecords.add(rec);
 		}
 
 		return  routeRecords;
-	}
-
-	private ArrayList<Route> getRoutesUsingStoppingPoint(StoppingPoint stoppingPoint)
-	{
-		return controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
 	}
 
 	public StoppingPoint getStoppingPoint()
@@ -53,17 +48,33 @@ public class PrintStoppingPoint
 		return departureTimes;
 	}
 
-	private class RouteRecord
+	public class RouteEntry
 	{
+
 		private BusStop busStop;
 		private StoppingPoint stopPoint;
 		private Route route;
 
-		public RouteRecord(Route route, StoppingPoint stopPoint)
+		public RouteEntry(Route route, StoppingPoint stopPoint)
 		{
 			busStop = controllerDatabase.getBusStopByStoppingPointId(stopPoint.getId());
 			this.stopPoint = stopPoint;
 			this.route = route;
+		}
+
+		public BusStop getBusStop()
+		{
+			return busStop;
+		}
+
+		public StoppingPoint getStopPoint()
+		{
+			return stopPoint;
+		}
+
+		public Route getRoute()
+		{
+			return route;
 		}
 
 		public ArrayList<Integer> getStartTimes(DayOfWeek day)
