@@ -17,7 +17,6 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 	private JButton btnEdit;
 	private JButton btnNew;
 
-
 	public TabBusStop()
 	{
 		super(TableModelBusStop.class, true, false);
