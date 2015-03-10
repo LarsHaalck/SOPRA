@@ -40,7 +40,7 @@ public class FormBusStop extends FormGeneral
 	 */
 	private JButton btSave;
 	private JButton btCancel;
-	private RowSorter<StoppingPointTableModel> sorter;
+	//private RowSorter<StoppingPointTableModel> sorter;
 
 	private int selectedRow = -1;
 	private int selectedID = -1;
@@ -164,9 +164,9 @@ public class FormBusStop extends FormGeneral
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
 
-		sorter = new TableRowSorter<>(tmStoppingPoints);
+		//sorter = new TableRowSorter<>(tmStoppingPoints);
 		tableStoppingPoints.removeColumn(tableStoppingPoints.getColumnModel().getColumn(0));
-		tableStoppingPoints.setRowSorter(sorter);
+		//tableStoppingPoints.setRowSorter(sorter);
 		tableStoppingPoints.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -292,14 +292,14 @@ public class FormBusStop extends FormGeneral
 		return tfLocationX.getNumber();
 	}
 
-	public int getLocationY()
-	{
-		return tfLocationY.getNumber();
-	}
-
 	public void setLocationX(int x)
 	{
 		tfLocationX.setNumber(x);
+	}
+
+	public int getLocationY()
+	{
+		return tfLocationY.getNumber();
 	}
 
 	public void setLocationY(int y)
