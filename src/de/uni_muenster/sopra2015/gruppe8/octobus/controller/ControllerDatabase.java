@@ -91,6 +91,8 @@ public class ControllerDatabase
      *
      * @param bus Bus object to be stored in the database
      * @return unique ID of newly created bus entry in the database
+	 * @pre no bus with the same license plate is in the database. licencePlate is not null.
+	 * @post bus is successfully added to database
      */
 	public int addBus(Bus bus)
 	{
@@ -121,13 +123,17 @@ public class ControllerDatabase
      *
      * @param id unique ID of the bus entry that is to be deleted from the database
 	 * @return number of tours modified due to bus deletion
+	 * @pre true
+	 * @post bus with supplied ID is removed from database. Deleted bus is removed from his former tours
      */
 	public int deleteBus(int id)
 	{
 		// Start by deleting references to this bus from all tours
         int numOfTours = deleteBusFromTours(id);
         // Then delete the bus itself
-		create.delete(BUSES).where(BUSES.BUSES_ID.equal(id)).execute();
+		create.delete(BUSES)
+				.where(BUSES.BUSES_ID.equal(id))
+				.execute();
 		return numOfTours;
 	}
 
@@ -138,6 +144,8 @@ public class ControllerDatabase
 	 * @param begin point in time after which drivers ought to be deleted from tours
 	 * @param end point in time before which drivers ought to be deleted from tours
 	 * @return number of tours edited
+	 * @pre true
+	 * @post tours of specified bus in specified range of time are removed from database
 	 */
 	public int deleteBusFromTours(int uid, Date begin, Date end)
 	{
@@ -166,6 +174,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus being deleted from tours
 	 * @return number of tours edited
+	 * @pre true
+	 * @post tours of specified bus are removed from database
 	 */
 	public int deleteBusFromTours(int id)
 	{
@@ -189,6 +199,8 @@ public class ControllerDatabase
      * Modifies an existing bus entry in the database
      *
      * @param bus Bus object whose entry is to be updated in the database
+	 * @pre true
+	 * @post properties of specified bus are changed if existing
      */
 	public void modifyBus(Bus bus)
 	{
@@ -205,14 +217,19 @@ public class ControllerDatabase
 	}
 
     /**
-     * Retrieves a list of Bus objects representing all bus entries stored in the database.
+     * Retrieves a list of Bus objects representing all bus entries stored in the database
      *
      * @return ArrayList containing Bus objects for every bus entry stored in the database
+	 * @pre true
+	 * @post true
      */
 	public ArrayList<Bus> getBuses()
 	{
 		// get all buses stored in database
-		Result<Record> busRecords = create.select().from(BUSES).orderBy(BUSES.LICENCEPLATE.asc()).fetch();
+		Result<BusesRecord> busRecords = create
+				.selectFrom(BUSES)
+				.orderBy(BUSES.LICENCEPLATE.asc())
+				.fetch();
 
         // In case there are no buses - which is unlikely, but who knows
         if (busRecords == null) return null;
@@ -220,17 +237,17 @@ public class ControllerDatabase
 		ArrayList<Bus> busList = new ArrayList<>();
 
 		// create a bus object for each bus stored in database and add to list
-		for (Record rec : busRecords)
+		for (BusesRecord rec : busRecords)
 		{
 			Bus bus = new Bus(
-					rec.getValue(BUSES.LICENCEPLATE),
-					rec.getValue(BUSES.NUMBEROFSEATS),
-					rec.getValue(BUSES.STANDINGROOM),
-					rec.getValue(BUSES.MANUFACTURER),
-					rec.getValue(BUSES.MODEL),
-					new Date((long) rec.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
-					rec.getValue(BUSES.ARTICULATEDBUS));
-            bus.setId(rec.getValue(BUSES.BUSES_ID));
+					rec.getLicenceplate(),
+					rec.getNumberofseats(),
+					rec.getStandingroom(),
+					rec.getManufacturer(),
+					rec.getModel(),
+					new Date((long) rec.getNextinspectiondue()*1000),
+					rec.getArticulatedbus());
+            bus.setId(rec.getBusesId());
 			busList.add(bus);
 		}
 		return busList;
@@ -241,23 +258,28 @@ public class ControllerDatabase
      *
      * @param id unique ID of the bus to be retrieved
      * @return Bus object created from its corresponding entry the database, null if bus not found
+	 * @pre true
+	 * @post true
      */
     public Bus getBusById(int id)
     {
-        Record busRecord = create.select().from(BUSES).where(BUSES.BUSES_ID.eq(id)).fetchOne();
+        BusesRecord busRecord = create
+				.selectFrom(BUSES)
+				.where(BUSES.BUSES_ID.eq(id))
+				.fetchOne();
 
 		// if bus not found, return null
         if (busRecord == null) return null;
 
 		// create bus object
         Bus bus = new Bus(
-                busRecord.getValue(BUSES.LICENCEPLATE),
-                busRecord.getValue(BUSES.NUMBEROFSEATS),
-                busRecord.getValue(BUSES.STANDINGROOM),
-                busRecord.getValue(BUSES.MANUFACTURER),
-                busRecord.getValue(BUSES.MODEL),
-				new Date((long) busRecord.getValue(BUSES.NEXTINSPECTIONDUE)*1000),
-                busRecord.getValue(BUSES.ARTICULATEDBUS));
+                busRecord.getLicenceplate(),
+                busRecord.getNumberofseats(),
+                busRecord.getStandingroom(),
+                busRecord.getManufacturer(),
+                busRecord.getModel(),
+				new Date((long) busRecord.getNextinspectiondue()*1000),
+                busRecord.getArticulatedbus());
         bus.setId(id);
 		return bus;
     }
@@ -271,18 +293,21 @@ public class ControllerDatabase
      *
      * @param bstop BusStop object to be stored in the database
      * @return unique ID of newly created bus stop entry in the database
+	 * @pre true
+	 * @post bus stop is successfully added to database
      */
     public int addBusStop(BusStop bstop)
 	{
-		BusstopsRecord newStop = create.insertInto(
-                BUSSTOPS,BUSSTOPS.NAME,
-                BUSSTOPS.LOCATIONX,
-                BUSSTOPS.LOCATIONY,
-				BUSSTOPS.BARRIERFREE)
+		BusstopsRecord newStop = create
+				.insertInto(
+						BUSSTOPS, BUSSTOPS.NAME,
+						BUSSTOPS.LOCATIONX,
+						BUSSTOPS.LOCATIONY,
+						BUSSTOPS.BARRIERFREE)
 				.values(bstop.getName(),
-                        bstop.getLocation().getFirst(),
-                        bstop.getLocation().getSecond(),
-						bstop.isBarrierFree())
+                    bstop.getLocation().getFirst(),
+                    bstop.getLocation().getSecond(),
+					bstop.isBarrierFree())
 				.returning(BUSSTOPS.BUSSTOPS_ID)
 				.fetchOne();
 
@@ -291,9 +316,9 @@ public class ControllerDatabase
 		for (StoppingPoint s : points)
 		{
 			create.insertInto(
-                    BUSSTOPS_STOPPINGPOINTS,
-                    BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
-                    BUSSTOPS_STOPPINGPOINTS.NAME)
+					BUSSTOPS_STOPPINGPOINTS,
+					BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
+					BUSSTOPS_STOPPINGPOINTS.NAME)
 				.values(
                         newStop.getBusstopsId(),
                         s.getName())
@@ -309,10 +334,14 @@ public class ControllerDatabase
      * notified that the bus stop is still in use
      *
      * @param id unique ID of the bus stop entry that is to be deleted from the database
+	 * @pre no routes or stopping points that use the specified bus stop exist in database
+	 * @post bus stop with supplied ID is removed from database
      */
 	public void deleteBusStop(int id)
 	{
-		create.delete(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.equal(id)).execute();
+		create.delete(BUSSTOPS)
+				.where(BUSSTOPS.BUSSTOPS_ID.equal(id))
+				.execute();
 	}
 
 	/**
@@ -320,6 +349,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus stop whose stopping points ought to be deleted
 	 * @return number of stopping points deleted
+	 * @pre no stopping point of the specified bus stop is used as a route stop.
+	 * @post all stopping points of the specified bus stop are removed from database
 	 */
 	public int deleteStoppingPointsUsingBusStopId(int id)
 	{
@@ -344,12 +375,17 @@ public class ControllerDatabase
      *
      * @param id StoppingPoint for which to retrieve the associated BusStop
      * @return BusStop associated with the stopping point
+	 * @pre true
+	 * @post true
      */
     public BusStop getBusStopByStoppingPointId(int id)
     {
-        BusstopsStoppingpointsRecord r = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+        BusstopsStoppingpointsRecord r = create
+				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
                 .fetchOne();
+
+		if (r == null) return null;
 
         return getBusStopById(r.getBusstopsId());
     }
@@ -362,6 +398,8 @@ public class ControllerDatabase
      * Modifies an existing bus stop entry in the database
      *
      * @param bstop BusStop object whose entry is to be updated in the database
+	 * @pre true
+	 * @post properties of specified bus stop are changed if existing
      */
 	public void modifyBusStop(BusStop bstop)
 	{
@@ -378,11 +416,16 @@ public class ControllerDatabase
      * Retrieves a list of BusStop objects representing all bus stop entries stored in the database
      *
      * @return ArrayList containing BusStop objects for every bus stop entry stored in the database
+	 * @pre true
+	 * @post true
      */
 	public ArrayList<BusStop> getBusStops()
 	{
 		// Start by getting all bus stops from the database
-        Result<BusstopsRecord> busStopRecords = create.selectFrom(BUSSTOPS).orderBy(BUSSTOPS.NAME.asc()).fetch();
+        Result<BusstopsRecord> busStopRecords = create
+				.selectFrom(BUSSTOPS)
+				.orderBy(BUSSTOPS.NAME.asc())
+				.fetch();
 
         // In case there are no BusStops, which is unlikely, but who knows
         if (busStopRecords == null) return null;
@@ -393,8 +436,10 @@ public class ControllerDatabase
         for (BusstopsRecord rec : busStopRecords)
 		{
             // ... get all corresponding stopping points...
-            Result<BusstopsStoppingpointsRecord> stoppingPoints = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
-                    .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
+            Result<BusstopsStoppingpointsRecord> stoppingPoints = create
+					.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                    .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getBusstopsId()))
+					.fetch();
 
             // ... and put them all into a HashSet
             // (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
@@ -404,12 +449,12 @@ public class ControllerDatabase
 				spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(),sp.getName()));
 			}
 
-			boolean barrier = rec.getValue(BUSSTOPS.BARRIERFREE);
+			boolean barrier = rec.getBarrierfree();
 
 			// create bus stop objects belonging to that route
 			BusStop busStop = new BusStop(
-					rec.getValue(BUSSTOPS.NAME),
-					new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
+					rec.getName(),
+					new Tuple<>(rec.getLocationx(),rec.getLocationy()),
 					spoints,
 					barrier);
             busStop.setId(rec.getBusstopsId());
@@ -425,31 +470,38 @@ public class ControllerDatabase
      *
      * @param id unique ID of the bus stop to be retrieved
      * @return BusStop object created from its corresponding entry the database, null if bus stop not found
+	 * @pre true
+	 * @post true
      */
     public BusStop getBusStopById(int id)
     {
         // Get desired bus from data base
-        Record rec = create.select().from(BUSSTOPS).where(BUSSTOPS.BUSSTOPS_ID.eq(id)).fetchOne();
+        BusstopsRecord rec = create
+				.selectFrom(BUSSTOPS)
+				.where(BUSSTOPS.BUSSTOPS_ID.eq(id))
+				.fetchOne();
         if (rec == null) return null;
 
         // Get all associated stopping points...
-        Result<Record> stoppingPoints = create.select().from(BUSSTOPS_STOPPINGPOINTS)
-                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getValue(BUSSTOPS.BUSSTOPS_ID))).fetch();
+        Result<BusstopsStoppingpointsRecord> stoppingPoints = create
+				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+                .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID.equal(rec.getBusstopsId()))
+				.fetch();
 
         // .. and add them into a HashSet
         //  (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
         HashSet<StoppingPoint> spoints = new HashSet<>();
-		for (Record sp : stoppingPoints)
+		for (BusstopsStoppingpointsRecord sp : stoppingPoints)
 		{
-			spoints.add(new StoppingPoint(sp.getValue(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID),sp.getValue(BUSSTOPS_STOPPINGPOINTS.NAME)));
+			spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(),sp.getName()));
 		}
 
 		// create all associated bus stop objects
 		BusStop busStop = new BusStop(
-				rec.getValue(BUSSTOPS.NAME),
-				new Tuple<Integer,Integer>(rec.getValue(BUSSTOPS.LOCATIONX),rec.getValue(BUSSTOPS.LOCATIONY)),
+				rec.getName(),
+				new Tuple<>(rec.getLocationx(),rec.getLocationy()),
 				spoints,
-				rec.getValue(BUSSTOPS.BARRIERFREE));
+				rec.getBarrierfree());
 
 		busStop.setId(id);
         return busStop;
@@ -460,6 +512,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the stopping point
 	 * @return ArrayList of Strings containing names of routes
+	 * @pre true
+	 * @post true
 	 */
 	public ArrayList<String> getRouteNamesUsingStoppingPointId(int id)
 	{
@@ -471,9 +525,10 @@ public class ControllerDatabase
 
 		// fetch names of associated routes and put them into a list
 		ArrayList<String> names = new ArrayList<>();
+		if (routes == null) return names; // return empty list if no routes found
 		for (RoutesStopsRecord rec : routes)
 		{
-			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			int routeID = rec.getRoutesId();
 			RoutesRecord route = create
 					.selectFrom(ROUTES)
 					.where(ROUTES.ROUTES_ID.eq(routeID))
@@ -490,6 +545,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the stopping point
 	 * @return ArrayList of routes containing the routes
+	 * @pre true
+	 * @post true
 	 */
 	public ArrayList<Route> getRoutesUsingStoppingPoint(int id)
 	{
@@ -501,9 +558,10 @@ public class ControllerDatabase
 
 		// create all associated routes and put them into a list
 		ArrayList<Route> listOfRoutes = new ArrayList<>();
+		if (routes == null) return listOfRoutes; // return empty list if no routes found
 		for (RoutesStopsRecord rec : routes)
 		{
-			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			int routeID = rec.getRoutesId();
 			listOfRoutes.add(getRouteById(routeID));
 		}
 		return(listOfRoutes);
@@ -514,6 +572,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus stop
 	 * @return ArrayList of Strings containing names of routes
+	 * @pre true
+	 * @post true
 	 */
 	public ArrayList<String> getRouteNamesUsingBusStopId(int id)
 	{
@@ -526,9 +586,10 @@ public class ControllerDatabase
 
 		// fetch names of associated routes and put them into a list
 		ArrayList<String> names = new ArrayList<>();
+		if (routes == null) return names;		// return empty list if no routes found
 		for (RoutesStopsRecord rec : routes)
 		{
-			int routeID = rec.getValue(ROUTES_STOPS.ROUTES_ID);
+			int routeID = rec.getRoutesId();
 			RoutesRecord route = create
 					.selectFrom(ROUTES)
 					.where(ROUTES.ROUTES_ID.eq(routeID))
@@ -548,15 +609,19 @@ public class ControllerDatabase
 	 * @param id unique ID of bus stop to which the stopping point is assigned
 	 * @param sp StoppingPoint object to be stored in the database
 	 * @return unique ID of newly created stopping point entry in the database
+	 * @pre bus stop with supplied id exists in database.
+	 * @post stopping point is successfully added to database
 	 */
 	public int addStoppingPoint(int id, StoppingPoint sp)
 	{
-		BusstopsStoppingpointsRecord newStop = create.insertInto(
-				BUSSTOPS_STOPPINGPOINTS,
-				BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
-				BUSSTOPS_STOPPINGPOINTS.NAME)
-				.values(id,
-						sp.getName())
+		BusstopsStoppingpointsRecord newStop = create
+				.insertInto(
+						BUSSTOPS_STOPPINGPOINTS,
+						BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_ID,
+						BUSSTOPS_STOPPINGPOINTS.NAME)
+				.values(
+					id,
+					sp.getName())
 				.returning(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID)
 				.fetchOne();
 
@@ -568,6 +633,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus stop
 	 * @return ArrayList of stopping points belonging to the bus stop
+	 * @pre true
+	 * @post true
 	 */
 	public ArrayList<StoppingPoint> getStoppingPointsByBusStopId(int id)
 	{
@@ -578,11 +645,9 @@ public class ControllerDatabase
 				.orderBy(BUSSTOPS_STOPPINGPOINTS.NAME.asc())
 				.fetch();
 
-		// In case there are no BusStops, which is unlikely, but who knows
-		if (rows == null) return null;
-
 		// create all stopping point objects and put them into a list
 		ArrayList<StoppingPoint> result = new ArrayList<>();
+		if (rows == null) return result; // return empty list if no rows
 		for (BusstopsStoppingpointsRecord rec : rows)
 		{
 			result.add(getStoppingPointById(rec.getBusstopsStoppingpointsId()));
@@ -600,13 +665,15 @@ public class ControllerDatabase
      *
      * @param emp Employee object to be stored in the database
      * @return unique ID of newly created employee entry in the database
+	 * @pre no employee with the same user name is in the database. userName and roles are not null.
+	 * @post employee is successfully added to database
      */
 	public int addEmployee(Employee emp)
 	{
         // Take care of creating a salt and hashing the default password with that salt
         SecureRandom random = new SecureRandom();
         String salt = new BigInteger(130, random).toString(32);
-        String password = "octobus";			// TODO: This should be changed, right?
+        String password = "octobus";
         String generatedHash;
 
         try
@@ -621,41 +688,43 @@ public class ControllerDatabase
             throw new UnsupportedOperationException(e);
         }
 
-		EmployeesRecord newEmp = create.insertInto(EMPLOYEES,
-                EMPLOYEES.NAME,
-                EMPLOYEES.FIRSTNAME,
-                EMPLOYEES.ADDRESS,
-                EMPLOYEES.ZIPCODE,
-                EMPLOYEES.CITY,
-                EMPLOYEES.DATEOFBIRTH,
-                EMPLOYEES.PHONE,
-                EMPLOYEES.EMAIL,
-                EMPLOYEES.USERNAME,
-                EMPLOYEES.SALT,
-                EMPLOYEES.PASSWORD,
-                EMPLOYEES.NOTE,
-                EMPLOYEES.ISBUSDRIVER,
-                EMPLOYEES.ISNETWORK_PLANNER,
-                EMPLOYEES.ISTICKET_PLANNER,
-                EMPLOYEES.ISHR_MANAGER,
-                EMPLOYEES.ISSCHEDULE_MANAGER)
-                .values(emp.getName(),
-                        emp.getFirstName(),
-                        emp.getAddress(),
-                        emp.getZipCode(),
-                        emp.getCity(),
-                        (int) (emp.getDateOfBirth().getTime()/1000),
-                        emp.getPhone(),
-                        emp.getEmail(),
-                        emp.getUsername(),
-                        salt,
-                        generatedHash,
-                        emp.getNote(),
-                        emp.isRole(Role.BUSDRIVER),
-						emp.isRole(Role.NETWORK_PLANNER),
-                        emp.isRole(Role.TICKET_PLANNER),
-                        emp.isRole(Role.HR_MANAGER),
-						emp.isRole(Role.SCHEDULE_MANAGER))
+		EmployeesRecord newEmp = create
+				.insertInto(EMPLOYEES,
+						EMPLOYEES.NAME,
+						EMPLOYEES.FIRSTNAME,
+						EMPLOYEES.ADDRESS,
+						EMPLOYEES.ZIPCODE,
+						EMPLOYEES.CITY,
+						EMPLOYEES.DATEOFBIRTH,
+						EMPLOYEES.PHONE,
+						EMPLOYEES.EMAIL,
+						EMPLOYEES.USERNAME,
+						EMPLOYEES.SALT,
+						EMPLOYEES.PASSWORD,
+						EMPLOYEES.NOTE,
+						EMPLOYEES.ISBUSDRIVER,
+						EMPLOYEES.ISNETWORK_PLANNER,
+						EMPLOYEES.ISTICKET_PLANNER,
+						EMPLOYEES.ISHR_MANAGER,
+						EMPLOYEES.ISSCHEDULE_MANAGER)
+                .values(
+					emp.getName(),
+                    emp.getFirstName(),
+					emp.getAddress(),
+					emp.getZipCode(),
+					emp.getCity(),
+					(int) (emp.getDateOfBirth().getTime()/1000),
+					emp.getPhone(),
+					emp.getEmail(),
+					emp.getUsername(),
+					salt,
+					generatedHash,
+					emp.getNote(),
+					emp.isRole(Role.BUSDRIVER),
+					emp.isRole(Role.NETWORK_PLANNER),
+					emp.isRole(Role.TICKET_PLANNER),
+					emp.isRole(Role.HR_MANAGER),
+					emp.isRole(Role.SCHEDULE_MANAGER))
 				.returning(EMPLOYEES.EMPLOYEES_ID)
 				.fetchOne();
 
@@ -667,11 +736,15 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the employee entry to be deleted from the database
 	 * @return number of tours modified due to employee deletion
+	 * @pre true
+	 * @post employee with supplied ID is removed from database. Deleted employee is removed from his former tours
 	 */
 	public int deleteEmployee(int id)
 	{
 		int numOfTours = deleteEmployeeFromTours(id);
-		create.delete(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.equal(id)).execute();
+		create.delete(EMPLOYEES)
+				.where(EMPLOYEES.EMPLOYEES_ID.equal(id))
+				.execute();
 		return numOfTours;
 	}
 
@@ -679,6 +752,8 @@ public class ControllerDatabase
      * Modifies an existing employee entry in the database
      *
      * @param emp Employee object whose entry is to be updated in the database
+	 * @pre true
+	 * @post properties of specified employee are changed if existing
      */
 	public void modifyEmployee(Employee emp)
 	{
@@ -708,48 +783,52 @@ public class ControllerDatabase
      * Retrieves a list of Employee objects representing all employee entries stored in the database
      *
      * @return ArrayList containing Employee objects for every employee entry stored in the database
+	 * @pre true
+	 * @post true
      */
 	public ArrayList<Employee> getEmployees()
 	{
 		// get all employee entries from database
-		Result<Record> empRecords = create.select().from(EMPLOYEES)
-				.orderBy(EMPLOYEES.NAME.asc(),EMPLOYEES.FIRSTNAME.asc()).fetch();
+		Result<EmployeesRecord> empRecords = create
+				.selectFrom(EMPLOYEES)
+				.orderBy(EMPLOYEES.NAME.asc(),EMPLOYEES.FIRSTNAME.asc())
+				.fetch();
 
         // In case we have no employees to return
         if (empRecords == null) return null;
 
 		// for each entry, create a employee object
 		ArrayList<Employee> empList = new ArrayList<>();
-		for (Record rec : empRecords)
+		for (EmployeesRecord rec : empRecords)
 		{
 			// build HashSet containing roles of the current employee
 			HashSet<Role> roles = new HashSet<>();
-			if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
+			if (rec.getIsscheduleManager())
 				roles.add(Role.SCHEDULE_MANAGER);
-			if (rec.getValue(EMPLOYEES.ISHR_MANAGER))
+			if (rec.getIshrManager())
 				roles.add(Role.HR_MANAGER);
-			if (rec.getValue(EMPLOYEES.ISTICKET_PLANNER))
+			if (rec.getIsticketPlanner())
 				roles.add(Role.TICKET_PLANNER);
-			if (rec.getValue(EMPLOYEES.ISNETWORK_PLANNER))
+			if (rec.getIsnetworkPlanner())
 				roles.add(Role.NETWORK_PLANNER);
-			if (rec.getValue(EMPLOYEES.ISBUSDRIVER))
+			if (rec.getIsbusdriver())
 				roles.add(Role.BUSDRIVER);
 
 			Employee emp = new Employee(
-					rec.getValue(EMPLOYEES.NAME),
-					rec.getValue(EMPLOYEES.FIRSTNAME),
-					rec.getValue(EMPLOYEES.ADDRESS),
-					rec.getValue(EMPLOYEES.ZIPCODE),
-					rec.getValue(EMPLOYEES.CITY),
-					new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
-					rec.getValue(EMPLOYEES.PHONE),
-					rec.getValue(EMPLOYEES.EMAIL),
-					rec.getValue(EMPLOYEES.USERNAME),
-					rec.getValue(EMPLOYEES.PASSWORD),
-					rec.getValue(EMPLOYEES.SALT),
-					rec.getValue(EMPLOYEES.NOTE),
+					rec.getName(),
+					rec.getFirstname(),
+					rec.getAddress(),
+					rec.getZipcode(),
+					rec.getCity(),
+					new Date((long) rec.getDateofbirth()*1000),
+					rec.getPhone(),
+					rec.getEmail(),
+					rec.getUsername(),
+					rec.getPassword(),
+					rec.getSalt(),
+					rec.getNote(),
 					roles);
-			emp.setId(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+			emp.setId(rec.getEmployeesId());
 			empList.add(emp);
 		}
 		return empList;
@@ -760,49 +839,64 @@ public class ControllerDatabase
      *
      * @param id unique ID of the employee to be retrieved
      * @return Employee object created from its corresponding entry the database, null if employee not found
+	 * @pre true
+	 * @post true
      */
 	public Employee getEmployeeById(int id)
 	{
-		Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.EMPLOYEES_ID.eq(id)).fetchOne();
+		EmployeesRecord rec = create
+				.selectFrom(EMPLOYEES)
+				.where(EMPLOYEES.EMPLOYEES_ID.eq(id))
+				.fetchOne();
 
         // Return null if employee can not be found
         if (rec == null) return null;
 
 		// build HashSet containing roles
 		HashSet<Role> roles = new HashSet<>();
-		if (rec.getValue(EMPLOYEES.ISSCHEDULE_MANAGER))
+		if (rec.getIsscheduleManager())
 			roles.add(Role.SCHEDULE_MANAGER);
-		if (rec.getValue(EMPLOYEES.ISHR_MANAGER))
+		if (rec.getIshrManager())
 			roles.add(Role.HR_MANAGER);
-		if (rec.getValue(EMPLOYEES.ISTICKET_PLANNER))
+		if (rec.getIsticketPlanner())
 			roles.add(Role.TICKET_PLANNER);
-		if (rec.getValue(EMPLOYEES.ISNETWORK_PLANNER))
+		if (rec.getIsnetworkPlanner())
 			roles.add(Role.NETWORK_PLANNER);
-		if (rec.getValue(EMPLOYEES.ISBUSDRIVER))
+		if (rec.getIsbusdriver())
 			roles.add(Role.BUSDRIVER);
 
 		Employee emp = new Employee(
-				rec.getValue(EMPLOYEES.NAME),
-				rec.getValue(EMPLOYEES.FIRSTNAME),
-				rec.getValue(EMPLOYEES.ADDRESS),
-				rec.getValue(EMPLOYEES.ZIPCODE),
-				rec.getValue(EMPLOYEES.CITY),
-				new Date((long) rec.getValue(EMPLOYEES.DATEOFBIRTH)*1000),
-				rec.getValue(EMPLOYEES.PHONE),
-				rec.getValue(EMPLOYEES.EMAIL),
-				rec.getValue(EMPLOYEES.USERNAME),
-				rec.getValue(EMPLOYEES.PASSWORD),
-				rec.getValue(EMPLOYEES.SALT),
-				rec.getValue(EMPLOYEES.NOTE),
+				rec.getName(),
+				rec.getFirstname(),
+				rec.getAddress(),
+				rec.getZipcode(),
+				rec.getCity(),
+				new Date((long) rec.getDateofbirth()*1000),
+				rec.getPhone(),
+				rec.getEmail(),
+				rec.getUsername(),
+				rec.getPassword(),
+				rec.getSalt(),
+				rec.getNote(),
 				roles);
-
 		emp.setId(id);
+
 		return emp;
 	}
-
+	/**
+	 * Retrieves a single Employee object from the database entry using its unique user name
+	 *
+	 * @param username unique username of the employee to be retrieved
+	 * @return Employee object created from its corresponding entry the database, null if employee not found
+	 * @pre true
+	 * @post true
+	 */
     public Employee getEmployeeByUsername(String username){
-        Record rec = create.select().from(EMPLOYEES).where(EMPLOYEES.USERNAME.eq(username)).fetchOne();
-        return (rec == null) ? null : getEmployeeById(rec.getValue(EMPLOYEES.EMPLOYEES_ID));
+        EmployeesRecord rec = create
+				.selectFrom(EMPLOYEES)
+				.where(EMPLOYEES.USERNAME.eq(username))
+				.fetchOne();
+        return (rec == null) ? null : getEmployeeById(rec.getEmployeesId());
     }
 
 	/**
@@ -812,6 +906,8 @@ public class ControllerDatabase
 	 * @param begin point in time after which drivers ought to be deleted from tours
 	 * @param end point in time before which drivers ought to be deleted from tours
 	 * @return number of tours edited
+	 * @pre true
+	 * @post tours of specified employee in specified range of time are removed from database
 	 */
 	public int deleteEmployeeFromTours(int uid, Date begin, Date end)
 	{
@@ -840,6 +936,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the user being deleted from tours
 	 * @return number of tours edited
+	 * @pre true
+	 * @post tours of specified employee are removed from database
 	 */
 	public int deleteEmployeeFromTours(int id)
 	{
@@ -868,17 +966,21 @@ public class ControllerDatabase
      *
      * @param r Route object to be stored in the database
      * @return unique ID of newly created route entry in the database
+	 * @pre true
+	 * @post route is successfully added to database
      */
 	public int addRoute(Route r)
 	{
 		// add route entry to routes table
-		RoutesRecord newRoute = create.insertInto(ROUTES,
-                ROUTES.NAME,
-                ROUTES.NOTE,
-                ROUTES.NIGHT)
-				.values(r.getName(),
-                        r.getNote(),
-                        r.isNight())
+		RoutesRecord newRoute = create
+				.insertInto(ROUTES,
+						ROUTES.NAME,
+						ROUTES.NOTE,
+						ROUTES.NIGHT)
+				.values(
+					r.getName(),
+					r.getNote(),
+					r.isNight())
 				.returning(ROUTES.ROUTES_ID)
 				.fetchOne();
 
@@ -887,14 +989,15 @@ public class ControllerDatabase
 		for (Triple<BusStop,StoppingPoint,Integer> triple : stops)
 		{
 			create.insertInto(ROUTES_STOPS,
-                    ROUTES_STOPS.ROUTES_ID,
-                    ROUTES_STOPS.BUSSTOPS_ID,
-					ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID,
-					ROUTES_STOPS.TIMETOPREVIOUS)
-					.values(newRoute.getRoutesId(),
-							triple.getFirst().getId(),
-							triple.getSecond().getId(),
-                            triple.getThird())
+                    	ROUTES_STOPS.ROUTES_ID,
+                    	ROUTES_STOPS.BUSSTOPS_ID,
+						ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID,
+						ROUTES_STOPS.TIMETOPREVIOUS)
+					.values(
+						newRoute.getRoutesId(),
+						triple.getFirst().getId(),
+						triple.getSecond().getId(),
+						triple.getThird())
 					.execute();
 		}
 
@@ -908,9 +1011,10 @@ public class ControllerDatabase
                         ROUTES_STARTTIMES.ROUTES_ID,
                         ROUTES_STARTTIMES.DAYOFWEEK,
                         ROUTES_STARTTIMES.STARTTIME)
-					.values(newRoute.getRoutesId(),
-                            day.toString(),
-                            time)
+					.values(
+						newRoute.getRoutesId(),
+						day.toString(),
+						time)
 					.execute();
 			}
 		}
@@ -919,14 +1023,21 @@ public class ControllerDatabase
 	}
 
     /**
-     * Removes a route entry from the database using its unique id
+     * Removes a route entry from the database using its unique id. Route stops, tours and start times will
+	 * also be deleted
      *
      * @param id unique ID of the route entry that is to be deleted from the database
+	 * @pre true
+	 * @post route with supplied ID and all assigned route stops, tours and start times are removed from database
      */
 	public int deleteRoute(int id)
 	{
 		int numOfTours = deleteToursUsingRoutesId(id);
-		create.delete(ROUTES).where(ROUTES.ROUTES_ID.equal(id));
+		deleteStartTimesUsingRouteId(id);
+		deleteRoutesStopsUsingRouteId(id);
+		create.delete(ROUTES)
+				.where(ROUTES.ROUTES_ID.equal(id))
+				.execute();
 		return(numOfTours);
 	}
 
@@ -937,6 +1048,8 @@ public class ControllerDatabase
      * @param r Route object whose entry is to be updated in the database
      * @param deleteTours true if associated tours ought to be deleted
 	 * @return id of the changed route entry (new if deleteTours was true)
+	 * @pre true
+	 * @post properties of specified route are changed if existing
      */
 	public int modifyRoute(Route r, boolean deleteTours)
 	{
@@ -964,19 +1077,26 @@ public class ControllerDatabase
      * Retrieves a list of Route objects representing all route entries stored in the database
      *
      * @return ArrayList containing Route objects for every route entry stored in the database
+	 * @pre true
+	 * @post true
      */
 	public ArrayList<Route> getRoutes()
 	{
         // Start by getting all routes table entries from the database
-        Result<RoutesRecord> routesRecords = create.selectFrom(ROUTES).orderBy(ROUTES.NAME.asc()).fetch();
+		Result<RoutesRecord> routesRecords = create
+				.selectFrom(ROUTES)
+				.orderBy(ROUTES.NAME.asc())
+				.fetch();
 		ArrayList<Route> routesList = new ArrayList<>();
-
+		if (routesRecords == null) return(routesList); // return empty list if no routes found
         // For each route entry retrieved...
         for (RoutesRecord rec : routesRecords)
 		{
             // ... get all corresponding start times ...
-            Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
-                    .where(ROUTES_STARTTIMES.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+            Result<RoutesStarttimesRecord> startTimesRecords = create
+					.selectFrom(ROUTES_STARTTIMES)
+                    .where(ROUTES_STARTTIMES.ROUTES_ID.equal(rec.getRoutesId()))
+					.fetch();
 
 			HashMap<DayOfWeek, LinkedList<Integer>> startTimes = new HashMap<>();
 			startTimes.put(DayOfWeek.MONDAY, new LinkedList<>());
@@ -988,44 +1108,52 @@ public class ControllerDatabase
 			startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 
             // ... and put them into their respective lists, depending on the day
-			for (Record timerec : startTimesRecords)
+			if (startTimesRecords != null)
 			{
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("MONDAY"))
-					startTimes.get(DayOfWeek.MONDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("TUESDAY"))
-					startTimes.get(DayOfWeek.TUESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("WEDNESDAY"))
-					startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("THURSDAY"))
-					startTimes.get(DayOfWeek.THURSDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("FRIDAY"))
-					startTimes.get(DayOfWeek.FRIDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SATURDAY"))
-					startTimes.get(DayOfWeek.SATURDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-				if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SUNDAY"))
-					startTimes.get(DayOfWeek.SUNDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+				for (RoutesStarttimesRecord timerec : startTimesRecords)
+				{
+					if (timerec.getDayofweek().equals("MONDAY"))
+						startTimes.get(DayOfWeek.MONDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("TUESDAY"))
+						startTimes.get(DayOfWeek.TUESDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("WEDNESDAY"))
+						startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("THURSDAY"))
+						startTimes.get(DayOfWeek.THURSDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("FRIDAY"))
+						startTimes.get(DayOfWeek.FRIDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("SATURDAY"))
+						startTimes.get(DayOfWeek.SATURDAY).add(timerec.getStarttime());
+					if (timerec.getDayofweek().equals("SUNDAY"))
+						startTimes.get(DayOfWeek.SUNDAY).add(timerec.getStarttime());
+				}
 			}
 
             // Now get all stops on the route ...
-            Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
-                    .where(ROUTES_STOPS.ROUTES_ID.equal(rec.getValue(ROUTES.ROUTES_ID))).fetch();
+            Result<RoutesStopsRecord> stopsRecords = create
+					.selectFrom(ROUTES_STOPS)
+                    .where(ROUTES_STOPS.ROUTES_ID.equal(rec.getRoutesId()))
+					.fetch();
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
             // ... and add them to the list of stops
-			for (RoutesStopsRecord s : stopsRecords)
+			if (stops != null)
 			{
-				int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
-				BusStop bstop = getBusStopById(stopId);
-				StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
-				stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
+				for (RoutesStopsRecord s : stopsRecords)
+				{
+					int stopId = s.getBusstopsId();
+					BusStop bstop = getBusStopById(stopId);
+					StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
+					stops.add(new Triple<>(bstop,spoint,s.getTimetoprevious()));
+				}
 			}
 
 			// Finally, create Route object and add it to the ArrayList
 			Route route = new Route(
-					rec.getValue(ROUTES.NAME),
-					rec.getValue(ROUTES.NOTE),
+					rec.getName(),
+					rec.getNote(),
 					stops,
-					rec.getValue(ROUTES.NIGHT),
+					rec.getNight(),
 					startTimes);
             route.setId(rec.getRoutesId());
 
@@ -1039,17 +1167,24 @@ public class ControllerDatabase
      *
      * @param id unique ID of the route to be retrieved
      * @return Route object created from its corresponding entry the database, null if route not found
+	 * @pre true
+	 * @post true
      */
 	public Route getRouteById(int id)
 	{
 	    // Start by getting the desired route from the database
-		Record rec = create.select().from(ROUTES).where(Routes.ROUTES.ROUTES_ID.eq(id)).fetchOne();
+		RoutesRecord rec = create
+				.selectFrom(ROUTES)
+				.where(Routes.ROUTES.ROUTES_ID.eq(id))
+				.fetchOne();
 
         if (rec == null) return null;
 
         // Fetch its starting times
-        Result<Record> startTimesRecords = create.select().from(ROUTES_STARTTIMES)
-				.where(ROUTES_STARTTIMES.ROUTES_ID.equal(id)).fetch();
+        Result<RoutesStarttimesRecord> startTimesRecords = create
+				.selectFrom(ROUTES_STARTTIMES)
+				.where(ROUTES_STARTTIMES.ROUTES_ID.equal(id))
+				.fetch();
 
 		HashMap<DayOfWeek, LinkedList<Integer>> startTimes = new HashMap<>();
 		startTimes.put(DayOfWeek.MONDAY, new LinkedList<>());
@@ -1061,45 +1196,47 @@ public class ControllerDatabase
 		startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 
         // Put the starting times for the route in respective lists
-		for (Record timerec : startTimesRecords)
+		for (RoutesStarttimesRecord timerec : startTimesRecords)
 		{
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("MONDAY"))
-				startTimes.get(DayOfWeek.MONDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("TUESDAY"))
-				startTimes.get(DayOfWeek.TUESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("WEDNESDAY"))
-				startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("THURSDAY"))
-				startTimes.get(DayOfWeek.THURSDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("FRIDAY"))
-				startTimes.get(DayOfWeek.FRIDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SATURDAY"))
-				startTimes.get(DayOfWeek.SATURDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
-			if (timerec.getValue(ROUTES_STARTTIMES.DAYOFWEEK).equals("SUNDAY"))
-				startTimes.get(DayOfWeek.SUNDAY).add(timerec.getValue(ROUTES_STARTTIMES.STARTTIME));
+			if (timerec.getDayofweek().equals("MONDAY"))
+				startTimes.get(DayOfWeek.MONDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("TUESDAY"))
+				startTimes.get(DayOfWeek.TUESDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("WEDNESDAY"))
+				startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("THURSDAY"))
+				startTimes.get(DayOfWeek.THURSDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("FRIDAY"))
+				startTimes.get(DayOfWeek.FRIDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("SATURDAY"))
+				startTimes.get(DayOfWeek.SATURDAY).add(timerec.getStarttime());
+			if (timerec.getDayofweek().equals("SUNDAY"))
+				startTimes.get(DayOfWeek.SUNDAY).add(timerec.getStarttime());
 		}
 
 
         // Now get all stops on the route ...
-        Result<RoutesStopsRecord> stopsRecords = create.selectFrom(ROUTES_STOPS)
-                .where(ROUTES_STOPS.ROUTES_ID.equal(id)).fetch();
+        Result<RoutesStopsRecord> stopsRecords = create
+				.selectFrom(ROUTES_STOPS)
+                .where(ROUTES_STOPS.ROUTES_ID.equal(id))
+				.fetch();
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
         // ... and add them to the list of stops
 		for (RoutesStopsRecord s : stopsRecords)
 		{
-			int stopId = s.getValue(ROUTES_STOPS.BUSSTOPS_ID);
+			int stopId = s.getBusstopsId();
 			BusStop bstop = getBusStopById(stopId);
 			StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
-			stops.add(new Triple<>(bstop,spoint,s.getValue(ROUTES_STOPS.TIMETOPREVIOUS)));
+			stops.add(new Triple<>(bstop,spoint,s.getTimetoprevious()));
 		}
 
 		// create and return route object
 		Route route = new Route(
-				rec.getValue(ROUTES.NAME),
-				rec.getValue(ROUTES.NOTE),
+				rec.getName(),
+				rec.getNote(),
 				stops,
-				rec.getValue(ROUTES.NIGHT),
+				rec.getNight(),
 				startTimes);
 
 		return route;
@@ -1110,6 +1247,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the route whose stopping points to be deleted
 	 * @return number of stopping points deleted
+	 * @pre true
+	 * @post all route stops assigned to route with specified ID are deleted from database
 	 */
 	public int deleteRoutesStopsUsingRouteId(int id)
 	{
@@ -1121,7 +1260,9 @@ public class ControllerDatabase
 				.fetchOne();
 
 		// ... and delete them
-		create.delete(ROUTES_STOPS).where(ROUTES_STOPS.ROUTES_ID.eq(id)).execute();
+		create.delete(ROUTES_STOPS)
+				.where(ROUTES_STOPS.ROUTES_ID.eq(id))
+				.execute();
 		return (Integer) record.getValue(0);
 	}
 
@@ -1130,6 +1271,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the route whose start times to be deleted.
 	 * @return number of stopping points deleted
+	 * @pre true
+	 * @post all start times assigned to route with specified ID are deleted from database
 	 */
 	public int deleteStartTimesUsingRouteId(int id)
 	{
@@ -1141,7 +1284,9 @@ public class ControllerDatabase
 				.fetchOne();
 
 		// ... and delete them
-		create.delete(ROUTES_STARTTIMES).where(ROUTES_STARTTIMES.ROUTES_ID.eq(id)).execute();
+		create.delete(ROUTES_STARTTIMES)
+				.where(ROUTES_STARTTIMES.ROUTES_ID.eq(id))
+				.execute();
 		return (Integer) record.getValue(0);
 	}
 
@@ -1150,6 +1295,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the route
 	 * @return ArrayList of Strings containing names of bus stops with stopping points
+	 * @pre true
+	 * @post true
 	 */
 	public ArrayList<String> getBusStopNamesUsingRouteId(int id)
 	{
@@ -1162,10 +1309,11 @@ public class ControllerDatabase
 
 		// concatenate bus stop name and stopping point name and add to list
 		ArrayList<String> names = new ArrayList<>();
+		if (routes == null) return names;	// empty list if no routes found
 		for (RoutesStopsRecord rec : routes)
 		{
 			// fetch bus stop name from database
-			int stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_ID);
+			int stopID = rec.getBusstopsId();
 			BusstopsRecord bstop = create
 					.selectFrom(BUSSTOPS)
 					.where(BUSSTOPS.BUSSTOPS_ID.eq(stopID))
@@ -1173,7 +1321,7 @@ public class ControllerDatabase
 			String nameString = bstop.getName() + " ";
 
 			// fetch stopping point name from database
-			stopID = rec.getValue(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID);
+			stopID = rec.getBusstopsStoppingpointsId();
 			BusstopsStoppingpointsRecord bstoppoint = create
 					.selectFrom(BUSSTOPS_STOPPINGPOINTS)
 					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(stopID))
@@ -1189,6 +1337,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the stopping point
 	 * @return number of routes using the stopping point
+	 * @pre true
+	 * @post true
 	 */
 	public int getNumberOfRoutesUsingStoppingPointId(int id)
 	{
@@ -1206,9 +1356,18 @@ public class ControllerDatabase
     // Methods for "StoppingPoint"s //
     //////////////////////////////////
 
+	/**
+	 * Retrieves a single StoppingPoint object from the database entry using its unique id
+	 *
+	 * @param id unique ID of the stopping point to be retrieved
+	 * @return StoppingPoint object created from its corresponding entry the database, null if stopping point not found
+	 * @pre true
+	 * @post true
+	 */
     public StoppingPoint getStoppingPointById(int id)
     {
-        BusstopsStoppingpointsRecord spr = create.selectFrom(BUSSTOPS_STOPPINGPOINTS)
+        BusstopsStoppingpointsRecord spr = create
+				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
                 .where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
                 .fetchOne();
 
@@ -1220,6 +1379,8 @@ public class ControllerDatabase
      * Retrieves list of all stopping points together with the names of their respective bus stops.
      *
      * @return ArrayList of stopping point ids with compound name of bus stop name and stopping point name
+	 * @pre true
+	 * @post true
      */
     public ArrayList<Tuple<Integer, String>> getBusStopNamesWithStoppingPointNames()
     {
@@ -1234,7 +1395,7 @@ public class ControllerDatabase
                 .using(BUSSTOPS.BUSSTOPS_ID)
 				.orderBy(BUSSTOPS.NAME.asc(), BUSSTOPS_STOPPINGPOINTS.NAME.asc())
                 .fetch();
-
+		if (result == null) return(resultList);	// return empty list if no stopping points found
         for (Record r : result)
         {
             String busStopName = r.getValue(BUSSTOPS.NAME);
@@ -1254,17 +1415,22 @@ public class ControllerDatabase
 	 * Removes a stopping point entry from the database using its unique id. Assigned tours will also be modified
 	 *
 	 * @param id unique ID of the bus entry that is to be deleted from the database
+	 * @pre stopping point with supplied ID is not used as a route stop
+	 * @post stopping point with supplied ID is removed from database
 	 */
 	public void deleteStoppingPointById(int id)
 	{
 		create.delete(BUSSTOPS_STOPPINGPOINTS)
-					.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id)).execute();
+				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
+				.execute();
 	}
 
 	/**
 	 * Modifies an existing bus stop entry in the database
 	 *
 	 * @param spoint StoppingPoint object whose entry is to be updated in the database
+	 * @pre true
+	 * @post properties of specified stopping point are changed if existing
 	 */
 	public void modifyStoppingPoint(StoppingPoint spoint)
 	{
@@ -1283,20 +1449,24 @@ public class ControllerDatabase
      * Retrieves a list of SoldTicket objects representing all sold ticket entries stored in the database
      *
      * @return ArrayList containing SoldTicket objects for every sold ticket entry stored in the database
+	 * @pre true
+	 * @post true
      */
 	public ArrayList<SoldTicket> getSoldTickets()
 	{
-		Result<Record> soldTicketRecords = create.select().from(SOLDTICKETS)
-				.orderBy(SOLDTICKETS.TIMESTAMP.desc()).fetch();
+		Result<SoldticketsRecord> soldTicketRecords = create
+				.selectFrom(SOLDTICKETS)
+				.orderBy(SOLDTICKETS.TIMESTAMP.desc())
+				.fetch();
 		ArrayList<SoldTicket> soldTicketsList = new ArrayList<>();
-
-		for (Record rec : soldTicketRecords)
+		if (soldTicketRecords == null) return soldTicketsList; // return empty list if no sold tickets found
+		for (SoldticketsRecord rec : soldTicketRecords)
 		{
 			SoldTicket sold = new SoldTicket(
-					rec.getValue(SOLDTICKETS.SOLDTICKETS_ID),
-					rec.getValue(SOLDTICKETS.NAME),
-					new Date((long) rec.getValue(SOLDTICKETS.TIMESTAMP)*1000),
-					rec.getValue(SOLDTICKETS.PRICE));
+					rec.getSoldticketsId(),
+					rec.getName(),
+					new Date((long) rec.getTimestamp()*1000),
+					rec.getPrice());
 			soldTicketsList.add(sold);
 		}
 		return soldTicketsList;
@@ -1311,18 +1481,22 @@ public class ControllerDatabase
      *
      * @param tick Ticket object to be stored in the database
      * @return unique ID of newly created name entry in the database
+	 * @pre true
+	 * @post ticket is successfully added to database
      */
 	public int addTicket(Ticket tick)
 	{
-		TicketsRecord newTick = create.insertInto(TICKETS,
-				TICKETS.NAME,
-				TICKETS.PRICE,
-				TICKETS.NUMPASSENGERS,
-				TICKETS.DESCRIPTION)
-				.values(tick.getName(),
-						tick.getPrice(),
-						tick.getNumPassengers(),
-						tick.getDescription())
+		TicketsRecord newTick = create
+				.insertInto(TICKETS,
+						TICKETS.NAME,
+						TICKETS.PRICE,
+						TICKETS.NUMPASSENGERS,
+						TICKETS.DESCRIPTION)
+				.values(
+					tick.getName(),
+					tick.getPrice(),
+					tick.getNumPassengers(),
+					tick.getDescription())
 				.returning(TICKETS.TICKETS_ID)
 				.fetchOne();
 
@@ -1333,16 +1507,22 @@ public class ControllerDatabase
      * Removes a name entry from the database using its unique id
      *
      * @param id unique ID of the name entry that is to be deleted from the database
+	 * @pre true
+	 * @post ticket with specified ID is removed from database
      */
 	public void deleteTicket(int id)
 	{
-		create.delete(TICKETS).where(TICKETS.TICKETS_ID.equal(id)).execute();
+		create.delete(TICKETS)
+				.where(TICKETS.TICKETS_ID.equal(id))
+				.execute();
 	}
 
     /**
      * Modifies an existing name entry in the database
      *
      * @param tick Ticket object whose entry is to be updated in the database
+	 * @pre true
+	 * @post properties of specified ticket are changed if existing
      */
 	public void modifyTicket(Ticket tick)
 	{
@@ -1359,20 +1539,27 @@ public class ControllerDatabase
      * Retrieves a list of Ticket objects representing all name entries stored in the database
      *
      * @return ArrayList containing Ticket objects for every name entry stored in the database
-     */
+	 * @pre true
+	 * @post true
+	 */
 	public ArrayList<Ticket> getTickets()
 	{
-		Result<Record> ticketRecords = create.select().from(TICKETS).orderBy(TICKETS.NAME.asc()).fetch();
-		ArrayList<Ticket> ticketList = new ArrayList<>();
+		Result<TicketsRecord> ticketRecords = create
+				.selectFrom(TICKETS)
+				.orderBy(TICKETS.NAME.asc())
+				.fetch();
 
-		for (Record rec : ticketRecords)
+		ArrayList<Ticket> ticketList = new ArrayList<>();
+		if (ticketRecords == null) return ticketList; // return empty list if no tickets found
+
+		for (TicketsRecord rec : ticketRecords)
 		{
 			Ticket tick = new Ticket(
-					rec.getValue(TICKETS.PRICE),
-					rec.getValue(TICKETS.NAME),
-					rec.getValue(TICKETS.NUMPASSENGERS),
-					rec.getValue(TICKETS.DESCRIPTION),
-					rec.getValue(TICKETS.TICKETS_ID));
+					rec.getPrice(),
+					rec.getName(),
+					rec.getNumpassengers(),
+					rec.getDescription(),
+					rec.getTicketsId());
 			ticketList.add(tick);
 		}
 		return ticketList;
@@ -1383,18 +1570,23 @@ public class ControllerDatabase
      *
      * @param id unique ID of the name to be retrieved
      * @return Ticket object created from its corresponding entry the database, null if ticket not found
+	 * @pre true
+	 * @post true
      */
 	public Ticket getTicketById(int id)
 	{
-		Record rec = create.select().from(TICKETS).where(TICKETS.TICKETS_ID.eq(id)).fetchOne();
+		TicketsRecord rec = create
+				.selectFrom(TICKETS)
+				.where(TICKETS.TICKETS_ID.eq(id))
+				.fetchOne();
         if (rec == null) return null;
 
 		Ticket tick = new Ticket(
-				rec.getValue(TICKETS.PRICE),
-				rec.getValue(TICKETS.NAME),
-				rec.getValue(TICKETS.NUMPASSENGERS),
-				rec.getValue(TICKETS.DESCRIPTION),
-				rec.getValue(TICKETS.TICKETS_ID));
+				rec.getPrice(),
+				rec.getName(),
+				rec.getNumpassengers(),
+				rec.getDescription(),
+				rec.getTicketsId());
 		tick.setId(id);
 		return(tick);
 	}
@@ -1407,11 +1599,16 @@ public class ControllerDatabase
      * Creates all trips for a given day.
      *
      * @param date date for which tours ought to be generated
+	 * @pre true
+	 * @post tours of the specified day are successfully added to database
      */
     public void createTours(Date date)
     {
 		// fetch all route IDs from database
-        Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
+        Result<Record1<Integer>> routes = create
+				.select(ROUTES.ROUTES_ID)
+				.from(ROUTES)
+				.fetch();
 
         // Modify given date to represent midnight
         GregorianCalendar calendar = new GregorianCalendar();
@@ -1432,19 +1629,21 @@ public class ControllerDatabase
         {
 			// ... get all start times belonging to selected day of weeek ...
             Result<Record1<Integer>> startingTimes = create
-                    .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
-                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek)).fetch();
+                    .select(ROUTES_STARTTIMES.STARTTIME)
+					.from(ROUTES_STARTTIMES)
+                    .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek))
+					.fetch();
 
 			// ... and add each one to the current date to get the timestamp.
             for (Record1<Integer> startingTime : startingTimes)
             {
 
                 create.insertInto(TOURS,
-                        TOURS.TIMESTAMP,
-                        TOURS.ROUTES_ID)
+                        	TOURS.TIMESTAMP,
+                        	TOURS.ROUTES_ID)
                         .values(
-                                timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
-                                route.getValue(ROUTES.ROUTES_ID))
+                            timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
+                            route.getValue(ROUTES.ROUTES_ID))
                         .execute();
             }
             create.execute("END");		// TODO: is this supposed to appear INSIDE the for-loop?
@@ -1456,12 +1655,19 @@ public class ControllerDatabase
      *
      * @param id unique ID of the user whose tours are to be retrieved
      * @return ArrayList of all tours associated with the given user
+	 * @pre true
+	 * @post true
      */
     public ArrayList<Tour> getUserTours(int id)
     {
         ArrayList<Tour> result = new ArrayList<>();
-        Result<ToursRecord> tours = create.selectFrom(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).orderBy(TOURS.TIMESTAMP).fetch();
+        Result<ToursRecord> tours = create
+				.selectFrom(TOURS)
+				.where(TOURS.EMPLOYEES_ID.eq(id))
+				.orderBy(TOURS.TIMESTAMP)
+				.fetch();
 
+		if (tours == null) return result; // return empty list if no tours found
         for (ToursRecord t : tours){
             result.add(
                     new Tour(
@@ -1481,11 +1687,15 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the route whose tours to be deleted.
 	 * @return number of tours deleted
+	 * @pre true
+	 * @post all tours assigned to specified route are removed from database
 	 */
 	public int deleteToursUsingRoutesId(int id)
 	{
         int numOfTours = getNumberOfToursUsingRouteId(id);
-		create.delete(TOURS).where(TOURS.ROUTES_ID.eq(id)).execute();
+		create.delete(TOURS)
+				.where(TOURS.ROUTES_ID.eq(id))
+				.execute();
 		return numOfTours;
 	}
 
@@ -1493,6 +1703,8 @@ public class ControllerDatabase
 	 * deletes all tours before today.
 	 *
 	 * @return number of deleted tours
+	 * @pre true
+	 * @post all tours with start times before today are removed from database
 	 */
 	public int purgeTours()
 	{
@@ -1503,6 +1715,8 @@ public class ControllerDatabase
 	 * deletes all tours before a specific date.
 	 *
 	 * @return number of deleted tours
+	 * @pre true
+	 * @post all tours with start times before the specified date are removed from database
 	 */
 	public int purgeTours(Date date)
 	{
@@ -1523,7 +1737,9 @@ public class ControllerDatabase
 				.fetchOne();
 
 		// ... and delete them
-		create.delete(TOURS).where(TOURS.TIMESTAMP.lessThan(deadline)).execute();
+		create.delete(TOURS)
+				.where(TOURS.TIMESTAMP.lessThan(deadline))
+				.execute();
 		return (Integer) record.getValue(0);
 	}
 
@@ -1532,6 +1748,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the bus
 	 * @return number of tours using the bus
+	 * @pre true
+	 * @post true
 	 */
 	public int getNumberOfToursUsingBusId(int id)
 	{
@@ -1549,6 +1767,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the route
 	 * @return number of tours using the route
+	 * @pre true
+	 * @post true
 	 */
 	public int getNumberOfToursUsingRouteId(int id)
 	{
@@ -1567,6 +1787,8 @@ public class ControllerDatabase
 	 *
 	 * @param id unique ID of the employee
 	 * @return number of tours using the employee
+	 * @pre true
+	 * @post true
 	 */
 	public int getNumberOfToursUsingEmployeeId(int id)
 	{
@@ -1577,18 +1799,5 @@ public class ControllerDatabase
 				.fetchOne();
 
 		return (Integer) record.getValue(0);
-	}
-
-	/**
-	 * deletes all tours with a specific employee assigned.
-	 *
-	 * @param id unique ID of the employee
-	 * @return number of tours deleted
-	 */
-	public int deleteToursUsingEmployee(int id)
-	{
-		int numOfTours = getNumberOfToursUsingEmployeeId(id);
-		create.delete(TOURS).where(TOURS.EMPLOYEES_ID.eq(id)).execute();
-		return (Integer) numOfTours;
 	}
 }
