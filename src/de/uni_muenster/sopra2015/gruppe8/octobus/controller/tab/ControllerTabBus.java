@@ -111,4 +111,10 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 				break;
 		}
 	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
+	}
 }

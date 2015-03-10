@@ -113,5 +113,11 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
 	}
 
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
+	}
+
 
 }

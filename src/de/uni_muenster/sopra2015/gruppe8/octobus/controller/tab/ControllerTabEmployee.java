@@ -118,4 +118,10 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 			fillTable();
 		}
 	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
+	}
 }

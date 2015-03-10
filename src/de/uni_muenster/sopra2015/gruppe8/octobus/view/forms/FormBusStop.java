@@ -164,6 +164,7 @@ public class FormBusStop extends FormGeneral
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
 
+		//sorter = new TableRowSorter<>(tmStoppingPoints);
 		tableStoppingPoints.removeColumn(tableStoppingPoints.getColumnModel().getColumn(0));
 		//tableStoppingPoints.setRowSorter(sorter);
 		tableStoppingPoints.addMouseListener(new MouseAdapter()

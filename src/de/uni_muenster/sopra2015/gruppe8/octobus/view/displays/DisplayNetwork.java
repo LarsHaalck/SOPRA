@@ -18,7 +18,7 @@ public class DisplayNetwork extends JPanel
 	//Static buffered images, so we only have to draw it once
 	private static BufferedImage imageNetworkDay;
 	private static BufferedImage imageNetworkNight;
-
+	private static double ZOOM = 0.9;
 	//Components
 	private JRadioButton rdBtnDay;
 	private JRadioButton rdBtnNight;
@@ -26,7 +26,6 @@ public class DisplayNetwork extends JPanel
 	private JLabel lbDay;
 	private JLabel lbNight;
 	private ControllerDisplayNetwork controllerDisplayNetwork;
-	private static double ZOOM = 0.9;
 
     public DisplayNetwork()
 	{
@@ -70,6 +69,7 @@ public class DisplayNetwork extends JPanel
 		add(panel, BorderLayout.CENTER);
 
 		scrollPane = new JScrollPane();
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //increase scroll speed
 
 		panel.add(scrollPane, BorderLayout.CENTER);
 
