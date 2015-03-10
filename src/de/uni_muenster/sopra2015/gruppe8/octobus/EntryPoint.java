@@ -1,7 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 

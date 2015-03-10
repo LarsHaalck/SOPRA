@@ -80,6 +80,8 @@ public class FieldDate extends FieldText
 					if(isLeapYear && day > 29) return false;
 					else if(!isLeapYear && day > 28) return false;
 			}
+
+			if(year <= 1901 && month <= 12 && day <= 13) return false; //unix timestamp overflow
 			return true;
         }
 		else
