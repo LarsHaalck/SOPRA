@@ -28,7 +28,7 @@ public class PaneTabs extends JTabbedPane
 		}
 
 		if(hrManager)
-			addTab("Mitarbeiter", new TabEmployee());
+			addTab("Mitarbeiter", new TabEmployee(userId));
 
 		if(networkPlaner)
 		{
