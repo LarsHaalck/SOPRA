@@ -5,14 +5,20 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
  */
 public interface ListenerTable {
 	/**
-	 * Implements the action happens after table-selection changed
+	 * Implements the action happening after the table-selection changed.
 	 * @param emitter Table
 	 */
 	public abstract void tableSelectionChanged(EmitterTable emitter);
 
 	/**
-	 * Implements the action that table-content has changed
+	 * Implements the action happening after table-content has changed.
 	 * @param emitter Table
 	 */
 	public abstract void tableContentChanged(EmitterTable emitter);
+
+	/**
+	 * Implements the action happening after table-focus has been lost.
+	 * @param emitter Table
+	 */
+	public abstract void tableFocusLost(EmitterTable emitter);
 }

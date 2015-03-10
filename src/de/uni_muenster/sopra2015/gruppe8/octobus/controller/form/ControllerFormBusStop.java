@@ -13,6 +13,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Lars on 02-Mar-15.
@@ -142,7 +143,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			formBusStop.setLocationX(busStop.getLocation().getFirst());
 			formBusStop.setLocationY(busStop.getLocation().getSecond());
 
-			for(StoppingPoint p: busStop.getStoppingPoints())
+			for(StoppingPoint p: originalStoppingPoints)
 				formBusStop.addStoppingPoint(p.getId(), p.getName());
 			formBusStop.setBarrierFree(busStop.isBarrierFree());
 		}
@@ -205,7 +206,15 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	private boolean saveToDB()
 	{
 		if(objectID == -1)
+		{
+			HashSet<StoppingPoint> hashSet = new HashSet<>();
+			for (StoppingPoint stoppingPoint : alteredStoppingPoints)
+			{
+				hashSet.add(stoppingPoint);
+			}
+			busStop.setStoppingPoints(hashSet);
 			controllerDatabase.addBusStop(busStop);
+		}
 		else
         {
             // This only modifies data pertaining to the BusStop itself. StoppingPoints need
