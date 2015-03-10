@@ -50,6 +50,7 @@ public class ControllerGraph
 	 */
 	private void buildAdjSet()
 	{
+		if(routes == null || stops == null) return;
 		for(Route route : routes)
 		{
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = route.getStops();
@@ -95,6 +96,7 @@ public class ControllerGraph
 	 */
 	public Connection getConnection(int id_start, int id_end, DayOfWeek day, int time)
 	{
+		if(routes == null || stops == null) return null;
 		ConnectionRequest request = new ConnectionRequest();
 		return request.findConnection(id_start, id_end, day, time);
 	}
