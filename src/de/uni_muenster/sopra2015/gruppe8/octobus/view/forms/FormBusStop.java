@@ -307,11 +307,6 @@ public class FormBusStop extends FormGeneral
 		tfLocationY.setNumber(y);
 	}
 
-    //TODO: Fehlt noch. Benötigt?
-	public void setLocationBusStop(JPanel plLocation)
-	{
-	}
-
 	public ArrayList<StoppingPoint> getStoppingPoints()
 	{
 		ArrayList<StoppingPoint> list = new ArrayList<>();
