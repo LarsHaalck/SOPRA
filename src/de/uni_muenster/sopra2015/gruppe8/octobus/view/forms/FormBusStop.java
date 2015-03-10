@@ -236,7 +236,6 @@ public class FormBusStop extends FormGeneral
 
 	public int getSelectedStoppingPoint()
 	{
-
 		return selectedID;
 	}
 
@@ -271,9 +270,9 @@ public class FormBusStop extends FormGeneral
 		tableStoppingPoints.repaint();
 	}
 
-	public void removeStoppingPoint(int index)
+	public void removeStoppingPoint(int id)
 	{
-        tmStoppingPoints.remove(index);
+        tmStoppingPoints.remove(id);
 		tableStoppingPoints.revalidate();
 		tableStoppingPoints.repaint();
 	}
@@ -365,9 +364,7 @@ public class FormBusStop extends FormGeneral
 				dataNew[i][1] = data[i][1];
 			}
 			dataNew[data.length] = new Object[]{id, name};
-			data = dataNew;
-			fireTableDataChanged();
-			fireTableStructureChanged();
+			setData(dataNew);
 		}
 
 		public void setElementAt(int index, String value)
@@ -396,9 +393,7 @@ public class FormBusStop extends FormGeneral
 					curIndex++;
 				}
 			}
-			data = dataNew;
-            fireTableDataChanged();
-            fireTableStructureChanged();
+			setData(dataNew);
 		}
 	}
 }
