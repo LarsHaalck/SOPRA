@@ -16,14 +16,14 @@ import java.util.Date;
 public class FormTourResetBus extends FormGeneral
 {
 
+	ControllerFormTourResetBus controllerFormTourResetBus;
 	private JPanel jpMain, jpButtonMain, jpButton, jpStart, jpEnd, jpBusDriver;
 	private JLabel jlStart, jlEnd, jlBusDriver;
 	private FieldDate tfDateStart;
 	private FieldDate tfDateEnd;
-	private JComboBox cbBuses;
+	private JComboBox<TupleIntString> cbBuses;
 	private JButton jbSave, jbCancel;
 	private TupleIntString[] arrayBuses;
-	ControllerFormTourResetBus controllerFormTourResetBus;
 
 	public FormTourResetBus(Frame parent, int objectId)
 	{
@@ -59,7 +59,7 @@ public class FormTourResetBus extends FormGeneral
 		jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
 		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
 		jlBusDriver = new JLabel("Kennzeichen: ");
-		cbBuses = new JComboBox(arrayBuses);
+		cbBuses = new JComboBox<>(arrayBuses);
 		System.out.println(cbBuses.getItemCount());
 		jpBusDriver.add(jlBusDriver);
 		jpBusDriver.add(Box.createHorizontalStrut(8));
