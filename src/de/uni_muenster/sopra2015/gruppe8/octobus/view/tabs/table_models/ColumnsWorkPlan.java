@@ -1,7 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Florian on 06.03.2015.
+ * Every column of workPlan-table.
+ * ATTENTION: Order of enums influence order of columns in table model
  */
 public enum ColumnsWorkPlan
 {

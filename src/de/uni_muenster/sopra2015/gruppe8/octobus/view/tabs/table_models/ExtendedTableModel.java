@@ -120,6 +120,10 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 
 	}
 
+	/**
+	 * Sets the data of the table.
+	 * @param data data to be set.
+	 */
 	public void setData(Object[][] data)
 	{
 		this.data = data;

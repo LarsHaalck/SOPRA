@@ -11,6 +11,7 @@ import java.awt.print.PrinterException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 
+//TODO JavaDoc
 /**
  * Created by Florian on 07.03.2015.
  */
