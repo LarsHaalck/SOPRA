@@ -1,6 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
@@ -10,16 +9,14 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
 
 /**
  * Created by Jonas on 04.03.2015.
@@ -231,6 +228,20 @@ public class FormRouteStep1 extends JPanel
 		public String[] getRefineableColumns()
 		{
 			return new String[0];
+		}
+
+		@Override
+		public Class getColumnClass(int column)
+		{
+			switch(column)
+			{
+				case 0:
+					return Integer.class;
+
+				case 1:
+					return String.class;
+			}
+			return null;
 		}
 	}
 

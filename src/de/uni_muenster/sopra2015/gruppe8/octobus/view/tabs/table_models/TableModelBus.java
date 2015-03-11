@@ -1,7 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
-import javax.swing.event.TableModelListener;
-
 /**
  * Created by Florian on 03.03.2015.
  */
@@ -27,5 +25,31 @@ public class TableModelBus extends ExtendedTableModel
 	public String[] getRefineableColumns()
 	{
 		return new String[]{ColumnsBus.LICENCE_PLATE.toString(), ColumnsBus.MANUFACTURER.toString(), ColumnsBus.ARTICULATED_BUS.toString()};
+	}
+
+	@Override
+	public Class getColumnClass(int column)
+	{
+		switch(column)
+		{
+			case 0:
+				return Integer.class;
+
+			case 1:
+			case 2:
+			case 3:
+				return String.class;
+
+			case 4:
+				return Boolean.class;
+
+			case 5:
+			case 6:
+				return Integer.class;
+
+			case 7:
+				return TableDate.class;
+		}
+		return null;
 	}
 }

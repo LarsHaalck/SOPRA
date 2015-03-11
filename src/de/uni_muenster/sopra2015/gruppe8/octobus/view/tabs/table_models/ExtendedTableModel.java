@@ -2,7 +2,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 /**
  * Class extends normal table to have methods for getting an array of specified columns and get index by column by name
@@ -89,10 +88,7 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	 * then the last column would contain text ("true"/"false"),
 	 * rather than a check box.
 	 */
-	public Class getColumnClass(int column)
-	{
-		return getValueAt(0, column).getClass();
-	}
+	public abstract Class getColumnClass(int column);
 
 	@Override
 	public int getRowCount()
