@@ -2146,4 +2146,49 @@ public class ControllerDatabase
 				.where(TOURS.TOURS_ID.eq(tourID))
 				.execute();
 	}
+
+	/**
+	 * gets the number of tours which are unplanned for a specific day.
+	 *
+	 * @param date contains the day whose unplanned tours to be counted
+	 * @return -1 if no tours for supplied date in database, else number of unplanned tours for supplied date
+	 * @pre true
+	 * @post true
+	 */
+	public int getNumberOfUnplannedToursByDate (Date date)
+	{
+		// set specific date to midnight
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int startOfDay = (int) (calendar.getTimeInMillis()/1000);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		int endOfDay = (int) (calendar.getTimeInMillis()/1000);
+
+		Condition inRange = TOURS.TIMESTAMP.between(startOfDay,endOfDay);
+
+		Result<ToursRecord> rows = create
+				.selectFrom(TOURS)
+				.where(inRange)
+				.fetch();
+
+		if (rows == null || rows.size() == 0) return -1;
+
+		Condition anyNull = TOURS.BUSES_ID.isNull().or(TOURS.EMPLOYEES_ID.isNull());
+
+		Record count = create
+				.selectCount()
+				.from(TOURS)
+				.where(inRange)
+				.and(anyNull)
+				.fetchOne();
+
+		return (Integer) count.getValue(0);
+	}
 }
