@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Form used to edit a tour
+ * Form used to edit a tour.
  */
 public class FormTourEdit extends FormGeneral
 {
@@ -102,13 +102,11 @@ public class FormTourEdit extends FormGeneral
 		JPanel plButtons = new JPanel();
 		plButtons.setLayout(new BorderLayout(5,5));
 		btnCancel = new JButton("Abbrechen");
-		btnCancel.addActionListener(e-> {
-			controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_CANCEL);
-		});
+		btnCancel.addActionListener(e->
+				controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_CANCEL));
 		btnSave = new JButton("Speichern");
-		btnSave.addActionListener(e-> {
-			controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_SAVE);
-		});
+		btnSave.addActionListener(e->
+				controllerFormTourEdit.buttonPressed(EmitterButton.FORM_TOUR_EDIT_SAVE));
 		plButtons.add(btnSave, BorderLayout.WEST);
 		plButtons.add(btnCancel, BorderLayout.EAST);
 

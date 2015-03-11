@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
@@ -19,7 +20,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
- * Created by Jonas on 04.03.2015.
+ * Part of the FormRoute wizard. This is used as the first step.
  */
 public class FormRouteStep1 extends JPanel
 {
@@ -73,18 +74,16 @@ public class FormRouteStep1 extends JPanel
 		cTable.gridheight = 4;
 
 		up = new BasicArrowButton(BasicArrowButton.NORTH);
-		up.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_UP);
-		});
+		up.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_UP));
 		cButton.gridx = 0;
 		cButton.gridy = 1;
 		cButton.insets = new Insets(130, 0, 5, 50);
 		bottomPanel.add(up, cButton);
 
 		down = new BasicArrowButton(BasicArrowButton.SOUTH);
-		down.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DOWN);
-		});
+		down.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DOWN));
 		cButton.gridx = 0;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(5, 0, 5, 50);
@@ -138,18 +137,16 @@ public class FormRouteStep1 extends JPanel
 		bottomPanel.add(t1, cTable);
 
 		add = new BasicArrowButton(BasicArrowButton.WEST);
-		add.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_ADD);
-		});
+		add.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_ADD));
 		cButton.gridx = 2;
 		cButton.gridy = 1;
 		cButton.insets = new Insets(135, 50, 20, 50);
 		bottomPanel.add(add, cButton);
 
 		delete = new BasicArrowButton(BasicArrowButton.EAST);
-		delete.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DELETE);
-		});
+		delete.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP1_DELETE));
 		cButton.gridx = 2;
 		cButton.gridy = 2;
 		cButton.insets = new Insets(20, 50, 5, 50);
@@ -211,6 +208,10 @@ public class FormRouteStep1 extends JPanel
 		add(bottomPanel, BorderLayout.CENTER);
 	}
 
+	/**
+	 * TableModel for tables used in this form.
+	 * Sets column name to "Haltestelle".
+	 */
 	private class RouteTableModel extends ExtendedTableModel
 	{
 		public RouteTableModel()

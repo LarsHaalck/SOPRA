@@ -439,6 +439,8 @@ public class ControllerDatabase
 
 		// insert stopping points' data into database
 		HashSet<StoppingPoint> points = bstop.getStoppingPoints();
+
+		create.execute("BEGIN");
 		for (StoppingPoint s : points)
 		{
 			create.insertInto(
@@ -450,6 +452,7 @@ public class ControllerDatabase
 							s.getName())
 					.execute();
 		}
+		create.execute("END");
 
 		return (newStop.getBusstopsId());
 	}
@@ -1170,6 +1173,8 @@ public class ControllerDatabase
 
 		// add associated bus stops to routes_stops table
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = r.getStops();
+
+		create.execute("BEGIN");
 		for (Triple<BusStop, StoppingPoint, Integer> triple : stops)
 		{
 			create.insertInto(ROUTES_STOPS,
@@ -1184,9 +1189,12 @@ public class ControllerDatabase
 							triple.getThird())
 					.execute();
 		}
+		create.execute("END");
 
 		// add associated start times to routes_startTimes table
 		HashMap<DayOfWeek, LinkedList<Integer>> times = r.getStartTimes();
+
+		create.execute("BEGIN");
 		for (DayOfWeek day : times.keySet())
 		{
 			for (Integer time : times.get(day))
@@ -1202,6 +1210,7 @@ public class ControllerDatabase
 						.execute();
 			}
 		}
+		create.execute("END");
 
 		return (newRoute.getRoutesId());
 	}

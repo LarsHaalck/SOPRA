@@ -1,6 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourResetBus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
@@ -8,11 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -92,19 +87,17 @@ public class FormTourResetBus extends FormGeneral
 		setPreferredSize(new Dimension(220, 169));
 		pack();
 
-		jbSave.addActionListener(e -> {
-			controllerFormTourResetBus.buttonPressed(EmitterButton.FORM_TOUR_RESET_BUS_SAVE);
-		});
-		jbCancel.addActionListener(e -> {
-			controllerFormTourResetBus.buttonPressed(EmitterButton.FORM_TOUR_RESET_BUS_CANCEL);
-		});
+		jbSave.addActionListener(e ->
+				controllerFormTourResetBus.buttonPressed(EmitterButton.FORM_TOUR_RESET_BUS_SAVE));
+		jbCancel.addActionListener(e ->
+				controllerFormTourResetBus.buttonPressed(EmitterButton.FORM_TOUR_RESET_BUS_CANCEL));
 
 		setLocationRelativeTo(null);
 	}
 
 	/**
-	 * Fills the combobox with buses.
-	 * @param buses
+	 * Fills the combo box with buses.
+	 * @param buses buses to be added.
 	 */
 	public void fillBuses(TupleIntString[] buses)
 	{
