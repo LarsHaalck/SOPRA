@@ -64,7 +64,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 				if(errors.size() == 0)
 				{
-					//controllerDatabase.modifyTour(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDriver()
+					controllerDatabase.modifyTour(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDriver());
 					close();
 				}
 				else
