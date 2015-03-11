@@ -89,6 +89,10 @@ public class TableModelSearchConnection extends AbstractTableModel {
         return hourString + ":" + minuteString;
     }
 
+    public Connection getConnectionByIndex(int index){
+        return connections.get(index);
+    }
+
     public void clearTableModel(){
         connections.clear();
     }

@@ -66,4 +66,21 @@ public class Connection
 		return true;
 	}
 
+    @Override
+    public String toString(){
+        String result = this.getClass() + ":["
+                + this.getTime() + ", "
+                + this.getDuration() + ", "
+                + this.getNumberOfTransitions() + ", \n";
+        for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips) {
+            String tripString = "(" + trip.getFirst() + ", "
+                    + trip.getSecond() + ", "
+                    + trip.getThird() + ", "
+                    + trip.getFourth() + ", "
+                    + trip.getFifth() + "), \n";
+            result += tripString;
+        }
+        return result;
+    }
+
 }
