@@ -1,7 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintStoppingPoint;
 
 import java.awt.*;
@@ -49,19 +47,17 @@ public class PrintViewStoppingPoint implements Printable
 	{
 		graphics2D = (Graphics2D) graphics;
 
-		if (pageIndex >= calcNumPages())
+		routes = data.getRouteEntries();
+
+		if (pageIndex >= routes.size())
 		{
 			return NO_SUCH_PAGE;
 		}
 
-		routes = data.getRouteEntries();
+		PrintStoppingPoint.RouteEntry routeEntry = routes.get(pageIndex);
+		drawHeader(pageIndex, routeEntry);
+		drawContent(pageIndex,routeEntry);
 
-		for(PrintStoppingPoint.RouteEntry routeEntry: routes)
-		{
-			drawHeader(pageIndex, routeEntry);
-			drawContent(pageIndex,routeEntry);
-			pageIndex++;
-		}
 		return PAGE_EXISTS;
 	}
 
@@ -121,7 +117,7 @@ public class PrintViewStoppingPoint implements Printable
 
 		curX += 20;
 		graphics2D.setFont(fontNormalHead);
-		curDate = "Folgende Haltestellen:";
+		curDate = "Die nächsten Haltestellen:";
 		graphics2D.drawString(curDate, curX, curY);
 		graphics2D.setFont(fontNormal);
 		for (String busStop: routeEntry.getNextStops())
@@ -131,17 +127,5 @@ public class PrintViewStoppingPoint implements Printable
 			graphics2D.drawString(curDate, curX, curY);
 		}
 
-		//TODO: Seitenumbruch bei zu vielen Einträgen
-
-	}
-
-	/**
-	 * Gives number of pages to be printed for one stoppingPoint.
-	 *
-	 * @return number of pages
-	 */
-	private int calcNumPages()
-	{
-		return data.getRouteEntries().size();
 	}
 }
