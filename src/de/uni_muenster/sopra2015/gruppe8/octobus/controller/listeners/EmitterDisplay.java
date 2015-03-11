@@ -1,7 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
- * Created by Florian on 07.03.2015.
+ * Used to describe displays.
+ * Each value represents a unique display.
  */
 public enum EmitterDisplay
 {

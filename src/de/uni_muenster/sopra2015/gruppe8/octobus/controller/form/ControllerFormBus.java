@@ -27,6 +27,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.objectID = objectID;
 		this.formBus = formBus;
+		//Sets global bus to the bus given in objectID
 		if(objectID != -1)
 		{
 			setBusInfo();
@@ -39,8 +40,10 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		switch (emitter)
 		{
 			case FORM_BUS_SAVE:
+				//Checks if input is valid
 				if(parseValuesFromForm())
 				{
+					//Saves bus to DB and refreshes TAB_BUS
 					if(saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUS);
@@ -145,8 +148,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current bus to the DB.
-     *
-	 * @return
+	 * @return true if it worked
 	 */
 	private boolean saveToDB()
 	{
@@ -160,15 +162,18 @@ public class ControllerFormBus extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
+	/**
+	 * Closes current dialog.
+	 */
 	private void closeDialog()
 	{
 		formBus.dispose();

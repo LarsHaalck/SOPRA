@@ -170,18 +170,16 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 			case FORM_ROUTE_STEP1_ADD:
 				//Implements the left arrow button from Step1
-				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
-				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
+				JTable tableAvailable = formRoute.getStep1().getBusStopAvailable();
 				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
-				ExtendedTableModel modelTableCurrent = formRoute.getStep1().getModel_1();
-				int viewRow = tableAvailabe.getSelectedRow();
+				int viewRow = tableAvailable.getSelectedRow();
 				if (viewRow == -1)
 					break;
-				int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
+				int selectedRow = tableAvailable.convertRowIndexToModel(viewRow);
 				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
 				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
-				//Adds selected stpooing point to the list of content for the "table current".
-				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
+				//Adds selected stopping point to the list of content for the "table current".
+				contentTableCurrent.add(new Tuple<>(selectedID, selectedName));
 				//Refreshes "table current" with edited content list.
 				initTableCurrent();
 				stopsChanged = true;
@@ -387,7 +385,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			for (Triple<BusStop,StoppingPoint,Integer> stops : route.getStops())
 			{
 				String name = ControllerDatabase.getInstance().getCompleteStoppingPointName(stops.getSecond().getId());
-				contentTableCurrent.add(new Tuple<Integer, String>(stops.getSecond().getId(),name));
+				contentTableCurrent.add(new Tuple<>(stops.getSecond().getId(),name));
 			}
 			initTableCurrent();
 		}
@@ -398,18 +396,21 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	private void insertDepartureTimes()
 	{
-		int[] times = new int[route.getStops().size() - 1];
-		for (int i = 0; i < times.length; i++)
+		if(objectID != -1)
 		{
-			times[i] = route.getStops().get(i+1).getThird();
+			int[] times = new int[route.getStops().size() - 1];
+			for (int i = 0; i < times.length; i++)
+			{
+				times[i] = route.getStops().get(i + 1).getThird();
+			}
+			formRoute.getStep2().setDepartureTimes(times);
+			refreshTablesStep2();
 		}
-		formRoute.getStep2().setDepartureTimes(times);
-		refreshTablesStep2();
 	}
 
 	/**
 	 * Saves the current route to the DB.
-	 * @return
+	 * @return true on success
 	 */
 	private boolean saveToDB()
 	{
@@ -436,8 +437,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
 		else if(name.trim().length() == 0)
 			errorFields.add("Der Name darf nicht leer sein.");
-		else if (name.trim().length() < 5)
-			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
+		else if (name.trim().length() < 1)
+			errorFields.add("Der Name muss mindestens 1 Zeichen umfassen.");
 		if(stoppingPoints.size() < 2)
 		{
 			errorFields.add("Es müssen mindestens zwei Haltepunkte angegeben werden.");
@@ -497,14 +498,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			BusStop busStop = ControllerDatabase.getInstance().getBusStopByStoppingPointId(id);
 			StoppingPoint stoppingPoint = ControllerDatabase.getInstance().getStoppingPointById(id);
 			int time = 0;
-			stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+			stoppingPoints.add(new Triple<>(busStop,stoppingPoint,time));
 			for (int i = 0; i < departureTimes.length; i++)
 			{
 				id = routeStoppingPoints.get(i+1).getFirst();
 				busStop = ControllerDatabase.getInstance().getBusStopByStoppingPointId(id);
 				stoppingPoint = ControllerDatabase.getInstance().getStoppingPointById(id);
 				time = departureTimes[i];
-				stoppingPoints.add(new Triple<BusStop, StoppingPoint, Integer>(busStop,stoppingPoint,time));
+				stoppingPoints.add(new Triple<>(busStop,stoppingPoint,time));
 			}
 			route.setStops(stoppingPoints);
 			route.setNote(null);

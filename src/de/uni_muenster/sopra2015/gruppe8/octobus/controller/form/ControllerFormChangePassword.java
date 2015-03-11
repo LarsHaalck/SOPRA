@@ -38,6 +38,8 @@ public class ControllerFormChangePassword extends Controller implements Listener
 		}
 	}
 
+	//TODO maybe more comments?
+
 	@Override
 	public void buttonPressed(EmitterButton emitter)
 	{
@@ -107,12 +109,12 @@ public class ControllerFormChangePassword extends Controller implements Listener
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener(this);
 	}
 }
