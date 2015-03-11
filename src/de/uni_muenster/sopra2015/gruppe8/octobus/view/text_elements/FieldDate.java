@@ -51,7 +51,7 @@ public class FieldDate extends FieldText
 			return false;
 
         // Match against regex for date
-        if (Pattern.compile("([0-9]{1,2}).([0-9]{1,2}).([0-9]{4})").matcher(input).matches())
+        if (Pattern.compile("([0-9]{1,2})\\.([0-9]{1,2})\\.([0-9]{4})").matcher(input).matches())
         {
 	        // Parse day, month, year
 			int indexDot = input.indexOf('.');
