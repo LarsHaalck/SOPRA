@@ -9,9 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * creates the Dialog who shows the occupation of the next two weeks
