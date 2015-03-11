@@ -56,7 +56,7 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 	{
 		ArrayList<Tuple<String, Integer>> data = new ArrayList<>();
 		Date today = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("EE, dd.MM.", Locale.GERMANY);
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd.MM.", Locale.GERMANY);
 
 		for(int i=0; i<14; i++)
 		{
