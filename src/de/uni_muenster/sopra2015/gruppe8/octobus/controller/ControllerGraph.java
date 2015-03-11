@@ -1,6 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+import sun.awt.image.ImageWatched;
 
 import java.time.DayOfWeek;
 import java.util.*;
@@ -40,7 +41,7 @@ public class ControllerGraph
 		buildAdjSet();
 	}
 
-	/*public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		ControllerGraph graph = new ControllerGraph();
 		graph.init();
@@ -49,10 +50,22 @@ public class ControllerGraph
 		//{
 		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
 		//}
-		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
+
+		for(int i = 0; i < 1440; i++)
+		{
+			DayOfWeek friday = DayOfWeek.FRIDAY;
+			System.out.println(i);
+
+			for(int j = 0; j < 2; j++)
+			{
+				graph.getConnection(8, 18, friday.plus(j), i);
+			}
+
+		}
+
 
 		return;
-	}*/
+	}
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -137,11 +150,18 @@ public class ControllerGraph
 		}
 
 
-		private boolean isWorkDay(DayOfWeek day)
+		public int getValueInWeek(DayOfWeek day)
 		{
-			return (day == DayOfWeek.MONDAY || day == DayOfWeek.TUESDAY|| day == DayOfWeek.THURSDAY || day == DayOfWeek.WEDNESDAY || day == DayOfWeek.THURSDAY);
+			for(int i = 0; i < 7; i++)
+			{
+				if(this.day.plus(i) == day)
+					return i;
+			}
+
+			return -1;
 		}
 
+		
 		/**
 		 * Calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2). s2 must be in neighbourhood of s1
 		 * @param id1 first Vertex in edge
@@ -164,7 +184,6 @@ public class ControllerGraph
 			{
 				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
 
-				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
 				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
 
 				int currentArrival = 0;
@@ -193,49 +212,26 @@ public class ControllerGraph
 				ArrayList<Integer> temp = new ArrayList<>();
 
 
-				/*int overNights = time / 1440;
-				if(overNights != 0)
-				{
-					System.out.println(overNights);
-				}*/
+				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
+				LinkedList<Integer> starTimesTomorrow = startTimes.get(day.plus(1));
 
-				boolean nextDay = false;
-				boolean getNewTimes = false;
 				for (Integer start : startTimesOnDay)
 				{
+					int startTime = start + 1440 * getValueInWeek(day);
 
-					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
+					if(timeDiffOnFirst + startTime >= time)
 					{
-						int x = (time - start - timeDiff)/1440 + 1; //convert time in days, add one and convert back in minutes
-						if(isWorkDay(day.plus(1)) && isWorkDay(day)) //if requested day and requested day + x are both between Mo-Fr
-						{
-							temp.add(timeDiffOnFirst + start + x * 1440);
-
-						}
-						else
-							getNewTimes = true;
-					}
-					else
-					{
-						temp.add(start + timeDiff);
+						temp.add(startTime + timeDiff);
 						break;
 					}
 				}
 
-				if(getNewTimes)
+				for (Integer startTomorrow : starTimesTomorrow)
 				{
-					int dayOffset = time / 1440;
-					LinkedList<Integer> newStarTimes = connector.getStartTimes().get(day.plus(dayOffset));
+					int startTime = startTomorrow + 1440 * getValueInWeek(day.plus(1));
 
-					for (Integer newStarTime : newStarTimes)
-					{
-						if(timeDiffOnFirst + newStarTime < time)
-						{
-							int x = (time - newStarTime - timeDiff)/1440 + 1;
-							temp.add(timeDiffOnFirst + newStarTime + x * 1440);
-						}
-
-					}
+					temp.add(startTime + timeDiff);
+					break;
 				}
 
 
