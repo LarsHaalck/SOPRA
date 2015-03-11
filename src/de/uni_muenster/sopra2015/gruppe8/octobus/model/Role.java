@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * Created by Lars on 27-Feb-15.
+ * Used to assign roles to employees.
  */
 public enum Role
 {

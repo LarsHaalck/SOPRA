@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 import java.util.Date;
 
 /**
- * Created by Lars on 27-Feb-15.
+ * Used to store the data of a tour.
  */
 public class Tour
 {

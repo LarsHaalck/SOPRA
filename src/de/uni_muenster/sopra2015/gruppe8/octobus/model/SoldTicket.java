@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 import java.util.Date;
 
 /**
- * Created by Florian on 27.02.2015.
+ * Used to store the data of a sold ticket.
  */
 public class SoldTicket
 {

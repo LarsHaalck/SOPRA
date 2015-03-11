@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * Created by Jonas on 27.02.2015.
- * Edited by Lars on 27.02.2015.
+ * Used to store the data of an employee.
  */
 public class Employee
 {

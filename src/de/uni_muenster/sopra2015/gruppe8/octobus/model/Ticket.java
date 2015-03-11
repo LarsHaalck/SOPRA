@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * Created by Joshua on 27.02.2015.
+ * Used to store the data of a ticket.
  */
 public class Ticket
 {
