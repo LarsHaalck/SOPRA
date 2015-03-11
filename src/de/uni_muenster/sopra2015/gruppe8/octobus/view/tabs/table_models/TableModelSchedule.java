@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 import javax.swing.*;
 
 /**
- * Created by Florian on 10.03.2015.
+ * TableModel for TabSchedule table.
  */
 public class TableModelSchedule extends ExtendedTableModel
 {

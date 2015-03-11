@@ -1,7 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Florian on 10.03.2015.
+ * Every column of schedule-table.
+ * ATTENTION: Order of enums influence order of columns in table model
  */
 public enum ColumnsSchedule
 {

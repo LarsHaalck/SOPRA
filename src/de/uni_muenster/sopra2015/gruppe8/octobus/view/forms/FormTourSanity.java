@@ -9,23 +9,21 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
- * Created by Jonas on 11.03.2015.
+ * creates the Dialog who shows the occupation of the next two weeks
  */
 public class FormTourSanity extends FormGeneral
 {
-	private JPanel jpButton, jpButtonMain, jpMain;
+	private JPanel jpButton, jpButtonMain, jpMain, jpTop;
 	private JButton jbBack;
 	private JScrollPane jspMain;
 	private ControllerFormTourSanity controllerFormTourSanity;
 
 	public FormTourSanity(Frame parent)
 	{
-		super(parent, "Touren in den nächsten zwei Wochen");
+		super(parent, "Touren (2 Wochen)");
 
 		controllerFormTourSanity = new ControllerFormTourSanity(this);
 
@@ -51,7 +49,15 @@ public class FormTourSanity extends FormGeneral
 		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
 		jpButtonMain.add(jpButton, BorderLayout.CENTER);
 
-		add(jspMain, BorderLayout.CENTER);
+		jpTop = new JPanel();
+		jpTop.setLayout(new BorderLayout());
+		JLabel edit = new JLabel("Datum kann mit Doppelklick bearbeitet werden!");
+		edit.setBorder(new EmptyBorder(new Insets(5,0,0,0)));
+		edit.setHorizontalAlignment(JLabel.CENTER);
+		jpTop.add(edit, BorderLayout.NORTH);
+		jpTop.add(jspMain, BorderLayout.CENTER);
+
+		add(jpTop, BorderLayout.CENTER);
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		controllerFormTourSanity.fillForm();
@@ -61,6 +67,9 @@ public class FormTourSanity extends FormGeneral
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * creates a panel which contains a Date and the current status of schedule
+	 */
 	private class FormattedLabel extends JPanel
 	{
 		private JLabel jlDate, jlStatus;
@@ -128,6 +137,10 @@ public class FormTourSanity extends FormGeneral
 		}
 	}
 
+	/**
+	 * fills the JScrollPane with FormattedLabels
+ 	 * @param sanityInfo is a Tuple out of the Date (String) and a Integer (0 = finished / -1 and x = not finished)
+	 */
 	public void setSanityInfo(ArrayList<Tuple<String, Integer>> sanityInfo)
 	{
 		jpMain.setLayout(new GridLayout(sanityInfo.size(), 1));

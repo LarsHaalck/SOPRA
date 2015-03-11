@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.Date;
 
 /**
- * @author Patricia Schinke
+ * Tab used to display, add and edit buses.
  */
 public class TabSchedule extends TabTable<TableModelSchedule>
 {
@@ -42,9 +42,8 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		tfDateStart = new FieldDate();
 		tfDateStart.setPreferredSize(new Dimension(80,20));
 		btnFilter = new JButton("Anzeigen");
-		btnFilter.addActionListener(e -> {
-			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_FILTER);
-		});
+		btnFilter.addActionListener(e ->
+				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_FILTER));
 		plFilterDate.add(lbFilterDateFirst);
 		plFilterDate.add(tfDateStart);
 		plFilterDate.add(lbFilterDateSecond);
@@ -64,27 +63,20 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		add(plFilter, BorderLayout.PAGE_START);
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e->{
-			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT);
-		});
+		btnEdit.addActionListener(e->
+				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_EDIT));
 
 		btnResetEmployee = new JButton("Busfahrer zurücksetzen");
 		btnResetEmployee.addActionListener(e->
-		{
-			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_EMPLOYEE);
-		});
+				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_EMPLOYEE));
 
 		btnResetBus = new JButton("Bus zurücksetzen");
 		btnResetBus.addActionListener(e->
-		{
-			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_BUS);
-		});
+				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_RESET_BUS));
 
 		btnSanity = new JButton("Belegung prüfen");
 		btnSanity.addActionListener(e->
-		{
-			controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_SANITY);
-		});
+				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_SANITY));
 
 		JPanel plButtons = new JPanel();
 		plButtons.add(btnEdit);

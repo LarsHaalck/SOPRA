@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Patricia Schinke
+ * Tab used to display work plans.
  */
 public class TabWorkPlan extends TabTable<TableModelWorkPlan>
 {
@@ -34,13 +34,11 @@ public class TabWorkPlan extends TabTable<TableModelWorkPlan>
 
 		JPanel plButtons = new JPanel();
 		btnPrint = new JButton("Ausdrucken");
-		btnPrint.addActionListener(e->{
-			controllerTabWorkPlan.buttonPressed(EmitterButton.TAB_WORK_PLAN_PRINT);
-		});
+		btnPrint.addActionListener(e->
+				controllerTabWorkPlan.buttonPressed(EmitterButton.TAB_WORK_PLAN_PRINT));
 		btnExport = new JButton("Export");
-		btnExport.addActionListener(e->{
-			controllerTabWorkPlan.buttonPressed((EmitterButton.TAB_WORK_PLAN_EXPORT));
-		});
+		btnExport.addActionListener(e->
+				controllerTabWorkPlan.buttonPressed((EmitterButton.TAB_WORK_PLAN_EXPORT)));
 
 		plButtons.add(btnPrint);
 		plButtons.add(btnExport);
@@ -53,6 +51,10 @@ public class TabWorkPlan extends TabTable<TableModelWorkPlan>
 		setVisible(true);
 	}
 
+	/**
+	 * Enables buttons.
+	 * @param enable true if buttons should be enabled, false if not.
+	 */
 	public void enableButtons(boolean enable)
 	{
 		btnExport.setEnabled(enable);

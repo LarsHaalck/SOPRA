@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.LinkedList;
 
 /**
- * Created by sszie_000 on 09.03.2015.
+ * TableModel for TabSchedule table.
  */
 public class TableModelSearchConnection extends AbstractTableModel {
 
@@ -76,20 +76,6 @@ public class TableModelSearchConnection extends AbstractTableModel {
     }
 
     private String formatDate(int hours, int minutes){
-        String hourString;
-        String minuteString;
-        if (hours < 10)
-            hourString = "0" + hours;
-        else
-            hourString = Integer.toString(hours);
-        if (minutes < 10)
-            minuteString = "0" + minutes;
-        else
-            minuteString = Integer.toString(minutes);
-        return hourString + ":" + minuteString;
-    }
-
-    private String formatTime(int hours, int minutes){
         String hourString;
         String minuteString;
         if (hours < 10)

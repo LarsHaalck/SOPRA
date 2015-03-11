@@ -45,9 +45,9 @@ public class FieldNumber extends FieldText
 
 	/**
 	 * Constructs FieldNumber with maximum input length of limit, specified number of columns and sets maximum number of intervalMaximum
-	 * @param columns
-	 * @param limit
-	 * @param intervalMaximum
+	 * @param columns number of columns.
+	 * @param limit input length limit.
+	 * @param intervalMaximum max interval.
 	 */
 	public FieldNumber(int columns, int limit, int intervalMaximum)
 	{

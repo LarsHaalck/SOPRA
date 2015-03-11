@@ -3,7 +3,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.ParseException;
 
 /**
  * Customised FieldText for price inputs (e.g. "4,56 €").

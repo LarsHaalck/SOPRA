@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Florian on 04.03.2015.
+ * TableModel for TabTicket table.
  */
 public class TableModelTicket extends ExtendedTableModel
 {

@@ -63,7 +63,7 @@ public class DisplayTicket extends JPanel
 	public void addPanel(String name, int price, int numPassengers, String description, int i){
 	//noch umranden und vllt mit Farben und anderen schriftgrößen schöner machen
 		cst.gridy = i;
-		if(i>32)
+		if(i>0)
 		{
 			JPanel plDistance = new JPanel();
 			plDistance.setBackground(Color.LIGHT_GRAY);
@@ -101,7 +101,7 @@ public class DisplayTicket extends JPanel
 		lbNumPassengers.setFont(new Font(lbNumPassengers.getFont().getFontName(), Font.PLAIN, 14));
 		plTickets.add(lbNumPassengers, cst);
 		cst.gridx = 0;
-		cst.gridy = i+6;
+		cst.gridy = i+3;
 		cst.gridwidth = 2;
 		cst.anchor = GridBagConstraints.CENTER;
 		String[] lines = description.split("\n");
@@ -110,7 +110,7 @@ public class DisplayTicket extends JPanel
 			JLabel lbDescription = new JLabel(line);
 			plTickets.add(lbDescription, cst);
 			i++;
-			cst.gridy = i+2;
+			cst.gridy = i+3;
 		}
 	}
 

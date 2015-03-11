@@ -6,7 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Ticket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabTicket;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TabPrice;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TablePrice;
 
 import java.util.ArrayList;
 
@@ -89,7 +89,7 @@ public class ControllerTabTicket extends Controller implements ListenerButton, L
 			Ticket ticket = tickets.get(i);
 			data[i][0] = ticket.getId();
 			data[i][1] = ticket.getName();
-			data[i][2] = new TabPrice(ticket.getPrice());
+			data[i][2] = new TablePrice(ticket.getPrice());
 			data[i][3] = ticket.getNumPassengers();
 		}
 		tabTicket.fillTable(data);
