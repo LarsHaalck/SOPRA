@@ -5,6 +5,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
  */
 public enum ColumnsSchedule
 {
+	STATUS,
 	LINE,
 	TIME,
 	DURATION,
@@ -16,6 +17,9 @@ public enum ColumnsSchedule
 	{
 		switch(this)
 		{
+			case STATUS:
+				return "";
+
 			case LINE:
 				return "Linie";
 
