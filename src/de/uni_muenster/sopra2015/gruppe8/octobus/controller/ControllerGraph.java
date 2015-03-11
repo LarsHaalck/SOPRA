@@ -153,6 +153,15 @@ public class ControllerGraph
 			{
 				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
 
+                /*
+                Entschuldige bitte aber ich habe im Moment nicht mehr so viel Lust, die Kommentare auchnoch auf englisch zu
+                verfassen. VERZEIHE MIR BITTE! :)
+
+                Hier vielleicht einfach nochmal durchiterieren und auch jede startTime des nächsten Tages (also + 1440) speichern?
+                Das könnte ich auch ganz gut Abfangen dann sag ich ja sorry war die letzte Abfahrtszeit größer 1440 dann such doch
+                bitte neu für den nächsten Tag und deaktiviere damit den später button oder switche sogar irgendwie auf den nächsten
+                Tag (bspw. indem ich die späteste Startzeit der Tabelle auf die letzte gefundene Startzeit - 1440 setze)
+                 */
 				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
 				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
 
@@ -182,6 +191,16 @@ public class ControllerGraph
 				ArrayList<Integer> temp = new ArrayList<>();
 				for (Integer start : startTimesOnDay)
 				{
+
+                    /*
+                    startID = 8 (Bremer Platz), destinationID = 18 (Engelschanze) bei startTimes:
+                        23:26 = 1406 Minuten - noch keine Probleme
+                        23:55 = 1435 Minuten - Sout("hier passiert scheisse") - terminiert aber und scheint augenscheinlich (gleiche Ankunftszeit wie bei 23:26 nur anderer Startbus)
+                                                                                korrektes Ergebnis zu liefern
+                        23:56 = 1436 Minuten - hier passiert die allergrößte Scheiße, die bis zum Himmel stinkt - terminiert nicht mehr
+
+                        Nach 23:55 sind alle timeDiffOnFirst + start < time
+                     */
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
 					{
 						temp.add(timeDiffOnFirst + start + 1440);
@@ -192,7 +211,20 @@ public class ControllerGraph
 						break;
 					}
 				}
-
+                /*
+                Sollte im Ausnahmefall, den wir betrachten, wegen (timeDiffOnFirst + start + 1440) den frühsten Bus der
+                gerade in der for-Schleife betracheten Route am nächsten Tag liefern.
+                In unserem Fall sollte das, ist die passende Route gefunden, irgendwann
+                        00:25 = 25 Minuten bzw. 1440 + 25 = 1465 (spuckt Dijkstra zumindest aus wenn ich um 00:00 suche)
+                sein
+                Und damit niemals etwas liefern was größer ist als 1465.
+                 */
+                /*
+                Zur Abfahrt um 00:25: (kann auch an einem Fehler bei mir liegen!!!!)
+                    Ich bekomme als Ergebnis die Linie N84 von die mich zum Hauptbahnhof bringt, wo ich Umsteigen soll - kein Problem
+                    aber ich bekomme eine Abfahrtszeit von 00:25 am Bremer Platz und eine Ankunftszeit von 00:26 am Hauptbahnhof D1
+                    obwohl die Linie vom Bremer Platz über Servatiiplatz zum Bahnhof laut DB angeblich 3 Minuten braucht. :(
+                 */
 				currentArrival = Collections.min(temp);
 
 				if(currentArrival < arrival || arrival == -1)
@@ -212,6 +244,7 @@ public class ControllerGraph
 				}
 
 			}
+            //Keine Ahnung gerade ich geh pennen :)
 			if(arrival - dist.get(id1).intValue() < 0)
 				System.out.println("hier passiert scheisse");
 			return arrival;
@@ -266,6 +299,7 @@ public class ControllerGraph
 
 
 			while(!fibHeap.isEmpty())
+
 			{
 				int stopId = fibHeap.dequeueMin().getValue();
 
@@ -368,13 +402,5 @@ public class ControllerGraph
 
 			return new Connection(trips, duration, time);
 		}
-
-
-
-
 	}
-
-
-
-
 }
