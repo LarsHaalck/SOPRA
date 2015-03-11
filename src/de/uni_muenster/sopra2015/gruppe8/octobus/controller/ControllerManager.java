@@ -98,6 +98,19 @@ public class ControllerManager
 	}
 
 	/**
+	 * Informs every active ListenerWindow to close a certain window.
+	 *
+	 * @param emitter window to be closed.
+	 * @param objectID id to be passed.
+	 */
+	public static void informWindowClose(EmitterWindow emitter, int objectID)
+	{
+		ArrayList<ListenerWindow> list = new ArrayList<>(listenerWindow);
+		for (ListenerWindow listener : list)
+			listener.windowClose(emitter, objectID);
+	}
+
+	/**
 	 * Informs every active ListenerWindow to switch to a display.
 	 *
 	 * @param emitter display to switch to
