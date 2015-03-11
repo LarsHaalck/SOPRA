@@ -190,6 +190,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			errorList.add("Der Benutzername darf nicht leer sein.");
 		else if(username.trim().length() < 3)
 			errorList.add("Der Benutzername muss mehr als 3 Zeichen enthalten.");
+		else if(controllerDatabase.getEmployeeByUsername(username) != null)
+			errorList.add("Es existiert bereits ein Benutzer mit der gleichen Kennung.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");
 
