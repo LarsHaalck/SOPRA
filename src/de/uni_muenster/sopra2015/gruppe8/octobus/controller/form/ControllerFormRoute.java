@@ -111,8 +111,13 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					//Checks if data input is valid
 					if(parseValuesFromFormRouteStep2())
 					{
+						boolean save = true;
+						if(stopsChanged)
+						{
+							save = formRoute.showConfirmDialog("Änderungen an der Linie führen dazu, dass alle Fahrten der Linie in der Datenbank zurückgesetzt werden.\nFortfahren? (Zum Wiederherstellen des alten Zustands danach abbrechen)");
+						}
 						//save new/changed route to DB
-						if (saveToDB())
+						if (save && saveToDB())
 						{
 							//Refreshes the table in TAB_ROUTE
 							ControllerManager.informTableContentChanged(EmitterTable.TAB_ROUTE);
@@ -455,10 +460,27 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		else
 		{
 			//If input is valid this sets the global route's attributes to the form input.
-			route.setName(name);
-			route.setNight(night);
-			routeStoppingPoints = stoppingPoints;
-			return true;
+			if(stopsChanged)
+			{
+				if(formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)"))
+				{
+					route.setName(name);
+					route.setNight(night);
+					routeStoppingPoints = stoppingPoints;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				route.setName(name);
+				route.setNight(night);
+				routeStoppingPoints = stoppingPoints;
+				return true;
+			}
 		}
 	}
 
