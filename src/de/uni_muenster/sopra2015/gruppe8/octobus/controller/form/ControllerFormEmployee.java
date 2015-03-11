@@ -217,7 +217,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		{
 			//Check if there are tours planned for this user
 			int num = controllerDatabase.getNumberOfToursUsingEmployeeId(employee.getId());
-			if(num == 0 ||
+
+			if(num == 0 || (employee.isRole(Role.BUSDRIVER) && busDriver) ||
 					//If user was bus-driver and isn't it any more, show confirm-dialog because he will be deleted from every tour
 					(employee.isRole(Role.BUSDRIVER) && !busDriver && formEmployee.showConfirmDialog("Der Mitarbeiter ist noch in "+num+" Routen eingeplant.\nWenn Sie die Busfahrer-Rolle entfernen, wird er aus den Touren gelöscht.")))
 			{
