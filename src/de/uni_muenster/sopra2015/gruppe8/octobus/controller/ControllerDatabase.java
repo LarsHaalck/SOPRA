@@ -965,6 +965,9 @@ public class ControllerDatabase
 	 */
 	public void modifyEmployee(Employee emp)
 	{
+		if (!emp.isRole(Role.BUSDRIVER))			// if modified employee is no bus driver, then delete his tours
+			deleteEmployeeFromTours(emp.getId());
+
 		create.update(EMPLOYEES)
 				.set(EMPLOYEES.NAME, emp.getName())
 				.set(EMPLOYEES.FIRSTNAME, emp.getFirstName())
@@ -1636,7 +1639,11 @@ public class ControllerDatabase
 				.where(BUSSTOPS.BUSSTOPS_ID.eq(busStopID))
 				.fetchOne();
 
-		return stoprecord.getName() + " " + rec.getName();
+		String compoundName = stoprecord.getName().equals(rec.getName()) ?
+				stoprecord.getName() :
+				stoprecord.getName() + " " + rec.getName();
+
+		return compoundName;
 	}
 
 	/**
