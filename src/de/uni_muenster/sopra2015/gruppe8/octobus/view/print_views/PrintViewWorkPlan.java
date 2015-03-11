@@ -5,6 +5,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 
 import java.awt.*;
 import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,7 @@ import java.util.Locale;
 /**
  * Created by Florian on 06.03.2015.
  */
-public class PrintViewWorkPlan implements Printable
+public class PrintViewWorkPlan implements Printable, Pageable
 {
 	private Graphics2D graphics2D;
 	private Font fontHeader;
@@ -135,5 +136,23 @@ public class PrintViewWorkPlan implements Printable
 				graphics2D.drawLine((int) j, 0, (int) j, (int) pageHeight);
 			}
 		}
+	}
+
+	@Override
+	public int getNumberOfPages()
+	{
+		return numPages;
+	}
+
+	@Override
+	public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException
+	{
+		return new PageFormat();
+	}
+
+	@Override
+	public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException
+	{
+		return this;
 	}
 }
