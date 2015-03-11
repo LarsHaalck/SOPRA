@@ -177,7 +177,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		else if(city.trim().length() == 0)
 			errorList.add("Die Stadt darf nicht leer sein.");
 		if(birthDate == null)
-			errorList.add("Das Geburtsdatum liegt in keinem gültigen Format vor.");
+			errorList.add("Das Geburtsdatum liegt in keinem gültigen Format vor oder liegt außerhalb des gültigen Bereichs.");
 		if(eMail == null)
 			errorList.add("Die E-Mail-Adresse ist ungültig.");
 		if(phone == null)
@@ -190,6 +190,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			errorList.add("Der Benutzername darf nicht leer sein.");
 		else if(username.trim().length() < 3)
 			errorList.add("Der Benutzername muss mehr als 3 Zeichen enthalten.");
+		else if(controllerDatabase.getEmployeeByUsername(username) != null)
+			errorList.add("Es existiert bereits ein Benutzer mit der gleichen Kennung.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");
 

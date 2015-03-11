@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for DisplaySearchConnection class.
  */
 public class ControllerDisplaySearchConnection extends Controller implements ListenerButton, ListenerTable
 {
@@ -85,7 +85,11 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         }
     }
 
-    private void searchJourney(){
+	//TODO JavaDoc
+	/**
+	 *
+	 */
+	private void searchJourney(){
         int orig = journeyDialog.getOrigin().getNumber();
         int dest = journeyDialog.getDestination().getNumber();
         ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
@@ -109,7 +113,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
 
     //BusStops are distinguished by IDs. How to find BusStops by name?
-
+	//TODO clean up
     /**
      * Looks for the BusStop specified by its name in the DB and returns
      * this (and only one?) BusStop.
@@ -170,7 +174,13 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         }
     }
 
-    private String formatTime(int hours, int minutes){
+	/**
+	 * Formats input into XX:XX String .
+	 * @param hours hours to be formatted.
+	 * @param minutes minutes tobe formatted.
+	 * @return String with formatted time.
+	 */
+	private String formatTime(int hours, int minutes){
         String hourString;
         String minuteString;
         if (hours < 10)
