@@ -9,12 +9,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
- * Created by Jonas on 11.03.2015.
+ * creates the Dialog who shows the occupation of the next two weeks
  */
 public class FormTourSanity extends FormGeneral
 {
@@ -69,6 +67,9 @@ public class FormTourSanity extends FormGeneral
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * creates a panel which contains a Date and the current status of schedule
+	 */
 	private class FormattedLabel extends JPanel
 	{
 		private JLabel jlDate, jlStatus;
@@ -136,6 +137,10 @@ public class FormTourSanity extends FormGeneral
 		}
 	}
 
+	/**
+	 * fills the JScrollPane with FormattedLabels
+ 	 * @param sanityInfo is a Tuple out of the Date (String) and a Integer (0 = finished / -1 and x = not finished)
+	 */
 	public void setSanityInfo(ArrayList<Tuple<String, Integer>> sanityInfo)
 	{
 		jpMain.setLayout(new GridLayout(sanityInfo.size(), 1));
