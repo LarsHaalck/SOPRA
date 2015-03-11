@@ -304,21 +304,33 @@ public class ControllerDatabase
 	 */
 	public int deleteBusFromTours(int uid, Date begin, Date end)
 	{
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(begin);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int startTime = (int) (calendar.getTimeInMillis() / 1000);
+
+		calendar.setTime(end);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		int endTime = (int) (calendar.getTimeInMillis() / 1000);
+
 		// get number of tours using the bus in specified time range
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.BUSES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
-				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.between(startTime, endTime))
 				.fetchOne();
 
 		// reset bus attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID, (Integer) null)
 				.where(TOURS.BUSES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
-				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.between(startTime, endTime))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -1109,21 +1121,33 @@ public class ControllerDatabase
 	 */
 	public int deleteEmployeeFromTours(int uid, Date begin, Date end)
 	{
-		// count all tours using that employee in specified time range
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(begin);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int startTime = (int) (calendar.getTimeInMillis() / 1000);
+
+		calendar.setTime(end);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		int endTime = (int) (calendar.getTimeInMillis() / 1000);
+
+		// get number of tours using the bus in specified time range
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
-				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.between(startTime,endTime))
 				.fetchOne();
 
-		// reset employee attribute in those tours
+		// reset bus attribute in those tours
 		create.update(TOURS)
 				.set(TOURS.EMPLOYEES_ID, (Integer) null)
 				.where(TOURS.EMPLOYEES_ID.equal(uid))
-				.and(TOURS.TIMESTAMP.lessOrEqual((int) (end.getTime() / 1000)))
-				.and(TOURS.TIMESTAMP.greaterOrEqual((int) (begin.getTime() / 1000)))
+				.and(TOURS.TIMESTAMP.between(startTime,endTime))
 				.execute();
 
 		return (Integer) record.getValue(0);
@@ -1191,6 +1215,7 @@ public class ControllerDatabase
 		Result<EmployeesRecord> rows = create
 				.selectFrom(EMPLOYEES)
 				.where(roleAttribute.eq(true))
+				.orderBy(EMPLOYEES.NAME.asc(), EMPLOYEES.FIRSTNAME.asc())
 				.fetch();
 
 		ArrayList<Employee> result = new ArrayList<>();
