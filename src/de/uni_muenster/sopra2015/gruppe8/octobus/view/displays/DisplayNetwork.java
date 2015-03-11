@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by Steen Sziegaud on 04.03.2015.
+ * Displays the bus network graphically.
  */
 public class DisplayNetwork extends JPanel
 {
@@ -20,8 +20,6 @@ public class DisplayNetwork extends JPanel
 	private static BufferedImage imageNetworkNight;
 	private static double ZOOM = 0.9;
 	//Components
-	private JRadioButton rdBtnDay;
-	private JRadioButton rdBtnNight;
 	private JScrollPane scrollPane;
 	private JLabel lbDay;
 	private JLabel lbNight;
@@ -36,17 +34,13 @@ public class DisplayNetwork extends JPanel
 		JRadioButton rdBtnDay = new JRadioButton("Tag");
 		rdBtnDay.setMnemonic(KeyEvent.VK_T);
 		rdBtnDay.addActionListener(e->
-		{
-			controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_DAY);
-		});
+				controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_DAY));
 		rdBtnDay.setSelected(true);
 
 		JRadioButton rdBtnNight = new JRadioButton("Nacht");
 		rdBtnNight.setMnemonic(KeyEvent.VK_N);
 		rdBtnNight.addActionListener(e->
-		{
-			controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_NIGHT);
-		});
+				controllerDisplayNetwork.buttonPressed(EmitterButton.DISPLAY_NETWORK_NIGHT));
 		rdBtnNight.setSelected(false);
 
 		ButtonGroup btnGroup = new ButtonGroup();
