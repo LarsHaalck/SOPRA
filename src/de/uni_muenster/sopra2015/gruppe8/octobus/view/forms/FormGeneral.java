@@ -78,4 +78,15 @@ public abstract class FormGeneral extends JDialog
 		JOptionPane.showMessageDialog(this, information, "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	/**
+	 * Displays a confirmation dialog.
+	 * @param string Matter to be confirmed.
+	 * @return true on confirmation.
+	 */
+	public boolean showConfirmDialog(String string)
+	{
+		return JOptionPane.showConfirmDialog(this, string, "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+				== JOptionPane.YES_OPTION;
+	}
+
 }

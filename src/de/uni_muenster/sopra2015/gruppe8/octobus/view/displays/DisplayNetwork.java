@@ -102,6 +102,16 @@ public class DisplayNetwork extends JPanel
 		scrollPane.repaint();
 	}
 
+	public void redrawImages()
+	{
+		imageNetworkDay = null;
+		imageNetworkNight = null;
+
+		Tuple<Integer, Integer> size = controllerDisplayNetwork.getMaxSize();
+		drawToImage(size, true);
+		drawToImage(size, false);
+	}
+
 	/**
 	 * Draw network to buffered image
 	 * @param nightline false means day, true night

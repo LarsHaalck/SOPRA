@@ -25,7 +25,7 @@ public class TableModelWorkPlan extends ExtendedTableModel
 	@Override
 	public String[] getRefineableColumns()
 	{
-		return new String[]{ColumnsWorkPlan.DATE.toString(), ColumnsWorkPlan.START.toString(), ColumnsWorkPlan.END.toString()};
+		return new String[]{ColumnsWorkPlan.DATE.toString(), ColumnsWorkPlan.ROUTE.toString(), ColumnsWorkPlan.START.toString(), ColumnsWorkPlan.END.toString(), ColumnsWorkPlan.BUS.toString()};
 	}
 
 	@Override

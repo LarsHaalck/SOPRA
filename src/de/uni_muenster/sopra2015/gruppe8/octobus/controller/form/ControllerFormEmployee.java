@@ -204,6 +204,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		else if (employee.isRole(Role.HR_MANAGER) && !hrManager)
 			errorList.add("Sie können sich nicht selber die Personalleiterrechte entziehen.");
 
+
 		if(errorList.size() > 0)
 		{
 			String errorMessage = "Die eingegeben Daten sind nicht gültig.\n";
@@ -213,30 +214,39 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		}
 		else
 		{
-			employee.setFirstName(firstName);
-			employee.setName(lastName);
-			employee.setAddress(address);
-			employee.setZipCode(zipCode);
-			employee.setCity(city);
-			employee.setDateOfBirth(birthDate);
-			employee.setPhone(phone);
-			employee.setUsername(username);
-			employee.setEmail(eMail);
-			employee.setNote(note);
-			HashSet<Role> roles = new HashSet<>();
-			if(hrManager)
-				roles.add(Role.HR_MANAGER);
-			if(busDriver)
-				roles.add(Role.BUSDRIVER);
-			if(networkPlaner)
-				roles.add(Role.NETWORK_PLANNER);
-			if(scheduleManager)
-				roles.add(Role.SCHEDULE_MANAGER);
-			if(ticketPlaner)
-				roles.add(Role.TICKET_PLANNER);
-			employee.setRoles(roles);
+			//Check if there are tours planned for this user
+			int num = controllerDatabase.getNumberOfToursUsingEmployeeId(employee.getId());
+			if(num == 0 ||
+					//If user was bus-driver and isn't it any more, show confirm-dialog because he will be deleted from every tour
+					(employee.isRole(Role.BUSDRIVER) && !busDriver && formEmployee.showConfirmDialog("Der Mitarbeiter ist noch in "+num+" Routen eingeplant.\nWenn Sie die Busfahrer-Rolle entfernen, wird er aus den Touren gelöscht.")))
+			{
+				employee.setFirstName(firstName);
+				employee.setName(lastName);
+				employee.setAddress(address);
+				employee.setZipCode(zipCode);
+				employee.setCity(city);
+				employee.setDateOfBirth(birthDate);
+				employee.setPhone(phone);
+				employee.setUsername(username);
+				employee.setEmail(eMail);
+				employee.setNote(note);
+				HashSet<Role> roles = new HashSet<>();
+				if(hrManager)
+					roles.add(Role.HR_MANAGER);
+				if(busDriver)
+					roles.add(Role.BUSDRIVER);
+				if(networkPlaner)
+					roles.add(Role.NETWORK_PLANNER);
+				if(scheduleManager)
+					roles.add(Role.SCHEDULE_MANAGER);
+				if(ticketPlaner)
+					roles.add(Role.TICKET_PLANNER);
+				employee.setRoles(roles);
+
+				return true;
+			}
 		}
-		return true;
+		return false;
 	}
 
 	/**
