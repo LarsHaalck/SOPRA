@@ -31,7 +31,6 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		this.formTourEdit = formTourEdit;
 		this.objectId = objectId;
 		this.controllerDatabase = ControllerDatabase.getInstance();
-
 		getDataFromDB();
 	}
 

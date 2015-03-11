@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * Controller for FormDepartureTime class.
+ * Used to set departure times in FormRoute
  */
 public class ControllerFormDepartureTime extends Controller implements ListenerButton
 {
@@ -38,10 +39,13 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 		switch (btn)
 		{
 			case FORM_ROUTE_STEP2_DEPARTURE_SAVE:
+				//Checks for valid input and sets global attributes to form values
 				int temp = parseValuesFromFormDeparture();
 				if (temp == 1)
 				{
+					//Only start time and days of week given
 					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
+					//Adds the new start times to the route for each selected day
 					for (Tuple<DayOfWeek, Boolean> day : departureDays)
 					{
 						if(day.getSecond())
@@ -60,8 +64,10 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					closeDialog();
 				} else if (temp == 2)
 				{
+					//start time, end time, frequency and days of week are given
 					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
 					ArrayList<Integer> departures = new ArrayList<>();
+					//Adds all times between start and end time in the given frequency
 					int remaining = departureTimeStart;
 					do
 					{
@@ -69,7 +75,7 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 						remaining += departureFreqency;
 					}
 					while(remaining <= departureTimeEnd);
-
+					//Adds the new start times to the route for each selected day
 					for (Tuple<DayOfWeek, Boolean> day : departureDays)
 					{
 						if(day.getSecond())
