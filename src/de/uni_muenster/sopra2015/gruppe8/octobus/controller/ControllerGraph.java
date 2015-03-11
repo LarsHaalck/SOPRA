@@ -24,7 +24,7 @@ public class ControllerGraph
 		db = ControllerDatabase.getInstance();
 		init();
 	}
-	
+
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
