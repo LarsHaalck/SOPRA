@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * Created by PhiSt on 27.02.2015.
+ * Used to store the data of a route.
  */
 public class Route
 {
