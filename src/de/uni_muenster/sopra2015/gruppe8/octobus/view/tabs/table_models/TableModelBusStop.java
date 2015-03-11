@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- *
+ * TableModel for TabBusStop table.
  */
 public class TableModelBusStop extends ExtendedTableModel
 {

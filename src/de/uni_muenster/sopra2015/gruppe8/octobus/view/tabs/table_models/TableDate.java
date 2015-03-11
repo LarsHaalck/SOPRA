@@ -55,7 +55,6 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 		}
 	}
 
-
 	public String toString()
 	{
 		switch (type)

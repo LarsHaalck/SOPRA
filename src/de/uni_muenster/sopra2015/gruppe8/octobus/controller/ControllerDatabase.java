@@ -1,24 +1,29 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
-import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
+// jOOQ stuff
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
-import org.jooq.*;
+import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
+import static org.jooq.impl.DSL.sum;
 import org.jooq.impl.DSL;
+import org.jooq.*;
 
-import java.io.File;
-import java.math.BigInteger;
-import java.security.MessageDigest;
+// Our stuff
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+
+// Java stuff
 import java.security.NoSuchAlgorithmException;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Connection;
 import java.time.DayOfWeek;
+import java.io.File;
 import java.util.*;
-
-import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
 
 /**
  * jOOQ Controller class for database access.
@@ -2023,15 +2028,27 @@ public class ControllerDatabase
 
 				// Tour ID
 				content[0] = r.getValue(TOURS.TOURS_ID);
+
 				// Route's name
 				content[1] = r.getValue(ROUTES.NAME);
+
 				// Start time
 				content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
+
+				// This whole column can be removed for a slight bump in speed
 				// Duration of route
-				Route route = getRouteById(r.getValue(TOURS.ROUTES_ID));
-				content[3] = route.getDuration();
+				Record1<BigDecimal> sum = create
+						.select(sum(ROUTES_STOPS.TIMETOPREVIOUS))
+						.from(ROUTES_STOPS)
+						.where(ROUTES_STOPS.ROUTES_ID
+								.eq(r.getValue(ROUTES.ROUTES_ID)))
+						.fetchOne();
+
+				content[3] = sum.getValue(0);
+
 				// License plate
 				content[4] = r.getValue(BUSES.LICENCEPLATE);
+
 				// Bus driver
 				content[5] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 

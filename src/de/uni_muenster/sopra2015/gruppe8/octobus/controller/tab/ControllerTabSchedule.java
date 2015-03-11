@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -74,6 +75,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	 */
 	private void fillTable()
 	{
+		ImageIcon red = new ImageIcon("res/images/red.png");
+		ImageIcon green = new ImageIcon("res/images/green.png");
+
         controllerDatabase.createTours(tabSchedule.getDateStart());
 		ArrayList<Object[]> tours = controllerDatabase.getToursForDate(tabSchedule.getDateStart());
 
@@ -82,11 +86,12 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		{
 			Object[] content = tours.get(i);
 			data[i][0] = content[0];
-			data[i][1] = content[1];
-			data[i][2] = new TableDate((Date) content[2], TableDate.Type.TIME);
-			data[i][3] = content[3];
-			data[i][4] = content[4];
-			data[i][5] = content[5];
+			data[i][1] = (content[4] == null || content[5] == null)? red : green;
+			data[i][2] = content[1];
+			data[i][3] = new TableDate((Date) content[2], TableDate.Type.TIME);
+			data[i][4] = content[3];
+			data[i][5] = content[4];
+			data[i][6] = content[5];
 		}
 		tabSchedule.fillTable(data);
 	}
@@ -97,9 +102,6 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	private void newFilterSelected()
 	{
 		Date start = tabSchedule.getDateStart();
-		//TODO clean up
-		boolean onlyUnassigned = tabSchedule.getOnlyUnassigned();
-
 		//Check if start-date is invalid
 		if(start == null)
 			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");

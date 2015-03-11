@@ -2,7 +2,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Quadruple;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
@@ -41,8 +43,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
 					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat());
-					//TODO: zweites Book überschreibt das erste
+					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(),printStoppingPoint.getNumRoutes());
 				}
 
 				PrinterJob job = PrinterJob.getPrinterJob();

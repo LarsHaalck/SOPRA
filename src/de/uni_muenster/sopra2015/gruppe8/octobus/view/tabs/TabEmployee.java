@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Patricia Schinke
+ * Tab used to display, add and edit employees.
  */
 public class TabEmployee extends TabTable<TableModelEmployee>
 {
@@ -26,19 +26,16 @@ public class TabEmployee extends TabTable<TableModelEmployee>
 		setLayout(new BorderLayout(5,5));
 
 		btnDelete = new JButton("Löschen");
-		btnDelete.addActionListener(e -> {
-			controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_DELETE);
-		});
+		btnDelete.addActionListener(e ->
+				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_DELETE));
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e-> {
-			editEntry();
-		});
+		btnEdit.addActionListener(e->
+				editEntry());
 
 		btnNew = new JButton("Neu");
-		btnNew.addActionListener(e-> {
-			controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_NEW);
-		});
+		btnNew.addActionListener(e->
+				controllerTabEmployee.buttonPressed(EmitterButton.TAB_EMPLOYEE_NEW));
 
 		if(super.isRefineable())
 		{

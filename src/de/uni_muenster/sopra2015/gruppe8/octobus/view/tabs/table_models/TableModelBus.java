@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Florian on 03.03.2015.
+ * TableModel for TabBus table.
  */
 public class TableModelBus extends ExtendedTableModel
 {

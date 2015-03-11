@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Tab used to display, add and edit tickets.
  */
 public class TabTicket extends TabTable<TableModelTicket>
 {
@@ -26,19 +26,16 @@ public class TabTicket extends TabTable<TableModelTicket>
 
 		setLayout(new BorderLayout(5,5));
 		btnDelete = new JButton("Löschen");
-		btnDelete.addActionListener(e -> {
-			controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_DELETE);
-		});
+		btnDelete.addActionListener(e ->
+				controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_DELETE));
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e-> {
-			editEntry();
-		});
+		btnEdit.addActionListener(e->
+				editEntry());
 
 		btnNew = new JButton("Neu");
-		btnNew.addActionListener(e-> {
-			controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_NEW);
-		});
+		btnNew.addActionListener(e->
+				controllerTabTicket.buttonPressed(EmitterButton.TAB_TICKET_NEW));
 
 		if(super.isRefineable())
 		{
