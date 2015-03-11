@@ -24,8 +24,6 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 
 		this.formTourSanity = formTourSanity;
 		this.controllerDatabase = ControllerDatabase.getInstance();
-
-		fillForm();
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 		}
 	}
 
-	private void fillForm()
+	public void fillForm()
 	{
 		ArrayList<Tuple<String, Integer>> data = new ArrayList<>();
 		data.add(new Tuple<>("Montag", 0));

@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormTourSanity;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 
 import javax.swing.*;
@@ -15,10 +17,14 @@ public class FormTourSanity extends FormGeneral
 	private JPanel jpButton, jpButtonMain, jpMain;
 	private JButton jbBack;
 	private JScrollPane jspMain;
+	private ControllerFormTourSanity controllerFormTourSanity;
 
 	public FormTourSanity(Frame parent)
 	{
 		super(parent, "Touren in den nächsten zwei Wochen");
+
+		controllerFormTourSanity = new ControllerFormTourSanity(this);
+
 		setLayout(new BorderLayout());
 
 		jspMain = new JScrollPane();
@@ -37,13 +43,15 @@ public class FormTourSanity extends FormGeneral
 		jpButton.setLayout(new FlowLayout());
 		jbBack = new JButton("Zurück");
 		jbBack.addActionListener(e -> {
-
+			controllerFormTourSanity.buttonPressed(EmitterButton.FORM_TOUR_SANITY_BACK);
 		});
 		jpButton.add(jbBack);
 
 		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
 		jpButtonMain.add(jpButton, BorderLayout.CENTER);
 		add(jpButtonMain, BorderLayout.SOUTH);
+
+		controllerFormTourSanity.fillForm();
 
 		pack();
 
