@@ -120,32 +120,44 @@
   
   <property name="sopra.output.dir" value="${module.sopra.basedir}/out/production/SOPRA"/>
   <property name="sopra.testoutput.dir" value="${module.sopra.basedir}/out/test/SOPRA"/>
-  
-  <path id="sopra.module.bootclasspath">
-    <!-- Paths to be included in compilation bootclasspath -->
-  </path>
-  
-  <path id="sopra.module.production.classpath">
-    <path refid="${module.jdk.classpath.sopra}"/>
-    <path refid="library.lib.classpath"/>
-  </path>
-  
-  <path id="sopra.runtime.production.module.classpath">
-    <pathelement location="${sopra.output.dir}"/>
-    <path refid="library.lib.classpath"/>
-  </path>
-  
-  <path id="sopra.module.classpath">
-    <path refid="${module.jdk.classpath.sopra}"/>
-    <pathelement location="${sopra.output.dir}"/>
-    <path refid="library.lib.classpath"/>
-  </path>
-  
-  <path id="sopra.runtime.module.classpath">
-    <pathelement location="${sopra.testoutput.dir}"/>
-    <pathelement location="${sopra.output.dir}"/>
-    <path refid="library.lib.classpath"/>
-  </path>
+
+    <path id="sopra.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="sopra.module.production.classpath">
+        <path refid="${module.jdk.classpath.sopra}"/>
+        <path refid="library.lib.classpath"/>
+        <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="${basedir}/lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="${basedir}/lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="sopra.runtime.production.module.classpath">
+        <pathelement location="${sopra.output.dir}"/>
+        <path refid="library.lib.classpath"/>
+        <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="${basedir}/lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="${basedir}/lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="sopra.module.classpath">
+        <path refid="${module.jdk.classpath.sopra}"/>
+        <pathelement location="${sopra.output.dir}"/>
+        <path refid="library.lib.classpath"/>
+        <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="${basedir}/lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="${basedir}/lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="sopra.runtime.module.classpath">
+        <pathelement location="${sopra.testoutput.dir}"/>
+        <pathelement location="${sopra.output.dir}"/>
+        <path refid="library.lib.classpath"/>
+        <pathelement location="${basedir}/lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="${basedir}/lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="${basedir}/lib/junit-4.11.jar"/>
+    </path>
   
   
   <patternset id="excluded.from.module.sopra">
