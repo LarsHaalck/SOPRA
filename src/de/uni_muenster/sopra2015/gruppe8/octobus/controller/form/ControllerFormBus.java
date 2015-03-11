@@ -3,11 +3,11 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +47,8 @@ public class ControllerFormBus extends Controller implements ListenerButton
 					if(saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUS);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 						closeDialog();
 					}
 				}
