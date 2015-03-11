@@ -29,11 +29,11 @@ public class ControllerGraph
 	{
 		ControllerGraph graph = new ControllerGraph();
 
-		for(int i = 1335; i < 1440; i++)
-		{
-			System.out.println(i);
-			Connection con = graph.getConnection(8, 18, DayOfWeek.MONDAY, i);
-		}
+		//for(int i = 1335; i < 1440; i++)
+		//{
+		//	System.out.println(i);
+			Connection con = graph.getConnection(8, 18, DayOfWeek.MONDAY, 686);
+		//}
 
 		//Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 1436);
 
@@ -356,7 +356,7 @@ public class ControllerGraph
 				int calcStart = (dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop));
 				calcStart = calcStart >= 1440 ? calcStart % 1440 : calcStart;
 
-				int calcEnd = dist.get(currentStop).intValue();
+				int calcEnd = dist.get(end.getId()).intValue();
 				calcEnd = calcEnd >= 1440 ? calcEnd % 1440 : calcEnd;
 
 				prevQuintuple = new Quintuple<>(

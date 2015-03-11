@@ -201,6 +201,8 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			errorList.add("Es existiert bereits ein Benutzer mit der gleichen Kennung.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");
+		else if (employee.isRole(Role.HR_MANAGER) && !hrManager)
+			errorList.add("Sie können sich nicht selber die Personalleiterrechte entziehen.");
 
 		if(errorList.size() > 0)
 		{
