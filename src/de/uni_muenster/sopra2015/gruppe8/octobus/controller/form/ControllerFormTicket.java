@@ -12,7 +12,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerBu
 import java.util.ArrayList;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for FormTicket class.
  */
 public class ControllerFormTicket extends Controller implements ListenerButton
 {
@@ -50,7 +50,6 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 				break;
 
 			case FORM_TICKET_CANCEL:
-				//TODO: If time: Check if something was changed and ask if user really wants to cancel
 				closeDialog();
 				break;
 		}
@@ -81,7 +80,7 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current ticket to the DB.
-	 * @return
+	 * @return true on success
 	 */
 	private boolean saveToDB()
 	{
@@ -142,15 +141,18 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
+	/**
+	 * Closes current dialog.
+	 */
 	private void closeDialog()
 	{
 		formTicket.dispose();

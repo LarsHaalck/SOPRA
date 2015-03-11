@@ -98,13 +98,12 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 	protected void addListeners()
 	{
 
-		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener(this);
+
 	}
 
 	@Override

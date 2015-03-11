@@ -37,13 +37,13 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
@@ -77,28 +77,32 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		}
 	}
 
+	/**
+	 * Closes current dialog.
+	 */
 	private void close()
 	{
 		removeListeners();
 		formTourEdit.dispose();
 	}
 
+	/**
+	 * Fetches tour by objectID from DB.
+	 * Sets local tour to it.
+	 */
 	private void getDataFromDB()
 	{
 		tour = controllerDatabase.getTourById(objectId);
 	}
 
+	/**
+	 * Fills forms with data from DB.
+	 */
 	public void fillForm()
 	{
 		//Fill tables
 		ArrayList<Bus> buses = controllerDatabase.getAvailableBusesForTour(tour);
 		ArrayList<Employee> employees = controllerDatabase.getAvailableBusDriversForTour(tour);
-
-		//TODO remove this
-		if(buses == null)
-			buses = new ArrayList<>();
-		if(employees == null)
-			employees = new ArrayList<>();
 
 		Object[][] data = new Object[buses.size()][2];
 		for (int i=0; i<buses.size(); i++)
@@ -108,7 +112,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		}
 		formTourEdit.setBusData(data);
 
-		data = new Object[buses.size()][2];
+		data = new Object[employees.size()][2];
 		for(int i=0; i<employees.size(); i++)
 		{
 			data[i][0] = employees.get(i).getId();

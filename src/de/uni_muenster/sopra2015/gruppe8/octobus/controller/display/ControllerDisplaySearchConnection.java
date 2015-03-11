@@ -81,6 +81,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 break;
 			case DISPLAY_CONNECTION_BACK:
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
+				removeListeners();
 				break;
         }
     }

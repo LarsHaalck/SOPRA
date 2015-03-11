@@ -27,7 +27,7 @@ public class Tour
 		this.bus = bus;
 		this.driver = driver;
 
-        endTimestamp = new Date(this.startTimestamp.getTime() + ((long) route.getDuration()*1000));
+        endTimestamp = new Date(this.startTimestamp.getTime() + ((long) route.getDuration()*60*1000));
 	}
 
 	public Bus getBus()
