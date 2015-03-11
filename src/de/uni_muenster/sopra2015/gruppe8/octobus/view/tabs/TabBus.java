@@ -8,7 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelBus;
 
 /**
- * @author Michael Biech
+ * Tab used to display, add and edit buses.
  */
 public class TabBus extends TabTable<TableModelBus>
 {
@@ -27,19 +27,16 @@ public class TabBus extends TabTable<TableModelBus>
 		setLayout(new BorderLayout(5,5));
 
 		btnDelete = new JButton("Löschen");
-		btnDelete.addActionListener(e -> {
-			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_DELETE);
-		});
+		btnDelete.addActionListener(e ->
+				controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_DELETE));
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e-> {
-			editEntry();
-		});
+		btnEdit.addActionListener(e->
+				editEntry());
 
 		btnNew = new JButton("Neu");
-		btnNew.addActionListener(e-> {
-			controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_NEW);
-		});
+		btnNew.addActionListener(e->
+				controllerTabBus.buttonPressed(EmitterButton.TAB_BUS_NEW));
 
 		if(super.isRefineable())
 		{

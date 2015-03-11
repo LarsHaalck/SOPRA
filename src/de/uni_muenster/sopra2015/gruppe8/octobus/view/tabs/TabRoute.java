@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Tab used to display, add and edit routes.
  */
 public class TabRoute extends TabTable<TableModelRoute>
 {
@@ -27,19 +27,16 @@ public class TabRoute extends TabTable<TableModelRoute>
 		setLayout(new BorderLayout(5,5));
 
 		btnDelete = new JButton("Löschen");
-		btnDelete.addActionListener(e -> {
-			controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_DELETE);
-		});
+		btnDelete.addActionListener(e ->
+				controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_DELETE));
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e-> {
-			editEntry();
-		});
+		btnEdit.addActionListener(e->
+				editEntry());
 
 		btnNew = new JButton("Neu");
-		btnNew.addActionListener(e-> {
-			controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_NEW);
-		});
+		btnNew.addActionListener(e->
+				controllerTabRoute.buttonPressed(EmitterButton.TAB_ROUTE_NEW));
 
 		if(super.isRefineable())
 		{

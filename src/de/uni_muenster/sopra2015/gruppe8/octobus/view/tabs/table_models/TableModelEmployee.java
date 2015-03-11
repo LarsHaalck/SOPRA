@@ -1,5 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
+/**
+ * TableModel for TabEmployee table.
+ */
 public class TableModelEmployee extends ExtendedTableModel
 {
 	public TableModelEmployee()
