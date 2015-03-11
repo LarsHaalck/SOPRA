@@ -2148,10 +2148,19 @@ public class ControllerDatabase
 	 */
 	public ArrayList<Tour> getToursForEmployeeId(int id)
 	{
+		// set specific date to midnight
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int deadline = (int) (calendar.getTimeInMillis() / 1000);
+
 		ArrayList<Tour> result = new ArrayList<>();
 		Result<ToursRecord> tours = create
 				.selectFrom(TOURS)
 				.where(TOURS.EMPLOYEES_ID.eq(id))
+				.and(TOURS.TIMESTAMP.greaterOrEqual(deadline))
 				.orderBy(TOURS.TIMESTAMP)
 				.fetch();
 
