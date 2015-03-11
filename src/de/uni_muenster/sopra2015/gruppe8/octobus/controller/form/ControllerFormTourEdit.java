@@ -108,6 +108,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 		Object[][] data;
 		int i = 0;
+		int busNum = 0;
 		//Check if bus is already select and add an entry if it is.
 		if(tour.getBus() == null)
 			data = new Object[buses.size()][2];
@@ -122,13 +123,15 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		}
 		while ( i < data.length)
 		{
-			data[i][0] = buses.get(i).getId();
-			data[i][1] = buses.get(i).getLicencePlate();
+			data[i][0] = buses.get(busNum).getId();
+			data[i][1] = buses.get(busNum).getLicencePlate();
 			i++;
+			busNum++;
 		}
 		formTourEdit.setBusData(data);
 
 		i=0;
+		int empNum = 0;
 		//Check if busdriver is already select and add an entry if it is.
 		if(tour.getDriver() == null)
 			data = new Object[employees.size()][2];
@@ -143,9 +146,10 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		}
 		while ( i < data.length)
 		{
-			data[i][0] = employees.get(i).getId();
-			data[i][1] = employees.get(i).getName() + ", " + employees.get(i).getFirstName();
+			data[i][0] = employees.get(empNum).getId();
+			data[i][1] = employees.get(empNum).getName() + ", " + employees.get(empNum).getFirstName();
 			i++;
+			empNum++;
 		}
 		formTourEdit.setBusDriverData(data);
 
