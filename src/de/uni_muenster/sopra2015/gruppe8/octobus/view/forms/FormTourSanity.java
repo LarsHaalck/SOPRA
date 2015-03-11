@@ -76,21 +76,20 @@ public class FormTourSanity extends FormGeneral
 			panel.setLayout(new BorderLayout());
 			panel.setPreferredSize(new Dimension(150, 30));
 			panel.add(jlStatus, BorderLayout.WEST);
-			panel.add(Box.createHorizontalStrut(5));
 			switch (sanity)
 			{
 				case 0:
-					JLabel label1 = new JLabel(" fertig");
+					JLabel label1 = new JLabel("   fertig");
 					label1.setHorizontalAlignment(JLabel.LEFT);
 					panel.add(label1, BorderLayout.CENTER);
 					break;
 				case -1:
-					JLabel label2 = new JLabel(" ungeplant");
+					JLabel label2 = new JLabel("   ungeplant");
 					label2.setHorizontalAlignment(JLabel.LEFT);
 					panel.add(label2, BorderLayout.CENTER);
 					break;
 				default:
-					JLabel label3 = new JLabel( " " + sanity + " Fahrten ungeplant");
+					JLabel label3 = new JLabel( "  " + sanity + " Fahrten ungeplant");
 					label3.setHorizontalAlignment(JLabel.LEFT);
 					panel.add(label3,BorderLayout.CENTER);
 					break;
