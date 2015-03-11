@@ -229,7 +229,7 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 1;
-        leftGridPanel.add(new JLabel("Datum:"), c);
+        leftGridPanel.add(new JLabel("Uhrzeit:"), c);
 
         //String[] dummyCal = {"1.Januar.2015", "2.Januar.2013"};
         //cbDateSelection = new JComboBox<>(dummyCal);
@@ -239,7 +239,7 @@ public class DisplaySearchConnection extends JPanel
         Integer[] hours = new Integer[24];
         for (int i = 0; i < hours.length; i++)
             hours[i] = i;
-        Integer[] minutes = new Integer[61];
+        Integer[] minutes = new Integer[60];
         for (int i = 0; i < minutes.length; i++)
             minutes[i] = i;
 

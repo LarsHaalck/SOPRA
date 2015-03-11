@@ -76,7 +76,7 @@ public class PrintViewStoppingPoint implements Printable
 		graphics2D.setFont(fontHeader);
 		graphics2D.drawString("OctoBUS", 140, 110);
 		graphics2D.setFont(fontHeader2);
-		graphics2D.drawString("Abfahrtszeiten von "+routeEntry.getBusStop().getName()+routeEntry.getStopPoint().getName()+" für Linie "+routeEntry.getRoute().getName(), entryXStart,135);//zB Zeiten von Hbf für Linie 11
+		graphics2D.drawString("Abfahrtszeiten von "+routeEntry.getBusStop().getName()+" "+routeEntry.getStopPoint().getName()+" für Linie "+routeEntry.getRoute().getName(), entryXStart,135);//zB Zeiten von Hbf für Linie 11
 	}
 
 	/**
