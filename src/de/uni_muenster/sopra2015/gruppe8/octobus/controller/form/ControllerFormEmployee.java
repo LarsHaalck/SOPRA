@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for FormEmploye class.
  */
 public class ControllerFormEmployee extends Controller implements ListenerButton
 {
@@ -99,6 +99,9 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		}
 	}
 
+	/**
+	 * Fetches employee from DB by objectID and sets global employee.
+	 */
 	private void getEmployeeFromDB()
 	{
 		if(objectID != -1)
@@ -133,6 +136,10 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		}
 	}
 
+	/**
+	 * Checks if input is valid and parses form data into global employee.
+	 * @return true on valid input.
+	 */
 	private boolean parseValuesFromForm()
 	{
 		if(objectID == -1)
@@ -228,6 +235,10 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		return true;
 	}
 
+	/**
+	 * Saves globl employee to DB
+	 * @return true on success
+	 */
 	private boolean saveToDb()
 	{
 		if(objectID == -1)
@@ -250,6 +261,9 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 		ControllerManager.removeListener((ListenerButton)this);
 	}
 
+	/**
+	 * Closes current dialog.
+	 */
 	private void closeDialog()
 	{
 		formEmployee.dispose();

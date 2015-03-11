@@ -7,17 +7,14 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Role;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourResetBus;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourResetEmployee;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Florian on 10.03.2015.
+ * Controller for FormTourResetBus class.
  */
 public class ControllerFormTourResetBus extends Controller implements ListenerButton
 {
@@ -43,13 +40,13 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
 	@Override
