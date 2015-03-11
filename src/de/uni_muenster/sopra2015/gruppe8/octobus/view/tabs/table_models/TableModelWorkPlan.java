@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Florian on 06.03.2015.
+ * TableModel for TabWorkPlan table.
  */
 public class TableModelWorkPlan extends ExtendedTableModel
 {

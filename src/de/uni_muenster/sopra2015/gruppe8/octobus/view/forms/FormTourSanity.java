@@ -18,14 +18,14 @@ import java.util.Map;
  */
 public class FormTourSanity extends FormGeneral
 {
-	private JPanel jpButton, jpButtonMain, jpMain;
+	private JPanel jpButton, jpButtonMain, jpMain, jpTop;
 	private JButton jbBack;
 	private JScrollPane jspMain;
 	private ControllerFormTourSanity controllerFormTourSanity;
 
 	public FormTourSanity(Frame parent)
 	{
-		super(parent, "Touren in den nächsten zwei Wochen");
+		super(parent, "Touren (2 Wochen)");
 
 		controllerFormTourSanity = new ControllerFormTourSanity(this);
 
@@ -51,7 +51,15 @@ public class FormTourSanity extends FormGeneral
 		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
 		jpButtonMain.add(jpButton, BorderLayout.CENTER);
 
-		add(jspMain, BorderLayout.CENTER);
+		jpTop = new JPanel();
+		jpTop.setLayout(new BorderLayout());
+		JLabel edit = new JLabel("Datum kann mit Doppelklick bearbeitet werden!");
+		edit.setBorder(new EmptyBorder(new Insets(5,0,0,0)));
+		edit.setHorizontalAlignment(JLabel.CENTER);
+		jpTop.add(edit, BorderLayout.NORTH);
+		jpTop.add(jspMain, BorderLayout.CENTER);
+
+		add(jpTop, BorderLayout.CENTER);
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		controllerFormTourSanity.fillForm();
