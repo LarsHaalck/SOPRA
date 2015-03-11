@@ -58,6 +58,7 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 					{
 						controllerDatabase.deleteEmployee(tabEmployee.getSelectedID());
 						fillTable();
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					}
 				}
 				else
