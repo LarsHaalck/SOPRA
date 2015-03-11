@@ -68,7 +68,7 @@ public class PanelPassenger extends JPanel
 		c.gridx = 1;
 		pnMainButtons.add(btnSearchConnection, c);
 
-		JButton btnShowTickets = new JButton("Tickets anzeigen");
+		JButton btnShowTickets = new JButton("Fahrkarten anzeigen");
 		btnShowTickets.setPreferredSize(bigButtonSize);
 		c.gridx = 2;
 		pnMainButtons.add(btnShowTickets, c);

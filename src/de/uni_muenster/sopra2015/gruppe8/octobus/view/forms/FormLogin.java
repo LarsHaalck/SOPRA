@@ -9,7 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Jonas on 02.03.2015.
+ * Form used to log in. The user enters his username and passwort to
+ * gain access to the employee section.
  */
 public class FormLogin extends JDialog
 {
@@ -65,14 +66,12 @@ public class FormLogin extends JDialog
 		panel.add(lbError, cs);
 
 		btnLogin = new JButton("Login");
-		btnLogin.addActionListener(e -> {
-			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_LOGIN);
-		});
+		btnLogin.addActionListener(e ->
+				controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_LOGIN));
 
 		btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(e -> {
-			controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_CANCEL);
-		});
+		btnCancel.addActionListener(e ->
+				controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_CANCEL));
 		JPanel bp = new JPanel();
 		bp.add(btnLogin);
 		bp.add(btnCancel);

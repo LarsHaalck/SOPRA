@@ -2,10 +2,11 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 import java.util.Comparator;
 
+//TODO JavaDoc
 /**
  * Created by Lars on 07.03.2015.
  */
-public class TabPrice implements Comparator<TabPrice>, Comparable<TabPrice>
+public class TablePrice implements Comparator<TablePrice>, Comparable<TablePrice>
 {
 
 	private int euro;
@@ -14,7 +15,7 @@ public class TabPrice implements Comparator<TabPrice>, Comparable<TabPrice>
 
 	private int totalCents;
 
-	public TabPrice(int cents)
+	public TablePrice(int cents)
 	{
 		this.euro = cents/100;
 		this.cent = cents%100;
@@ -23,13 +24,13 @@ public class TabPrice implements Comparator<TabPrice>, Comparable<TabPrice>
 
 
 	@Override
-	public int compareTo(TabPrice o)
+	public int compareTo(TablePrice o)
 	{
 		return compare(this, o);
 	}
 
 	@Override
-	public int compare(TabPrice o1, TabPrice o2)
+	public int compare(TablePrice o1, TablePrice o2)
 	{
 		return Integer.compare(o1.getTotalCents(), o2.getTotalCents());
 	}

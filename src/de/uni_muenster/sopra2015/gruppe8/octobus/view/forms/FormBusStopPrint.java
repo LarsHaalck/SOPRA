@@ -8,10 +8,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
- * Created by Patricia on 10.03.2015.
+ * Form used to add and edit bus stops.
  */
 public class FormBusStopPrint extends FormGeneral
 {
@@ -48,7 +47,7 @@ public class FormBusStopPrint extends FormGeneral
 		for (StoppingPoint stop : stoppingPoints)
 		{
 			JCheckBox cbStop = new JCheckBox(stop.getName());
-			Tuple<JCheckBox, Integer> myStop = new Tuple<JCheckBox, Integer>(cbStop, stop.getId());
+			Tuple<JCheckBox, Integer> myStop = new Tuple<>(cbStop, stop.getId());
 			stops.add(myStop);
 			add(cbStop, cst);
 			cst.gridy++;
@@ -57,18 +56,14 @@ public class FormBusStopPrint extends FormGeneral
 		cst.gridwidth = 1;
 		btPrint = new JButton("Drucken");
 		btPrint.addActionListener(e->
-		{
-			controllerFormBusStopPrint.buttonPressed(EmitterButton.FORM_BUS_STOP_PRINT_PRINT);
-		});
+				controllerFormBusStopPrint.buttonPressed(EmitterButton.FORM_BUS_STOP_PRINT_PRINT));
 		add(btPrint, cst);
 
 		cst.gridx = 1;
 		cst.anchor = GridBagConstraints.LINE_END;
 		btCancel = new JButton("Abbrechen");
 		btCancel.addActionListener(e->
-		{
-			controllerFormBusStopPrint.buttonPressed(EmitterButton.FORM_BUS_STOP_PRINT_CANCEL);
-		});
+				controllerFormBusStopPrint.buttonPressed(EmitterButton.FORM_BUS_STOP_PRINT_CANCEL));
 		add(btCancel, cst);
 
 		setTitle("Abfahrtspläne ausdrucken");

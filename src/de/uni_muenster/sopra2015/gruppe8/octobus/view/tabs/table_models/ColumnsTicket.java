@@ -1,7 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 /**
- * Created by Lars on 04-Mar-15.
+ * Every column of ticket-table.
+ * ATTENTION: Order of enums influence order of columns in table model
  */
 public enum ColumnsTicket
 {
