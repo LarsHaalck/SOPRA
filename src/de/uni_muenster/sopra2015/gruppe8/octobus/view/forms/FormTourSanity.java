@@ -33,6 +33,7 @@ public class FormTourSanity extends FormGeneral
 		jpMain.setLayout(new GridLayout(1,1));
 
 		jspMain = new JScrollPane(jpMain);
+		jspMain.getVerticalScrollBar().setUnitIncrement(16);
 		jspMain.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
 		jpButtonMain = new JPanel();
@@ -88,7 +89,7 @@ public class FormTourSanity extends FormGeneral
 				{
 					if (e.getClickCount() == 2)
 					{
-						System.out.println(day);
+						controllerFormTourSanity.setDate(day);
 					}
 				}
 

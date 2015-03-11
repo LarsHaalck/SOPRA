@@ -61,7 +61,6 @@ public class DisplayTicket extends JPanel
 	 * @param i position of the y-position (for gridBagLayout)
 	 */
 	public void addPanel(String name, int price, int numPassengers, String description, int i){
-	//noch umranden und vllt mit Farben und anderen schriftgrößen schöner machen
 		cst.gridy = i;
 		if(i>0)
 		{
@@ -82,7 +81,7 @@ public class DisplayTicket extends JPanel
 		cst.gridy = i+2;
 		cst.gridwidth = 1;
 		cst.weightx = 1;
-		cst.anchor = GridBagConstraints.LINE_END; //does not work
+		cst.anchor = GridBagConstraints.LINE_END;
 		JLabel lbPrice = new JLabel("Preis: "+formatPrice(price)+"€");
 		lbPrice.setFont(new Font(lbPrice.getFont().getFontName(), Font.PLAIN, 14));
 		plTickets.add(lbPrice, cst);

@@ -439,6 +439,37 @@ public class ControllerDatabase
 		return bus;
 	}
 
+	/**
+	 * Retrieves a single Bus object from the database entry using its unique licence plate
+	 *
+	 * @param plate unique licence plate of the bus to be retrieved
+	 * @return Bus object created from its corresponding entry the database, null if bus not found
+	 * @pre true
+	 * @post true
+	 */
+	public Bus getBusByLicensePlate(String plate)
+	{
+		BusesRecord busRecord = create
+				.selectFrom(BUSES)
+				.where(BUSES.LICENCEPLATE.eq(plate))
+				.fetchOne();
+
+		// if bus not found, return null
+		if (busRecord == null) return null;
+
+		// create bus object
+		Bus bus = new Bus(
+				plate,
+				busRecord.getNumberofseats(),
+				busRecord.getStandingroom(),
+				busRecord.getManufacturer(),
+				busRecord.getModel(),
+				new Date((long) busRecord.getNextinspectiondue() * 1000),
+				busRecord.getArticulatedbus());
+		bus.setId(busRecord.getBusesId());
+		return bus;
+	}
+
 	////////////////////////////
 	// Methods for "BusStop"s //
 	////////////////////////////

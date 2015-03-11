@@ -26,6 +26,13 @@ public interface ListenerWindow
 	public void windowClose(EmitterWindow wd);
 
 	/**
+	 * Closes an existing window.
+	 * @param wd Window to be closed.
+	 * @param objectID ID to be passed.
+	 */
+	public void windowClose(EmitterWindow wd, int objectID);
+
+	/**
 	 * Switch to a given display.
 	 * @param dp Display to switch to.
 	 */
