@@ -226,6 +226,7 @@
       <zipfileset src="${basedir}/lib/sqlite-jdbc-3.8.7.jar"/>
       <zipfileset src="${basedir}/lib/jooq-3.5.3-javadoc.jar"/>
       <zipfileset src="${basedir}/lib/jooq-3.5.3-sources.jar"/>
+      <fileset dir="${basedir}" includes="res/**"/>
     </jar>
     <copy file="${temp.jar.path.SOPRA.jar}" tofile="${artifact.temp.output.sopra:jar}/SOPRA.jar"/>
   </target>
