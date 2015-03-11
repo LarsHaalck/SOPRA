@@ -1639,7 +1639,11 @@ public class ControllerDatabase
 				.where(BUSSTOPS.BUSSTOPS_ID.eq(busStopID))
 				.fetchOne();
 
-		return stoprecord.getName() + " " + rec.getName();
+		String compoundName = stoprecord.getName().equals(rec.getName()) ?
+				stoprecord.getName() :
+				stoprecord.getName() + " " + rec.getName();
+
+		return compoundName;
 	}
 
 	/**
