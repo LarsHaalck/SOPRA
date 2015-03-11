@@ -36,6 +36,15 @@ public class PrintViewStoppingPoint implements Printable
 		fontNormal = new Font("Serif", Font.PLAIN, 8);
 	}
 
+	/**
+	 * Gives back if page will be printed.
+	 *
+	 * @param graphics
+	 * @param pageFormat
+	 * @param pageIndex
+	 * @return if page exists
+	 * @throws PrinterException
+	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 	{
 		graphics2D = (Graphics2D) graphics;
@@ -56,6 +65,12 @@ public class PrintViewStoppingPoint implements Printable
 		return PAGE_EXISTS;
 	}
 
+	/**
+	 * Draws the headText to be printed for ne routeEntry.
+	 *
+	 * @param pageIndex
+	 * @param routeEntry
+	 */
 	private void drawHeader(int pageIndex, PrintStoppingPoint.RouteEntry routeEntry)
 	{
 		graphics2D.setFont(fontHeader);
@@ -64,6 +79,12 @@ public class PrintViewStoppingPoint implements Printable
 		graphics2D.drawString("Abfahrtszeiten von "+routeEntry.getBusStop().getName()+routeEntry.getStopPoint().getName()+" für Linie "+routeEntry.getRoute().getName(), entryXStart,135);//zB Zeiten von Hbf für Linie 11
 	}
 
+	/**
+	 * Draws the contentText to be printed for ne routeEntry.
+	 *
+	 * @param pageIndex
+	 * @param routeEntry
+	 */
 	private void drawContent(int pageIndex, PrintStoppingPoint.RouteEntry routeEntry)
 	{
 		long curX = entryXStart;
@@ -114,6 +135,11 @@ public class PrintViewStoppingPoint implements Printable
 
 	}
 
+	/**
+	 * Gives number of pages to be printed for one stoppingPoint.
+	 *
+	 * @return number of pages
+	 */
 	private int calcNumPages()
 	{
 		return data.getRouteEntries().size();

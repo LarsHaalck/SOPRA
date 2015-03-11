@@ -89,6 +89,7 @@ public class FormTourResetBus extends FormGeneral
 
 		add(jpButtonMain, BorderLayout.SOUTH);
 
+		setPreferredSize(new Dimension(220, 169));
 		pack();
 
 		jbSave.addActionListener(e -> {

@@ -4,8 +4,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 import org.jooq.Table;
@@ -46,7 +44,10 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		switch(btn)
 		{
 			case TAB_SCHEDULE_EDIT:
-				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_EDIT, -1);
+				if(tabSchedule.getSelectedID() == -1)
+					tabSchedule.showMessageDialog("Zum Bearbeiten bitte erst eine Fahrt auswählen.");
+				else
+					ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_EDIT, tabSchedule.getSelectedID());
 				break;
 
 			case TAB_SCHEDULE_FILTER:
@@ -56,8 +57,13 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 			case TAB_SCHEDULE_RESET_EMPLOYEE:
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_RESET_EMPLOYEE);
 				break;
+
 			case TAB_SCHEDULE_RESET_BUS:
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_RESET_BUS);
+				break;
+
+			case TAB_SCHEDULE_SANITY:
+				ControllerManager.informWindowOpen(EmitterWindow.FORM_TOUR_SANITY);
 				break;
 		}
 	}
