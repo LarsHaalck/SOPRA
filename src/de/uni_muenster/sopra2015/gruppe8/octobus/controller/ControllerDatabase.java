@@ -2149,10 +2149,19 @@ public class ControllerDatabase
 	 */
 	public ArrayList<Tour> getToursForEmployeeId(int id)
 	{
+		// set specific date to midnight
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int deadline = (int) (calendar.getTimeInMillis() / 1000);
+
 		ArrayList<Tour> result = new ArrayList<>();
 		Result<ToursRecord> tours = create
 				.selectFrom(TOURS)
 				.where(TOURS.EMPLOYEES_ID.eq(id))
+				.and(TOURS.TIMESTAMP.greaterOrEqual(deadline))
 				.orderBy(TOURS.TIMESTAMP)
 				.fetch();
 
@@ -2270,7 +2279,7 @@ public class ControllerDatabase
 	}
 
 	/**
-	 * gets the number of tours with a specific bus assigned.
+	 * gets the number of tours in future with a specific bus assigned.
 	 *
 	 * @param id unique ID of the bus
 	 * @return number of tours using the bus
@@ -2279,17 +2288,20 @@ public class ControllerDatabase
 	 */
 	public int getNumberOfToursUsingBusId(int id)
 	{
+		int now = (int) ((new GregorianCalendar()).getTimeInMillis() / 1000);
+
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.BUSES_ID.equal(id))
+				.and(TOURS.TIMESTAMP.greaterOrEqual(now))
 				.fetchOne();
 
 		return (Integer) record.getValue(0);
 	}
 
 	/**
-	 * gets the number of tours with a specific route assigned.
+	 * gets the number of tours in future with a specific route assigned.
 	 *
 	 * @param id unique ID of the route
 	 * @return number of tours using the route
@@ -2298,10 +2310,13 @@ public class ControllerDatabase
 	 */
 	public int getNumberOfToursUsingRouteId(int id)
 	{
+		int now = (int) ((new GregorianCalendar()).getTimeInMillis() / 1000);
+
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.ROUTES_ID.equal(id))
+				.and(TOURS.TIMESTAMP.greaterOrEqual(now))
 				.fetchOne();
 
 		return (Integer) record.getValue(0);
@@ -2309,7 +2324,7 @@ public class ControllerDatabase
 
 
 	/**
-	 * gets the number of tours with a specific employee assigned.
+	 * gets the number of tours in future with a specific employee assigned.
 	 *
 	 * @param id unique ID of the employee
 	 * @return number of tours using the employee
@@ -2318,10 +2333,13 @@ public class ControllerDatabase
 	 */
 	public int getNumberOfToursUsingEmployeeId(int id)
 	{
+		int now = (int) ((new GregorianCalendar()).getTimeInMillis() / 1000);
+
 		Record record = create
 				.selectCount()
 				.from(TOURS)
 				.where(TOURS.EMPLOYEES_ID.equal(id))
+				.and(TOURS.TIMESTAMP.greaterOrEqual(now))
 				.fetchOne();
 
 		return (Integer) record.getValue(0);

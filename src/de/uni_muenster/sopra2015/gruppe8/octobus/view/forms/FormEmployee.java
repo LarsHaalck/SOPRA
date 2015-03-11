@@ -89,7 +89,7 @@ public class FormEmployee extends FormGeneral
 		cstTextField.gridx = 1;
 		cstTextField.gridy = 1;
 		cstTextField.weightx = 1;
-		tfName = new FieldText(200);
+		tfName = new FieldText(50);
 		add(tfName, cstTextField);
 
 		cstLabel.gridy = 2;
@@ -97,7 +97,7 @@ public class FormEmployee extends FormGeneral
 		add(lbFirstName, cstLabel);
 
 		cstTextField.gridy = 2;
-		tfFirstName = new FieldText(200);
+		tfFirstName = new FieldText(50);
 		add(tfFirstName, cstTextField);
 
 		cstLabel.gridy=3;

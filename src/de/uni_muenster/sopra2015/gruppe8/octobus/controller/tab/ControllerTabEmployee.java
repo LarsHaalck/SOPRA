@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabEmployee;
+
 import java.util.ArrayList;
 
 /**
@@ -53,11 +54,15 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 						tabEmployee.showMessageDialog("Sie können sich nicht selbst löschen!");
 						break;
 					}
-
-					if(tabEmployee.showConfirmDialog("Wirklich löschen?"))
+					int num = controllerDatabase.getNumberOfToursUsingEmployeeId(tabEmployee.getSelectedID());
+					String add = "";
+					if(num > 0)
+						add = " Der Mitarbeiter ist noch in "+num+" Fahrten eingeplant.";
+					if(tabEmployee.showConfirmDialog("Wirklich löschen?"+add))
 					{
 						controllerDatabase.deleteEmployee(tabEmployee.getSelectedID());
 						fillTable();
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					}
 				}
 				else
