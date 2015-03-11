@@ -5,7 +5,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourSanity;
+
+import java.util.ArrayList;
 
 /**
  * Created by Florian on 11.03.2015.
@@ -50,7 +53,14 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 
 	private void fillForm()
 	{
+		ArrayList<Tuple<String, Integer>> data = new ArrayList<>();
+		data.add(new Tuple<>("Montag", 0));
+		data.add(new Tuple<>("Dienstag", -1));
+		data.add(new Tuple<>("Mittwoch", 5));
+		data.add(new Tuple<>("Donnerstag", 10));
+		data.add(new Tuple<>("Freitag", -1));
 
+		formTourSanity.setSanityInfo(data);
 	}
 
 	private void close()
