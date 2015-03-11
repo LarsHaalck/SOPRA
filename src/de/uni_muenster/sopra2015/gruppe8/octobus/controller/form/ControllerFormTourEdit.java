@@ -135,7 +135,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		else
 		{
 			//One more than in list for current selected
-			data = new Object[employees.size()][2];
+			data = new Object[employees.size()+1][2];
 			//Add current selected at first.
 			data[0][0] = tour.getDriver().getId();
 			data[0][1] = "Aktuelle Auswahl: "+tour.getDriver().getName() + ", " + tour.getDriver().getFirstName();

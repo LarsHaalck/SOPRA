@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourSanity;
@@ -14,7 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Florian on 11.03.2015.
+ * Controller for FormTourSanity class.
  */
 public class ControllerFormTourSanity extends Controller implements ListenerButton
 {
@@ -52,6 +53,9 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 		}
 	}
 
+	/**
+	 * Fills the form with data for the enxt two weeks.
+	 */
 	public void fillForm()
 	{
 		ArrayList<Tuple<String, Integer>> data = new ArrayList<>();
@@ -68,6 +72,15 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 		formTourSanity.setSanityInfo(data);
 	}
 
+	public void setDate(int day)
+	{
+		close();
+		ControllerManager.informWindowClose(EmitterWindow.TAB_SCHEDULE_SET_DAY, day);
+	}
+
+	/**
+	 * Closes current dialog.
+	 */
 	private void close()
 	{
 		removeListeners();
