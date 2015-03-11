@@ -116,6 +116,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 						{
 							//Refreshes the table in TAB_ROUTE
 							ControllerManager.informTableContentChanged(EmitterTable.TAB_ROUTE);
+							ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
+							ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
 							closeDialog();
 						}
 					}
