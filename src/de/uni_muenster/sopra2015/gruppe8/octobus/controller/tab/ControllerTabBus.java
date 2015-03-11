@@ -34,7 +34,10 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 				if(tabBus.getSelectedID() != -1)
 				{
 					int num = controllerDatabase.getNumberOfToursUsingBusId(tabBus.getSelectedID());
-					if(tabBus.showConfirmDialog("Wirklich löschen? Der Bus wird noch in "+num+" Routen genutzt."))
+					String add = "";
+					if(num > 0)
+						add = " Der Bus wird noch für "+num+" Fahrten genutzt.";
+					if(tabBus.showConfirmDialog("Wirklich löschen?"+add))
 					{
 						controllerDatabase.deleteBus(tabBus.getSelectedID());
 						fillTable();
