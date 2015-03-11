@@ -5,13 +5,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabBusStop;
 
 import java.util.ArrayList;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for TabBusStop class.
  */
 public class ControllerTabBusStop extends Controller implements ListenerButton, ListenerTable
 {
@@ -101,6 +100,9 @@ public class ControllerTabBusStop extends Controller implements ListenerButton, 
 		}
 	}
 
+	/**
+	 * Used to fill table with bus stops from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<BusStop> busStops = controllerDatabase.getBusStops();

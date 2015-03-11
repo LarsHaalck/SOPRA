@@ -10,7 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabRoute;
 import java.util.ArrayList;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for TabRoute class.
  */
 public class ControllerTabRoute extends Controller implements ListenerButton, ListenerTable
 {
@@ -75,6 +75,9 @@ public class ControllerTabRoute extends Controller implements ListenerButton, Li
 		}
 	}
 
+	/**
+	 * Used to fill table with routes from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<Route> routes = controllerDatabase.getRoutes();

@@ -6,15 +6,10 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabEmployee;
-
-import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
- * Controller for TabEmployee
+ * Controller for TabEmployee class.
  */
 public class ControllerTabEmployee extends Controller implements ListenerButton, ListenerTable
 {
@@ -88,6 +83,9 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	}
 
 
+	/**
+	 * Used to fill table with employees from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<Employee> employees = controllerDatabase.getEmployees();
