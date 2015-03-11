@@ -27,4 +27,23 @@ public class TableModelRoute extends ExtendedTableModel
 	{
 		return new String[]{ColumnsRoute.NAME.toString(), ColumnsRoute.START.toString(), ColumnsRoute.END.toString()};
 	}
+
+	@Override
+	public Class getColumnClass(int column)
+	{
+		switch(column)
+		{
+			case 0:
+				return Integer.class;
+
+			case 1:
+			case 2:
+			case 3:
+				return String.class;
+
+			case 4:
+				return Boolean.class;
+		}
+		return null;
+	}
 }

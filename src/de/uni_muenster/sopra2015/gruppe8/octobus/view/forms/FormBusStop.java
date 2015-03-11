@@ -1,11 +1,11 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormBusStop;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.ExtendedTableModel;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -378,6 +378,20 @@ public class FormBusStop extends FormGeneral
 		public String[] getRefineableColumns()
 		{
 			return new String[0];
+		}
+
+		@Override
+		public Class getColumnClass(int column)
+		{
+			switch(column)
+			{
+				case 0:
+					return Integer.class;
+
+				case 1:
+					return String.class;
+			}
+			return null;
 		}
 
 		public void add(int id, String name)

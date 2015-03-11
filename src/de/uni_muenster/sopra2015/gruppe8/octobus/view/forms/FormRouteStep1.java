@@ -13,7 +13,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -226,6 +229,20 @@ public class FormRouteStep1 extends JPanel
 		public String[] getRefineableColumns()
 		{
 			return new String[0];
+		}
+
+		@Override
+		public Class getColumnClass(int column)
+		{
+			switch(column)
+			{
+				case 0:
+					return Integer.class;
+
+				case 1:
+					return String.class;
+			}
+			return null;
 		}
 	}
 

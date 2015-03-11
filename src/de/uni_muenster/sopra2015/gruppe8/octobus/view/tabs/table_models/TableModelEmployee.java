@@ -1,7 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
-import javax.swing.event.TableModelListener;
-
 public class TableModelEmployee extends ExtendedTableModel
 {
 	public TableModelEmployee()
@@ -30,5 +28,30 @@ public class TableModelEmployee extends ExtendedTableModel
 		return new String[]{ColumnsEmployee.NAME.toString(), ColumnsEmployee.FIRST_NAME.toString(),
 				ColumnsEmployee.ADDRESS.toString(), ColumnsEmployee.ZIP_CODE.toString(), ColumnsEmployee.CITY.toString(),
 				ColumnsEmployee.DATE_OF_BIRTH.toString(), ColumnsEmployee.EMAIL.toString(), ColumnsEmployee.USERNAME.toString()};
+	}
+
+	@Override
+	public Class getColumnClass(int column)
+	{
+		switch(column)
+		{
+			case 0:
+				return Integer.class;
+
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				return String.class;
+
+			case 6:
+				return TableDate.class;
+
+			case 7:
+			case 8:
+				return String.class;
+		}
+		return null;
 	}
 }

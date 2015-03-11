@@ -25,4 +25,24 @@ public class TableModelBusStop extends ExtendedTableModel
 	{
 		return new String[]{ColumnsBusStop.NAME.toString()};
 	}
+
+	@Override
+	public Class getColumnClass(int column)
+	{
+		switch(column)
+		{
+			case 0:
+				return Integer.class;
+
+			case 1:
+				return String.class;
+
+			case 2:
+				return Boolean.class;
+
+			case 3:
+				return Integer.class;
+		}
+		return null;
+	}
 }

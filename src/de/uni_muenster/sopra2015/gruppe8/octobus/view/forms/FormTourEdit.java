@@ -51,7 +51,13 @@ public class FormTourEdit extends FormGeneral
 		plContent.setLayout(new GridLayout(1,2,10,10));
 
 		tmBuses = new TableModelTourData("Zum Zeitpunkt freie Busse");
-		tbBuses = new JTable(tmBuses);
+		tbBuses = new JTable(tmBuses){
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
 		tbBuses.removeColumn(tbBuses.getColumnModel().getColumn(0));
 		tbBuses.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbBuses.getSelectionModel().addListSelectionListener(e -> {
@@ -67,7 +73,13 @@ public class FormTourEdit extends FormGeneral
 			}
 		});
 		tmBusDriver = new TableModelTourData("Zum Zeitpunkt freie Fahrer");
-		tbBusDriver = new JTable(tmBusDriver);
+		tbBusDriver = new JTable(tmBusDriver){
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend)
+			{
+				super.changeSelection(rowIndex,columnIndex,true,false);
+			}
+		};
 		tbBusDriver.removeColumn(tbBusDriver.getColumnModel().getColumn(0));
 		tbBusDriver.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbBusDriver.getSelectionModel().addListSelectionListener(e -> {
