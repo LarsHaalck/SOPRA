@@ -160,6 +160,20 @@ public class FormTourEdit extends FormGeneral
 		tbBusDriver.getSelectionModel().setSelectionInterval(i,i);
 	}
 
+	public void setBusData(Object[][] data)
+	{
+		tmBuses.setData(data);
+		tbBuses.revalidate();
+		tbBuses.repaint();
+	}
+
+	public void setBusDriverData(Object[][] data)
+	{
+		tmBusDriver.setData(data);
+		tbBusDriver.revalidate();
+		tbBusDriver.repaint();
+	}
+
 	/**
 	 * Just a small table-model for FormTourEdit-tables
 	 */
