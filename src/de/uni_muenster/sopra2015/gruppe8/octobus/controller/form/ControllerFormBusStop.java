@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for FormBusStop class.
  */
 public class ControllerFormBusStop extends Controller implements ListenerButton
 {
@@ -34,6 +34,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.formBusStop = formBusStop;
 		this.objectID = objectID;
+		//Sets global bus stop to the bus given in objectID
 		if(objectID != -1)
 		{
 			setBusInfo();
@@ -47,8 +48,10 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 		switch(emitter)
 		{
 			case FORM_BUS_STOP_SAVE:
+				//Check if input is valid
 				if(parseValuesFromForm())
 				{
+					//
 					if (saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUSSTOP);
@@ -216,8 +219,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 
 	/**
 	 * Saves the current busStop to the DB.
-     *
-	 * @return
+	 * @return true when saved
 	 */
 	private boolean saveToDB()
 	{
@@ -242,11 +244,11 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             {
                 // Add entries for newly created stopping points
                 if (s.getId() <= -2)
-                    controllerDatabase.getInstance().addStoppingPoint(busStop.getId(), s);
+                    controllerDatabase.addStoppingPoint(busStop.getId(), s);
                 // Modify stopping points that already have entries in the database.
                 // Yes, this does overwrite unmodified entries with the same data.
                 else
-                    ControllerDatabase.getInstance().modifyStoppingPoint(s);
+                    controllerDatabase.modifyStoppingPoint(s);
             }
 
             // Remove all altered stopping points (which have already been handled) from the original list.
@@ -256,7 +258,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
             // Delete stopping points that remained in the original list (see lines above for more info).
             for (StoppingPoint s : originalStoppingPoints)
             {
-                ControllerDatabase.getInstance().deleteStoppingPointById(s.getId());
+               controllerDatabase.deleteStoppingPointById(s.getId());
             }
         }
 
@@ -266,15 +268,18 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 	@Override
 	protected  void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
+	/**
+	 * Closes current dialog.
+	 */
 	private void closeDialog()
 	{
 		formBusStop.dispose();

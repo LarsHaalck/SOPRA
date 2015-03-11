@@ -7,12 +7,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Ticket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TabPrice;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldPrice;
 
 import java.util.ArrayList;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for TabTicket class.
  */
 public class ControllerTabTicket extends Controller implements ListenerButton, ListenerTable
 {
@@ -77,6 +76,10 @@ public class ControllerTabTicket extends Controller implements ListenerButton, L
 				break;
 		}
 	}
+
+	/**
+	 * Used to fill table with tickets from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<Ticket> tickets = controllerDatabase.getTickets();

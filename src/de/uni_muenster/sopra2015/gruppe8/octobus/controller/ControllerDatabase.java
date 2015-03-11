@@ -1871,28 +1871,81 @@ public class ControllerDatabase
                             .execute();
                 }
             }
-            System.out.println("Creation finished.");
         }
 
         // Finally execute all the previously queued queries
         create.execute("END");
     }
 
+    /**
+     * Retrieves a list of buses which are available for the given tour.
+     *
+     * @param tour tour for which available buses ought to be shown
+     * @return list of buses available for given tour
+     */
     public ArrayList<Bus> getAvailableBusesForTour(Tour tour)
     {
-        tour.getStartTimestamp();
-        return null;
+        ArrayList<Bus> result = new ArrayList<>();
+        ArrayList<Bus> buses = getBuses();
+
+        for (Bus bus : buses)
+        {
+            ArrayList<Tour> tours = getToursForEmployeeId(bus.getId());
+
+            boolean qualifies = true;
+
+            for (Tour tourExisting : tours)
+            {
+                // Stop as soon as we find even just one conflict
+                if ((tour.getEndTimestampAsInt() >= tourExisting.getStartTimestampAsInt()) &&
+                        (tour.getStartTimestampAsInt() <= tourExisting.getEndTimestampAsInt()))
+                {
+                    qualifies = false;
+                    break;
+                }
+            }
+
+            if (qualifies) result.add(bus);
+        }
+
+        return result;
     }
 
+    /**
+     * Retrieves a list of bus drivers who are available to drive the given tour.
+     *
+     * @param tour tour for which available bus drivers ought to be shown
+     * @return list of bus drivers available to drive given tour
+     */
     public ArrayList<Employee> getAvailableBusDriversForTour(Tour tour)
     {
-        // get duration of all shifts within the last 24 hours
+        ArrayList<Employee> result = new ArrayList<>();
+        ArrayList<Employee> busdrivers = getEmployeesByRole(Role.BUSDRIVER);
 
-        // check to see if there's a tour in the last 24 hours that overlaps
+        for (Employee busdriver : busdrivers)
+        {
+            ArrayList<Tour> tours = getToursForEmployeeId(busdriver.getId());
 
-        // get all tours within the last 24 hours
+            boolean qualifies = true;
 
-        return null;
+            // TODO: (Enhancement) Check for:
+            //              No more than 4 hours of "consecutive" work (what defines as such - only just back to back?)
+            //              No more than 12 hours of work within the last 24 hours
+            for (Tour tourExisting : tours)
+            {
+                // Stop as soon as we find even just one conflict
+                if ((tour.getEndTimestampAsInt() >= tourExisting.getStartTimestampAsInt()) &&
+                        (tour.getStartTimestampAsInt() <= tourExisting.getEndTimestampAsInt()))
+                {
+                    qualifies = false;
+                    break;
+                }
+            }
+
+            if (qualifies) result.add(busdriver);
+        }
+
+        return result;
     }
 
     public ArrayList<Object[]> getToursForDate(Date date) {
@@ -1911,7 +1964,7 @@ public class ControllerDatabase
                 (int) ((calendar.getTimeInMillis() + DAY_IN_MILLIS) / 1000));
     }
 
-    private ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
+    public ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
     {
         ArrayList<Object[]> result = new ArrayList<>();
 
@@ -1946,8 +1999,6 @@ public class ControllerDatabase
             result.add(content);
         }
 
-        System.out.println("Fertig.");
-
         return result;
     }
 
@@ -1959,7 +2010,7 @@ public class ControllerDatabase
 	 * @pre true
 	 * @post true
      */
-    public ArrayList<Tour> getUserTours(int id)
+    public ArrayList<Tour> getToursForEmployeeId(int id)
     {
         ArrayList<Tour> result = new ArrayList<>();
         Result<ToursRecord> tours = create
@@ -1970,15 +2021,16 @@ public class ControllerDatabase
 
         // Return empty list if no tours found
         if (tours == null) return result;
+
         for (ToursRecord t : tours){
-            result.add(
-                    new Tour(
-                            new Date((long) t.getTimestamp()*1000),
-                            getRouteById(t.getRoutesId()),
-                            getBusById(t.getBusesId()),
-                            getEmployeeById(t.getEmployeesId())
-                    )
-            );
+            Tour newTour = new Tour(
+                    new Date((long) t.getTimestamp()*1000),
+                    getRouteById(t.getRoutesId()),
+
+                    (t.getBusesId() == null) ? null : getBusById(t.getBusesId()),
+                    (t.getEmployeesId() == null) ? null : getEmployeeById(t.getEmployeesId()));
+            newTour.setId(t.getToursId());
+            result.add(newTour);
         }
 
         return result;
@@ -2145,5 +2197,50 @@ public class ControllerDatabase
 				.set(TOURS.EMPLOYEES_ID, empID)
 				.where(TOURS.TOURS_ID.eq(tourID))
 				.execute();
+	}
+
+	/**
+	 * gets the number of tours which are unplanned for a specific day.
+	 *
+	 * @param date contains the day whose unplanned tours to be counted
+	 * @return -1 if no tours for supplied date in database, else number of unplanned tours for supplied date
+	 * @pre true
+	 * @post true
+	 */
+	public int getNumberOfUnplannedToursByDate (Date date)
+	{
+		// set specific date to midnight
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		int startOfDay = (int) (calendar.getTimeInMillis()/1000);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		int endOfDay = (int) (calendar.getTimeInMillis()/1000);
+
+		Condition inRange = TOURS.TIMESTAMP.between(startOfDay,endOfDay);
+
+		Result<ToursRecord> rows = create
+				.selectFrom(TOURS)
+				.where(inRange)
+				.fetch();
+
+		if (rows == null || rows.size() == 0) return -1;
+
+		Condition anyNull = TOURS.BUSES_ID.isNull().or(TOURS.EMPLOYEES_ID.isNull());
+
+		Record count = create
+				.selectCount()
+				.from(TOURS)
+				.where(inRange)
+				.and(anyNull)
+				.fetchOne();
+
+		return (Integer) count.getValue(0);
 	}
 }

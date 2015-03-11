@@ -59,7 +59,6 @@ public class FormTourEdit extends FormGeneral
 			{
 				selectedBusRow = -1;
 				selectedBusId = -1;
-
 			} else
 			{
 				selectedBusRow = tbBuses.convertRowIndexToModel(viewRow);
@@ -79,7 +78,7 @@ public class FormTourEdit extends FormGeneral
 			} else
 			{
 				selectedBusDriverRow = tbBusDriver.convertRowIndexToModel(viewRow);
-				selectedBusDriverId = (int) tbBusDriver.getValueAt(selectedBusDriverRow, 0);
+				selectedBusDriverId = (int) tmBusDriver.getValueAt(selectedBusDriverRow, 0);
 			}
 		});
 		plContent.add(new JScrollPane(tbBuses));
@@ -128,36 +127,10 @@ public class FormTourEdit extends FormGeneral
 		return selectedBusDriverId;
 	}
 
-	/**
-	 * Set selection in bus-table to given id
-	 * @param id bus-id
-	 * @pre parameter id is in table
-	 */
-	public void setSelectedBus(int id)
+	public void setTableSelections()
 	{
-		int i = 0;
-		for(i=0; i<tmBuses.getRowCount(); i++)
-		{
-			if((int)tmBuses.getValueAt(i,0) == id)
-				break;
-		}
-		tbBuses.getSelectionModel().setSelectionInterval(i,i);
-	}
-
-	/**
-	 * Set selection in bus-driver-table to given id
-	 * @param id bus-driver-id
-	 * @pre parameter id is in table
-	 */
-	public void setSelectedBusDriver(int id)
-	{
-		int i = 0;
-		for(i=0; i<tmBusDriver.getRowCount(); i++)
-		{
-			if((int)tmBusDriver.getValueAt(i,0) == id)
-				break;
-		}
-		tbBusDriver.getSelectionModel().setSelectionInterval(i,i);
+		tbBusDriver.getSelectionModel().setSelectionInterval(0,0);
+		tbBuses.getSelectionModel().setSelectionInterval(0,0);
 	}
 
 	public void setBusData(Object[][] data)

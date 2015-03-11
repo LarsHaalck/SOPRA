@@ -2,18 +2,15 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.RoutesRecord;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
-import java.awt.*;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,7 +24,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
-
+		//TODO clean up
 		//controllerDatabase.createTours(new Date((long)1425966900*1000), new Date((long)1425981300*1000));
 	}
 
@@ -81,7 +78,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 					break;
 
 				//Get tour and employee-data
-				ArrayList<Tour> tours = controllerDatabase.getUserTours(objectId);
+				ArrayList<Tour> tours = controllerDatabase.getToursForEmployeeId(objectId);
 				Employee employee = controllerDatabase.getEmployeeById(objectId);
 
 				String name = employee.getName()+", "+employee.getFirstName();
@@ -126,12 +123,12 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerPrint)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerPrint)this);
+		ControllerManager.removeListener(this);
 	}
 }

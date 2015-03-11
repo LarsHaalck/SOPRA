@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- * @author Patricia
+ * Controller for FormBusStopPrint class.
  */
 public class ControllerFormBusStopPrint extends Controller implements ListenerButton
 {
@@ -39,13 +39,13 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
