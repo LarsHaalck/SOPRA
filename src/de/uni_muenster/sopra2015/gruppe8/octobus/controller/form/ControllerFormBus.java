@@ -3,11 +3,11 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,10 +111,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(licencePlate.trim().length() < 5)
 			errorFields.add("Das Kennzeichen muss mindestens 5 Zeichen umfassen.");
-		else if(objectID == -1 && controllerDatabase.getBusByLicensePlate(licencePlate) != null)
-			errorFields.add("Es existiert bereits ein Bus mit dem gleichen Kennzeichen.");
-		else if(objectID != -1 && !bus.getLicencePlate().equals(licencePlate) && controllerDatabase.getBusByLicensePlate(licencePlate) != null)
-			errorFields.add("Es existiert bereits ein Bus mit dem gleichen Kennzeichen.");
+		//else if(objectID == -1 && controllerDatabase.get)
 		if(numberOfSeats == -1)
 			errorFields.add("Die Anzahl der Sitzplätze darf nicht leer sein.");
 		if(standingRoom == -1)
@@ -128,7 +125,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		else if(model.trim().length() == 0)
 			errorFields.add("Der Modell-Name darf nicht leer sein.");
 		if(nextInspectionDue == null)
-			errorFields.add("Das Datum der nächsten Inspektion ist in keinem gültigen Format.");
+			errorFields.add("Das Datum der nächsten Inspektion  liegt in keinem gültigen Format vor oder liegt außerhalb des gültigen Bereichs.");
 
 		if(errorFields.size() > 0)
 		{

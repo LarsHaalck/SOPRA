@@ -10,6 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplaySearchConn
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSearchConnection;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -27,21 +28,30 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
     //Variables
     private BusStop origin;
     private BusStop destination;
+    private TupleIntString[] arrayBusStops;
     private int time;
     private int latestTime;
     private Connection earliestConnection;
-    private LinkedList<Connection> connectionsFound;
 
     public ControllerDisplaySearchConnection(DisplaySearchConnection journeyDialog)
     {
         this.journeyDialog = journeyDialog;
         this.cg = new ControllerGraph();
         db = ControllerDatabase.getInstance();
-        this.connectionsFound = new LinkedList<>();
+        ArrayList<BusStop> busStops = db.getBusStops();
+        arrayBusStops = new TupleIntString[busStops.size()];
+        int i = 0;
+        for (BusStop busStop : busStops) {
+            arrayBusStops[i] = new TupleIntString(busStop.getId(), busStop.getName());
+            i++;
+        }
+        journeyDialog.fillBusses(arrayBusStops);
+
     }
 
     @Override
-    public void buttonPressed(EmitterButton emitter) {
+    public void buttonPressed(EmitterButton emitter)
+    {
 
         switch (emitter)
         {
@@ -50,39 +60,26 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 break;
             case DISPLAY_CONNECTION_EARLIER:
                 //Look for earlier Journeys and add them to the table
-                int currentEarliest = earliestConnection.getTime();
-                Connection currentConnection = earliestConnection;
-                while (currentConnection.equals(earliestConnection) && currentEarliest > 0)
-                {
-                    currentEarliest--;
-                    currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
-                }
-                if (earliestConnection.equals(currentConnection)) break;
-                earliestConnection = currentConnection;
-                journeyDialog.addFirstConnectionAndUpdateTable(currentConnection);
+                searchEarlierConnection();
                 break;
             case DISPLAY_CONNECTION_FIRST:
                 //Look for the first Journey and add it to the table
-                if (! (origin == null || destination == null))
-                    journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, 0));
-
+                searchFirstConnection();
                 break;
             case DISPLAY_CONNECTION_LATER:
                 //Look for later Journeys and add them to the table
-                latestTime++;
-                if (!(latestTime < 1440)) break;
-                Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, latestTime);
-                journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
-                connectionsFound.add(currentConnectionSearch);
-                latestTime = currentConnectionSearch.getTime();
+                searchLaterJourney();
                 break;
             case DISPLAY_CONNECTION_LAST:
                 //Look for the last Journey and add it to the table
+                searchLatestJourney();
                 break;
 			case DISPLAY_CONNECTION_BACK:
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
 				removeListeners();
 				break;
+            case DISPLAY_CONNECTION_SELECT_ORIGIN:
+
         }
     }
 
@@ -90,9 +87,10 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 	/**
 	 *
 	 */
-	private void searchJourney(){
-        int orig = journeyDialog.getOrigin().getNumber();
-        int dest = journeyDialog.getDestination().getNumber();
+	private void searchJourney()
+    {
+        int orig = ((TupleIntString)journeyDialog.getOrigin().getSelectedItem()).getFirst();
+        int dest = ((TupleIntString)journeyDialog.getDestination().getSelectedItem()).getFirst();
         ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
         origin = db.getBusStopById(orig);
         destination = db.getBusStopById(dest);
@@ -100,16 +98,64 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         if (! (origin == null || destination == null))
         {
 
-            //TODO: Change DayOfWeek.MONDAY
+            /*
+            Search update JTextPane
+             */
             Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, time);
             if (currentConnectionSearch == null ) return;
             journeyDialog.modifyRightGridPanel();
             earliestConnection = currentConnectionSearch;
             journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
-            connectionsFound.add(currentConnectionSearch);
             latestTime = currentConnectionSearch.getTime();
         }
+    }
 
+    private void searchEarlierConnection()
+    {
+        int currentEarliest = earliestConnection.getTime();
+        Connection currentConnection = earliestConnection;
+        int counter = 0;
+        while (currentConnection.equals(earliestConnection) && counter < 1440)
+        {
+            counter++;
+            currentEarliest--;
+            currentEarliest = currentEarliest%1440;
+            currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
+        }
+        if (earliestConnection.equals(currentConnection)) return;
+        earliestConnection = currentConnection;
+        journeyDialog.addFirstConnectionAndUpdateTable(currentConnection);
+    }
+
+    private void searchFirstConnection()
+    {
+        if (! (origin == null || destination == null)) {
+            Connection earliestConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, 0);
+            journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection);
+        }
+    }
+
+    public void searchLatestJourney()
+    {
+        /*int hoursBeforeMidnight = 1380;
+
+        while ( hoursBeforeMidnight > 0 )
+        {
+            int firstFoundStartTime;
+            Connection firstFoundConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, hoursBeforeMidnight);
+            firstFoundStartTime = firstFoundConnection.getTime();
+            Connection secondFoundConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, firstFoundStartTime + 1);
+            while (lastFoundStartTime <  )
+        }*/
+    }
+
+    public void searchLaterJourney()
+    {
+        latestTime++;
+        if (!(latestTime < 1440)) return;
+        Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, latestTime);
+        journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
+        latestTime = currentConnectionSearch.getTime();
     }
 
 
@@ -131,13 +177,17 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
     protected void addListeners()
     {
         ControllerManager.addListener((ListenerButton) this);
+        ControllerManager.addListener((ListenerTable) this);
     }
 
     @Override
     protected void removeListeners()
     {
         ControllerManager.removeListener((ListenerButton)this);
+        ControllerManager.removeListener((ListenerTable) this);
     }
+
+
 
 
     @Override
@@ -148,8 +198,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
                 String result = "";
                 int rowSelected = journeyDialog.getTableSearchResults().getSelectedRow();
-                LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = connectionsFound.get(rowSelected).getTrips();
-                System.out.println(trips.size());
+                LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).getConnectionByIndex(rowSelected).getTrips();
                 for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips) {
                     StoppingPoint spFirst = trip.getSecond();
                     StoppingPoint spSecond = trip.getFourth();
@@ -170,6 +219,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                                     + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
                     result = result + s;
                 }
+                result = result + "\n Sie erhalten unter dem Reiter \"Fahrkarten anzeigen\"  Informationen zu unseren Fahrkarten.";
                 journeyDialog.showSelectedConnection(result);
                 break;
         }
