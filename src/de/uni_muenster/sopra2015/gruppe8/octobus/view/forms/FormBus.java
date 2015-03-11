@@ -49,13 +49,11 @@ public class FormBus extends FormGeneral
 		controllerFormBus = new ControllerFormBus(this, objectID);
 
 		btSave = new JButton("Speichern");
-		btSave.addActionListener(e -> {
-			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE);
-		});
+		btSave.addActionListener(e ->
+				controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_SAVE));
 		btCancel = new JButton("Abbrechen");
-		btCancel.addActionListener(e -> {
-			controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_CANCEL);
-		});
+		btCancel.addActionListener(e ->
+				controllerFormBus.buttonPressed(EmitterButton.FORM_BUS_CANCEL));
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints cstLabel = new GridBagConstraints();

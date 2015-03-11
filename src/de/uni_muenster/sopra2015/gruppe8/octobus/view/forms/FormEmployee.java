@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.Date;
 
 /**
- * @author Patricia Schinke
+ * Form used to add and edit employees.
  */
 public class FormEmployee extends FormGeneral
 {
@@ -47,7 +47,6 @@ public class FormEmployee extends FormGeneral
 	 */
 	public FormEmployee(Frame parent, int objectID)
 	{
-		//super(parent, "Mitarbeiter verwalten");
 		super(parent, "");
 
 		getRootPane().setBorder(new EmptyBorder(10,10,10,10));
@@ -166,7 +165,7 @@ public class FormEmployee extends FormGeneral
 		add(lbPhone, cstLabel);
 
 		cstTextField.gridy = 6;
-		tfPhone = new FieldPhone();
+		tfPhone = new FieldText();
 		add(tfPhone, cstTextField);
 
 		cstLabel.gridy = 7;
@@ -238,9 +237,7 @@ public class FormEmployee extends FormGeneral
 			btPassword = new JButton("Passwort zurücksetzen");
 			add(btPassword, cstLabel);
 			btPassword.addActionListener(e->
-			{
-				controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_RESET_PASSWORD);
-			});
+					controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_RESET_PASSWORD));
 		}
 
 		cstLabel.gridx = 5;
@@ -250,13 +247,9 @@ public class FormEmployee extends FormGeneral
 
 		//Add events to buttons
 		btSave.addActionListener(e ->
-		{
-			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE);
-		});
+				controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_SAVE));
 		btCancel.addActionListener(e ->
-		{
-			controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL);
-		});
+				controllerFormEmployee.buttonPressed(EmitterButton.FORM_EMPLOYEE_CANCEL));
 
 		controllerFormEmployee.insertValuesIntoForm();
 

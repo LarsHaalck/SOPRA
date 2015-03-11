@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 import java.util.regex.Pattern;
 
 /**
@@ -29,13 +28,9 @@ public class FieldEmail extends FieldText
         if(email == null)
 			return false;
 
-        // Check if input contains other malicious content
-        if(super.isValidInput())
-		{
 			String pattern = "^([\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+[\\.]?)+[\\!#\\$%&'\\*\\+\\/\\=?\\^`\\{\\|\\}~a-zA-Z0-9_-]+@{1}((([0-9A-Za-z_-]+)([\\.]{1}[0-9A-Za-z_-]+)*\\.{1}([A-Za-z]){1,6})|(([0-9]{1,3}[\\.]{1}){3}([0-9]{1,3}){1}))$";
 			if (Pattern.compile(pattern).matcher(email).matches())
 				return true;
-		}
 		return false;
 	}
 

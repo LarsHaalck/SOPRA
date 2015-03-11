@@ -7,8 +7,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableMod
 import javax.swing.*;
 import java.awt.*;
 
-/**f
- * @author Patricia Schinke
+/**
+ * Tab used to display, add and edit bus stops.
  */
 public class TabBusStop extends TabTable<TableModelBusStop>
 {
@@ -27,24 +27,20 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		setLayout(new BorderLayout(5,5));
 
 		btnDelete = new JButton("Löschen");
-		btnDelete.addActionListener(e -> {
-			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_DELETE);
-		});
+		btnDelete.addActionListener(e ->
+				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_DELETE));
 
 		btnEdit = new JButton("Bearbeiten");
-		btnEdit.addActionListener(e-> {
-			editEntry();
-		});
+		btnEdit.addActionListener(e->
+				editEntry());
 
 		btnNew = new JButton("Neu");
-		btnNew.addActionListener(e-> {
-			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_NEW);
-		});
+		btnNew.addActionListener(e->
+				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_NEW));
 
 		btnPrint = new JButton("Drucken...");
-		btnPrint.addActionListener(e-> {
-			controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_PRINT);
-		});
+		btnPrint.addActionListener(e->
+				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_PRINT));
 
 		if(super.isRefineable())
 		{

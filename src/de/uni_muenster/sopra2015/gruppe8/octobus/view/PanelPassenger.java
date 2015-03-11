@@ -1,15 +1,11 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
+
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-
 /**
  * Displays the content available to non logged in users.
  */
@@ -68,7 +64,7 @@ public class PanelPassenger extends JPanel
 		c.gridx = 1;
 		pnMainButtons.add(btnSearchConnection, c);
 
-		JButton btnShowTickets = new JButton("Tickets anzeigen");
+		JButton btnShowTickets = new JButton("Fahrkarten anzeigen");
 		btnShowTickets.setPreferredSize(bigButtonSize);
 		c.gridx = 2;
 		pnMainButtons.add(btnShowTickets, c);
@@ -88,24 +84,16 @@ public class PanelPassenger extends JPanel
 		add(btnLogin, c);
 
 		// Add action listeners to buttons
-		btnLogin.addActionListener(e -> {
-			if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_LOGIN);
-		});
+		btnLogin.addActionListener(e ->
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_LOGIN));
 
-		btnSearchConnection.addActionListener(e -> {
-			if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SEARCH_CONNECTION);
-		});
+		btnSearchConnection.addActionListener(e ->
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SEARCH_CONNECTION));
 
-		btnShowTickets.addActionListener(e -> {
-			if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
-		});
+		btnShowTickets.addActionListener(e ->
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS));
 
-		btnShowNetwork.addActionListener(e -> {
-			if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_NETWORK);
-		});
+		btnShowNetwork.addActionListener(e ->
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_NETWORK));
 	}
 }

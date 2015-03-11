@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+//TODO JavaDoc
 /**
  * Created by Florian on 06.03.2015.
  */

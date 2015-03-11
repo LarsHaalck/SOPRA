@@ -1,7 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.forms;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormDepartureTime;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.form.ControllerFormRoute;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
@@ -11,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Created by Jonas on 08.03.2015.
+ * Form used to set departure times in FormRoute.
  */
 public class FormDepartureTime extends FormGeneral
 {
@@ -124,13 +123,11 @@ public class FormDepartureTime extends FormGeneral
 		jpButton.setLayout(new FlowLayout());
 
 		jbSave = new JButton("Speichern");
-		jbSave.addActionListener(e -> {
-			controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_SAVE);
-		});
+		jbSave.addActionListener(e ->
+				controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_SAVE));
 		jbCancel = new JButton("Abbrechen");
-		jbCancel.addActionListener(e -> {
-			controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_CANCEL);
-		});
+		jbCancel.addActionListener(e ->
+				controllerFormDepartureTime.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DEPARTURE_CANCEL));
 
 		jpButton.add(jbSave);
 		jpButton.add(jbCancel);

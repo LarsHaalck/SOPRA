@@ -12,8 +12,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 
-/** @author Patricia Schinke
- * lenght of textfield
+/**
+ * Form used to add and edit tickets.
  */
 public class FormTicket extends FormGeneral
 {
@@ -25,7 +25,7 @@ public class FormTicket extends FormGeneral
 	private AreaText taDescription;
 
 	/*
-	 * the buttons for save and cancel
+	 * Buttons for save and cancel.
 	 */
 	private JButton btSave;
 	private JButton btCancel;
@@ -128,13 +128,9 @@ public class FormTicket extends FormGeneral
 		add(btCancel, cstButton);
 
 		btSave.addActionListener(e ->
-		{
-			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE);
-		});
+				controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_SAVE));
 		btCancel.addActionListener(e ->
-		{
-			controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL);
-		});
+				controllerFormTicket.buttonPressed(EmitterButton.FORM_TICKET_CANCEL));
 
 		pack();
 		setLocationRelativeTo(null);
