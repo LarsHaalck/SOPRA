@@ -1,16 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
-
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
-
 import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.impl.DSL;
 
-import java.io.*;
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +17,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
-import java.util.Date;
+
+import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
 
 /**
  * jOOQ Controller class for database access.
@@ -2012,7 +2010,7 @@ public class ControllerDatabase
 		{
 			for (Record r : records)
 			{
-				Object[] content = new Object[5];
+				Object[] content = new Object[6];
 
 				// Tour ID
 				content[0] = r.getValue(TOURS.TOURS_ID);

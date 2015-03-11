@@ -42,10 +42,13 @@ public class TableModelSchedule extends ExtendedTableModel
             case 2:
                 return TableDate.class;
 
-            case 3:
-                return String.class;
+			case 3:
+				return Integer.class;
 
             case 4:
+                return String.class;
+
+            case 5:
                 return String.class;
         }
         return null;
