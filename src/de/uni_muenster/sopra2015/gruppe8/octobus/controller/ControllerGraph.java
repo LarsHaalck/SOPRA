@@ -45,6 +45,10 @@ public class ControllerGraph
 		ControllerGraph graph = new ControllerGraph();
 		graph.init();
 
+		//for (DayOfWeek dayOfWeek : DayOfWeek.values())
+		//{
+		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
+		//}
 		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
 
 		return;
@@ -132,6 +136,12 @@ public class ControllerGraph
 			prev = new HashMap<>();
 		}
 
+
+		private boolean isWorkDay(DayOfWeek day)
+		{
+			return (day == DayOfWeek.MONDAY || day == DayOfWeek.TUESDAY|| day == DayOfWeek.THURSDAY || day == DayOfWeek.WEDNESDAY || day == DayOfWeek.THURSDAY);
+		}
+
 		/**
 		 * Calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2). s2 must be in neighbourhood of s1
 		 * @param id1 first Vertex in edge
@@ -181,13 +191,29 @@ public class ControllerGraph
 				}
 
 				ArrayList<Integer> temp = new ArrayList<>();
+
+
+				/*int overNights = time / 1440;
+				if(overNights != 0)
+				{
+					System.out.println(overNights);
+				}*/
+
+				boolean nextDay = false;
+				boolean getNewTimes = false;
 				for (Integer start : startTimesOnDay)
 				{
 
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
 					{
-						int x = (time - start - timeDiff)/1440 + 1;
-						temp.add(timeDiffOnFirst + start + x * 1440); //convert time in days, add one and convert back in minutes
+						int x = (time - start - timeDiff)/1440 + 1; //convert time in days, add one and convert back in minutes
+						if(isWorkDay(day.plus(1)) && isWorkDay(day)) //if requested day and requested day + x are both between Mo-Fr
+						{
+							temp.add(timeDiffOnFirst + start + x * 1440);
+
+						}
+						else
+							getNewTimes = true;
 					}
 					else
 					{
@@ -195,6 +221,24 @@ public class ControllerGraph
 						break;
 					}
 				}
+
+				if(getNewTimes)
+				{
+					int dayOffset = time / 1440;
+					LinkedList<Integer> newStarTimes = connector.getStartTimes().get(day.plus(dayOffset));
+
+					for (Integer newStarTime : newStarTimes)
+					{
+						if(timeDiffOnFirst + newStarTime < time)
+						{
+							int x = (time - newStarTime - timeDiff)/1440 + 1;
+							temp.add(timeDiffOnFirst + newStarTime + x * 1440);
+						}
+
+					}
+				}
+
+
 
 				if(temp.size() != 0)
 					currentArrival = Collections.min(temp);
@@ -218,7 +262,8 @@ public class ControllerGraph
 				}
 
 			}
-            //Keine Ahnung gerade ich geh pennen :)
+
+
 			if(arrival - dist.get(id1).intValue() < 0)
 				System.out.println("negative edge weight -> midnight bug");
 			return arrival;
