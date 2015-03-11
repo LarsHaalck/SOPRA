@@ -1,10 +1,16 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.display;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerGraph;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplaySearchConnection;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSearchConnection;
+
+import java.time.DayOfWeek;
+import java.util.LinkedList;
 
 
 /**
@@ -13,15 +19,25 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplaySearchConn
 public class ControllerDisplaySearchConnection extends Controller implements ListenerButton, ListenerTable
 {
     //Dialog
-    DisplaySearchConnection journeyDialog;
+    private DisplaySearchConnection journeyDialog;
+    private ControllerGraph cg;
+    private ControllerDatabase db;
+
 
     //Variables
     private BusStop origin;
     private BusStop destination;
+    private int time;
+    private int latestTime;
+    private Connection earliestConnection;
+    private LinkedList<Connection> connectionsFound;
 
     public ControllerDisplaySearchConnection(DisplaySearchConnection journeyDialog)
     {
         this.journeyDialog = journeyDialog;
+        this.cg = new ControllerGraph();
+        db = ControllerDatabase.getInstance();
+        this.connectionsFound = new LinkedList<>();
     }
 
     @Override
@@ -30,21 +46,35 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         switch (emitter)
         {
             case DISPLAY_CONNECTION_SEARCH:
-                //TODO: Functionality to look for Journeys
-                //Don't do anything yet.
-                journeyDialog.modifyRightGridPanel();
-                //journeyDialog.getRightParentGridPanel().revalidate();
-                //journeyDialog.getRightParentGridPanel().repaint();
+                searchJourney();
                 break;
             case DISPLAY_CONNECTION_EARLIER:
                 //Look for earlier Journeys and add them to the table
+                int currentEarliest = earliestConnection.getTime();
+                Connection currentConnection = earliestConnection;
+                while (currentConnection.equals(earliestConnection) && currentEarliest > 0)
+                {
+                    currentEarliest--;
+                    currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
+                }
+                if (earliestConnection.equals(currentConnection)) break;
+                earliestConnection = currentConnection;
+                journeyDialog.addFirstConnectionAndUpdateTable(currentConnection);
                 break;
             case DISPLAY_CONNECTION_FIRST:
                 //Look for the first Journey and add it to the table
-                //night != true
+                if (! (origin == null || destination == null))
+                    journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, 0));
+
                 break;
             case DISPLAY_CONNECTION_LATER:
                 //Look for later Journeys and add them to the table
+                latestTime++;
+                if (!(latestTime < 1440)) break;
+                Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, latestTime);
+                journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
+                connectionsFound.add(currentConnectionSearch);
+                latestTime = currentConnectionSearch.getTime();
                 break;
             case DISPLAY_CONNECTION_LAST:
                 //Look for the last Journey and add it to the table
@@ -53,14 +83,28 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
 				break;
         }
-
     }
 
-    private void lookForJourneys(){
-        String originName = journeyDialog.getOrigin();
-        origin = getBusStop(originName);
-        String destinationName = journeyDialog.getDestination();
-        destination = getBusStop(destinationName);
+    private void searchJourney(){
+        int orig = journeyDialog.getOrigin().getNumber();
+        int dest = journeyDialog.getDestination().getNumber();
+        ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
+        origin = db.getBusStopById(orig);
+        destination = db.getBusStopById(dest);
+        time = journeyDialog.getTime();
+        if (! (origin == null || destination == null))
+        {
+
+            //TODO: Change DayOfWeek.MONDAY
+            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, time);
+            if (currentConnectionSearch == null ) return;
+            journeyDialog.modifyRightGridPanel();
+            earliestConnection = currentConnectionSearch;
+            journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
+            connectionsFound.add(currentConnectionSearch);
+            latestTime = currentConnectionSearch.getTime();
+        }
+
     }
 
 
@@ -96,15 +140,48 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         switch(emitter)
         {
             case FORM_JOURNEY_SEARCH_RESULT:
-                int index = journeyDialog.getTableSearchResults().getSelectionModel().getLeadSelectionIndex();
-                int length = journeyDialog.getTableSearchResults().getColumnCount();
-                String[] journeyData = new String[length];
-                for (int i = 0; i < length; i++) {
-                    journeyData[i] = (String) journeyDialog.getTableSearchResults().getValueAt(index, i);
+
+                String result = "";
+                int rowSelected = journeyDialog.getTableSearchResults().getSelectedRow();
+                LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = connectionsFound.get(rowSelected).getTrips();
+                System.out.println(trips.size());
+                for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips) {
+                    StoppingPoint spFirst = trip.getSecond();
+                    StoppingPoint spSecond = trip.getFourth();
+                    String bsFirstName = db.getBusStopByStoppingPointId(spFirst.getId()).getName();
+                    String bsSecondName = db.getBusStopByStoppingPointId(spSecond.getId()).getName();
+                    String spFirstName = spFirst.getName();
+                    String spSecondName = spSecond.getName();
+                    String routeName = trip.getThird().getName();
+
+                    String s =
+                            formatTime(trip.getFirst() / 60, trip.getFirst() % 60)
+                                    + " ab " + bsFirstName + " Bstg. " + spFirstName
+                                    + "\n              " //2 TABs 4 TABS
+                                    + routeName
+                                    + "\n"
+                                    + formatTime(trip.getFifth() / 60, trip.getFifth() % 60)
+                                    + " nach "
+                                    + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
+                    result = result + s;
                 }
-                journeyDialog.displayInformationInBox(journeyData);
+                journeyDialog.showSelectedConnection(result);
                 break;
         }
+    }
+
+    private String formatTime(int hours, int minutes){
+        String hourString;
+        String minuteString;
+        if (hours < 10)
+            hourString = "0" + hours;
+        else
+            hourString = Integer.toString(hours);
+        if (minutes < 10)
+            minuteString = "0" + minutes;
+        else
+            minuteString = Integer.toString(minutes);
+        return hourString + ":" + minuteString;
     }
 
 	@Override

@@ -1,6 +1,5 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus;
 
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.FrameMain;
 
 import javax.swing.*;
@@ -20,8 +19,7 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new FrameMain();
-				ControllerDatabase.getInstance();  // check database file existence
+				new FrameMain(); //for debugging purposes, see EntryPoint.java for possible Values
 			}
 		});
 		drawASCII();
