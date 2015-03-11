@@ -21,11 +21,11 @@ import java.util.Calendar;
 import java.util.LinkedList;
 
 /**
- * Created by Steen Sziegaud.
+ * Used to display connections.
  */
 public class DisplaySearchConnection extends JPanel
 {
-    //Konstants
+    //Constants
 	final private int WIDTH = 1000;
     final private Dimension textFieldSize = new Dimension(WIDTH/2 - 10, 23);
     final private Dimension maxGridDimensions = new Dimension(WIDTH/2 - 10, 270);
