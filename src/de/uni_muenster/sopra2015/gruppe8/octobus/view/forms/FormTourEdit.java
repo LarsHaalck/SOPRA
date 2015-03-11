@@ -59,7 +59,6 @@ public class FormTourEdit extends FormGeneral
 			{
 				selectedBusRow = -1;
 				selectedBusId = -1;
-
 			} else
 			{
 				selectedBusRow = tbBuses.convertRowIndexToModel(viewRow);
@@ -79,7 +78,7 @@ public class FormTourEdit extends FormGeneral
 			} else
 			{
 				selectedBusDriverRow = tbBusDriver.convertRowIndexToModel(viewRow);
-				selectedBusDriverId = (int) tbBusDriver.getValueAt(selectedBusDriverRow, 0);
+				selectedBusDriverId = (int) tmBusDriver.getValueAt(selectedBusDriverRow, 0);
 			}
 		});
 		plContent.add(new JScrollPane(tbBuses));
