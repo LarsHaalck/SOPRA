@@ -26,6 +26,6 @@ public class TableModelBus extends ExtendedTableModel
 	@Override
 	public String[] getRefineableColumns()
 	{
-		return new String[]{ColumnsBus.LICENCE_PLATE.toString(), ColumnsBus.MANUFACTURER.toString(), ColumnsBus.ARTICULATED_BUS.toString()};
+		return new String[]{ColumnsBus.LICENCE_PLATE.toString(), ColumnsBus.MANUFACTURER.toString()};
 	}
 }
