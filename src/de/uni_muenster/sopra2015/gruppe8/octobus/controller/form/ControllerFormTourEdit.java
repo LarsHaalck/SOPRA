@@ -126,6 +126,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		}
 		formTourEdit.setBusData(data);
 
+		i=0;
 		//Check if busdriver is already select and add an entry if it is.
 		if(tour.getDriver() == null)
 			data = new Object[employees.size()][2];
