@@ -42,14 +42,12 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		JLabel lbFilterDateSecond = new JLabel(" anzeigen.");
 		tfDateStart = new FieldDate();
 		tfDateStart.setPreferredSize(new Dimension(80,20));
-		cbOnlyUnassigned = new JCheckBox("Nur freie Fahrten anzeigen");
 		btnFilter = new JButton("Anzeigen");
 		btnFilter.addActionListener(e ->
 				controllerTabSchedule.buttonPressed(EmitterButton.TAB_SCHEDULE_FILTER));
 		plFilterDate.add(lbFilterDateFirst);
 		plFilterDate.add(tfDateStart);
 		plFilterDate.add(lbFilterDateSecond);
-		plFilterDate.add(cbOnlyUnassigned);
 		plFilterDate.add(btnFilter);
 		plFilter.add(plFilterDate, BorderLayout.PAGE_START);
 

@@ -51,31 +51,7 @@ public class FieldText extends JFormattedTextField
 	{
 		limitDocument.setLimit(limit);
 	}
-
-	/**
-	 * Vlidates user input in order to prevent SQL injections.
-     *
-	 * @return true iff user input does not contain malicious characters
-	 */
-	public boolean isValidInput()
-	{
-		//TODO: sql injection prevention
-		return true;
-	}
-
-	/**
-	 * Overrides JFormattedTextField getText() by checking if input is malicious before returning.
-     *
-	 * @return text of JFormattedTextField or null if input is not valid
-	 */
-	@Override
-	public String getText()
-	{
-		if(isValidInput())
-			return super.getText();
-		else
-			return null;
-	}
+	
 
 	@Override
 	protected Document createDefaultModel()

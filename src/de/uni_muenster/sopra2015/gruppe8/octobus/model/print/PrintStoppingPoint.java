@@ -1,10 +1,11 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model.print;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
-import javafx.scene.paint.Stop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.BusStop;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Triple;
 
-import java.lang.reflect.Array;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,11 +17,13 @@ public class PrintStoppingPoint
 {
 	private StoppingPoint stoppingPoint;
 	private ControllerDatabase controllerDatabase;
+	private ArrayList<Route> routes;
 
 	public PrintStoppingPoint(StoppingPoint stoppingPoint)
 	{
 		controllerDatabase = ControllerDatabase.getInstance();
 		this.stoppingPoint = stoppingPoint;
+		routes = controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
 	}
 
 	/**
@@ -30,7 +33,6 @@ public class PrintStoppingPoint
 	 */
 	public ArrayList<RouteEntry> getRouteEntries()
 	{
-		ArrayList<Route> routes = controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
 		ArrayList<RouteEntry> routeRecords = new ArrayList<>();
 
 		for (Route route : routes)
@@ -40,6 +42,16 @@ public class PrintStoppingPoint
 		}
 
 		return  routeRecords;
+	}
+
+	/**
+	 * Return number of routes at this stopping point
+	 *
+	 * @return number of routes
+	 */
+	public int getNumRoutes()
+	{
+		return routes.size();
 	}
 
 	public StoppingPoint getStoppingPoint()
@@ -124,7 +136,7 @@ public class PrintStoppingPoint
 					arrived = true;
 				}
 				if(arrived)
-					nextStops.add(triple.getFirst().getName() + ": " + triple.getSecond().getName());
+					nextStops.add(triple.getFirst().getName() + " (" + triple.getThird() + " min)");
 			}
 
 			return nextStops;

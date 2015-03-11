@@ -3,13 +3,13 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Role;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormEmployee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -197,7 +197,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			errorList.add("Der Benutzername darf nicht leer sein.");
 		else if(username.trim().length() < 3)
 			errorList.add("Der Benutzername muss mehr als 3 Zeichen enthalten.");
-		else if(controllerDatabase.getEmployeeByUsername(username) != null)
+		else if(controllerDatabase.getEmployeeByUsername(username) != null && objectID != -1)
 			errorList.add("Es existiert bereits ein Benutzer mit der gleichen Kennung.");
 		if(!hrManager && !busDriver && !networkPlaner && !scheduleManager && !ticketPlaner)
 			errorList.add("Ein Benutzer muss mindestens einer Rolle zugeordnet sein.");

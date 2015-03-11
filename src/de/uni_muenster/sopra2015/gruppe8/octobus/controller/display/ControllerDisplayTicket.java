@@ -49,8 +49,8 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 		//for loop for all tickets
 		for(Ticket t: tickets)
 		{
-			i = i +30;
 			displayTicket.addPanel(t.getName(), t.getPrice(), t.getNumPassengers(), t.getDescription(), i);
+			i += calcNumLines(t);
 		}
 	}
 
@@ -62,5 +62,13 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 			case DISPLAY_TICKET_BACK:
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
 		}
+	}
+
+	private int calcNumLines(Ticket ticket)
+	{
+		int i=6; //lines for name price and panel
+		String[] lines = ticket.getDescription().split("\n");
+		i += lines.length;
+		return i;
 	}
 }
