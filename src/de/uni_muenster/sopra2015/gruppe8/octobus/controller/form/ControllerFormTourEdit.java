@@ -104,24 +104,50 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 		ArrayList<Bus> buses = controllerDatabase.getAvailableBusesForTour(tour);
 		ArrayList<Employee> employees = controllerDatabase.getAvailableBusDriversForTour(tour);
 
-		Object[][] data = new Object[buses.size()][2];
-		for (int i=0; i<buses.size(); i++)
+		Object[][] data;
+		int i = 0;
+		//Check if bus is already select and add an entry if it is.
+		if(tour.getBus() == null)
+			data = new Object[buses.size()][2];
+		else
+		{
+			//One more than in list for current selected
+			data = new Object[buses.size()][2];
+			//Add current selected at first.
+			data[0][0] = tour.getBus().getId();
+			data[0][1] = "Aktuelle Auswahl: "+tour.getBus().getLicencePlate();
+			i = 1;
+		}
+		while ( i < data.length)
 		{
 			data[i][0] = buses.get(i).getId();
 			data[i][1] = buses.get(i).getLicencePlate();
+			i++;
 		}
 		formTourEdit.setBusData(data);
 
-		data = new Object[employees.size()][2];
-		for(int i=0; i<employees.size(); i++)
+		i=0;
+		//Check if busdriver is already select and add an entry if it is.
+		if(tour.getDriver() == null)
+			data = new Object[employees.size()][2];
+		else
+		{
+			//One more than in list for current selected
+			data = new Object[employees.size()][2];
+			//Add current selected at first.
+			data[0][0] = tour.getDriver().getId();
+			data[0][1] = "Aktuelle Auswahl: "+tour.getDriver().getName() + ", " + tour.getDriver().getFirstName();
+			i = 1;
+		}
+		while ( i < data.length)
 		{
 			data[i][0] = employees.get(i).getId();
 			data[i][1] = employees.get(i).getName() + ", " + employees.get(i).getFirstName();
+			i++;
 		}
 		formTourEdit.setBusDriverData(data);
 
-		//formTourEdit.setSelectedBus(0);
-		//formTourEdit.setSelectedBusDriver(0);
+		formTourEdit.setTableSelections();
 		Route route = tour.getRoute();
 		formTourEdit.setLabelTourDesc(route.getName() + " (" + route.getStart().getName() + " - " + route.getEnd().getName() + ")");
 		formTourEdit.setLabelTourTime(new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME).toString());

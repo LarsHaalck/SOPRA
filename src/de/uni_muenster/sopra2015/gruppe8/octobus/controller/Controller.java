@@ -27,24 +27,6 @@ public abstract class Controller
 	protected abstract void removeListeners();
 
 	/**
-	 * Helper-method. Parses a string to an integer
-	 * @param s String to parese.
-	 * @return String as integer, or -1 if it fails
-	 */
-	protected int parseInt(String s)
-	{
-		try
-		{
-			int i = Integer.parseInt(s);
-			return i;
-		}
-		catch (Exception e)
-		{
-			return -1;
-		}
-	}
-
-	/**
 	 * Helper-methods. Implode all error-strings into one.
 	 * String is separated by new lines.
 	 * @param errors List of all error-strings.
@@ -53,32 +35,12 @@ public abstract class Controller
 	protected String errorListToString(ArrayList<String> errors)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("      " + errors.remove(0));
+		builder.append("      ").append(errors.remove(0));
 		for( String s : errors) {
 			builder.append( "\n");
-			builder.append("      "+s);
+			builder.append("      ").append(s);
 		}
 		return builder.toString();
-	}
-
-
-	/**
-	 * Parses string into date
-	 * @param s String to parse.
-	 * @return Date.
-	 */
-	protected Date parseDate(String s)
-	{
-		try
-		{
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d.M.Y", Locale.GERMANY);
-			Date d = simpleDateFormat.parse(s);
-			return d;
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
 	}
 
 	/**

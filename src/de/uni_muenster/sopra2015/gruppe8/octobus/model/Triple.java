@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * Created by PhiSt on 05.03.2015.
+ * Used to group three objects.
  */
 public class Triple<W,X,Y>
 {

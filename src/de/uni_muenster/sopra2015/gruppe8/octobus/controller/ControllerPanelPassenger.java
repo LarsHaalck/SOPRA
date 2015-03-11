@@ -43,12 +43,12 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 }

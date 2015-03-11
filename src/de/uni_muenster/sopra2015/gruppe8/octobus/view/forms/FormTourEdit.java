@@ -53,6 +53,7 @@ public class FormTourEdit extends FormGeneral
 		tmBuses = new TableModelTourData("Zum Zeitpunkt freie Busse");
 		tbBuses = new JTable(tmBuses);
 		tbBuses.removeColumn(tbBuses.getColumnModel().getColumn(0));
+		tbBuses.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbBuses.getSelectionModel().addListSelectionListener(e -> {
 			int viewRow = tbBuses.getSelectedRow();
 			if (viewRow < 0)
@@ -68,6 +69,7 @@ public class FormTourEdit extends FormGeneral
 		tmBusDriver = new TableModelTourData("Zum Zeitpunkt freie Fahrer");
 		tbBusDriver = new JTable(tmBusDriver);
 		tbBusDriver.removeColumn(tbBusDriver.getColumnModel().getColumn(0));
+		tbBusDriver.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbBusDriver.getSelectionModel().addListSelectionListener(e -> {
 			int viewRow = tbBusDriver.getSelectedRow();
 			if (viewRow < 0)
@@ -127,36 +129,12 @@ public class FormTourEdit extends FormGeneral
 		return selectedBusDriverId;
 	}
 
-	/**
-	 * Set selection in bus-table to given id
-	 * @param id bus-id
-	 * @pre parameter id is in table
-	 */
-	public void setSelectedBus(int id)
+	public void setTableSelections()
 	{
-		int i = 0;
-		for(i=0; i<tmBuses.getRowCount(); i++)
-		{
-			if((int)tmBuses.getValueAt(i,0) == id)
-				break;
-		}
-		tbBuses.getSelectionModel().setSelectionInterval(i,i);
-	}
-
-	/**
-	 * Set selection in bus-driver-table to given id
-	 * @param id bus-driver-id
-	 * @pre parameter id is in table
-	 */
-	public void setSelectedBusDriver(int id)
-	{
-		int i = 0;
-		for(i=0; i<tmBusDriver.getRowCount(); i++)
-		{
-			if((int)tmBusDriver.getValueAt(i,0) == id)
-				break;
-		}
-		tbBusDriver.getSelectionModel().setSelectionInterval(i,i);
+		if(tmBusDriver.getRowCount() > 0)
+			tbBusDriver.getSelectionModel().setSelectionInterval(0,0);
+		if(tmBuses.getRowCount() > 0)
+			tbBuses.getSelectionModel().setSelectionInterval(0,0);
 	}
 
 	public void setBusData(Object[][] data)
@@ -191,6 +169,20 @@ public class FormTourEdit extends FormGeneral
 		public int getFirstSortColumn()
 		{
 			return 0;
+		}
+
+		@Override
+		public Class getColumnClass(int column)
+		{
+			switch(column)
+			{
+				case 0:
+					return Integer.class;
+
+				case 1:
+					return String.class;
+			}
+			return null;
 		}
 
 		@Override

@@ -24,7 +24,7 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
-
+		//TODO clean up
 		//controllerDatabase.createTours(new Date((long)1425966900*1000), new Date((long)1425981300*1000));
 	}
 
@@ -123,12 +123,12 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerPrint)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerPrint)this);
+		ControllerManager.removeListener(this);
 	}
 }

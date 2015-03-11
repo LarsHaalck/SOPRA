@@ -56,15 +56,12 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 	{
 		ArrayList<Tuple<String, Integer>> data = new ArrayList<>();
 		Date today = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("E, dd.MM.", Locale.GERMANY);
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd.MM.", Locale.GERMANY);
 
 		for(int i=0; i<14; i++)
 		{
 			Date curDay = new Date(today.getTime() + i*(1440*60000));
-			ArrayList<Object[]> tours = controllerDatabase.getToursForDate(curDay);
-			int num = -1;
-			if(tours != null)
-				num = tours.size();
+			int num = controllerDatabase.getNumberOfUnplannedToursByDate(curDay);
 			data.add(new Tuple<>(sdf.format(curDay),num));
 		}
 

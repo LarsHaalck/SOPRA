@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for TabWorkPlan class.
  */
 public class ControllerTabWorkPlan extends Controller implements ListenerButton
 {
@@ -36,15 +36,19 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton)this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton)this);
+		ControllerManager.removeListener(this);
 	}
 
+	//TODO comments, JavaDoc
+	/**
+	 *
+	 */
 	private void exportToIcal()
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMdd");
@@ -146,6 +150,10 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 		}
 	}
 
+	/**
+	 * Used to fill table with tours related to the logged in user.
+	 * Tours are fetched from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<Tour> tours = controllerDatabase.getToursForEmployeeId(userId);
