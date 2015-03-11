@@ -99,19 +99,8 @@ public class PanelPassenger extends JPanel
 		});
 
 		btnShowTickets.addActionListener(e -> {
-
-            Tour blub = ControllerDatabase.getInstance().getTourById(730175);
-            ArrayList<Employee> fasel = ControllerDatabase.getInstance().getAvailableBusDriversForTour(blub);
-
-            System.out.println("============");
-
-            for (Employee employee : fasel)
-            {
-                System.out.println(employee.getName());
-            }
-
-			/*if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);*/
+			if (controllerPanelPassenger != null)
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
 		});
 
 		btnShowNetwork.addActionListener(e -> {
