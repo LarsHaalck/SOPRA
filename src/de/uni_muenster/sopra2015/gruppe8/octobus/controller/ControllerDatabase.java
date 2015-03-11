@@ -572,11 +572,14 @@ public class ControllerDatabase
 					.fetch();
 
             // ... and put them all into a HashSet
-            // (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
             HashSet<StoppingPoint> spoints = new HashSet<>();
-            for (BusstopsStoppingpointsRecord sp : stoppingPoints)
+
+			if (stoppingPoints != null)
 			{
-				spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(),sp.getName()));
+				for (BusstopsStoppingpointsRecord sp : stoppingPoints)
+				{
+					spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(), sp.getName()));
+				}
 			}
 
 			boolean barrier = rec.getBarrierfree();
@@ -621,9 +624,12 @@ public class ControllerDatabase
         // .. and add them into a HashSet
         //  (Here, we don't worry about checking if stoppingPoints is null, because if it is, the loop just won't run)
         HashSet<StoppingPoint> spoints = new HashSet<>();
-		for (BusstopsStoppingpointsRecord sp : stoppingPoints)
+		if (stoppingPoints != null)
 		{
-			spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(),sp.getName()));
+			for (BusstopsStoppingpointsRecord sp : stoppingPoints)
+			{
+				spoints.add(new StoppingPoint(sp.getBusstopsStoppingpointsId(), sp.getName()));
+			}
 		}
 
 		// create all associated bus stop objects
@@ -665,7 +671,7 @@ public class ControllerDatabase
 					.groupBy(ROUTES_STOPS.ROUTES_ID)
 					.orderBy(ROUTES.ROUTES_ID.asc())
 					.fetchOne();
-			names.add(route.getName());
+			if (route != null) names.add(route.getName());
 		}
 		return(names);
 	}
@@ -724,7 +730,7 @@ public class ControllerDatabase
 					.selectFrom(ROUTES)
 					.where(ROUTES.ROUTES_ID.eq(routeID))
 					.fetchOne();
-			names.add(route.getName());
+			if (route != null) names.add(route.getName());
 		}
 		return(names);
 	}
@@ -1318,7 +1324,7 @@ public class ControllerDatabase
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
             // ... and add them to the list of stops
-			if (stops != null)
+			if (stopsRecords != null)
 			{
 				for (RoutesStopsRecord s : stopsRecords)
 				{
@@ -1377,22 +1383,25 @@ public class ControllerDatabase
 		startTimes.put(DayOfWeek.SUNDAY, new LinkedList<>());
 
         // Put the starting times for the route in respective lists
-		for (RoutesStarttimesRecord timerec : startTimesRecords)
+		if (startTimesRecords != null)
 		{
-			if (timerec.getDayofweek().equals("MONDAY"))
-				startTimes.get(DayOfWeek.MONDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("TUESDAY"))
-				startTimes.get(DayOfWeek.TUESDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("WEDNESDAY"))
-				startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("THURSDAY"))
-				startTimes.get(DayOfWeek.THURSDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("FRIDAY"))
-				startTimes.get(DayOfWeek.FRIDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("SATURDAY"))
-				startTimes.get(DayOfWeek.SATURDAY).add(timerec.getStarttime());
-			if (timerec.getDayofweek().equals("SUNDAY"))
-				startTimes.get(DayOfWeek.SUNDAY).add(timerec.getStarttime());
+			for (RoutesStarttimesRecord timerec : startTimesRecords)
+			{
+				if (timerec.getDayofweek().equals("MONDAY"))
+					startTimes.get(DayOfWeek.MONDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("TUESDAY"))
+					startTimes.get(DayOfWeek.TUESDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("WEDNESDAY"))
+					startTimes.get(DayOfWeek.WEDNESDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("THURSDAY"))
+					startTimes.get(DayOfWeek.THURSDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("FRIDAY"))
+					startTimes.get(DayOfWeek.FRIDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("SATURDAY"))
+					startTimes.get(DayOfWeek.SATURDAY).add(timerec.getStarttime());
+				if (timerec.getDayofweek().equals("SUNDAY"))
+					startTimes.get(DayOfWeek.SUNDAY).add(timerec.getStarttime());
+			}
 		}
 
 
@@ -1404,12 +1413,15 @@ public class ControllerDatabase
 		LinkedList<Triple<BusStop, StoppingPoint, Integer>> stops = new LinkedList<>();
 
         // ... and add them to the list of stops
-		for (RoutesStopsRecord s : stopsRecords)
+		if (stopsRecords != null)
 		{
-			int stopId = s.getBusstopsId();
-			BusStop bstop = getBusStopById(stopId);
-			StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
-			stops.add(new Triple<>(bstop,spoint,s.getTimetoprevious()));
+			for (RoutesStopsRecord s : stopsRecords)
+			{
+				int stopId = s.getBusstopsId();
+				BusStop bstop = getBusStopById(stopId);
+				StoppingPoint spoint = getStoppingPointById(s.getBusstopsStoppingpointsId());
+				stops.add(new Triple<>(bstop, spoint, s.getTimetoprevious()));
+			}
 		}
 
 		// create and return route object
@@ -1521,6 +1533,7 @@ public class ControllerDatabase
 				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
 				.fetchOne();
 
+		if (rec == null) return null;
 		int busStopID = rec.getBusstopsId();
 		BusstopsRecord stoprecord = create
 				.selectFrom(BUSSTOPS)
@@ -1850,27 +1863,33 @@ public class ControllerDatabase
             Result<Record1<Integer>> routes = create.select(ROUTES.ROUTES_ID).from(ROUTES).fetch();
 
             // for every route...
-            for (Record1<Integer> route : routes)
-            {
-                // ... get all starting times belonging to selected day of week ...
-                Result<Record1<Integer>> startingTimes = create
-                        .select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
-                        .where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek))
-                        .and(ROUTES_STARTTIMES.ROUTES_ID.eq(route.getValue(ROUTES.ROUTES_ID)))
-                        .fetch();
+			if (routes != null)
+			{
+				for (Record1<Integer> route : routes)
+				{
+					// ... get all starting times belonging to selected day of week ...
+					Result<Record1<Integer>> startingTimes = create
+							.select(ROUTES_STARTTIMES.STARTTIME).from(ROUTES_STARTTIMES)
+							.where(ROUTES_STARTTIMES.DAYOFWEEK.eq(dayOfWeek))
+							.and(ROUTES_STARTTIMES.ROUTES_ID.eq(route.getValue(ROUTES.ROUTES_ID)))
+							.fetch();
 
-                // ... and add each one to the current date to get the timestamp.
-                for (Record1<Integer> startingTime : startingTimes)
-                {
-                    create.insertInto(TOURS,
-                            TOURS.TIMESTAMP,
-                            TOURS.ROUTES_ID)
-                            .values(
-                                    timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
-                                    route.getValue(ROUTES.ROUTES_ID))
-                            .execute();
-                }
-            }
+					// ... and add each one to the current date to get the timestamp.
+					if (startingTimes != null)
+					{
+						for (Record1<Integer> startingTime : startingTimes)
+						{
+							create.insertInto(TOURS,
+									TOURS.TIMESTAMP,
+									TOURS.ROUTES_ID)
+									.values(
+											timestamp + startingTime.getValue(ROUTES_STARTTIMES.STARTTIME) * 60,
+											route.getValue(ROUTES.ROUTES_ID))
+									.execute();
+						}
+					}
+				}
+			}
         }
 
         // Finally execute all the previously queued queries
@@ -1981,23 +2000,26 @@ public class ControllerDatabase
 						.between(dateFrom, dateUntil))
                 .fetch();
 
-        for (Record r : records)
-        {
-            Object[] content = new Object[5];
+		if (records != null)
+		{
+			for (Record r : records)
+			{
+				Object[] content = new Object[5];
 
-            // Tour ID
-            content[0] = r.getValue(TOURS.TOURS_ID);
-            // Route's name
-            content[1] = r.getValue(ROUTES.NAME);
-            // Start time
-            content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
-            // Starting stop
-            content[3] = r.getValue(BUSES.LICENCEPLATE);
-            // Starting stop
-            content[4] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
+				// Tour ID
+				content[0] = r.getValue(TOURS.TOURS_ID);
+				// Route's name
+				content[1] = r.getValue(ROUTES.NAME);
+				// Start time
+				content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
+				// Starting stop
+				content[3] = r.getValue(BUSES.LICENCEPLATE);
+				// Starting stop
+				content[4] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
-            result.add(content);
-        }
+				result.add(content);
+			}
+		}
 
         return result;
     }
@@ -2025,9 +2047,8 @@ public class ControllerDatabase
         for (ToursRecord t : tours){
             Tour newTour = new Tour(
                     new Date((long) t.getTimestamp()*1000),
-                    getRouteById(t.getRoutesId()),
-
-                    (t.getBusesId() == null) ? null : getBusById(t.getBusesId()),
+					(t.getRoutesId() == null) ? null : getRouteById(t.getRoutesId()),
+					(t.getBusesId() == null) ? null : getBusById(t.getBusesId()),
                     (t.getEmployeesId() == null) ? null : getEmployeeById(t.getEmployeesId()));
             newTour.setId(t.getToursId());
             result.add(newTour);
@@ -2174,7 +2195,7 @@ public class ControllerDatabase
 
 		Tour result = new Tour(
 				new Date((long) rec.getTimestamp()*1000),
-				getRouteById(rec.getRoutesId()),
+				(rec.getRoutesId() == null) ? null : getRouteById(rec.getRoutesId()),
 				(rec.getBusesId() == null) ? null : getBusById(rec.getBusesId()),
 				(rec.getEmployeesId() == null) ? null : getEmployeeById(rec.getEmployeesId()));
 		result.setId(id);
