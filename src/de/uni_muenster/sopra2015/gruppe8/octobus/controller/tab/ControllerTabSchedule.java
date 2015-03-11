@@ -86,6 +86,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 			data[i][2] = new TableDate((Date) content[2], TableDate.Type.TIME);
 			data[i][3] = content[3];
 			data[i][4] = content[4];
+			data[i][5] = content[5];
 		}
 		tabSchedule.fillTable(data);
 	}

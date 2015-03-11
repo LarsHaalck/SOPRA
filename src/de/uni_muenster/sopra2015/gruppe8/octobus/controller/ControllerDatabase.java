@@ -1,16 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
 
-import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
-
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWindow;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.Routes;
 import de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.tables.records.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
-
 import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.impl.DSL;
 
-import java.io.*;
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +17,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.*;
-import java.util.Date;
+
+import static de.uni_muenster.sopra2015.gruppe8.octobus.jooqGenerated.Tables.*;
 
 /**
  * jOOQ Controller class for database access.
@@ -723,7 +721,8 @@ public class ControllerDatabase
 
 		// fetch names of associated routes and put them into a list
 		ArrayList<String> names = new ArrayList<>();
-		if (routes == null) return names;        // return empty list if no routes found
+		// return empty list if no routes found
+		if (routes == null) return names;
 		for (RoutesStopsRecord rec : routes)
 		{
 			int routeID = rec.getRoutesId();
@@ -1126,7 +1125,7 @@ public class ControllerDatabase
 				roleAttribute = EMPLOYEES.ISTICKET_PLANNER;
 				break;
 			default:
-				return new ArrayList<Employee>();
+				return new ArrayList<>();
 		}
 
 		Result<EmployeesRecord> rows = create
@@ -1239,7 +1238,7 @@ public class ControllerDatabase
 	 * Modifies an existing route entry in the database. Route entry ID will be changed if stopping points or starting
 	 * times are changed
 	 *
-	 * @param r           Route object whose entry is to be updated in the database
+	 * @param r Route object whose entry is to be updated in the database
 	 * @param deleteTours true if associated tours ought to be deleted
 	 * @return id of the changed route entry (new if deleteTours was true)
 	 * @pre true
@@ -1264,7 +1263,9 @@ public class ControllerDatabase
 			deleteStartTimesUsingRouteId(r.getId());
 			deleteRoutesStopsUsingRouteId(r.getId());
 			deleteRoute(r.getId());
-			return (addRoute(r));        // route gets a new ID here!
+
+			// Route gets a new ID here!
+			return (addRoute(r));
 		}
 	}
 
@@ -1502,19 +1503,20 @@ public class ControllerDatabase
 	 */
 	public ArrayList<String> getBusStopNamesUsingRouteId(int id)
 	{
-		// get all route stops entries associated to that route
+		// Get all route stops entries associated to that route
 		Result<RoutesStopsRecord> routes = create
 				.selectFrom(ROUTES_STOPS)
 				.where(ROUTES_STOPS.ROUTES_ID.eq(id))
 				.groupBy(ROUTES_STOPS.BUSSTOPS_STOPPINGPOINTS_ID)
 				.fetch();
 
-		// concatenate bus stop name and stopping point name and add to list
+		// Concatenate bus stop name and stopping point name and add to list
 		ArrayList<String> names = new ArrayList<>();
-		if (routes == null) return names;    // empty list if no routes found
+		// Empty list if no routes found
+		if (routes == null) return names;
 		for (RoutesStopsRecord rec : routes)
 		{
-			// fetch bus stop name from database
+			// Fetch bus stop name from database
 			int stopID = rec.getBusstopsId();
 			BusstopsRecord bstop = create
 					.selectFrom(BUSSTOPS)
@@ -1522,7 +1524,7 @@ public class ControllerDatabase
 					.fetchOne();
 			String nameString = bstop.getName() + " ";
 
-			// fetch stopping point name from database
+			// Fetch stopping point name from database
 			stopID = rec.getBusstopsStoppingpointsId();
 			BusstopsStoppingpointsRecord bstoppoint = create
 					.selectFrom(BUSSTOPS_STOPPINGPOINTS)
@@ -1536,7 +1538,7 @@ public class ControllerDatabase
 
 	public String getCompleteStoppingPointName(int id)
 	{
-		// get all route stops entries associated to that route
+		// Get all route stops entries associated to that route
 		BusstopsStoppingpointsRecord rec = create
 				.selectFrom(BUSSTOPS_STOPPINGPOINTS)
 				.where(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID.eq(id))
@@ -1616,7 +1618,8 @@ public class ControllerDatabase
 				.using(BUSSTOPS.BUSSTOPS_ID)
 				.orderBy(BUSSTOPS.NAME.asc(), BUSSTOPS_STOPPINGPOINTS.NAME.asc())
 				.fetch();
-		if (result == null) return (resultList);    // return empty list if no stopping points found
+		// Return empty list if no stopping points found
+		if (result == null) return (resultList);
 		for (Record r : result)
 		{
 			String busStopName = r.getValue(BUSSTOPS.NAME);
@@ -2016,7 +2019,7 @@ public class ControllerDatabase
 		{
 			for (Record r : records)
 			{
-				Object[] content = new Object[5];
+				Object[] content = new Object[6];
 
 				// Tour ID
 				content[0] = r.getValue(TOURS.TOURS_ID);
@@ -2024,10 +2027,13 @@ public class ControllerDatabase
 				content[1] = r.getValue(ROUTES.NAME);
 				// Start time
 				content[2] = new Date((long) r.getValue(TOURS.TIMESTAMP) * 1000);
-				// Starting stop
-				content[3] = r.getValue(BUSES.LICENCEPLATE);
-				// Starting stop
-				content[4] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
+				// Duration of route
+				Route route = getRouteById(r.getValue(TOURS.ROUTES_ID));
+				content[3] = route.getDuration();
+				// License plate
+				content[4] = r.getValue(BUSES.LICENCEPLATE);
+				// Bus driver
+				content[5] = r.getValue(EMPLOYEES.NAME) == null ? null : r.getValue(EMPLOYEES.NAME) + ", " + r.getValue(EMPLOYEES.FIRSTNAME);
 
 				result.add(content);
 			}

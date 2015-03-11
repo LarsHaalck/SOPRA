@@ -7,6 +7,7 @@ public enum ColumnsSchedule
 {
 	LINE,
 	TIME,
+	DURATION,
 	BUS,
 	BUS_DRIVER;
 
@@ -20,6 +21,9 @@ public enum ColumnsSchedule
 
 			case TIME:
 				return "Startzeit";
+
+			case DURATION:
+				return "Dauer";
 
 			case BUS:
 				return "Bus";
