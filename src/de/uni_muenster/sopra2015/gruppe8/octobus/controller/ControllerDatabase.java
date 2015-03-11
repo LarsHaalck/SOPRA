@@ -2121,7 +2121,7 @@ public class ControllerDatabase
 		if (rec == null) return null;
 
 		Tour result = new Tour(
-				new Date(rec.getTimestamp()*1000),
+				new Date((long) rec.getTimestamp()*1000),
 				getRouteById(rec.getRoutesId()),
 				(rec.getBusesId() == null) ? null : getBusById(rec.getBusesId()),
 				(rec.getEmployeesId() == null) ? null : getEmployeeById(rec.getEmployeesId()));
