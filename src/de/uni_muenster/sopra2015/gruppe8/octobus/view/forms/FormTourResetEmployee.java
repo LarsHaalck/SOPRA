@@ -17,13 +17,13 @@ import java.util.Date;
 public class FormTourResetEmployee extends FormGeneral
 {
 
+	ControllerFormTourResetEmployee controllerFormTourResetEmployee;
 	private JPanel jpMain, jpButtonMain, jpButton, jpStart, jpEnd, jpBusDriver;
 	private JLabel jlStart, jlEnd, jlBusDriver;
 	private FieldDate tfDateStart;
 	private FieldDate tfDateEnd;
-	private JComboBox cbEmployees;
+	private JComboBox<TupleIntString> cbEmployees;
 	private JButton jbSave, jbCancel;
-	ControllerFormTourResetEmployee controllerFormTourResetEmployee;
 
 	public FormTourResetEmployee(Frame parent, int objectId)
 	{
@@ -57,7 +57,7 @@ public class FormTourResetEmployee extends FormGeneral
 			jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
 			jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
 			jlBusDriver = new JLabel("Busfahrer: ");
-			cbEmployees = new JComboBox();
+			cbEmployees = new JComboBox<TupleIntString>();
 			jpBusDriver.add(jlBusDriver);
 			jpBusDriver.add(Box.createHorizontalStrut(8));
 			jpBusDriver.add(cbEmployees);
