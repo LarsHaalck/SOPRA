@@ -7,7 +7,11 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Jonas on 11.03.2015.
@@ -51,11 +55,10 @@ public class FormTourSanity extends FormGeneral
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		controllerFormTourSanity.fillForm();
-		setPreferredSize(new Dimension(300, 300));
+		setPreferredSize(new Dimension(310, 300));
 		pack();
 
-
-
+		setLocationRelativeTo(null);
 	}
 
 	private class FormattedLabel extends JPanel
@@ -63,10 +66,37 @@ public class FormTourSanity extends FormGeneral
 		private JLabel jlDate, jlStatus;
 		private JPanel panel;
 
-		public FormattedLabel(String date, Integer sanity)
+		public FormattedLabel(String date, Integer sanity, int day)
 		{
 			setLayout(new BorderLayout());
 			jlDate = new JLabel(date);
+			jlDate.addMouseListener(new MouseAdapter()
+			{
+				private Font orginal;
+
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					if (e.getClickCount() == 2)
+					{
+						System.out.println(day);
+					}
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					orginal = jlDate.getFont();
+					jlDate.setFont(jlDate.getFont().deriveFont(Font.BOLD));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					jlDate.setFont(orginal);
+				}
+
+			});
 			jlStatus = new JLabel(new ImageIcon("res/images/green.png"));
 			if (sanity == -1 || sanity > 0)
 				jlStatus.setIcon(new ImageIcon("res/images/red.png"));
@@ -84,7 +114,7 @@ public class FormTourSanity extends FormGeneral
 					panel.add(label1, BorderLayout.CENTER);
 					break;
 				case -1:
-					JLabel label2 = new JLabel("   ungeplant");
+					JLabel label2 = new JLabel("   komplett ungeplant");
 					label2.setHorizontalAlignment(JLabel.LEFT);
 					panel.add(label2, BorderLayout.CENTER);
 					break;
@@ -101,9 +131,10 @@ public class FormTourSanity extends FormGeneral
 	public void setSanityInfo(ArrayList<Tuple<String, Integer>> sanityInfo)
 	{
 		jpMain.setLayout(new GridLayout(sanityInfo.size(), 1));
+		int i = 0;
 		for (Tuple<String, Integer> stringIntegerTuple : sanityInfo)
 		{
-			jpMain.add(new FormattedLabel(stringIntegerTuple.getFirst(), stringIntegerTuple.getSecond()));
+			jpMain.add(new FormattedLabel(stringIntegerTuple.getFirst(), stringIntegerTuple.getSecond(), i++));
 		}
 		revalidate();
 		repaint();
