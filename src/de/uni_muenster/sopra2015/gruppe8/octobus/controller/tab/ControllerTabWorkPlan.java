@@ -3,7 +3,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
@@ -167,7 +169,10 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 			data[i][3] = tour.getRoute().getStart().getName();
 			data[i][4] = tour.getRoute().getEnd().getName();
 			data[i][5] = tour.getRoute().getDuration();
-			data[i][6] = tour.getBus().getLicencePlate();
+			if(tour.getBus() == null)
+				data[i][6] = "noch nicht gewählt";
+			else
+				data[i][6] = tour.getBus().getLicencePlate();
 		}
 		tabWorkPlan.fillTable(data);
 		tabWorkPlan.enableButtons(data.length > 0);
