@@ -59,6 +59,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 							ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
 						closeDialog();
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					}
 				}
 				break;

@@ -140,6 +140,9 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 				System.out.println("TEST");
 				prepareData();
 				displayNetwork.redrawImages();
+				displayNetwork.invalidate();
+				displayNetwork.revalidate();
+				displayNetwork.repaint();
 				break;
 		}
 	}
