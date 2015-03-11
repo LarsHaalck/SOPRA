@@ -111,6 +111,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(licencePlate.trim().length() < 5)
 			errorFields.add("Das Kennzeichen muss mindestens 5 Zeichen umfassen.");
+		//else if(objectID == -1 && controllerDatabase.get)
 		if(numberOfSeats == -1)
 			errorFields.add("Die Anzahl der Sitzplätze darf nicht leer sein.");
 		if(standingRoom == -1)
@@ -124,7 +125,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 		else if(model.trim().length() == 0)
 			errorFields.add("Der Modell-Name darf nicht leer sein.");
 		if(nextInspectionDue == null)
-			errorFields.add("Das Datum der nächsten Inspektion ist in keinem gültigen Format.");
+			errorFields.add("Das Datum der nächsten Inspektion  liegt in keinem gültigen Format vor oder liegt außerhalb des gültigen Bereichs.");
 
 		if(errorFields.size() > 0)
 		{
