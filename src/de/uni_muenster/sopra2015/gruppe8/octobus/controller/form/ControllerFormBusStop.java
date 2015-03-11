@@ -55,6 +55,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 					if (saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_BUSSTOP);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_NETWORK);
 						closeDialog();
 					}
 				}

@@ -3,9 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.tab;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
@@ -21,7 +19,7 @@ import java.util.Date;
 /**
  * Controller for TabWorkPlan class.
  */
-public class ControllerTabWorkPlan extends Controller implements ListenerButton
+public class ControllerTabWorkPlan extends Controller implements ListenerButton, ListenerTable
 {
 	private ControllerDatabase controllerDatabase;
 	private TabWorkPlan tabWorkPlan;
@@ -38,13 +36,15 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener(this);
+		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerTable) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener(this);
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerTable) this);
 	}
 
 	//TODO comments, JavaDoc
@@ -177,5 +177,28 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 		}
 		tabWorkPlan.fillTable(data);
 		tabWorkPlan.enableButtons(data.length > 0);
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case TAB_WORKPLAN:
+				fillTable();
+				break;
+		}
+	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
 	}
 }

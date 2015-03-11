@@ -110,6 +110,12 @@ public class DisplayNetwork extends JPanel
 		Tuple<Integer, Integer> size = controllerDisplayNetwork.getMaxSize();
 		drawToImage(size, true);
 		drawToImage(size, false);
+
+		lbDay = new JLabel(getImageDay());
+		lbNight = new JLabel(getImageNight());
+		scrollPane.invalidate();
+		scrollPane.revalidate();
+		scrollPane.repaint();
 	}
 
 	/**

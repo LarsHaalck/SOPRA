@@ -42,6 +42,7 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 						controllerDatabase.deleteBus(tabBus.getSelectedID());
 						fillTable();
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
 					}
 				}
 				else

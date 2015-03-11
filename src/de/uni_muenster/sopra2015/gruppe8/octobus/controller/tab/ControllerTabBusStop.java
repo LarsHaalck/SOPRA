@@ -67,6 +67,7 @@ public class ControllerTabBusStop extends Controller implements ListenerButton, 
 						{
 							controllerDatabase.deleteBusStop(tabBusStop.getSelectedID());
 							fillTable();
+							ControllerManager.informTableContentChanged(EmitterTable.TAB_NETWORK);
 						}
 						else
 						{
