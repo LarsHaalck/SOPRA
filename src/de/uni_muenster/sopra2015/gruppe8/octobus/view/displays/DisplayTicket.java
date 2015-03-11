@@ -81,7 +81,7 @@ public class DisplayTicket extends JPanel
 		cst.gridy = i+2;
 		cst.gridwidth = 1;
 		cst.weightx = 1;
-		cst.anchor = GridBagConstraints.LINE_END; 
+		cst.anchor = GridBagConstraints.LINE_END;
 		JLabel lbPrice = new JLabel("Preis: "+formatPrice(price)+"€");
 		lbPrice.setFont(new Font(lbPrice.getFont().getFontName(), Font.PLAIN, 14));
 		plTickets.add(lbPrice, cst);

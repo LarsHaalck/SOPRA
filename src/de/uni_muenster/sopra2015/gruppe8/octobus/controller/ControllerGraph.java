@@ -25,7 +25,7 @@ public class ControllerGraph
 		init();
 	}
 
-	/*public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		ControllerGraph graph = new ControllerGraph();
 
@@ -38,7 +38,7 @@ public class ControllerGraph
 		//Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 1436);
 
 		return;
-	}*/
+	}
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -253,7 +253,7 @@ public class ControllerGraph
 		 * @param endId id of BusStop which marks the end of the requested connection
 		 * @param startTime earliest starting time at startId
 		 * @return Connection object if connection exists, null otherwise
-		 * @pre startId and endId must be existing BusStop ids. startime must be in [0, 1439]
+		 * @pre startId and endId must be existing BusStop ids. start time must be in [0, 1439]
 		 */
 		public Connection findConnection(int startId, int endId, DayOfWeek day, int startTime)
 		{
@@ -325,7 +325,7 @@ public class ControllerGraph
 
 			Route prevRoute = null;
 			Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> prevQuintuple = null;
-			StoppingPoint end;
+			StoppingPoint endStoppingPoint;
 
 
 			while(prevStop != -1) //reconstruct route
@@ -338,32 +338,33 @@ public class ControllerGraph
 					time = time >= 1440 ? time % 1440 : time;
 				}
 
-				/*System.out.println("Start: " + (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop)));
+				System.out.println("Start: " + (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop)));
 				System.out.println("Arrival at 2nd BusStop: " + dist.get(currentStop).intValue());
 				System.out.println("Stopping Point - Begin: " + db.getBusStopById(prevStop).getName() + ": " + bestStoppingPoints.get(prevStop).getName());
 				System.out.println("Route taken: " + bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
-				System.out.println("Stopping Point - End: " + db.getBusStopById(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
+				System.out.println("Stopping Point - End: " + db.getBusStopById(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());
 
 
 				//no change of route -> no transition -> delete old Quadruple but save its end stopping point
-				end = bestStoppingPoints.get(currentStop);
+				endStoppingPoint = bestStoppingPoints.get(currentStop);
 				if(prevRoute != null && currentRoute.getId() == prevRoute.getId()) //prevRoute != null -> prevQuadruple != null
 				{
-					end = prevQuintuple.getFourth();
+					endStoppingPoint = prevQuintuple.getFourth();
 					trips.remove(prevQuintuple);
 				}
 
-				int calcStart = (dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop));
+				int calcStart = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
 				calcStart = calcStart >= 1440 ? calcStart % 1440 : calcStart;
 
-				int calcEnd = dist.get(end.getId()).intValue();
+				//int calcEnd = dist.get(end.getId()).intValue(); //dist.get(db.).intValue()
+				int calcEnd = dist.get(db.getBusStopByStoppingPointId(endStoppingPoint.getId()).getId()).intValue();
 				calcEnd = calcEnd >= 1440 ? calcEnd % 1440 : calcEnd;
 
 				prevQuintuple = new Quintuple<>(
 						calcStart,
 						bestStoppingPoints.get(prevStop),
 						bestRoutes.get(new TupleInt(prevStop, currentStop)),
-						end,
+						endStoppingPoint,
 						calcEnd
 				);
 				//add them in reverse order
@@ -375,7 +376,7 @@ public class ControllerGraph
 				prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 			}
 
-			/*System.out.println("Time: " + time + " (" + time / 60 + ":" + time % 60 + ")");
+			System.out.println("Time: " + time + " (" + time / 60 + ":" + time % 60 + ")");
 			System.out.println("Duration: " + duration);
 			System.out.println();
 			for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips)
@@ -386,7 +387,7 @@ public class ControllerGraph
 				System.out.println("To: " + db.getBusStopByStoppingPointId(trip.getFourth().getId()).getName() + ": " + trip.getFourth().getName());
 				System.out.println("Arrival: " + trip.getFifth() + " (" + trip.getFifth() / 60 + ":" + trip.getFifth() % 60 + ")");
 
-			}*/
+			}
 			return new Connection(trips, duration, time);
 		}
 	}
