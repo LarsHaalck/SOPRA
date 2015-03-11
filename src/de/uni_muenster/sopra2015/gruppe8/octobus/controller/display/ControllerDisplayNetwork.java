@@ -4,7 +4,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
 
@@ -14,7 +16,7 @@ import java.util.*;
 /**
  * Controller for DisplayNetwork class
  */
-public class ControllerDisplayNetwork extends Controller implements ListenerButton
+public class ControllerDisplayNetwork extends Controller implements ListenerButton, ListenerTable
 {
 	private DisplayNetwork displayNetwork;
 	private ControllerDatabase controllerDatabase;
@@ -97,13 +99,15 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 	@Override
 	protected void addListeners()
 	{
-
+		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener((ListenerTable) this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-
+		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener((ListenerTable) this);
 	}
 
 	@Override
@@ -119,6 +123,34 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 				displayNetwork.setNetwork(0);
 				break;
 		}
+	}
+
+	@Override
+	public void tableSelectionChanged(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void tableContentChanged(EmitterTable emitter)
+	{
+		switch(emitter)
+		{
+			case TAB_NETWORK:
+				System.out.println("TEST");
+				prepareData();
+				displayNetwork.redrawImages();
+				displayNetwork.invalidate();
+				displayNetwork.revalidate();
+				displayNetwork.repaint();
+				break;
+		}
+	}
+
+	@Override
+	public void tableFocusLost(EmitterTable emitter)
+	{
+
 	}
 
 	/**

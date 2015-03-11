@@ -65,6 +65,9 @@ public class ControllerTabRoute extends Controller implements ListenerButton, Li
 					{
 						controllerDatabase.deleteRoute(tabRoute.getSelectedID());
 						fillTable();
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_NETWORK);
 					}
 				}
 				else

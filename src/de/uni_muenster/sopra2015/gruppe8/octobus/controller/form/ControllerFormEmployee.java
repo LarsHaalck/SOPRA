@@ -54,11 +54,12 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 						if(objectID == -1) //only show if user is new user
 							formEmployee.showInformationForm("Der Benutzer wurde erfolgreich angelegt." +
                                     "\nBitte teilen Sie ihm das Standardpaswort \"octobus\" mit.");
-						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
+
 						if(objectID != -1)
-							ControllerManager
-                                    .informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
+							ControllerManager.informUserStateChanged(EmitterUserState.RIGHTS_CHANGED, employee.getId());
 						closeDialog();
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
+						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					}
 				}
 				break;

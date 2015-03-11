@@ -41,6 +41,7 @@ public class FormRouteStep2 extends JPanel
 		jpMain = new JPanel();
 
 		jspMain = new JScrollPane(jpMain);
+		jspMain.getVerticalScrollBar().setUnitIncrement(16);
 		jspMain.setPreferredSize(new Dimension(200, getHeight()));
 		add(jspMain, BorderLayout.WEST);
 
