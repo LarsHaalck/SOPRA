@@ -28,7 +28,7 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	{
 		super(TableModelSchedule.class, true, true);
 
-		controllerTabSchedule = new ControllerTabSchedule(this);
+
 
 		setLayout(new BorderLayout(5,5));
 
@@ -89,6 +89,8 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 		add(plButtons, BorderLayout.PAGE_END);
 
 		setVisible(true);
+
+		controllerTabSchedule = new ControllerTabSchedule(this);
 	}
 
 	public Date getDateStart()

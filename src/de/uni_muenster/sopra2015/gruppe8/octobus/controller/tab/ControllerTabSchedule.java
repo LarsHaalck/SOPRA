@@ -24,6 +24,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		super();
 		this.tabSchedule = tabSchedule;
 		controllerDatabase = ControllerDatabase.getInstance();
+		Date today = new Date();
+		tabSchedule.setDateStart(today);
+		fillTable();
 	}
 
 	@Override
