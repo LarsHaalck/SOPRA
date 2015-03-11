@@ -20,7 +20,12 @@ public class FormBusStopPrint extends FormGeneral
 	private JButton btCancel;
 	private ControllerFormBusStopPrint controllerFormBusStopPrint;
 
-	//gets the selected BusStop
+	/**
+	 * Creates a new FormBusStopPrint-object.
+	 *
+	 * @param parent parent-frame of the form
+	 * @param objectId of the selected busStop
+	 */
 	public FormBusStopPrint(Frame parent, int objectId)
 	{
 		super(parent);
