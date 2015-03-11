@@ -965,6 +965,9 @@ public class ControllerDatabase
 	 */
 	public void modifyEmployee(Employee emp)
 	{
+		if (!emp.isRole(Role.BUSDRIVER))			// if modified employee is no bus driver, then delete his tours
+			deleteEmployeeFromTours(emp.getId());
+
 		create.update(EMPLOYEES)
 				.set(EMPLOYEES.NAME, emp.getName())
 				.set(EMPLOYEES.FIRSTNAME, emp.getFirstName())
