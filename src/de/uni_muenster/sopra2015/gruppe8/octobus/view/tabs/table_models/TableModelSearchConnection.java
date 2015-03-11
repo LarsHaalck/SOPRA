@@ -38,6 +38,8 @@ public class TableModelSearchConnection extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Connection connection = connections.get(rowIndex);
         int time = connection.getTime();
+		if(connection.getTrips().size() == 0)
+			return null;
         int arrivalTime = connection.getTrips().get(connection.getTrips().size() - 1).getFifth();
         int duration = connection.getDuration();
 

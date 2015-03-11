@@ -114,13 +114,14 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
     {
         int currentEarliest = earliestConnection.getTime();
         Connection currentConnection = earliestConnection;
-        int counter = 0;
+
+		int counter = 0;
         while (currentConnection.equals(earliestConnection) && counter < 1440)
         {
-            counter++;
-            currentEarliest--;
-            currentEarliest = currentEarliest%1440;
-            currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
+			counter++;
+			currentEarliest = currentEarliest - 1 < 0 ? 1439 : --currentEarliest;
+			System.out.println(currentEarliest);
+			currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
         }
         if (earliestConnection.equals(currentConnection)) return;
         earliestConnection = currentConnection;
