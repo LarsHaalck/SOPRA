@@ -3,12 +3,22 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplaySearchConnection;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Connection;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Quadruple;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSearchConnection;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.border.Border;
+import javax.swing.table.TableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 
 /**
  * Created by Steen Sziegaud.
@@ -34,14 +44,15 @@ public class DisplaySearchConnection extends JPanel
     private JButton btnFirst;
     private JButton btnLater;
     private JButton btnLast;
-    private JTextField tfOrigin;
-    private JTextField tfDestination;
+    private FieldNumber nfOrigin;
+    private FieldNumber nfDestination;
     private JComboBox<String> cbDateSelection;
     private JComboBox<Integer> cbHourSelection;
     private JComboBox<Integer> cbMinuteSelection;
     private JTable tableSearchResults;
     private JScrollPane scrollPaneTable;
     private JPanel panelSelectedConnection;
+    private JTextPane formattedConnectionDisplay;
 
 	private JPanel display;
 
@@ -110,8 +121,6 @@ public class DisplaySearchConnection extends JPanel
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
         //Comboboxes to choose date and time.
-        //TODO: Add listeners and functionality
-        //TODO: Implement cbDateSelection?
 
         //cbDateSelection = new JComboBox<>();
         cbHourSelection = new JComboBox<>();
@@ -122,10 +131,10 @@ public class DisplaySearchConnection extends JPanel
         panelSelectedConnection = new JPanel();
 
 
-        tfOrigin = new JTextField(20);
-        tfOrigin.setToolTipText("Starthaltestelle eingeben");
-        tfDestination = new JTextField(20);
-        tfDestination.setToolTipText("Zielhaltestelle eingeben");
+        nfOrigin = new FieldNumber();
+        nfOrigin.setToolTipText("Starthaltestelle eingeben");
+        nfDestination = new FieldNumber();
+        nfDestination.setToolTipText("Zielhaltestelle eingeben");
 
 
         createTable();
@@ -134,15 +143,8 @@ public class DisplaySearchConnection extends JPanel
 
     private void createTable()
     {
-        String[] columnNames = {"Fahrt", "Abfahrt", "Ankunft", "Dauer", "Umsteigen"};
-        String[][] data = {{"1. Fahrt", "17:05", "17:25", "00:20", "0x"},
-                {"2. Fahrt", "17:08", "17:30", "00:22", "0x"}};
-        DefaultTableModel tableModel = new DefaultTableModel(data, columnNames){
-            @Override
-            public boolean isCellEditable(int row, int col){
-                return false;
-            }
-        };
+        LinkedList<Connection> data = new LinkedList<>();
+        TableModelSearchConnection tableModel = new TableModelSearchConnection(data);
 
 
         // Limits user to only select one row at time
@@ -162,10 +164,11 @@ public class DisplaySearchConnection extends JPanel
         }
 
         tableSearchResults = new JTable(tableModel);
-        tableSearchResults.setSelectionModel(new ForcedListSelectionModel());
+        tableSearchResults.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+        //tableSearchResults.setSelectionModel(new ForcedListSelectionModel());
         tableSearchResults.getSelectionModel().addListSelectionListener(e ->
                 controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT));
-        tableSearchResults.setPreferredSize(new Dimension(512, 400));
+        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
         scrollPaneTable = new JScrollPane(tableSearchResults);
         scrollPaneTable.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
         scrollPaneTable.setMaximumSize(new Dimension(halfDefaultWidth - 10, 494));
@@ -196,8 +199,8 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
-        tfOrigin.setPreferredSize(textFieldSize);
-        leftGridPanel.add(tfOrigin, c);
+        nfOrigin.setPreferredSize(textFieldSize);
+        leftGridPanel.add(nfOrigin, c);
 
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -211,8 +214,8 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 2;
-        tfDestination.setPreferredSize(textFieldSize);
-        leftGridPanel.add(tfDestination, c);
+        nfDestination.setPreferredSize(textFieldSize);
+        leftGridPanel.add(nfDestination, c);
 
 
         //DateSelectionPanel - Date: DAY.MONTH.YEAR HOURS:MINUTES
@@ -269,9 +272,10 @@ public class DisplaySearchConnection extends JPanel
         c.gridy = 6;
         c.gridwidth = 2;
         c.gridheight = 2;
-        panelSelectedConnection.setPreferredSize(new Dimension(halfDefaultWidth - 110, 320));
+        panelSelectedConnection.setPreferredSize(new Dimension(halfDefaultWidth - 110, 360));
         panelSelectedConnection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         leftGridPanel.add(panelSelectedConnection, c);
+
 
 
         return leftGridPanel;
@@ -337,32 +341,70 @@ public class DisplaySearchConnection extends JPanel
         rightParentGridPanel.repaint();
     }
 
-    public void displayInformationInBox(String[] journey)
+    public void addLastConnectionAndUpdateTable(Connection foundConnection)
     {
-        JTextPane textPane = new JTextPane();
-        panelSelectedConnection.removeAll();
+        ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
+
+
+        tableSearchResults.revalidate();
+        tableSearchResults.repaint();
+        scrollPaneTable.validate();
+        scrollPaneTable.revalidate();
+        scrollPaneTable.repaint();
+    }
+
+    public void addFirstConnectionAndUpdateTable(Connection foundConnection)
+    {
+        ((TableModelSearchConnection)tableSearchResults.getModel()).addFirstConnection(foundConnection);
+
+
+        tableSearchResults.revalidate();
+        tableSearchResults.repaint();
+        scrollPaneTable.validate();
+        scrollPaneTable.revalidate();
+        scrollPaneTable.repaint();
+    }
+
+    public void showSelectedConnection(String currentSelectedConnection){
+        if (formattedConnectionDisplay == null)
+        {
+            formattedConnectionDisplay = new JTextPane();
+            formattedConnectionDisplay.setPreferredSize(new Dimension(halfDefaultWidth - 30, 340));
+            formattedConnectionDisplay.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            panelSelectedConnection.add(formattedConnectionDisplay);
+            panelSelectedConnection.revalidate();
+            panelSelectedConnection.repaint();
+        }
+        StyledDocument doc = formattedConnectionDisplay.getStyledDocument();
+
+        try {
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, currentSelectedConnection, null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public JPanel getRightParentGridPanel()
-    {
-        return rightParentGridPanel;
-    }
 
     public JTable getTableSearchResults()
     {
         return tableSearchResults;
     }
 
-    public String getOrigin()
+    public FieldNumber getOrigin()
     {
-        return tfOrigin.getText();
+        return nfOrigin;
     }
 
-    public String getDestination()
+    public FieldNumber getDestination()
     {
-        return tfDestination.getText();
+        return nfDestination;
     }
+
+    public int getTime() { return cbHourSelection.getSelectedIndex() * 60 + cbMinuteSelection.getSelectedIndex(); }
+
+
 
 
 }

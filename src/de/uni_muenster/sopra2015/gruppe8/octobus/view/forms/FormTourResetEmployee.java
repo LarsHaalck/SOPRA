@@ -28,72 +28,72 @@ public class FormTourResetEmployee extends FormGeneral
 
 	public FormTourResetEmployee(Frame parent, int objectId)
 	{
-		super(parent, "Mitarbeiter zurücksetzen");
+			super(parent, "Mitarbeiter zurücksetzen");
 
-		setLayout(new BorderLayout());
+			setLayout(new BorderLayout());
 
-		jpMain = new JPanel();
-		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
+			jpMain = new JPanel();
+			jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
 
-		jpStart = new JPanel();
-		jpStart.setLayout(new BoxLayout(jpStart, BoxLayout.X_AXIS));
-		jpStart.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
-		jlStart = new JLabel("Erster Tag: ");
-		tfDateStart = new FieldDate();
-		jpStart.add(jlStart);
-		jpStart.add(Box.createHorizontalStrut(5));
-		jpStart.add(tfDateStart);
-		jpMain.add(jpStart);
+			jpStart = new JPanel();
+			jpStart.setLayout(new BoxLayout(jpStart, BoxLayout.X_AXIS));
+			jpStart.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+			jlStart = new JLabel("Erster Tag: ");
+			tfDateStart = new FieldDate();
+			jpStart.add(jlStart);
+			jpStart.add(Box.createHorizontalStrut(5));
+			jpStart.add(tfDateStart);
+			jpMain.add(jpStart);
 
-		jpEnd = new JPanel();
-		jpEnd.setLayout(new BoxLayout(jpEnd, BoxLayout.X_AXIS));
-		jpEnd.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
-		jlEnd = new JLabel("Letzter Tag: ");
-		tfDateEnd = new FieldDate();
-		jpEnd.add(jlEnd);
-		jpEnd.add(tfDateEnd);
-		jpMain.add(jpEnd);
+			jpEnd = new JPanel();
+			jpEnd.setLayout(new BoxLayout(jpEnd, BoxLayout.X_AXIS));
+			jpEnd.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
+			jlEnd = new JLabel("Letzter Tag: ");
+			tfDateEnd = new FieldDate();
+			jpEnd.add(jlEnd);
+			jpEnd.add(tfDateEnd);
+			jpMain.add(jpEnd);
 
-		jpBusDriver = new JPanel();
-		jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
-		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
-		jlBusDriver = new JLabel("Busfahrer: ");
-		cbEmployees = new JComboBox();
-		jpBusDriver.add(jlBusDriver);
-		jpBusDriver.add(Box.createHorizontalStrut(8));
-		jpBusDriver.add(cbEmployees);
-		jpMain.add(jpBusDriver);
+			jpBusDriver = new JPanel();
+			jpBusDriver.setLayout(new BoxLayout(jpBusDriver, BoxLayout.X_AXIS));
+			jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
+			jlBusDriver = new JLabel("Busfahrer: ");
+			cbEmployees = new JComboBox();
+			jpBusDriver.add(jlBusDriver);
+			jpBusDriver.add(Box.createHorizontalStrut(8));
+			jpBusDriver.add(cbEmployees);
+			jpMain.add(jpBusDriver);
 
-		add(jpMain);
+			add(jpMain);
 
-		jpButtonMain = new JPanel();
-		jpButtonMain.setLayout(new BorderLayout());
+			jpButtonMain = new JPanel();
+			jpButtonMain.setLayout(new BorderLayout());
 
-		jpButton = new JPanel();
-		jpButton.setLayout(new FlowLayout());
-		jpButton.setBorder(new EmptyBorder(new Insets(5,0,5,0)));
-		jbSave = new JButton("Speichern");
-		jbCancel = new JButton("Abbrechen");
-		jpButton.add(jbSave);
-		jpButton.add(jbCancel);
+			jpButton = new JPanel();
+			jpButton.setLayout(new FlowLayout());
+			jpButton.setBorder(new EmptyBorder(new Insets(5,0,5,0)));
+			jbSave = new JButton("Speichern");
+			jbCancel = new JButton("Abbrechen");
+			jpButton.add(jbSave);
+			jpButton.add(jbCancel);
 
-		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
-		jpButtonMain.add(jpButton, BorderLayout.CENTER);
+			jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
+			jpButtonMain.add(jpButton, BorderLayout.CENTER);
 
-		add(jpButtonMain, BorderLayout.SOUTH);
+			add(jpButtonMain, BorderLayout.SOUTH);
+			setPreferredSize(new Dimension(220, 169));
+			pack();
 
-		pack();
+			jbSave.addActionListener(e -> {
+				controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_SAVE);
+			});
+			jbCancel.addActionListener(e -> {
+				controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_CANCEL);
+			});
 
-		jbSave.addActionListener(e -> {
-			controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_SAVE);
-		});
-		jbCancel.addActionListener(e -> {
-			controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_CANCEL);
-		});
+			setLocationRelativeTo(null);
 
-		setLocationRelativeTo(null);
-
-		controllerFormTourResetEmployee = new ControllerFormTourResetEmployee(this);
+			controllerFormTourResetEmployee = new ControllerFormTourResetEmployee(this);
 	}
 
 	public void fillEmployees(ArrayList<TupleIntString> employees)
