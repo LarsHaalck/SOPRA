@@ -88,7 +88,7 @@ public class FormTourSanity extends FormGeneral
 				{
 					if (e.getClickCount() == 2)
 					{
-						System.out.println(day);
+						controllerFormTourSanity.setDate(day);
 					}
 				}
 
