@@ -91,9 +91,9 @@ public class ControllerFormTourResetEmployee extends Controller implements Liste
 		TupleIntString temployee = formTourResetEmployee.getEmployee();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(startDate == null)
+		if(tempStartDate == null)
 			errorFields.add("Ungültige Eingabe der Startzeit.");
-		if(endDate == null)
+		if(tempEndDate == null)
 			errorFields.add("Ungültige Eingabe der Endzeit.");
 
 		if(errorFields.size() > 0)
