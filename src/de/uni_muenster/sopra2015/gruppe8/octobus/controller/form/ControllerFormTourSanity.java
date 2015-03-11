@@ -61,10 +61,7 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 		for(int i=0; i<14; i++)
 		{
 			Date curDay = new Date(today.getTime() + i*(1440*60000));
-			ArrayList<Object[]> tours = controllerDatabase.getToursForDate(curDay);
-			int num = -1;
-			if(tours != null)
-				num = tours.size();
+			int num = controllerDatabase.getNumberOfUnplannedToursByDate(curDay);
 			data.add(new Tuple<>(sdf.format(curDay),num));
 		}
 
