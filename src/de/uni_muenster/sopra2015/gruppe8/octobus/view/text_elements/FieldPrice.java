@@ -113,7 +113,7 @@ public class FieldPrice extends FieldText
 			try
 			{
 				cent = Integer.parseInt(centString);
-				if(cent < 10) cent *= 10;
+				if(cent < 10 && centString.length() < 2) cent *= 10; //otherwise values like 5,01 would lead to 5,10
 			} catch (Exception e)
 			{
 				cent = 0;
