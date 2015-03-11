@@ -5,7 +5,8 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.*;
 import javax.swing.*;
 
 /**
- * @author Michael Biech
+ * Contains the tabs available to the user.
+ * Only displayed to logged in users.
  */
 public class PaneTabs extends JTabbedPane
 {
@@ -15,7 +16,16 @@ public class PaneTabs extends JTabbedPane
 		super();
 	}
 
-	public void setTabs(boolean ticketPlaner, boolean scheduleManager, boolean hrManager, boolean networkPlaner, boolean busDriver, int userId)
+	/**
+	 * Adds tabs to PaneTabs.
+	 * @param ticketPlanner	true if user is ticket planner.
+	 * @param scheduleManager true if user is schedule manager.
+	 * @param hrManager true if user is hr manager.
+	 * @param networkPlanner true if user is network planner.
+	 * @param busDriver true if user is bus driver.
+	 * @param userId user id.
+	 */
+	public void setTabs(boolean ticketPlanner, boolean scheduleManager, boolean hrManager, boolean networkPlanner, boolean busDriver, int userId)
 	{
 		removeAll();
 
@@ -30,13 +40,13 @@ public class PaneTabs extends JTabbedPane
 		if(hrManager)
 			addTab("Mitarbeiter", new TabEmployee(userId));
 
-		if(networkPlaner)
+		if(networkPlanner)
 		{
 			addTab("Haltestellen", new TabBusStop());
 			addTab("Linien", new TabRoute());
 		}
 
-		if(ticketPlaner)
+		if(ticketPlanner)
 			addTab("Fahrkarten", new TabTicket());
 
 		if(busDriver)

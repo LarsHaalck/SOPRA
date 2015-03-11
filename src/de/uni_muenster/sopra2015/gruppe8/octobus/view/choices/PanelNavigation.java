@@ -7,7 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Michael Biech
+ * Contains the welcome message and navigation buttons.
+ * Is displayed for logged in users.
  */
 public class PanelNavigation extends JPanel
 {
@@ -33,14 +34,10 @@ public class PanelNavigation extends JPanel
 		add(Box.createRigidArea(new Dimension(5, 0)));
 
 		btnChangePassword.addActionListener(e ->
-		{
-			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_CHANGE_PASSWORD);
-		});
+				ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_CHANGE_PASSWORD));
 
 		btnLogout.addActionListener(e ->
-		{
-			ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT);
-		});
+				ControllerManager.informButtonPressed(EmitterButton.PANEL_EMPLOYEE_LOGOUT));
 	}
 
 	public void setWelcomeText(String text)

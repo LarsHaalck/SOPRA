@@ -27,14 +27,11 @@ public class FormTourSanity extends FormGeneral
 
 		setLayout(new BorderLayout());
 
-		jspMain = new JScrollPane();
-		jspMain.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
 		jpMain = new JPanel();
-		jpMain.setLayout(new GridLayout(1, 1));
-		jspMain.add(jpMain);
+		jpMain.setLayout(new GridLayout(1,1));
 
-		add(jspMain, BorderLayout.CENTER);
+		jspMain = new JScrollPane(jpMain);
+		jspMain.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
 		jpButtonMain = new JPanel();
 		jpButtonMain.setLayout(new BorderLayout());
@@ -49,32 +46,55 @@ public class FormTourSanity extends FormGeneral
 
 		jpButtonMain.add(new JSeparator(), BorderLayout.NORTH);
 		jpButtonMain.add(jpButton, BorderLayout.CENTER);
+
+		add(jspMain, BorderLayout.CENTER);
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		controllerFormTourSanity.fillForm();
-
+		setPreferredSize(new Dimension(400, 300));
 		pack();
+
+
 
 	}
 
 	private class FormattedLabel extends JPanel
 	{
 		private JLabel jlDate, jlStatus;
+		private JPanel panel;
 
 		public FormattedLabel(String date, Integer sanity)
 		{
-			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-			setBorder(new EmptyBorder(new Insets(5, 0, 5, 0)));
+			setLayout(new BorderLayout());
 			jlDate = new JLabel(date);
-			jlStatus = new JLabel(new ImageIcon("res/images/green.png") + " fertig");
-			if (sanity == -1)
-				jlStatus.setText(new ImageIcon("res/images/red.png") + " ungeplant");
-			if (sanity > 0)
-				jlStatus.setText(new ImageIcon("res/images/red.png") + " " + sanity + " Fahrten ungeplant");
+			jlStatus = new JLabel(new ImageIcon("res/images/green.png"));
+			if (sanity == -1 || sanity > 0)
+				jlStatus.setIcon(new ImageIcon("res/images/red.png"));
+			add(jlDate, BorderLayout.CENTER);
 
-			add(jlDate);
-			add(Box.createHorizontalStrut(10));
-			add(jlStatus);
+			panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			panel.setPreferredSize(new Dimension(150, 30));
+			panel.add(jlStatus, BorderLayout.WEST);
+			switch (sanity)
+			{
+				case 0:
+					JLabel label1 = new JLabel("   fertig");
+					label1.setHorizontalAlignment(JLabel.LEFT);
+					panel.add(label1, BorderLayout.CENTER);
+					break;
+				case -1:
+					JLabel label2 = new JLabel("   ungeplant");
+					label2.setHorizontalAlignment(JLabel.LEFT);
+					panel.add(label2, BorderLayout.CENTER);
+					break;
+				default:
+					JLabel label3 = new JLabel( "  " + sanity + " Fahrten ungeplant");
+					label3.setHorizontalAlignment(JLabel.LEFT);
+					panel.add(label3,BorderLayout.CENTER);
+					break;
+			}
+			add(panel, BorderLayout.EAST);
 		}
 	}
 
