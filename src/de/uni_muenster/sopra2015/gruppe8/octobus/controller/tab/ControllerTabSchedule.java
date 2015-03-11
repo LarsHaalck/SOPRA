@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Controller for TabSchedule class.
  */
-public class ControllerTabSchedule extends Controller implements ListenerButton, ListenerTable
+public class ControllerTabSchedule extends Controller implements ListenerButton, ListenerTable, ListenerWindow
 {
 	private TabSchedule tabSchedule;
 	private ControllerDatabase controllerDatabase;
@@ -30,6 +30,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	{
 		ControllerManager.addListener((ListenerButton) this);
 		ControllerManager.addListener((ListenerTable) this);
+		ControllerManager.addListener((ListenerWindow) this);
 	}
 
 	@Override
@@ -37,6 +38,7 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	{
 		ControllerManager.removeListener((ListenerButton) this);
 		ControllerManager.removeListener((ListenerTable) this);
+		ControllerManager.removeListener((ListenerWindow) this);
 	}
 
 	@Override
@@ -128,6 +130,45 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 
 	@Override
 	public void tableFocusLost(EmitterTable emitter)
+	{
+
+	}
+
+	@Override
+	public void windowOpen(EmitterWindow wd)
+	{
+
+	}
+
+	@Override
+	public void windowOpen(EmitterWindow wd, int objectID)
+	{
+
+	}
+
+	@Override
+	public void windowClose(EmitterWindow wd)
+	{
+
+	}
+
+	@Override
+	public void windowClose(EmitterWindow wd, int objectID)
+	{
+		switch(wd)
+		{
+			case TAB_SCHEDULE_SET_DAY:
+				//objectID is number of days after today.
+				Date today = new Date();
+				Date curDay = new Date(today.getTime() + objectID*(1440*60000));
+				tabSchedule.setDateStart(curDay);
+				fillTable();
+				break;
+		}
+	}
+
+	@Override
+	public void displaySwitch(EmitterDisplay dp)
 	{
 
 	}

@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.DayOfWeek;
 import java.util.Date;
 
 /**
@@ -95,6 +96,11 @@ public class TabSchedule extends TabTable<TableModelSchedule>
 	public Date getDateStart()
 	{
 		return tfDateStart.getDate();
+	}
+
+	public void setDateStart(Date date)
+	{
+		tfDateStart.setDate(date);
 	}
 
 	public boolean getOnlyUnassigned()

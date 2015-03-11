@@ -31,5 +31,7 @@ public enum EmitterWindow
 	FORM_TOUR_RESET_BUS,
 	FORM_TOUR_SANITY,
 
+	TAB_SCHEDULE_SET_DAY,
+
 	DIALOG_NO_DB
 }

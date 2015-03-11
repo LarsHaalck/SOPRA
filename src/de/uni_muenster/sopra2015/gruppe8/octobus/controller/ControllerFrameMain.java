@@ -168,6 +168,12 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	}
 
 	@Override
+	public void windowClose(EmitterWindow wd, int objectID)
+	{
+
+	}
+
+	@Override
 	public void displaySwitch(EmitterDisplay emitter)
 	{
 		switch(emitter)
