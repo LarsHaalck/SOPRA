@@ -1,10 +1,14 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerPanelPassenger;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Displays the content available to non logged in users.
@@ -95,8 +99,19 @@ public class PanelPassenger extends JPanel
 		});
 
 		btnShowTickets.addActionListener(e -> {
-			if (controllerPanelPassenger != null)
-				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);
+
+            Tour blub = ControllerDatabase.getInstance().getTourById(730175);
+            ArrayList<Employee> fasel = ControllerDatabase.getInstance().getAvailableBusDriversForTour(blub);
+
+            System.out.println("============");
+
+            for (Employee employee : fasel)
+            {
+                System.out.println(employee.getName());
+            }
+
+			/*if (controllerPanelPassenger != null)
+				controllerPanelPassenger.buttonPressed(EmitterButton.PANEL_PASSENGER_SHOW_TICKETS);*/
 		});
 
 		btnShowNetwork.addActionListener(e -> {
