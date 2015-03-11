@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * Created by Florian on 10.03.2015.
+ * Used to group an id and a String for combo boxes.
  */
 public class TupleIntString
 {

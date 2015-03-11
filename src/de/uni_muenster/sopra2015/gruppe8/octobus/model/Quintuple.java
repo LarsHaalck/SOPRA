@@ -1,6 +1,9 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 
+/**
+ * Used to group five objects.
+ */
 public class Quintuple<V, W, X, Y, Z>
 {
 	private V first;

@@ -3,7 +3,7 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 import java.util.HashSet;
 
 /**
- * Created by Michael Biech on 27.02.15
+ * Used to store the data of a bus stop.
  */
 public class BusStop
 {

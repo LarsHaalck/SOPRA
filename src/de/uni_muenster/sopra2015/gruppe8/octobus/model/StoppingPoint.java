@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * @author Michael Biech
+ * Used to store the data of a stopping point.
  */
 public class StoppingPoint
 {

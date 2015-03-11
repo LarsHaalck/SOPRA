@@ -1,7 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
 /**
- * Created by Florian on 27.02.2015.
+ * Used to group two objects.
  */
 public class Tuple<X, Y>
 {
