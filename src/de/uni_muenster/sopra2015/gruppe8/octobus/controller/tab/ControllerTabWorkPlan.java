@@ -111,7 +111,8 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 				bw.newLine();
 				bw.write("SUMMARY:" + tour.getRoute().getName());
 				bw.newLine();
-				bw.write("DESCRIPTION:" + tour.getRoute().getName() + " von " + tour.getRoute().getStart().getName() + " bis " + tour.getRoute().getEnd().getName() + " - Bus: " + tour.getBus().getLicencePlate());
+				String busName = tour.getBus() == null ? "" : tour.getBus().getLicencePlate();
+				bw.write("DESCRIPTION:" + tour.getRoute().getName() + " von " + tour.getRoute().getStart().getName() + " bis " + tour.getRoute().getEnd().getName() + " - Bus: " + busName);
 				bw.newLine();
 				bw.write("CLASS:PRIVATE");
 				bw.newLine();
