@@ -51,8 +51,16 @@ public class DisplayTicket extends JPanel
 		plTable.add(plTickets);
 	}
 
-
-	//adds Panel to the plTable with data from the dataBase (is used in ControllerFormShowTckets
+	/**
+	 * 	Adds Panel to the plTable with data from the dataBase.
+	 * 	Is used in ControllerFormShowTickets.
+	 *
+	 * @param name of the ticket
+	 * @param price of the ticket
+	 * @param numPassengers which can drive with the ticket
+	 * @param description of the ticket
+	 * @param i position of the y-position (for gridBagLayout)
+	 */
 	public void addPanel(String name, int price, int numPassengers, String description, int i){
 	//noch umranden und vllt mit Farben und anderen schriftgrößen schöner machen
 		cst.gridy = i;
@@ -107,14 +115,19 @@ public class DisplayTicket extends JPanel
 		}
 	}
 
+	/**
+	 * Formats the price of the ticket and gives it back in a String.
+	 *
+	 * @param price of the ticket
+	 * @return String with the right format of the price
+	 */
 	public String formatPrice(int price)
 	{
 		int euro = price/100;
 		int cent = price%100;
 
 		String centString = cent+"";
-		if(cent == 0)
-			centString += "0";
+		if(centString.length()==1){centString="0"+centString;}
 
 		return euro+","+centString;
 	}

@@ -5,8 +5,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tour;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormTourEdit;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import java.util.ArrayList;
 
@@ -18,7 +22,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 	private FormTourEdit formTourEdit;
 	private ControllerDatabase controllerDatabase;
 	private int objectId;
-	private Route route;
+	private Tour tour;
 
 	public ControllerFormTourEdit(FormTourEdit formTourEdit, int objectId)
 	{
@@ -74,16 +78,41 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 	private void getDataFromDB()
 	{
-		//tour = controllerDatabase.getTour(objectId);
-
+		tour = controllerDatabase.getTourById(objectId);
 	}
 
 	public void fillForm()
 	{
 		//Fill tables
+		ArrayList<Bus> buses = controllerDatabase.getAvailableBusesForTour(tour);
+		ArrayList<Employee> employees = controllerDatabase.getAvailableBusDriversForTour(tour);
+
+		//TODO remove this
+		if(buses == null)
+			buses = new ArrayList<>();
+		if(employees == null)
+			employees = new ArrayList<>();
+
+		Object[][] data = new Object[buses.size()][2];
+		for (int i=0; i<buses.size(); i++)
+		{
+			data[i][0] = buses.get(i).getId();
+			data[i][1] = buses.get(i).getLicencePlate();
+		}
+		formTourEdit.setBusData(data);
+
+		data = new Object[buses.size()][2];
+		for(int i=0; i<employees.size(); i++)
+		{
+			data[i][0] = employees.get(i).getId();
+			data[i][1] = employees.get(i).getName() + ", " + employees.get(i).getFirstName();
+		}
+		formTourEdit.setBusDriverData(data);
+
 		//formTourEdit.setSelectedBus(0);
 		//formTourEdit.setSelectedBusDriver(0);
-		formTourEdit.setLabelTourDesc("Desc vom Controller");
-		formTourEdit.setLabelTourTime("Time vom Controller");
+		Route route = tour.getRoute();
+		formTourEdit.setLabelTourDesc(route.getName() + " (" + route.getStart().getName() + " - " + route.getEnd().getName() + ")");
+		formTourEdit.setLabelTourTime(new TableDate(tour.getStartTimestamp(), TableDate.Type.DATE_TIME).toString());
 	}
 }
