@@ -165,7 +165,7 @@ public class FormEmployee extends FormGeneral
 		add(lbPhone, cstLabel);
 
 		cstTextField.gridy = 6;
-		tfPhone = new FieldPhone();
+		tfPhone = new FieldText();
 		add(tfPhone, cstTextField);
 
 		cstLabel.gridy = 7;

@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Patricia Schinke
+ * Tab used to display the bus network.
  */
 public class TabNetwork extends JPanel
 {
