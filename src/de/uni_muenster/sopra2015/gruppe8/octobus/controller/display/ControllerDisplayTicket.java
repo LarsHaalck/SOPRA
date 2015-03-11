@@ -40,6 +40,9 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 		ControllerManager.removeListener((ListenerButton) this);
 	}
 
+	/**
+	 * Adds a Panel to DisplayTicket for every Ticket in the database.
+	 */
 	public void fill(){
 		int i =0;
 

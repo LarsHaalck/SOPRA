@@ -19,6 +19,9 @@ public class AreaText extends JTextArea
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
 
+		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
 		limitDoc.setLimit(2000);
 	}
 

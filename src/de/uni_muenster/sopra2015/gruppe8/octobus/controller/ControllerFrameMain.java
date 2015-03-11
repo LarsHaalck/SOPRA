@@ -115,6 +115,10 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 			case DIALOG_NO_DB:
 				JOptionPane.showMessageDialog(frame, "Es konnte keine Datenbank gefunden werden. Bitte schauen Sie für Details in das Benutzerhandbuch.", "Fehler", JOptionPane.ERROR_MESSAGE);
 				break;
+			case FORM_TOUR_SANITY:
+				//f = new FormTourSanity(frame);
+				//f.setVisible(true;);
+				break;
 		}
 	}
 

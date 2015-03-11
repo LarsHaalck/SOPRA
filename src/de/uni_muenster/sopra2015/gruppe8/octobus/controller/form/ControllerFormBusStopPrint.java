@@ -5,19 +5,16 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterPrint;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormBusStopPrint;
-import javafx.scene.paint.Stop;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
- * Created by Patricia on 10.03.2015.
+ * @author Patricia
  */
 public class ControllerFormBusStopPrint extends Controller implements ListenerButton
 {
@@ -25,6 +22,12 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 	private FormBusStopPrint formBusStopPrint;
 	private ControllerDatabase controllerDatabase;
 
+	/**
+	 * Creates a controllerFormusStopPrint-object.
+	 *
+	 * @param formBusStopPrint form to be controlled
+	 * @param objectId of the selected busStop
+	 */
 	public ControllerFormBusStopPrint(FormBusStopPrint formBusStopPrint, int objectId)
 	{
 		super();
@@ -60,6 +63,9 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 		}
 	}
 
+	/**
+	 * Gives a printRequest to the controllerManager for an array with every selected stoppingPoint
+	 */
 	public void printBusStop(){
 		ArrayList<Tuple<JCheckBox, Integer>> stops = formBusStopPrint.getStops();
 		ArrayList<Integer> ids = new ArrayList<>();
@@ -74,12 +80,20 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 		ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
 	}
 
+	/**
+	 * Closes the form and removes all Listeners.
+	 */
 	private void closeDialog()
 	{
 		formBusStopPrint.dispose();
 		removeListeners();
 	}
 
+	/**
+	 * Gives an arrayList with all stoppingPoints of the selected busStop.
+	 *
+	 * @return arrayList of all stoppingPoints
+	 */
 	public ArrayList<StoppingPoint> getStoppingPoints()
 	{
 		return controllerDatabase.getStoppingPointsByBusStopId(objectId);

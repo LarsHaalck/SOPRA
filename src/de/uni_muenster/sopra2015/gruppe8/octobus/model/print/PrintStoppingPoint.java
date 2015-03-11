@@ -15,7 +15,6 @@ import java.util.LinkedList;
 public class PrintStoppingPoint
 {
 	private StoppingPoint stoppingPoint;
-	private ArrayList<Integer> departureTimes;
 	private ControllerDatabase controllerDatabase;
 
 	public PrintStoppingPoint(StoppingPoint stoppingPoint)
@@ -24,6 +23,11 @@ public class PrintStoppingPoint
 		this.stoppingPoint = stoppingPoint;
 	}
 
+	/**
+	 * Gives all routeEntries for a stoppingPoint.
+	 *
+	 * @return arrayList with all routeEntries
+	 */
 	public ArrayList<RouteEntry> getRouteEntries()
 	{
 		ArrayList<Route> routes = controllerDatabase.getRoutesUsingStoppingPoint(stoppingPoint.getId());
@@ -43,11 +47,9 @@ public class PrintStoppingPoint
 		return stoppingPoint;
 	}
 
-	public ArrayList<Integer> getDepartureTimes()
-	{
-		return departureTimes;
-	}
-
+	/**
+	 *
+	 */
 	public class RouteEntry
 	{
 
@@ -77,6 +79,12 @@ public class PrintStoppingPoint
 			return route;
 		}
 
+		/**
+		 * gives all startTimes for a single tour on a single stoppingPoint for one single day.
+		 *
+		 * @param day of the week
+		 * @return arrayList of startTimes
+		 */
 		public ArrayList<Integer> getStartTimes(DayOfWeek day)
 		{
 			ArrayList<Integer> startTimes = new ArrayList<>();
@@ -100,6 +108,11 @@ public class PrintStoppingPoint
 			return startTimes;
 		}
 
+		/**
+		 * Gives the names of all stops a route will arrive at after a specific stoppingPoint.
+		 *
+		 * @return arrayList of stoppingPointNames
+		 */
 		public ArrayList<String> getNextStops()
 		{
 			ArrayList<String> nextStops = new ArrayList<>();
