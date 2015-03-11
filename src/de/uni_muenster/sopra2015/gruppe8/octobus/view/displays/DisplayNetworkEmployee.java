@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Florian on 09.03.2015.
+ * Used to display the bus network graphically to logged in users.
  */
 public class DisplayNetworkEmployee extends JPanel
 {
@@ -19,13 +19,11 @@ public class DisplayNetworkEmployee extends JPanel
 		add(displayNetwork, BorderLayout.CENTER);
 
 		JButton btnBack = new JButton("Zurück");
-		btnBack.addActionListener(e -> {
-			ControllerManager.informButtonPressed(EmitterButton.DISPLAY_NETWORK_BACK);
-		});
+		btnBack.addActionListener(e ->
+				ControllerManager.informButtonPressed(EmitterButton.DISPLAY_NETWORK_BACK));
 		JPanel plButton = new JPanel();
 		plButton.setLayout(new BorderLayout());
 		plButton.add(btnBack, BorderLayout.EAST);
 		add(plButton, BorderLayout.PAGE_END);
-
 	}
 }

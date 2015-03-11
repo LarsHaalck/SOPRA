@@ -9,8 +9,7 @@ import java.awt.*;
 import java.awt.Font;
 
 /**
- * @author Patricia Schinke
- *
+ * Used to display available tickets.
  */
 public class DisplayTicket extends JPanel
 {
