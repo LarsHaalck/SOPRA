@@ -74,8 +74,8 @@ public class ControllerFormTourSanity extends Controller implements ListenerButt
 
 	public void setDate(int day)
 	{
-		ControllerManager.informWindowClose(EmitterWindow.TAB_SCHEDULE_SET_DAY, day);
 		close();
+		ControllerManager.informWindowClose(EmitterWindow.TAB_SCHEDULE_SET_DAY, day);
 	}
 
 	/**
