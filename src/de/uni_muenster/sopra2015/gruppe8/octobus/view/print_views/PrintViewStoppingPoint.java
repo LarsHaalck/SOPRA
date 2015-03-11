@@ -56,8 +56,8 @@ public class PrintViewStoppingPoint implements Printable
 		}
 
 		PrintStoppingPoint.RouteEntry routeEntry = routes.get(pageIndex);
-		drawHeader(pageIndex, routeEntry);
-		drawContent(pageIndex,routeEntry);
+		drawHeader(routeEntry);
+		drawContent(routeEntry);
 
 		return PAGE_EXISTS;
 	}
@@ -65,10 +65,9 @@ public class PrintViewStoppingPoint implements Printable
 	/**
 	 * Draws the headText to be printed for ne routeEntry.
 	 *
-	 * @param pageIndex
 	 * @param routeEntry
 	 */
-	private void drawHeader(int pageIndex, PrintStoppingPoint.RouteEntry routeEntry)
+	private void drawHeader(PrintStoppingPoint.RouteEntry routeEntry)
 	{
 		graphics2D.setFont(fontHeader);
 		graphics2D.drawString("OctoBUS", 140, 110);
@@ -79,10 +78,9 @@ public class PrintViewStoppingPoint implements Printable
 	/**
 	 * Draws the contentText to be printed for ne routeEntry.
 	 *
-	 * @param pageIndex
 	 * @param routeEntry
 	 */
-	private void drawContent(int pageIndex, PrintStoppingPoint.RouteEntry routeEntry)
+	private void drawContent(PrintStoppingPoint.RouteEntry routeEntry)
 	{
 		long curX = entryXStart;
 		long curY = entryYStart;
