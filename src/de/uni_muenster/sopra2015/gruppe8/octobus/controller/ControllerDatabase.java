@@ -1877,12 +1877,46 @@ public class ControllerDatabase
         create.execute("END");
     }
 
+    /**
+     * Retrieves a list of buses which are available for the given tour.
+     *
+     * @param tour tour for which available buses ought to be shown
+     * @return list of buses available for given tour
+     */
     public ArrayList<Bus> getAvailableBusesForTour(Tour tour)
     {
-        tour.getStartTimestamp();
-        return null;
+        ArrayList<Bus> result = new ArrayList<>();
+        ArrayList<Bus> buses = getBuses();
+
+        for (Bus bus : buses)
+        {
+            ArrayList<Tour> tours = getToursForEmployeeId(bus.getId());
+
+            boolean qualifies = true;
+
+            for (Tour tourExisting : tours)
+            {
+                // Stop as soon as we find even just one conflict
+                if ((tour.getEndTimestampAsInt() >= tourExisting.getStartTimestampAsInt()) &&
+                        (tour.getStartTimestampAsInt() <= tourExisting.getEndTimestampAsInt()))
+                {
+                    qualifies = false;
+                    break;
+                }
+            }
+
+            if (qualifies) result.add(bus);
+        }
+
+        return result;
     }
 
+    /**
+     * Retrieves a list of bus drivers who are available to drive the given tour.
+     *
+     * @param tour tour for which available bus drivers ought to be shown
+     * @return list of bus drivers available to drive given tour
+     */
     public ArrayList<Employee> getAvailableBusDriversForTour(Tour tour)
     {
         ArrayList<Employee> result = new ArrayList<>();
