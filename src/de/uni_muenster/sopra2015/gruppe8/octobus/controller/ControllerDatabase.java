@@ -1890,7 +1890,7 @@ public class ControllerDatabase
 
         for (Bus bus : buses)
         {
-            ArrayList<Tour> tours = getToursForEmployeeId(bus.getId());
+            ArrayList<Tour> tours = getToursForBusId(bus.getId());
 
             boolean qualifies = true;
 
@@ -1964,7 +1964,7 @@ public class ControllerDatabase
                 (int) ((calendar.getTimeInMillis() + DAY_IN_MILLIS) / 1000));
     }
 
-    public ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
+    private ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
     {
         ArrayList<Object[]> result = new ArrayList<>();
 
@@ -2018,6 +2018,40 @@ public class ControllerDatabase
 				.where(TOURS.EMPLOYEES_ID.eq(id))
 				.orderBy(TOURS.TIMESTAMP)
 				.fetch();
+
+        // Return empty list if no tours found
+        if (tours == null) return result;
+
+        for (ToursRecord t : tours){
+            Tour newTour = new Tour(
+                    new Date((long) t.getTimestamp()*1000),
+                    getRouteById(t.getRoutesId()),
+
+                    (t.getBusesId() == null) ? null : getBusById(t.getBusesId()),
+                    (t.getEmployeesId() == null) ? null : getEmployeeById(t.getEmployeesId()));
+            newTour.setId(t.getToursId());
+            result.add(newTour);
+        }
+
+        return result;
+    }
+
+    /**
+     * Retrieves all tours to which the given bus is assigned from the database
+     *
+     * @param id unique ID of the bus whose tours are to be retrieved
+     * @return ArrayList of all tours associated with the given bus
+     * @pre true
+     * @post true
+     */
+    public ArrayList<Tour> getToursForBusId(int id)
+    {
+        ArrayList<Tour> result = new ArrayList<>();
+        Result<ToursRecord> tours = create
+                .selectFrom(TOURS)
+                .where(TOURS.BUSES_ID.eq(id))
+                .orderBy(TOURS.TIMESTAMP)
+                .fetch();
 
         // Return empty list if no tours found
         if (tours == null) return result;
