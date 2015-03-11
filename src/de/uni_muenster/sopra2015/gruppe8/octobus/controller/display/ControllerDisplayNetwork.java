@@ -137,7 +137,6 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 		switch(emitter)
 		{
 			case TAB_NETWORK:
-				System.out.println("TEST");
 				prepareData();
 				displayNetwork.redrawImages();
 				displayNetwork.invalidate();
