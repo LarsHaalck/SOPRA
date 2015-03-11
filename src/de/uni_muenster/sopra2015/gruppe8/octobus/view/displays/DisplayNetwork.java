@@ -113,9 +113,7 @@ public class DisplayNetwork extends JPanel
 
 		lbDay = new JLabel(getImageDay());
 		lbNight = new JLabel(getImageNight());
-		scrollPane.invalidate();
-		scrollPane.revalidate();
-		scrollPane.repaint();
+		setNetwork(0);
 	}
 
 	/**
