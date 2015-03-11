@@ -1,7 +1,8 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners;
 
 /**
- * Created by sszie_000 on 05.03.2015.
+ * Used to adress tables.
+ * Each value represents a unique table.
  */
 public enum EmitterTable {
     FORM_JOURNEY_SEARCH_RESULT,
