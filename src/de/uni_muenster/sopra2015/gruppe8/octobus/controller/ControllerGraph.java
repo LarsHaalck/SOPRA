@@ -22,14 +22,13 @@ public class ControllerGraph
 	public ControllerGraph()
 	{
 		db = ControllerDatabase.getInstance();
-		init();
 	}
 
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
-	private void init()
+	public void init()
 	{
 		stops = db.getBusStops();
 		routes = db.getRoutes();
@@ -40,6 +39,16 @@ public class ControllerGraph
 
 		buildAdjSet();
 	}
+
+	/*public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+		graph.init();
+
+		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
+
+		return;
+	}*/
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -187,7 +196,10 @@ public class ControllerGraph
 					}
 				}
 
-				currentArrival = Collections.min(temp);
+				if(temp.size() != 0)
+					currentArrival = Collections.min(temp);
+				else
+					currentArrival = Integer.MAX_VALUE;
 
 				if(currentArrival < arrival || arrival == -1)
 				{
