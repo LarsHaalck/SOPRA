@@ -1191,6 +1191,7 @@ public class ControllerDatabase
 		Result<EmployeesRecord> rows = create
 				.selectFrom(EMPLOYEES)
 				.where(roleAttribute.eq(true))
+				.orderBy(EMPLOYEES.NAME.asc(), EMPLOYEES.FIRSTNAME.asc())
 				.fetch();
 
 		ArrayList<Employee> result = new ArrayList<>();
