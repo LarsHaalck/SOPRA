@@ -48,16 +48,32 @@ public class ControllerDatabase
 
 	private DSLContext create;
 
-	private ControllerDatabase()
+	private ControllerDatabase(String databaseName, boolean jUnitTest)
 	{
-		openDB();
+		openDB(databaseName, jUnitTest);
 	}
 
 	static public ControllerDatabase getInstance()
 	{
 		if (controllerDatabase == null)
 		{
-			controllerDatabase = new ControllerDatabase();
+			controllerDatabase = new ControllerDatabase(DB_NAME, false);
+		}
+
+		return controllerDatabase;
+	}
+
+	/**
+	 * ATTENTION: This returns an instance for running a unit test for the database!
+	 * It is therefore NOT suitable for a production environment!
+	 *
+	 * @return
+	 */
+	static public ControllerDatabase getTestingInstance(String fileName)
+	{
+		if (controllerDatabase == null)
+		{
+			controllerDatabase = new ControllerDatabase(fileName, true);
 		}
 
 		return controllerDatabase;
@@ -67,14 +83,18 @@ public class ControllerDatabase
 	/**
 	 * Initializes database for use inside this class
 	 */
-	public void openDB()
+	public void openDB(String databaseName, boolean jUnitTest)
 	{
 		try
 		{
-			// check if database file exists
-			boolean newFile = !checkDatabaseFile();
+			// Check if database file exists...
+			boolean newFile = false;
 
-			String url = "jdbc:sqlite:" + DB_NAME;
+			// ... but only if we're not running a jUnit test
+			if (!jUnitTest)
+				newFile= !checkDatabaseFile();
+
+			String url = "jdbc:sqlite:" + databaseName;
 			Connection conn;
 
 			// Dynamically load SQLite driver
@@ -85,6 +105,7 @@ public class ControllerDatabase
 			// create tables in case of a new file
 			if (newFile)
 				createDatabaseTables();
+
 		} catch (ClassNotFoundException e)
 		{
 			System.out.println("Unable to load JDBC driver.");
@@ -110,6 +131,9 @@ public class ControllerDatabase
 		return false;
 	}
 
+	/**
+	 * This function creates a pristine database in case no previous database file could be found.
+	 */
 	public void createDatabaseTables()
 	{
 		// create bus stops table
@@ -412,6 +436,37 @@ public class ControllerDatabase
 				new Date((long) busRecord.getNextinspectiondue() * 1000),
 				busRecord.getArticulatedbus());
 		bus.setId(id);
+		return bus;
+	}
+
+	/**
+	 * Retrieves a single Bus object from the database entry using its unique licence plate
+	 *
+	 * @param plate unique licence plate of the bus to be retrieved
+	 * @return Bus object created from its corresponding entry the database, null if bus not found
+	 * @pre true
+	 * @post true
+	 */
+	public Bus getBusByLicensePlate(String plate)
+	{
+		BusesRecord busRecord = create
+				.selectFrom(BUSES)
+				.where(BUSES.LICENCEPLATE.eq(plate))
+				.fetchOne();
+
+		// if bus not found, return null
+		if (busRecord == null) return null;
+
+		// create bus object
+		Bus bus = new Bus(
+				plate,
+				busRecord.getNumberofseats(),
+				busRecord.getStandingroom(),
+				busRecord.getManufacturer(),
+				busRecord.getModel(),
+				new Date((long) busRecord.getNextinspectiondue() * 1000),
+				busRecord.getArticulatedbus());
+		bus.setId(busRecord.getBusesId());
 		return bus;
 	}
 
