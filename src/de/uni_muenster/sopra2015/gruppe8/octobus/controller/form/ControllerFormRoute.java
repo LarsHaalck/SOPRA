@@ -26,8 +26,13 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private JTable tableCurrent;
 	private int viewRow;
 	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
+
+	//Used to save times in second step if no stopping points were changed.
 	private boolean stopsChanged;
+
+	//Used to use a more lightweight method for modifying routes in database.
 	private boolean stopsChangedOnEdit;
+
 	private int[] initialDepartureTimes;
 
 	public ControllerFormRoute(FormRoute formRoute, int objectID)
@@ -38,6 +43,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		this.objectID = objectID;
 		stopsChanged = false;
 		stopsChangedOnEdit = false;
+
+		//Sets the global route to the passed objectID
 		if(objectID != -1)
 		{
 			setRouteInfo();
@@ -50,7 +57,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		switch (emitter)
 		{
 			case FORM_ROUTE_BACK:
-				//TODO save information for later use
+				//Disabled when on first step, enabled on second.
 				if (formRoute.getPanelCounter() == 1)
 					formRoute.getBackButton().setEnabled(false);
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
@@ -62,24 +69,30 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 			case FORM_ROUTE_NEXT:
 				if (formRoute.getPanelCounter() == 0)
 					//Step 1
+					//Check if data input is valid
 					if(parseValuesFromFormRouteStep1())
 					{
 						formRoute.getBackButton().setEnabled(true);
 						formRoute.getNextButton().setText("Fertig");
 
+						//Array containing every selected stopping point name
 						String[] busStops = new String[routeStoppingPoints.size()];
 
 						for (int i = 0; i < busStops.length; i++)
 						{
 							busStops[i] = routeStoppingPoints.get(i).getSecond();
 						}
+						//only used when user applied changes to the selected stopping points
 						if(stopsChanged)
 						{
+							//refreshes the form used to set the time between stopping points
 							formRoute.getStep2().fillJpMain(busStops);
 							stopsChanged = false;
 						}
 						else
 						{
+							//also refreshes form used to set the time between stopping points
+							//and inserts preexisting values if it is used to change a route.
 							if(objectID != -1)
 							{
 								formRoute.getStep2().fillJpMain(busStops);
@@ -94,10 +107,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					}
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
+					//Step 2
+					//Checks if data input is valid
 					if(parseValuesFromFormRouteStep2())
 					{
+						//save new/changed route to DB
 						if (saveToDB())
 						{
+							//Refreshes the table in TAB_ROUTE
 							ControllerManager.informTableContentChanged(EmitterTable.TAB_ROUTE);
 							closeDialog();
 						}
@@ -109,21 +126,23 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_CANCEL:
-				//TODO: If time: Check if something was changed and ask if user really wants to cancel
 				closeDialog();
 				break;
 
 			case FORM_ROUTE_STEP1_UP:
+				//Implements the up arrow button from Step1
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
 				if (viewRow == -1)
 					break;
 				if (viewRow == 0)
 					break;
+				//Removes selected row and adds it above its previous predecessor
 				Tuple<Integer, String> contentOld = contentTableCurrent.get(viewRow - 1);
 				contentTableCurrent.remove(viewRow - 1);
 				contentTableCurrent.add(viewRow, contentOld);
 				initTableCurrent();
+				//Moves selection to newly moved up row.
 				tableCurrent.clearSelection();
 				tableCurrent.changeSelection(viewRow - 1, 1, true, false);
 				stopsChanged = true;
@@ -131,23 +150,26 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP1_DOWN:
+				//Implements the down arrow button from Step1
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
 				if (viewRow == -1)
 					break;
 				if (viewRow == contentTableCurrent.size() -1)
 					break;
+				//Removes selected row and adds it beneath its successor
 				Tuple<Integer, String> old = contentTableCurrent.get(viewRow + 1);
 				contentTableCurrent.remove(viewRow + 1);
 				contentTableCurrent.add(viewRow, old);
 				initTableCurrent();
+				//Changes selection to previously moved row.
 				tableCurrent.changeSelection(viewRow + 1, 1, true, false);
 				stopsChanged = true;
 				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP1_ADD:
-
+				//Implements the left arrow button from Step1
 				JTable tableAvailabe = formRoute.getStep1().getBusStopAvailable();
 				JTable tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				ExtendedTableModel modelTableAvailable = formRoute.getStep1().getModel_2();
@@ -158,34 +180,42 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				int selectedRow = tableAvailabe.convertRowIndexToModel(viewRow);
 				int selectedID = (int) modelTableAvailable.getValueAt(selectedRow, 0);
 				String selectedName = (String) modelTableAvailable.getValueAt(selectedRow, 1);
+				//Adds selected stpooing point to the list of content for the "table current".
 				contentTableCurrent.add(new Tuple<Integer, String>(selectedID, selectedName));
+				//Refreshes "table current" with edited content list.
 				initTableCurrent();
 				stopsChanged = true;
 				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP1_DELETE:
+				//Implements right arrow button from Step1
 				tableCurrent = formRoute.getStep1().getBusStopCurrent();
 				viewRow = tableCurrent.getSelectedRow();
 				if(tableCurrent.getModel().getRowCount() == 0)
 					break;
 				if (viewRow == -1)
 					break;
+				//removes stopping point from list of content of "table current"
 				contentTableCurrent.remove(viewRow);
+				//Refreshes "table current" with new content list
 				initTableCurrent();
 				stopsChanged = true;
 				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP2_ADD:
+				//Opens form to add a new departure time
 				new FormDepartureTime(formRoute, route);
 				stopsChangedOnEdit = true;
 				break;
 
 			case FORM_ROUTE_STEP2_EDIT:
+				//Opens form to change a departure time
 				JTable activeEdit = formRoute.getStep2().getTableActive();
 				if(activeEdit != null)
 				{
+					//Only edit time if a single one is selected
 					if (activeEdit.getSelectedRowCount() > 1)
 					{
 						String errorMessage = "Die eingegeben Daten sind nicht gültig:\n	" +
@@ -198,9 +228,11 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 						int editedHours = Integer.parseInt(editedTimeString.substring(0, 2));
 						int editedMinutes = Integer.parseInt(editedTimeString.substring(3, 5));
 						int editedTime = editedHours * 60 + editedMinutes;
+						//Displays edit dialog returning edited values
 						Tuple<Integer, Integer> newTimeTuple = formRoute.getStep2().showEditDialog(editedHours, editedMinutes);
 						if(newTimeTuple != null)
 						{
+							//sets edited time to the new value
 							tempTimes.remove((Object) editedTime);
 							int newTime = newTimeTuple.getFirst() * 60 + newTimeTuple.getSecond();
 							tempTimes.add(newTime);
@@ -213,15 +245,18 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				break;
 
 			case FORM_ROUTE_STEP2_DELETE:
+				//Removes departure times from the table
 				JTable activeDel = formRoute.getStep2().getTableActive();
 				DayOfWeek activeDelDay = formRoute.getStep2().getActiveDay();
 				int[] selectedRows = activeDel.getSelectedRows();
+				//User has to confirm his action
 				if(formRoute.getStep2().showDeleteDialog() == JOptionPane.YES_OPTION)
 				{
 					if (activeDel != null)
 					{
 						if (selectedRows.length != 0)
 						{
+							//each selected cell gets removed
 							LinkedList<Integer> tempTimes = route.getStartTimes().get(activeDelDay);
 							for (int row : selectedRows)
 							{
@@ -244,6 +279,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	@Override
 	public void tableFocusLost(EmitterTable emitter)
 	{
+		//This method is used to make sure that only one table in the currently active step is selectable.
 		switch(emitter)
 		{
 			case FORM_ROUTE_STEP1_CURRENT:
@@ -394,6 +430,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		boolean night = formRoute.getStep1().isNightLine();
 		ArrayList<Tuple<Integer, String>> stoppingPoints = formRoute.getStep1().getTableData();
 
+		//Checking if input is valid
 		ArrayList<String> errorFields = new ArrayList<>();
 		if(name == null)
 			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
@@ -414,6 +451,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		else
 		{
+			//If input is valid this sets the global route's attributes to the form input.
 			route.setName(name);
 			route.setNight(night);
 			routeStoppingPoints = stoppingPoints;
@@ -423,7 +461,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 	/**
 	 * Parses values from FormRouteStep2.
-	 * @return Returns false on wrong input
+	 * @return Returns false on wrong input.
 	 */
 	private boolean parseValuesFromFormRouteStep2()
 	{
@@ -432,7 +470,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		if(!Arrays.equals(departureTimes,initialDepartureTimes))
 			stopsChangedOnEdit = true;
 
+		//Checks if input is valid
 		ArrayList<String> errorFields = new ArrayList<>();
+		//Checks if all departure times are set
 		boolean departureEmpty = false;
 		for (int departureTime : departureTimes)
 		{
@@ -450,6 +490,8 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		else
 		{
+			//Converts list of stopping points to LinkedList<Triple<BusStop, StoppingPoint, Integer>>
+			//which is needed to set the locas routes stopping points.
 			LinkedList<Triple<BusStop, StoppingPoint, Integer>> stoppingPoints = new LinkedList<>();
 			int id = routeStoppingPoints.get(0).getFirst();
 			BusStop busStop = ControllerDatabase.getInstance().getBusStopByStoppingPointId(id);
@@ -501,31 +543,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		formRoute.getStep1().fillTableCurrent(data);
 	}
-	//TODO Currently not used
-	/**
-	 * Initializes table with BusStops
-	 * @param id List of BusStop IDs to be excluded
-	 */
-	public void initTableAvailable(ArrayList<Integer> id)
-	{
-		ArrayList<BusStop> busStops = ControllerDatabase.getInstance().getBusStops();
-		Object[][] data = new Object[busStops.size() - id.size()][2];
-		int k = 0;
-		for(int i=0; i<busStops.size(); i++)
-		{
-			BusStop busStop = busStops.get(i);
-			if(!id.contains(busStop.getId()))
-			{
-				data[k][0] = busStop.getId();
-				data[k][1] = busStop.getName();
-				k++;
-			}
-		}
-		formRoute.getStep1().fillTableAvailable(data);
-	}
 
 	/**
-	 * Refreshes the tables in the second step displaying the starting times.
+	 * Refreshes the tables in the second step displaying the departure times.
 	 */
 	private void refreshTablesStep2()
 	{
@@ -539,16 +559,18 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		models.add(new Tuple<>(DayOfWeek.SATURDAY, formRoute.getStep2().getDtmSa()));
 		models.add(new Tuple<>(DayOfWeek.SUNDAY, formRoute.getStep2().getDtmSo()));
 
+		//Clears tables containing departure times
 		for (Tuple<DayOfWeek, DefaultTableModel> model : models)
 		{
 			model.getSecond().setRowCount(0);
 		}
 
 		HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
-
+		//Each table is filled with existing departure times
 		for (Tuple<DayOfWeek, DefaultTableModel> model : models)
 		{
 			LinkedList<Integer> times = startTimes.get(model.getFirst());
+			//Sorting list
 			times.sort(new Comparator<Integer>()
 			{
 				@Override
@@ -563,6 +585,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				}
 			});
 
+			//Formats the time values into XX:XX strings and adds them to current table.
 			for (Integer time : times)
 			{
 				int hours = (int) time/60;
