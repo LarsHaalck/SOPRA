@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Jonas on 03.03.2015.
+ * Form used to change a user password.
  */
 public class FormChangePassword extends JDialog
 {
@@ -121,6 +121,12 @@ public class FormChangePassword extends JDialog
 		getRootPane().setDefaultButton(btnSave);
 	}
 
+	/**
+	 * Checks if input is valid.
+	 * @param OldPassword old password.
+	 * @param NewPassword new password.
+	 * @param NewPasswordCorrect reentered new password.
+	 */
 	public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
 	{
 		//Todo: Move this to error-dialog. Should looks a bit nicer then.

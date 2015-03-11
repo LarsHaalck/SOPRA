@@ -11,24 +11,16 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.lang.reflect.Array;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Vector;
 
 /**
- * Created by Jonas on 04.03.2015.
+ * Part of the FormRoute wizard. This is used as the second step.
  */
-
 public class FormRouteStep2 extends JPanel
 {
-	private String[] busStops;
-
 	private JScrollPane jspMain;
 	private JPanel jpMain, jpRightMain, jpButton, jpTables;
 	private LinkedList<DepartureTime> departureTimes;
@@ -319,21 +311,18 @@ public class FormRouteStep2 extends JPanel
 		jpButton.setLayout(new FlowLayout());
 
 		addButton = new JButton("Hinzufügen");
-		addButton.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_ADD);
-		});
+		addButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_ADD));
 		jpButton.add(addButton);
 		editButton = new JButton("Bearbeiten");
 		editButton.setFocusable(false);
-		editButton.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_EDIT);
-		});
+		editButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_EDIT));
 		jpButton.add(editButton);
 		deleteButton = new JButton("Löschen");
 		deleteButton.setFocusable(false);
-		deleteButton.addActionListener(e -> {
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DELETE);
-		});
+		deleteButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_STEP2_DELETE));
 		jpButton.add(deleteButton);
 		jpRightMain.add(jpButton, BorderLayout.SOUTH);
 
@@ -341,6 +330,9 @@ public class FormRouteStep2 extends JPanel
 
 	}
 
+	/**
+	 * Inner class used to display a formatted label.
+	 */
 	private class BusStop extends JPanel
 	{
 		private Border border;
@@ -360,6 +352,9 @@ public class FormRouteStep2 extends JPanel
 		}
 	}
 
+	/**
+	 * Inner class used to display a formatted number field.
+	 */
 	private class DepartureTime extends JPanel
 	{
 		private JLabel lbArrow;
@@ -424,7 +419,7 @@ public class FormRouteStep2 extends JPanel
 		int test = JOptionPane.showConfirmDialog(null, p, "Startzeit ändern", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if(test == JOptionPane.OK_OPTION)
 		{
-			return new Tuple<Integer, Integer>(hours.getNumber(),minutes.getNumber());
+			return new Tuple<>(hours.getNumber(),minutes.getNumber());
 		}
 		else
 		{
@@ -442,14 +437,14 @@ public class FormRouteStep2 extends JPanel
 		return JOptionPane.showConfirmDialog(this, "Wirklich löschen?", "Frage", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 
-	//--------------------------------------
-	//------------- setter -----------------
-	//--------------------------------------
-
+	/**
+	 * Fills the form with (inner Class) BusStops and DepartureTimes.
+	 * @param busStops names of bus stops.
+	 */
 	public void fillJpMain(String[] busStops)
 	{
 		jpMain.removeAll();
-		departureTimes = new LinkedList<DepartureTime>();
+		departureTimes = new LinkedList<>();
 		int gridRow = 13;
 		if (busStops.length > 7)
 			gridRow = busStops.length*2 - 1;
@@ -476,45 +471,6 @@ public class FormRouteStep2 extends JPanel
 			departureTimes.get(i).setTime(times[i]);
 		}
 	}
-
-	public void setTableData_dtmMo(String[][] rowdata_Mo)
-	{
-		dtmMo.setDataVector(rowdata_Mo, new String[] {"Montag"});
-	}
-
-	public void setTableData_dtmDi(String[][] rowdata_Di)
-	{
-		dtmDi.setDataVector(rowdata_Di, new String[] {"Dienstag"});
-	}
-
-	public void setTableData_dtmMi(String[][] rowdata_Mi)
-	{
-		dtmMi.setDataVector(rowdata_Mi, new String[] {"Mittwoch"});
-	}
-
-	public void setTableData_dtmDo(String[][] rowdata_Do)
-	{
-		dtmDo.setDataVector(rowdata_Do, new String[] {"Donnerstag"});
-	}
-
-	public void setTableData_dtmFr(String[][] rowdata_Fr)
-	{
-		dtmFr.setDataVector(rowdata_Fr, new String[] {"Freitag"});
-	}
-
-	public void setTableData_dtmSa(String[][] rowdata_Sa)
-	{
-		dtmSa.setDataVector(rowdata_Sa, new String[] {"Samstag"});
-	}
-
-	public void setTableData_dtmSo(String[][] rowdata_So)
-	{
-		dtmSo.setDataVector(rowdata_So, new String[] {"Sonntag"});
-	}
-
-	//--------------------------------------
-	//------------- getter -----------------
-	//--------------------------------------
 
 	public JTable getTableActive()
 	{

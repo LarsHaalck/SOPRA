@@ -6,7 +6,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.TupleIntString;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
@@ -84,18 +83,20 @@ public class FormTourResetEmployee extends FormGeneral
 			setPreferredSize(new Dimension(220, 169));
 			pack();
 
-			jbSave.addActionListener(e -> {
-				controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_SAVE);
-			});
-			jbCancel.addActionListener(e -> {
-				controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_CANCEL);
-			});
+			jbSave.addActionListener(e ->
+					controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_SAVE));
+			jbCancel.addActionListener(e ->
+					controllerFormTourResetEmployee.buttonPressed(EmitterButton.FORM_TOUR_RESET_EMPLOYEE_CANCEL));
 
 			setLocationRelativeTo(null);
 
 			controllerFormTourResetEmployee = new ControllerFormTourResetEmployee(this);
 	}
 
+	/**
+	 * Fills the combo box with employees
+	 * @param employees employees to be added.
+	 */
 	public void fillEmployees(ArrayList<TupleIntString> employees)
 	{
 		for (TupleIntString employee : employees)

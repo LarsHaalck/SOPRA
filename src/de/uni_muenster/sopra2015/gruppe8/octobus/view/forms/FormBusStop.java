@@ -9,15 +9,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
- * @author Patricia Schinke
- *
+ * Form used for adding and editing bus stops.
  */
 public class FormBusStop extends FormGeneral
 {
@@ -39,7 +37,6 @@ public class FormBusStop extends FormGeneral
 	 */
 	private JButton btSave;
 	private JButton btCancel;
-	//private RowSorter<StoppingPointTableModel> sorter;
 
 	private int selectedRow = -1;
 	private int selectedID = -1;
@@ -168,9 +165,7 @@ public class FormBusStop extends FormGeneral
 		plEndButtons.add(btCancel, BorderLayout.EAST);
 		add(plEndButtons, cstLabel);
 
-		//sorter = new TableRowSorter<>(tmStoppingPoints);
 		tableStoppingPoints.removeColumn(tableStoppingPoints.getColumnModel().getColumn(0));
-		//tableStoppingPoints.setRowSorter(sorter);
 		tableStoppingPoints.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -196,25 +191,18 @@ public class FormBusStop extends FormGeneral
 		});
 
 		btSave.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE);
-		});
+				controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_SAVE));
 		btCancel.addActionListener(e ->
-		{
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL);
-		});
+				controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_CANCEL));
 
-		btListAdd.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_ADD_POINT);
-		});
+		btListAdd.addActionListener(e ->
+				controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_ADD_POINT));
 
-		btListEdit.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT);
-		});
+		btListEdit.addActionListener(e ->
+				controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_EDIT_POINT));
 
-		btListDelete.addActionListener(e -> {
-			controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT);
-		});
+		btListDelete.addActionListener(e ->
+				controllerFormBusStop.buttonPressed(EmitterButton.FORM_BUS_STOP_DELETE_POINT));
 
 		controllerFormBusStop.insertValuesIntoForm();
 		pack();
@@ -295,7 +283,7 @@ public class FormBusStop extends FormGeneral
 	/**
 	 * Edits a stopPoint.
 	 *
-	 * @precondition stopPoint is selected
+	 * @pre stopPoint is selected
 	 * @param index of old stopPoint in table
 	 * @param name of new stopPoint
 	 */
@@ -309,7 +297,7 @@ public class FormBusStop extends FormGeneral
 	/**
 	 * deletes a stopPoint
 	 *
-	 * @precondtion stopPoint is sellected
+	 * @pre stopPoint is selected
 	 * @param id of stopPint which will be deleted
 	 */
 	public void removeStoppingPoint(int id)

@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Created by Jonas on 03.03.2015.
+ * Form used to add and edit routes.
  */
 public class FormRoute extends FormGeneral
 {
@@ -42,6 +42,9 @@ public class FormRoute extends FormGeneral
 		controllerFormRoute.insertValuesIntoForm();
 	}
 
+	/**
+	 * Initializes the GUI.
+	 */
 	public void initComponents()
 	{
 		cardPanel = new JPanel();
@@ -60,18 +63,12 @@ public class FormRoute extends FormGeneral
 		nextButton = new JButton("Weiter");
 		cancelButton = new JButton("Abbrechen");
 
-		backButton.addActionListener(e -> {
-			//backButton_Pressed();
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_BACK);
-		});
-		nextButton.addActionListener(e -> {
-			//nextButton_Pressed();
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_NEXT);
-		});
-		cancelButton.addActionListener(e -> {
-			//dispose();
-			controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_CANCEL);
-		});
+		backButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_BACK));
+		nextButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_NEXT));
+		cancelButton.addActionListener(e ->
+				controllerFormRoute.buttonPressed(EmitterButton.FORM_ROUTE_CANCEL));
 
 		buttonBox = new Box(BoxLayout.X_AXIS);
 		buttonBox.setBorder(new EmptyBorder(new Insets(5, 10, 5, 10)));
