@@ -7,13 +7,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.displays.DisplayNetwork;
-import javafx.scene.chart.XYChart;
 
 import java.awt.*;
 import java.util.*;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for DisplayNetwork class
  */
 public class ControllerDisplayNetwork extends Controller implements ListenerButton
 {
@@ -98,13 +97,14 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
 	@Override
@@ -122,6 +122,9 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 		}
 	}
 
+	/**
+	 * Inner class used to manage Route data.
+	 */
 	public class DataRoute
 	{
 		private Color colorDark;
@@ -171,6 +174,9 @@ public class ControllerDisplayNetwork extends Controller implements ListenerButt
 		}
 	}
 
+	/**
+	 * Inner class used to manage BusStop data.
+	 */
 	public class DataBusStop
 	{
 		private int x;

@@ -1253,6 +1253,7 @@ public class ControllerDatabase
 		}
 	}
 
+
     /**
      * Retrieves a list of Route objects representing all route entries stored in the database
      *
@@ -2110,7 +2111,6 @@ public class ControllerDatabase
 	 * @pre true
 	 * @post true
 	 */
-
 	public Tour getTourById(int id)
 	{
 		ToursRecord rec = create
@@ -2127,5 +2127,23 @@ public class ControllerDatabase
 				(rec.getEmployeesId() == null) ? null : getEmployeeById(rec.getEmployeesId()));
 		result.setId(id);
 		return result;
+	}
+
+	/**
+	 * Change assigned bus and driver for a specific tour
+	 *
+	 * @param tourID unique ID of the tour to be modified
+	 * @param busID unique ID of the bus to be assigned to tour
+	 * @param empID unique ID of the employee to be assigned to tour
+	 * @pre bus and employee with supplied ID exist in database
+	 * @post bus and employee with supplied ID are assigned to tour
+	 */
+	public void modifyTour (int tourID, int busID, int empID)
+	{
+		create.update(TOURS)
+				.set(TOURS.BUSES_ID, busID)
+				.set(TOURS.EMPLOYEES_ID, empID)
+				.where(TOURS.TOURS_ID.eq(tourID))
+				.execute();
 	}
 }

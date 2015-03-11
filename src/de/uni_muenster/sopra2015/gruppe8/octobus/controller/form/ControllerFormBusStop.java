@@ -189,8 +189,8 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 			errorFields.add("Ungültige Eingabe des Namen. Es wurden illegale Zeichen verwendet.");
 		else if(name.trim().length() == 0)
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
-		else if(name.trim().length() < 5)
-			errorFields.add("Der Name muss mindestens 5 Zeichen umfassen.");
+		else if(name.trim().length() < 2)
+			errorFields.add("Der Name muss mindestens 2 Zeichen umfassen.");
 		if(x == -1)
 			errorFields.add("Die X Koordinate darf nicht leer sein.");
 		if(y == -1)

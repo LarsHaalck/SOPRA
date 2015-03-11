@@ -31,13 +31,13 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 	@Override
 	protected void addListeners()
 	{
-		ControllerManager.addListener((ListenerButton) this);
+		ControllerManager.addListener(this);
 	}
 
 	@Override
 	protected void removeListeners()
 	{
-		ControllerManager.removeListener((ListenerButton) this);
+		ControllerManager.removeListener(this);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 		//for loop for all tickets
 		for(Ticket t: tickets)
 		{
-			i = i +30; //erstmal
+			i = i +30;
 			displayTicket.addPanel(t.getName(), t.getPrice(), t.getNumPassengers(), t.getDescription(), i);
 		}
 	}
