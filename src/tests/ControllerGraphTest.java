@@ -1,5 +1,6 @@
-package de.uni_muenster.sopra2015.gruppe8.octobus.controller;
+package tests;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerGraph;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Connection;
 import org.junit.Before;
 import org.junit.Test;
