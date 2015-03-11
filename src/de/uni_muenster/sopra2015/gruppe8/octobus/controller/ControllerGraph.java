@@ -25,14 +25,20 @@ public class ControllerGraph
 		init();
 	}
 
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		ControllerGraph graph = new ControllerGraph();
-		Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 1332);
-		//Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 540);
+
+		for(int i = 1335; i < 1440; i++)
+		{
+			System.out.println(i);
+			Connection con = graph.getConnection(8, 18, DayOfWeek.MONDAY, i);
+		}
+
+		//Connection con = graph.getConnection(8, 15, DayOfWeek.MONDAY, 1436);
 
 		return;
-	}
+	}*/
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -153,15 +159,6 @@ public class ControllerGraph
 			{
 				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
 
-                /*
-                Entschuldige bitte aber ich habe im Moment nicht mehr so viel Lust, die Kommentare auchnoch auf englisch zu
-                verfassen. VERZEIHE MIR BITTE! :)
-
-                Hier vielleicht einfach nochmal durchiterieren und auch jede startTime des nächsten Tages (also + 1440) speichern?
-                Das könnte ich auch ganz gut Abfangen dann sag ich ja sorry war die letzte Abfahrtszeit größer 1440 dann such doch
-                bitte neu für den nächsten Tag und deaktiviere damit den später button oder switche sogar irgendwie auf den nächsten
-                Tag (bspw. indem ich die späteste Startzeit der Tabelle auf die letzte gefundene Startzeit - 1440 setze)
-                 */
 				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
 				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
 
@@ -192,18 +189,11 @@ public class ControllerGraph
 				for (Integer start : startTimesOnDay)
 				{
 
-                    /*
-                    startID = 8 (Bremer Platz), destinationID = 18 (Engelschanze) bei startTimes:
-                        23:26 = 1406 Minuten - noch keine Probleme
-                        23:55 = 1435 Minuten - Sout("hier passiert scheisse") - terminiert aber und scheint augenscheinlich (gleiche Ankunftszeit wie bei 23:26 nur anderer Startbus)
-                                                                                korrektes Ergebnis zu liefern
-                        23:56 = 1436 Minuten - hier passiert die allergrößte Scheiße, die bis zum Himmel stinkt - terminiert nicht mehr
-
-                        Nach 23:55 sind alle timeDiffOnFirst + start < time
-                     */
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
 					{
-						temp.add(timeDiffOnFirst + start + 1440);
+						int x = (time - start - timeDiff)/1440 + 1;
+						//temp.add(timeDiffOnFirst + start + (time/1440 + 1) * 1440); //convert time in days, add one and convert back in minutes
+						temp.add(timeDiffOnFirst + start + x * 1440); //convert time in days, add one and convert back in minutes
 					}
 					else
 					{
@@ -211,20 +201,7 @@ public class ControllerGraph
 						break;
 					}
 				}
-                /*
-                Sollte im Ausnahmefall, den wir betrachten, wegen (timeDiffOnFirst + start + 1440) den frühsten Bus der
-                gerade in der for-Schleife betracheten Route am nächsten Tag liefern.
-                In unserem Fall sollte das, ist die passende Route gefunden, irgendwann
-                        00:25 = 25 Minuten bzw. 1440 + 25 = 1465 (spuckt Dijkstra zumindest aus wenn ich um 00:00 suche)
-                sein
-                Und damit niemals etwas liefern was größer ist als 1465.
-                 */
-                /*
-                Zur Abfahrt um 00:25: (kann auch an einem Fehler bei mir liegen!!!!)
-                    Ich bekomme als Ergebnis die Linie N84 von die mich zum Hauptbahnhof bringt, wo ich Umsteigen soll - kein Problem
-                    aber ich bekomme eine Abfahrtszeit von 00:25 am Bremer Platz und eine Ankunftszeit von 00:26 am Hauptbahnhof D1
-                    obwohl die Linie vom Bremer Platz über Servatiiplatz zum Bahnhof laut DB angeblich 3 Minuten braucht. :(
-                 */
+
 				currentArrival = Collections.min(temp);
 
 				if(currentArrival < arrival || arrival == -1)
@@ -246,7 +223,7 @@ public class ControllerGraph
 			}
             //Keine Ahnung gerade ich geh pennen :)
 			if(arrival - dist.get(id1).intValue() < 0)
-				System.out.println("hier passiert scheisse");
+				System.out.println("negative edge weight -> midnight bug");
 			return arrival;
 		}
 
@@ -299,7 +276,6 @@ public class ControllerGraph
 
 
 			while(!fibHeap.isEmpty())
-
 			{
 				int stopId = fibHeap.dequeueMin().getValue();
 
@@ -351,15 +327,15 @@ public class ControllerGraph
 			Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> prevQuintuple = null;
 			StoppingPoint end;
 
-			//TODO: reconsider way of determining start times, because this seems very ineffective!
+
 			while(prevStop != -1) //reconstruct route
 			{
 				Route currentRoute = bestRoutes.get(new TupleInt(prevStop, currentStop));
 				if(prev.get(prevStop) == null)
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
-					time = time >= 1440 ? time - 1440 : time;
 					duration = dist.get(stopId).intValue() - time;
+					time = time >= 1440 ? time % 1440 : time;
 				}
 
 				/*System.out.println("Start: " + (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop)));
@@ -378,10 +354,10 @@ public class ControllerGraph
 				}
 
 				int calcStart = (dist.get(currentStop).intValue() - bestRoutes.get(new TupleInt(prevStop, currentStop)).getDuration(prevStop, currentStop));
-				calcStart = calcStart >= 1440 ? calcStart - 1440 : calcStart;
+				calcStart = calcStart >= 1440 ? calcStart % 1440 : calcStart;
 
 				int calcEnd = dist.get(currentStop).intValue();
-				calcEnd = calcEnd >= 1440 ? calcEnd - 1440 : calcEnd;
+				calcEnd = calcEnd >= 1440 ? calcEnd % 1440 : calcEnd;
 
 				prevQuintuple = new Quintuple<>(
 						calcStart,
@@ -397,9 +373,20 @@ public class ControllerGraph
 
 				currentStop = prevStop;
 				prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
-				//System.out.println();
 			}
 
+			/*System.out.println("Time: " + time + " (" + time / 60 + ":" + time % 60 + ")");
+			System.out.println("Duration: " + duration);
+			System.out.println();
+			for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips)
+			{
+				System.out.println("Start: " + trip.getFirst() + " (" + trip.getFirst() / 60 + ":" + trip.getFirst() % 60 + ")");
+				System.out.println("From: " + db.getBusStopByStoppingPointId(trip.getSecond().getId()).getName() + ": " + trip.getSecond().getName());
+				System.out.println("Route: " + trip.getThird().getName());
+				System.out.println("To: " + db.getBusStopByStoppingPointId(trip.getFourth().getId()).getName() + ": " + trip.getFourth().getName());
+				System.out.println("Arrival: " + trip.getFifth() + " (" + trip.getFifth() / 60 + ":" + trip.getFifth() % 60 + ")");
+
+			}*/
 			return new Connection(trips, duration, time);
 		}
 	}
