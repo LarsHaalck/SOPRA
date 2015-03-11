@@ -51,7 +51,7 @@ public class FormTourSanity extends FormGeneral
 		add(jpButtonMain, BorderLayout.SOUTH);
 
 		controllerFormTourSanity.fillForm();
-		setPreferredSize(new Dimension(400, 300));
+		setPreferredSize(new Dimension(300, 300));
 		pack();
 
 
