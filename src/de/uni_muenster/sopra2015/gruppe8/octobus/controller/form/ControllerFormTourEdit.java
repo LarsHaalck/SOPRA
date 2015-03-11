@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Bus;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
@@ -65,6 +66,7 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 				if(errors.size() == 0)
 				{
 					controllerDatabase.modifyTour(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDriver());
+					ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					close();
 				}
 				else
