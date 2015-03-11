@@ -63,9 +63,6 @@ public class ControllerFrameMain extends Controller implements ListenerButton, L
 	@Override
 	public void userStateChanged(EmitterUserState emitter, int userId)
 	{
-		switch (emitter)
-		{
-		}
 	}
 
 	@Override

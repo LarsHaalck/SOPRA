@@ -145,8 +145,6 @@ public class ControllerManager
 		for(ListenerPrint listener : list)
 			listener.printDocument(emitter, objectId);
 	}
-
-    // TODO: What does "Evil method, only use by user-state-change." mean?
 	/**
 	 * Informs every active ListenerPrint that manages print-requests
 	 * @param emitter document that should be printed.
@@ -161,7 +159,6 @@ public class ControllerManager
 
 	/**
 	 * Clears lists of listeners.
-	 * Evil method, only use by user-state-change.
 	 */
 	public static void clearListeners()
 	{
