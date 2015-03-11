@@ -57,14 +57,22 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 			case FORM_TOUR_EDIT_SAVE:
 				ArrayList<String> errors = new ArrayList<>();
-				if(formTourEdit.getSelectedBus() == -1)
+				if(formTourEdit.getSelectedBus() == 0)
 					errors.add("Es wurde kein Bus ausgewählt.");
-				if(formTourEdit.getSelectedBusDriver() == -1)
+				if(formTourEdit.getSelectedBusDriver() == 0)
 					errors.add("Es wurde kein Bus-Fahrer ausgewählt.");
 
-				//controllerDatabase.modifyRoute(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDrive()
-
-				close();
+				if(errors.size() == 0)
+				{
+					controllerDatabase.modifyTour(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDriver());
+					close();
+				}
+				else
+				{
+					String errorMessage = "Die eingegeben Daten sind nicht gültig.\n";
+					errorMessage += errorListToString(errors);
+					formTourEdit.showErrorForm(errorMessage);
+				}
 				break;
 		}
 	}

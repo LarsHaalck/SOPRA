@@ -49,7 +49,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMdd");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
-		ArrayList<Tour> tours = controllerDatabase.getUserTours(userId);
+		ArrayList<Tour> tours = controllerDatabase.getToursForEmployeeId(userId);
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("iCal-Datei", "ical"));
@@ -148,7 +148,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton
 
 	public void fillTable()
 	{
-		ArrayList<Tour> tours = controllerDatabase.getUserTours(userId);
+		ArrayList<Tour> tours = controllerDatabase.getToursForEmployeeId(userId);
 		Object[][] data = new Object[tours.size()][7];
 		for(int i=0; i<tours.size(); i++)
 		{

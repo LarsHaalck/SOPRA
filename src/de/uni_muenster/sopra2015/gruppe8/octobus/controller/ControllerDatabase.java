@@ -1871,7 +1871,6 @@ public class ControllerDatabase
                             .execute();
                 }
             }
-            System.out.println("Creation finished.");
         }
 
         // Finally execute all the previously queued queries
@@ -1886,13 +1885,33 @@ public class ControllerDatabase
 
     public ArrayList<Employee> getAvailableBusDriversForTour(Tour tour)
     {
-        // get duration of all shifts within the last 24 hours
+        ArrayList<Employee> result = new ArrayList<>();
+        ArrayList<Employee> busdrivers = getEmployeesByRole(Role.BUSDRIVER);
 
-        // check to see if there's a tour in the last 24 hours that overlaps
+        for (Employee busdriver : busdrivers)
+        {
+            ArrayList<Tour> tours = getToursForEmployeeId(busdriver.getId());
 
-        // get all tours within the last 24 hours
+            boolean qualifies = true;
 
-        return null;
+            // TODO: (Enhancement) Check for:
+            //              No more than 4 hours of "consecutive" work (what defines as such - only just back to back?)
+            //              No more than 12 hours of work within the last 24 hours
+            for (Tour tourExisting : tours)
+            {
+                // Stop as soon as we find even just one conflict
+                if ((tour.getEndTimestampAsInt() >= tourExisting.getStartTimestampAsInt()) &&
+                        (tour.getStartTimestampAsInt() <= tourExisting.getEndTimestampAsInt()))
+                {
+                    qualifies = false;
+                    break;
+                }
+            }
+
+            if (qualifies) result.add(busdriver);
+        }
+
+        return result;
     }
 
     public ArrayList<Object[]> getToursForDate(Date date) {
@@ -1911,7 +1930,7 @@ public class ControllerDatabase
                 (int) ((calendar.getTimeInMillis() + DAY_IN_MILLIS) / 1000));
     }
 
-    private ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
+    public ArrayList<Object[]> getToursWithinDateRange(int dateFrom, int dateUntil)
     {
         ArrayList<Object[]> result = new ArrayList<>();
 
@@ -1946,8 +1965,6 @@ public class ControllerDatabase
             result.add(content);
         }
 
-        System.out.println("Fertig.");
-
         return result;
     }
 
@@ -1959,7 +1976,7 @@ public class ControllerDatabase
 	 * @pre true
 	 * @post true
      */
-    public ArrayList<Tour> getUserTours(int id)
+    public ArrayList<Tour> getToursForEmployeeId(int id)
     {
         ArrayList<Tour> result = new ArrayList<>();
         Result<ToursRecord> tours = create
@@ -1970,15 +1987,16 @@ public class ControllerDatabase
 
         // Return empty list if no tours found
         if (tours == null) return result;
+
         for (ToursRecord t : tours){
-            result.add(
-                    new Tour(
-                            new Date((long) t.getTimestamp()*1000),
-                            getRouteById(t.getRoutesId()),
-                            getBusById(t.getBusesId()),
-                            getEmployeeById(t.getEmployeesId())
-                    )
-            );
+            Tour newTour = new Tour(
+                    new Date((long) t.getTimestamp()*1000),
+                    getRouteById(t.getRoutesId()),
+
+                    (t.getBusesId() == null) ? null : getBusById(t.getBusesId()),
+                    (t.getEmployeesId() == null) ? null : getEmployeeById(t.getEmployeesId()));
+            newTour.setId(t.getToursId());
+            result.add(newTour);
         }
 
         return result;
@@ -2121,7 +2139,7 @@ public class ControllerDatabase
 		if (rec == null) return null;
 
 		Tour result = new Tour(
-				new Date(rec.getTimestamp()*1000),
+				new Date((long) rec.getTimestamp()*1000),
 				getRouteById(rec.getRoutesId()),
 				(rec.getBusesId() == null) ? null : getBusById(rec.getBusesId()),
 				(rec.getEmployeesId() == null) ? null : getEmployeeById(rec.getEmployeesId()));
