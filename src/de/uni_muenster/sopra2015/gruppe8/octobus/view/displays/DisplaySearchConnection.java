@@ -3,20 +3,14 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplaySearchConnection;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Connection;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Quadruple;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Route;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSearchConnection;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -27,7 +21,7 @@ public class DisplaySearchConnection extends JPanel
 {
     //Constants
 	final private int WIDTH = 1000;
-    final private Dimension textFieldSize = new Dimension(WIDTH/2 - 10, 23);
+    final private Dimension comboBoxSize = new Dimension(WIDTH/2 - 10, 23);
     final private Dimension maxGridDimensions = new Dimension(WIDTH/2 - 10, 270);
     final private int halfDefaultWidth = WIDTH/2;
 
@@ -44,6 +38,10 @@ public class DisplaySearchConnection extends JPanel
     private JButton btnFirst;
     private JButton btnLater;
     private JButton btnLast;
+    private JButton btnSelectOrigin;
+    private JButton btnSelectDestination;
+    private JComboBox<TupleIntString> cbOriginSelection;
+    private JComboBox<TupleIntString> cbDestinationSelection;
     private FieldNumber nfOrigin;
     private FieldNumber nfDestination;
     private JComboBox<String> cbDateSelection;
@@ -54,11 +52,10 @@ public class DisplaySearchConnection extends JPanel
     private JPanel panelSelectedConnection;
     private JTextPane formattedConnectionDisplay;
 
-	private JPanel display;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
-    private ArrayList<Object> fastLinesFromOriginToDestination;
+    private TupleIntString[] busStops;
     //private Calendar cal;
 
     //private JButton
@@ -90,6 +87,9 @@ public class DisplaySearchConnection extends JPanel
     }
 
 
+    /**
+     * Initialises all components.
+     */
     public void initComponents()
     {
         //Panel to contain components for the right hand side.
@@ -120,12 +120,27 @@ public class DisplaySearchConnection extends JPanel
         btnLast.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
+        btnSelectOrigin = new JButton("Abfahrt Bushaltestelle wählen");
+        btnSelectOrigin.addActionListener(e ->
+                controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_ORIGIN));
+
+        btnSelectDestination = new JButton("Zielhaltestelle wählen");
+        btnSelectDestination.addActionListener(e ->
+                controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_DESTINATION));
+
         //Comboboxes to choose date and time.
 
         //cbDateSelection = new JComboBox<>();
         cbHourSelection = new JComboBox<>();
         cbMinuteSelection = new JComboBox<>();
 
+        //Comboboxes to chooes origin and destination
+        cbOriginSelection = new JComboBox<>(busStops);
+        //cbOriginSelection.setBorder(BorderFactory.createEmptyBorder());
+        //cbOriginSelection.setPreferredSize(new Dimension());
+
+        cbDestinationSelection = new JComboBox<>(busStops);
+        //cbDestinationSelection.setPreferredSize(new Dimension);
 
         //JPanel to display details about the selected
         panelSelectedConnection = new JPanel();
@@ -140,28 +155,15 @@ public class DisplaySearchConnection extends JPanel
         createTable();
     }
 
-
+    /**
+     * Creates the table which will contain search results.
+     */
     private void createTable()
     {
         LinkedList<Connection> data = new LinkedList<>();
         TableModelSearchConnection tableModel = new TableModelSearchConnection(data);
 
 
-        // Limits user to only select one row at time
-        class ForcedListSelectionModel extends DefaultListSelectionModel
-        {
-            public ForcedListSelectionModel () {
-                setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            }
-
-            @Override
-            public void clearSelection() {
-            }
-
-            @Override
-            public void removeSelectionInterval(int index0, int index1) {
-            }
-        }
 
         tableSearchResults = new JTable(tableModel);
         tableSearchResults.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
@@ -199,8 +201,9 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
-        nfOrigin.setPreferredSize(textFieldSize);
-        leftGridPanel.add(nfOrigin, c);
+        nfOrigin.setPreferredSize(comboBoxSize);
+        //leftGridPanel.add(nfOrigin, c);
+        leftGridPanel.add(cbOriginSelection, c);
 
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -214,8 +217,9 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 2;
-        nfDestination.setPreferredSize(textFieldSize);
-        leftGridPanel.add(nfDestination, c);
+        nfDestination.setPreferredSize(comboBoxSize);
+        //leftGridPanel.add(nfDestination, c);
+        leftGridPanel.add(cbDestinationSelection,c );
 
 
         //DateSelectionPanel - Date: DAY.MONTH.YEAR HOURS:MINUTES
@@ -304,7 +308,7 @@ public class DisplaySearchConnection extends JPanel
 
 
     /**
-     *
+     * Modifies the right panel to show the table.
      */
     public void modifyRightGridPanel()
     {
@@ -341,6 +345,10 @@ public class DisplaySearchConnection extends JPanel
         rightParentGridPanel.repaint();
     }
 
+    /**
+     * Adds an element to the tableModel and positions at the bottom of the list.
+     * @param foundConnection connection which will be added.
+     */
     public void addLastConnectionAndUpdateTable(Connection foundConnection)
     {
         ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
@@ -353,6 +361,10 @@ public class DisplaySearchConnection extends JPanel
         scrollPaneTable.repaint();
     }
 
+    /**
+     * Adds an element to the tableModel and positions it at the top of the list.
+     * @param foundConnection
+     */
     public void addFirstConnectionAndUpdateTable(Connection foundConnection)
     {
         ((TableModelSearchConnection)tableSearchResults.getModel()).addFirstConnection(foundConnection);
@@ -392,17 +404,22 @@ public class DisplaySearchConnection extends JPanel
         return tableSearchResults;
     }
 
-    public FieldNumber getOrigin()
+    public JComboBox<TupleIntString> getOrigin()
     {
-        return nfOrigin;
+        return cbOriginSelection;
     }
 
-    public FieldNumber getDestination()
+    public JComboBox<TupleIntString> getDestination()
     {
-        return nfDestination;
+        return cbDestinationSelection;
     }
 
     public int getTime() { return cbHourSelection.getSelectedIndex() * 60 + cbMinuteSelection.getSelectedIndex(); }
+
+    public void fillBusses(TupleIntString[] arrayBusses)
+    {
+        this.busStops = arrayBusses;
+    }
 
 
 
