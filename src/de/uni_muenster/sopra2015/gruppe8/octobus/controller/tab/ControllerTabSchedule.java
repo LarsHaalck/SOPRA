@@ -6,13 +6,12 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
-import org.jooq.Table;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Lars on 02-Mar-15.
+ * Controller for TabSchedule class.
  */
 public class ControllerTabSchedule extends Controller implements ListenerButton, ListenerTable
 {
@@ -68,6 +67,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		}
 	}
 
+	/**
+	 * Used to fill table with tours for a certain date from DB.
+	 */
 	private void fillTable()
 	{
         controllerDatabase.createTours(tabSchedule.getDateStart());
@@ -77,18 +79,22 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		for (int i=0; i < tours.size(); i++)
 		{
 			Object[] content = tours.get(i);
-			data[i][0] = (Integer)content[0];
-			data[i][1] = (String)content[1];
+			data[i][0] = content[0];
+			data[i][1] = content[1];
 			data[i][2] = new TableDate((Date) content[2], TableDate.Type.TIME);
-			data[i][3] = (String)content[3];
-			data[i][4] = (String)content[4];
+			data[i][3] = content[3];
+			data[i][4] = content[4];
 		}
 		tabSchedule.fillTable(data);
 	}
 
+	/**
+	 * Fills the table after a new date is selected.
+	 */
 	private void newFilterSelected()
 	{
 		Date start = tabSchedule.getDateStart();
+		//TODO clean up
 		boolean onlyUnassigned = tabSchedule.getOnlyUnassigned();
 
 		//Check if start-date is invalid

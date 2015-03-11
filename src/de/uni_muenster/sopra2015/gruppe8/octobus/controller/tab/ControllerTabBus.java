@@ -62,6 +62,9 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		}
 	}
 
+	/**
+	 * Used to fill the table with buses from DB.
+	 */
 	public void fillTable()
 	{
 		ArrayList<Bus> buses = controllerDatabase.getBuses();
