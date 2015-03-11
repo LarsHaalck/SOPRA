@@ -92,9 +92,9 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 		TupleIntString tempBus = formTourResetBus.getBus();
 
 		ArrayList<String> errorFields = new ArrayList<>();
-		if(startDate == null)
+		if(tempStartDate == null)
 			errorFields.add("Ungültige Eingabe der Startzeit.");
-		if(endDate == null)
+		if(tempEndDate == null)
 			errorFields.add("Ungültige Eingabe der Endzeit.");
 
 
