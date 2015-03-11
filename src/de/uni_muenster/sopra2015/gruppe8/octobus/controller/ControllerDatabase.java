@@ -48,16 +48,32 @@ public class ControllerDatabase
 
 	private DSLContext create;
 
-	private ControllerDatabase()
+	private ControllerDatabase(String databaseName, boolean jUnitTest)
 	{
-		openDB();
+		openDB(databaseName, jUnitTest);
 	}
 
 	static public ControllerDatabase getInstance()
 	{
 		if (controllerDatabase == null)
 		{
-			controllerDatabase = new ControllerDatabase();
+			controllerDatabase = new ControllerDatabase(DB_NAME, false);
+		}
+
+		return controllerDatabase;
+	}
+
+	/**
+	 * ATTENTION: This returns an instance for running a unit test for the database!
+	 * It is therefore NOT suitable for a production environment!
+	 *
+	 * @return
+	 */
+	static public ControllerDatabase getTestingInstance(String fileName)
+	{
+		if (controllerDatabase == null)
+		{
+			controllerDatabase = new ControllerDatabase(fileName, true);
 		}
 
 		return controllerDatabase;
@@ -67,14 +83,18 @@ public class ControllerDatabase
 	/**
 	 * Initializes database for use inside this class
 	 */
-	public void openDB()
+	public void openDB(String databaseName, boolean jUnitTest)
 	{
 		try
 		{
-			// check if database file exists
-			boolean newFile = !checkDatabaseFile();
+			// Check if database file exists...
+			boolean newFile = false;
 
-			String url = "jdbc:sqlite:" + DB_NAME;
+			// ... but only if we're not running a jUnit test
+			if (!jUnitTest)
+				newFile= !checkDatabaseFile();
+
+			String url = "jdbc:sqlite:" + databaseName;
 			Connection conn;
 
 			// Dynamically load SQLite driver
@@ -85,6 +105,7 @@ public class ControllerDatabase
 			// create tables in case of a new file
 			if (newFile)
 				createDatabaseTables();
+
 		} catch (ClassNotFoundException e)
 		{
 			System.out.println("Unable to load JDBC driver.");
@@ -110,6 +131,9 @@ public class ControllerDatabase
 		return false;
 	}
 
+	/**
+	 * This function creates a pristine database in case no previous database file could be found.
+	 */
 	public void createDatabaseTables()
 	{
 		// create bus stops table
