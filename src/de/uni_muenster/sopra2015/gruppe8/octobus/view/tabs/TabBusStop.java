@@ -17,6 +17,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 	private JButton btnEdit;
 	private JButton btnNew;
 	private JButton btnPrint;
+	private JButton btnRoutes;
 
 	public TabBusStop()
 	{
@@ -42,6 +43,10 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		btnPrint.addActionListener(e->
 				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_PRINT));
 
+		btnRoutes = new JButton("Routen anzeigen...");
+		btnRoutes.addActionListener(e->
+				controllerTabBusStop.buttonPressed(EmitterButton.TAB_BUS_STOP_ROUTES));
+
 		if(super.isRefineable())
 		{
 			JPanel plFilter = new JPanel();
@@ -56,6 +61,7 @@ public class TabBusStop extends TabTable<TableModelBusStop>
 		plButtons.add(btnEdit);
 		plButtons.add(btnDelete);
 		plButtons.add(btnPrint);
+		plButtons.add(btnRoutes);
 
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(plButtons, BorderLayout.PAGE_END);

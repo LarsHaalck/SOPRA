@@ -80,7 +80,7 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 
 		//Images for small state-circles
 		ImageIcon imageRed = new ImageIcon("res/images/red.png");
-		ImageIcon imageYellow = new ImageIcon("res/images/yellow.png");
+		ImageIcon imageYellow = new ImageIcon("res/images/grelb.png");
 		ImageIcon imageGreen = new ImageIcon("res/images/green.png");
 		//Check for next inspection
 		Date today = new Date();
