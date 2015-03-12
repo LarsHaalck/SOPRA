@@ -73,14 +73,6 @@ public class FormBusStopPrint extends FormGeneral
 		setLocationRelativeTo(null);
 	}
 
-	public void setCursor(boolean waitActive)
-	{
-		if(waitActive)
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		else
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	}
-
 	public ArrayList<Tuple<JCheckBox, Integer>> getStops()
 	{
 		return stops;

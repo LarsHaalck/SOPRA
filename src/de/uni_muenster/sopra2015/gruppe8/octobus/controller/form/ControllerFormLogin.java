@@ -53,7 +53,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 
                 if (candidateEmployee == null)
                 {
-                    dialog.illegalInput("User existiert nicht!");
+                    dialog.illegalInput("Benutzer existiert nicht!");
                     return;
                 }
 
