@@ -24,6 +24,16 @@ public class ControllerGraph
 		db = ControllerDatabase.getInstance();
 	}
 
+	public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+		graph.init();
+		Connection con = graph.getConnection(104, 7, DayOfWeek.THURSDAY, 840);
+
+
+		return;
+	}
+
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -156,6 +166,7 @@ public class ControllerGraph
 				int timeDiff = 0;
 				int timeDiffOnFirst = 0;
 
+				boolean arrived1 = false;
 				for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
 				{
 					timeDiff += routeStop.getThird();
@@ -166,8 +177,9 @@ public class ControllerGraph
 					{
 						timeDiffOnFirst = timeDiff;
 						stoppingPoint1 = routeStop.getSecond();
+						arrived1 = true;
 					}
-					else if (currentStop.getId() == id2) //bus arrived at s2 -> break
+					else if (currentStop.getId() == id2 && arrived1) //bus arrived at s2 -> break
 					{
 						stoppingPoint2 = routeStop.getSecond();
 						break;
