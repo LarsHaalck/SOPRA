@@ -36,8 +36,6 @@ public class Route
 		this.stops = stops;
 		this.night = night;
 		this.startTimes = startTimes;
-
-		//TODO: Create empty list and hashmap if parameters are null??
 	}
 
 	public String getName()

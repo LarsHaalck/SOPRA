@@ -2,9 +2,9 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
 import java.util.Comparator;
 
-//TODO JavaDoc
+
 /**
- * Created by Lars on 07.03.2015.
+ * Class for formatting prices in table models. Implements Comparator, Comparable to sort in tables
  */
 public class TablePrice implements Comparator<TablePrice>, Comparable<TablePrice>
 {
@@ -15,6 +15,10 @@ public class TablePrice implements Comparator<TablePrice>, Comparable<TablePrice
 
 	private int totalCents;
 
+	/**
+	 * Constructs TablePrice with specified cents and converts them to euro and cents
+	 * @param cents price in cents to be stored
+	 */
 	public TablePrice(int cents)
 	{
 		this.euro = cents/100;
