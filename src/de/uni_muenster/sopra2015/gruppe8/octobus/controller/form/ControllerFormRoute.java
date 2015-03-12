@@ -114,13 +114,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 							}
 							refreshTablesStep2();
 							initialChanges = true;
+							formRoute.getCl().next(formRoute.getCardPanel());
+							formRoute.setPanelCounter(formRoute.getPanelCounter() + 1);
+							break;
 						}
-					} else
-					{
-						break;
 					}
+					break;
 				}
-				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
+				else if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
 					//Step 2
 					//Checks if data input is valid
@@ -142,11 +143,11 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 							closeDialog();
 						}
 						formRoute.setCursor(false);
+						formRoute.getCl().next(formRoute.getCardPanel());
+						formRoute.setPanelCounter(formRoute.getPanelCounter() + 1);
+						break;
 					}
-					break;
 				}
-				formRoute.getCl().next(formRoute.getCardPanel());
-				formRoute.setPanelCounter(formRoute.getPanelCounter() + 1);
 				break;
 
 			case FORM_ROUTE_CANCEL:
