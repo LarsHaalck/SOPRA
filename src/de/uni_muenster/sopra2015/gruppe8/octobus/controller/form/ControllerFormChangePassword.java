@@ -8,6 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
+import java.awt.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -51,6 +52,7 @@ public class ControllerFormChangePassword extends Controller implements Listener
 				break;
 
 			case FORM_CHANGE_PASSWORD_SAVE:
+				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				String employeeSalt = employee.getSalt();
 				String employeeHash = employee.getPassword();
 
@@ -101,6 +103,7 @@ public class ControllerFormChangePassword extends Controller implements Listener
 
 					dialog.dispose();
 					removeListeners();
+					dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 					break;
 				}
 		}

@@ -57,6 +57,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
                     return;
                 }
 
+				dialog.setCursor(true);
                 String candidateSalt = candidateEmployee.getSalt();
                 String candidateHash = candidateEmployee.getPassword();
 
@@ -86,6 +87,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 				{
 					dialog.illegalInput("Falsches Kennwort!");
 				}
+				dialog.setCursor(false);
 				break;
 
 			case FORM_LOGIN_CANCEL:

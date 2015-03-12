@@ -57,11 +57,13 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 			case FORM_TOUR_RESET_BUS_SAVE:
 				if(parseValuesFromForm())
 				{
+					formTourResetBus.setCursor(true);
 					if (saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 						closeDialog();
 					}
+					formTourResetBus.setCursor(false);
 				}
 				break;
 

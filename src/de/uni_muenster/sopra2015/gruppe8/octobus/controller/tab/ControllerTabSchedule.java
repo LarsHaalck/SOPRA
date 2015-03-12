@@ -8,6 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -111,7 +112,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		if(start == null)
 			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");
 		else {
+			tabSchedule.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			fillTable();
+			tabSchedule.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
 	}

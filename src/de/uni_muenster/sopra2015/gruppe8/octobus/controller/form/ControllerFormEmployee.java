@@ -49,6 +49,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 			case FORM_EMPLOYEE_SAVE:
 				if(parseValuesFromForm())
 				{
+					formEmployee.setCursor(true);
 					if(saveToDb())
 					{
 						if(objectID == -1) //only show if user is new user
@@ -61,6 +62,7 @@ public class ControllerFormEmployee extends Controller implements ListenerButton
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_EMPLOYEE);
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					}
+					formEmployee.setCursor(false);
 				}
 				break;
 

@@ -421,10 +421,12 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	private boolean saveToDB()
 	{
+		formRoute.setCursor(true);
 		if(objectID == -1)
 			ControllerDatabase.getInstance().addRoute(route);
 		else
 			ControllerDatabase.getInstance().modifyRoute(route, stopsChangedOnEdit);
+		formRoute.setCursor(false);
 		return true;
 	}
 
