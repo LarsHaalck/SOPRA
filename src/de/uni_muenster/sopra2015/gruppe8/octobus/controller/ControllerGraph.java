@@ -33,6 +33,7 @@ public class ControllerGraph
 	 */
 	public void setTest()
 	{
+		db.closeDB();
 		db = ControllerDatabase.getTestingInstance("DB_for_jUnit_tests.db");
 	}
 
