@@ -397,7 +397,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                             + routeName
                             + "\n"
                             + formatTime(trip.getFifth() / 60, trip.getFifth() % 60)
-                            + " nach "
+                            + " an "
                             + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
             result = result + s;
         }

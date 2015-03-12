@@ -106,7 +106,7 @@ public class DisplaySearchConnection extends JPanel
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_EARLIER));
 
         //Button to show (add) the earliest journey in the journeytable.
-        btnFirst = new JButton("Erster Fahrt");
+        btnFirst = new JButton("Erste Fahrt");
         btnFirst.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_FIRST));
 
@@ -120,7 +120,7 @@ public class DisplaySearchConnection extends JPanel
         btnLast.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
-        btnSelectOrigin = new JButton("Abfahrt Bushaltestelle wählen");
+        btnSelectOrigin = new JButton("Abfahrtshaltestelle wählen");
         btnSelectOrigin.addActionListener(e ->
                 controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_ORIGIN));
 
@@ -225,7 +225,7 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 1;
-        leftGridPanel.add(new JLabel("Uhrzeit:"), c);
+        leftGridPanel.add(new JLabel("Abfahrt um:"), c);
 
 
 
