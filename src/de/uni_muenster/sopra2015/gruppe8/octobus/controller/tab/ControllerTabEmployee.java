@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for TabEmployee class.
+ * @pre User is logged in and has HR-Manager-Role
  */
 public class ControllerTabEmployee extends Controller implements ListenerButton, ListenerTable
 {
@@ -18,6 +19,12 @@ public class ControllerTabEmployee extends Controller implements ListenerButton,
 	private ControllerDatabase controllerDatabase;
 	private TabEmployee tabEmployee;
 
+	/**
+	 * Constructor, saves parameter to attributes
+	 * @param tabEmployee
+	 * @param uid
+	 * @pre uid is valid id in employee-db-table, corresponding employee has HR-Manager-Role.
+	 */
 	public ControllerTabEmployee(TabEmployee tabEmployee, int uid)
 	{
 		super();

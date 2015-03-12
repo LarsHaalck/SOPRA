@@ -323,14 +323,4 @@ public class FormRouteStep1 extends JPanel
 		nameTour.setText(setNameTour);
 	}
 
-	public void setBusStopCurrent(String[][] rowdata_busStopCurrent)
-	{
-		//TODO model_1.setDataVector(rowdata_busStopCurrent, new String[] {"Haltestelle"});
-	}
-
-	public  void setBusStopAvailable(String[][] rowdata_busStopAvailable)
-	{
-		//TODO model_2.setDataVector(rowdata_busStopAvailable, new String[] {"Haltestelle"});
-	}
-
 }

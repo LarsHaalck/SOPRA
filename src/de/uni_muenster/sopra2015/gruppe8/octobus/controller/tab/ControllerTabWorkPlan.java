@@ -18,6 +18,7 @@ import java.util.Date;
 
 /**
  * Controller for TabWorkPlan class.
+ * @pre User is logged in and has Bus-Driver-Role.
  */
 public class ControllerTabWorkPlan extends Controller implements ListenerButton, ListenerTable
 {
@@ -25,6 +26,12 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton,
 	private TabWorkPlan tabWorkPlan;
 	private int userId;
 
+	/**
+	 * Constructor, save parameters as attributes
+	 * @param tabWorkPlan
+	 * @param userId of logged in user
+	 * @pre user-id is valid id in employee-db-table and corresponding employee has bus-driver-role
+	 */
 	public ControllerTabWorkPlan(TabWorkPlan tabWorkPlan, int userId)
 	{
 		super();
@@ -47,24 +54,29 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton,
 		ControllerManager.removeListener((ListenerTable) this);
 	}
 
-	//TODO comments, JavaDoc
 	/**
-	 *
+	 * Exports all future tours of logged-in bus-driver to iCal-Format
 	 */
 	private void exportToIcal()
 	{
+		//Some SimpleDataFormats to convert Date to String
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMdd");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
 		ArrayList<Tour> tours = controllerDatabase.getToursForEmployeeId(userId);
+		//New FileChooser
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
+		//User could only select ical-files
 		fc.addChoosableFileFilter(new FileNameExtensionFilter("iCal-Datei", "ical"));
 		int returnVal = fc.showSaveDialog(null);
 		if(returnVal == JFileChooser.CANCEL_OPTION)
 			return;
+		//If user pressed save, start export
 		try {
+			//Open file-writer
 			FileWriter fileWriter = new FileWriter(fc.getSelectedFile());
 			BufferedWriter bw = new BufferedWriter(fileWriter);
+			//Write ical-head
 			bw.write("BEGIN:VCALENDAR");
 			bw.newLine();
 			bw.write("VERSION:2.0");
@@ -101,6 +113,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton,
 			bw.newLine();
 			bw.write("END:VTIMEZONE");
 			bw.newLine();
+			//Add ical-event foreach tour
 			for(Tour tour : tours)
 			{
 				Date start = tour.getStartTimestamp();
@@ -129,6 +142,7 @@ public class ControllerTabWorkPlan extends Controller implements ListenerButton,
 			}
 			bw.write("END:VCALENDAR");
 
+			//Close writers
 			bw.close();
 			fileWriter.close();
 		}
