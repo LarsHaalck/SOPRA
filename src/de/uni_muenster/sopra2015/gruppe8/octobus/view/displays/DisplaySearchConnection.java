@@ -14,6 +14,7 @@ import java.awt.*;
 import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * Used to display connections.
@@ -477,23 +478,24 @@ public class DisplaySearchConnection extends JPanel
      */
     public DayOfWeek getDayOfWeek()
     {
-        Calendar.getInstance().setTime(fieldDate.getDate());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fieldDate.getDate());
 
-        switch (Calendar.DAY_OF_WEEK)
+        switch (cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase())
         {
-            case Calendar.MONDAY:
+            case "MONDAY":
                 return DayOfWeek.MONDAY;
-            case Calendar.TUESDAY:
+            case "TUESDAY":
                 return DayOfWeek.TUESDAY;
-            case Calendar.WEDNESDAY:
+            case "WEDNESDAY":
                 return DayOfWeek.WEDNESDAY;
-            case Calendar.THURSDAY:
+            case "THURSDAY":
                 return DayOfWeek.THURSDAY;
-            case Calendar.FRIDAY:
+            case "FRIDAY":
                 return DayOfWeek.FRIDAY;
-            case Calendar.SATURDAY:
+            case "SATURDAY":
                 return DayOfWeek.SATURDAY;
-            case Calendar.SUNDAY:
+            case "SUNDAY":
                 return DayOfWeek.SUNDAY;
         }
 
