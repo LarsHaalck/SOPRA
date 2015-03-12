@@ -21,6 +21,7 @@ import java.util.HashSet;
 
 /**
  * Controller for FormEmploye class.
+ * @pre User is logged in and has HR-Manager-Role
  */
 public class ControllerFormEmployee extends Controller implements ListenerButton
 {

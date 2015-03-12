@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for TabEmployee class.
+ * @pre User is logged in and has HR-Manager-Role
  */
 public class ControllerTabEmployee extends Controller implements ListenerButton, ListenerTable
 {

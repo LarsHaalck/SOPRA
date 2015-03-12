@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * Controller for the FormBus class.
+ * @pre User is logged in and has Schedule-Planner-Role
  */
 public class ControllerFormBus extends Controller implements ListenerButton
 {

@@ -10,11 +10,15 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormDepartureTime;
 
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Controller for FormDepartureTime class.
  * Used to set departure times in FormRoute
+ * @pre User is logged in and has Network-Planner-Role
  */
 public class ControllerFormDepartureTime extends Controller implements ListenerButton
 {

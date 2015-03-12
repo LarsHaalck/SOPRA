@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * Controller for TabBus-class
+ * @pre User is logged in and has Schedule-Manager-Role.
  */
 public class ControllerTabBus extends Controller implements ListenerButton, ListenerTable
 {
