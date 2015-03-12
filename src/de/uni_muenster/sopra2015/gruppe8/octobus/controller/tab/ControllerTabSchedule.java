@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * Controller for TabSchedule class.
+ * @pre User is logged in and has Schedule-Planner-Role.
  */
 public class ControllerTabSchedule extends Controller implements ListenerButton, ListenerTable, ListenerWindow
 {

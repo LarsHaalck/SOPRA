@@ -3,10 +3,10 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormChangePassword;
 
 import java.awt.*;
 import java.math.BigInteger;
@@ -16,6 +16,7 @@ import java.security.SecureRandom;
 
 /**
  * Controller for the FormChangePassword class.
+ * @pre User is logged in
  */
 public class ControllerFormChangePassword extends Controller implements ListenerButton
 {

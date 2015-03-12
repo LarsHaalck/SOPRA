@@ -16,6 +16,7 @@ import java.util.*;
 
 /**
  * Controller for FormRoute class.
+ * @pre User is logged in and has Network-Planner-Role.
  */
 public class ControllerFormRoute extends Controller implements ListenerButton, ListenerTable, ListenerWindow
 {

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for TabRoute class.
+ * @pre User is logged in and has Network-Planner-Role.
  */
 public class ControllerTabRoute extends Controller implements ListenerButton, ListenerTable
 {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for FormBusStopPrint class.
+ * @pre User is logged in and has Network-Planner-Role.
  */
 public class ControllerFormBusStopPrint extends Controller implements ListenerButton
 {

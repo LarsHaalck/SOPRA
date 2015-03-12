@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 /**
  * Controller for FormBusStop class.
+ * @pre User is logged in and has Network-Planner-Role
  */
 public class ControllerFormBusStop extends Controller implements ListenerButton
 {

@@ -16,6 +16,7 @@ import java.util.Date;
 
 /**
  * Controller for FormTourResetEmployee class.
+ * @pre User is logged in and has Schedule-Planner-Role.
  */
 public class ControllerFormTourResetEmployee extends Controller implements ListenerButton
 {

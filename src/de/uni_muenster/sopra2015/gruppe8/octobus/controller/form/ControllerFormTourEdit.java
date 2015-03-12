@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for FormTourEdit class.
+ * @pre User is logged in and has Schedule-Planner-Role.
  */
 public class ControllerFormTourEdit extends Controller implements ListenerButton
 {

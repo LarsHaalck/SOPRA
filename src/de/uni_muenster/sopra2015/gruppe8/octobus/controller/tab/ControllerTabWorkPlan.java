@@ -18,6 +18,7 @@ import java.util.Date;
 
 /**
  * Controller for TabWorkPlan class.
+ * @pre User is logged in and has Bus-Driver-Role.
  */
 public class ControllerTabWorkPlan extends Controller implements ListenerButton, ListenerTable
 {
