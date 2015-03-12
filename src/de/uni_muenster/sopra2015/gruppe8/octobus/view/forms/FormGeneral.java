@@ -89,4 +89,12 @@ public abstract class FormGeneral extends JDialog
 				== JOptionPane.YES_OPTION;
 	}
 
+	public void setCursor(boolean waitActive)
+	{
+		if(waitActive)
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		else
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
+
 }
