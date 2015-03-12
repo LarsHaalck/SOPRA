@@ -10,9 +10,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Abstract class that creates stuff we need for every tab with a table
@@ -34,6 +32,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private ArrayList<RowSorter.SortKey> listSortKeys;
 	private boolean sortKeySet = false;
 
+	/**
+	 * Constructor, inits everything
+	 * @param type Class-type of generic, needed to create instance of TableModle
+	 * @param isRefineable user could refine table-data
+	 * @param enableMultifilter user could select "everything" as option for refining
+	 */
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
 	{
 		this.isRefineable = isRefineable;
@@ -46,10 +50,12 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 			model = (TM) new DefaultExtendedTableModel();
 		}
 
+		//Init table and rowsorter
 		sorter = new TableRowSorter<>((type.cast(model)));
 		table = new JTable(model);
 		table.setFillsViewportHeight(true);
 
+		//Remove first col, we don't want to show ids to user
 		table.removeColumn(table.getColumnModel().getColumn(0));
 
 		table.setRowSorter(sorter);
@@ -68,6 +74,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 					} else
 					{
+						//Convert view-row to really-selected-row (scroll-offset)
 						selectedRow = table.convertRowIndexToModel(viewRow);
 						selectedID = (int) model.getValueAt(selectedRow, 0);
 					}
@@ -156,21 +163,23 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 
 		RowFilter<TM, Object> rf = null;
 
+		//If multifilter is enabled check if search-string is in one of refineable-cols
 		if(enableMultiFilter && ((String)cbFilter.getSelectedItem()).equals("alle"))
 		{
 			int[] ids = ((TM)model).getRefineableColumnsIDs();
-			ArrayList<RowFilter<TM, Object>> filters = new ArrayList<>(ids.length); //one filter for every column
+			//one filter for every column
+			ArrayList<RowFilter<TM, Object>> filters = new ArrayList<>(ids.length);
 			for(int i = 0; i < ids.length; i++)
 			{
 				try
 				{
+					//Filter current column with filter-text
 					filters.add(RowFilter.regexFilter("(?i)" + tfFilter.getText(), ids[i]));
 				} catch (java.util.regex.PatternSyntaxException e)
 				{
 					return;
 				}
 			}
-
 			rf = RowFilter.orFilter(filters);
 		}
 		else
@@ -220,13 +229,15 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	 */
 	public void fillTable(Object[][] data)
 	{
+		//Reset table and fire changes, repaintings
 		table.clearSelection();
 		model.setData(data);
 		table.revalidate();
 		table.repaint();
 		model.fireTableDataChanged();
 
-		if(data.length > 0 && !sortKeySet) //sort iff data is available
+		//sort if data is available
+		if(data.length > 0 && !sortKeySet)
 		{
 			sorter.setSortKeys(listSortKeys);
 			sortKeySet = true;
