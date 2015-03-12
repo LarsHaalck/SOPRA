@@ -40,8 +40,6 @@ public class ControllerFormChangePassword extends Controller implements Listener
 		}
 	}
 
-	//TODO maybe more comments?
-
 	@Override
 	public void buttonPressed(EmitterButton emitter)
 	{
