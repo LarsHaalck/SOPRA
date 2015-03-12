@@ -104,7 +104,8 @@ public class DisplayTicket extends JPanel
 		String[] lines = description.split("\n");
 		for(String line: lines)
 		{
-			JLabel lbDescription = new JLabel(line);
+			// Pssst - don't tell anyone...
+			JLabel lbDescription = new JLabel("<html><p style=\"width:400px;text-align:center\">" + line + "</p></html>");
 			plTickets.add(lbDescription, cst);
 			i++;
 			cst.gridy = i+3;

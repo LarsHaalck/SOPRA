@@ -87,7 +87,7 @@ public class FormBusStop extends FormGeneral
 		cstTextField.gridwidth = 5;
 		cstTextField.gridx = 1;
 		cstTextField.gridy = 1;
-		tfName = new FieldText();
+		tfName = new FieldText(50);
 		add(tfName, cstTextField);
 
 		cstLabel.gridy = 2;

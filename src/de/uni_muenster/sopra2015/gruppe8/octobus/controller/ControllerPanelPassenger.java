@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterWin
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Controller for the PanelPassenger class.
@@ -29,13 +30,19 @@ public class ControllerPanelPassenger extends Controller implements ListenerButt
 				ControllerManager.informWindowOpen(EmitterWindow.FORM_LOGIN);
 				break;
 			case PANEL_PASSENGER_SEARCH_CONNECTION:
+				panel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_CONNECTION);
+				panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				break;
 			case PANEL_PASSENGER_SHOW_TICKETS:
+				panel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_TICKET);
+				panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				break;
 			case PANEL_PASSENGER_SHOW_NETWORK:
+				panel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_NETWORK);
+				panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				break;
 		}
 	}
