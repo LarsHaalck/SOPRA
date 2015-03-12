@@ -68,7 +68,7 @@ public class ControllerDatabase
 	 * ATTENTION: This returns an instance for running a unit test for the database!
 	 * It is therefore NOT suitable for a production environment!
 	 *
-	 * @return
+	 * @return an instance of the controller for testing purposes
 	 */
 	static public ControllerDatabase getTestingInstance(String fileName)
 	{
@@ -79,7 +79,6 @@ public class ControllerDatabase
 
 		return controllerDatabase;
 	}
-
 
 	/**
 	 * Initializes database for use inside this class
@@ -126,9 +125,6 @@ public class ControllerDatabase
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
-		} catch (Throwable throwable)
-		{
-			throwable.printStackTrace();
 		}
 	}
 
@@ -605,10 +601,6 @@ public class ControllerDatabase
 
 		return getBusStopById(r.getBusstopsId());
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// TODO: StoppingPoints werden noch nicht aktualisiert! Dafür entweder eine eigene Entitätsklasse schaffen oder HashSet in BusStop modifizieren! //
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Modifies an existing bus stop entry in the database
@@ -1705,8 +1697,6 @@ public class ControllerDatabase
 		return (spr == null) ? null : new StoppingPoint(id, spr.getName());
 	}
 
-	// TODO: add comments
-
 	/**
 	 * Retrieves list of all stopping points together with the names of their respective bus stops.
 	 *
@@ -1718,6 +1708,7 @@ public class ControllerDatabase
 	{
 		ArrayList<Tuple<Integer, String>> resultList = new ArrayList<>();
 
+		// Retrieve all bus stops from database for further mangling
 		Result<Record3<Integer, String, String>> result = create.
 				select(BUSSTOPS_STOPPINGPOINTS.BUSSTOPS_STOPPINGPOINTS_ID,
 						BUSSTOPS.NAME,
@@ -1727,8 +1718,11 @@ public class ControllerDatabase
 				.using(BUSSTOPS.BUSSTOPS_ID)
 				.orderBy(BUSSTOPS.NAME.asc(), BUSSTOPS_STOPPINGPOINTS.NAME.asc())
 				.fetch();
+
 		// Return empty list if no stopping points found
 		if (result == null) return (resultList);
+
+		// Loop through all bus stops to format name and add to result list
 		for (Record r : result)
 		{
 			String busStopName = r.getValue(BUSSTOPS.NAME);
@@ -2055,6 +2049,9 @@ public class ControllerDatabase
 
 	/**
 	 * Retrieves a list of bus drivers who are available to drive the given tour.
+	 * Currently, this method does NOT deal with constraints regarding employee rights,
+	 * i.e. "not working longer than 12 hours" and "no single tours longer than 4 hours".
+	 * This could be implemented at a later point in time in order to be shipped later release
 	 *
 	 * @param tour tour for which available bus drivers ought to be shown
 	 * @return list of bus drivers available to drive given tour
@@ -2070,9 +2067,6 @@ public class ControllerDatabase
 
 			boolean qualifies = true;
 
-			// TODO: (Enhancement) Check for:
-			//              No more than 4 hours of "consecutive" work (what defines as such - only just back to back?)
-			//              No more than 12 hours of work within the last 24 hours
 			for (Tour tourExisting : tours)
 			{
 				// Stop as soon as we find even just one conflict
