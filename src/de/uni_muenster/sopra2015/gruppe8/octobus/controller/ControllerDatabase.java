@@ -108,10 +108,11 @@ public class ControllerDatabase
 		} catch (ClassNotFoundException e)
 		{
 			System.out.println("Unable to load JDBC driver.");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e)
 		{
-			System.out.println("SQL-Exception occurred.");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}

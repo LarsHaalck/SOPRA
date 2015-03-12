@@ -109,8 +109,8 @@ public class FormLogin extends FormGeneral
 
 	private void setDefaultValues()
 	{
-		tfUsername.setText("root");
-		pfPassword.setText("abc123");
+		tfUsername.setText("");
+		pfPassword.setText("");
 	}
 
 	/**
