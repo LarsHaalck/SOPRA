@@ -61,7 +61,6 @@ public class FrameMain extends JFrame
 		ImageIcon icon128 = new ImageIcon(this.getClass().getResource("/images/icon_128.png"));
 
 
-
 		ArrayList<Image> icons = new ArrayList<>();
 		icons.add(icon16.getImage());
 		icons.add(icon32.getImage());
@@ -74,13 +73,4 @@ public class FrameMain extends JFrame
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
-	/*
-	TODO: delete before deploy, only for DEBUGGING purposes
-	 */
-	public ControllerFrameMain getControllerFrameMain()
-	{
-		return this.controllerFrameMain;
-	}
-
 }
