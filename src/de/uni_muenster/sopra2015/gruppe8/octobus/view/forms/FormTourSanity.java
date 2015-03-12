@@ -69,6 +69,22 @@ public class FormTourSanity extends FormGeneral
 	}
 
 	/**
+	 * fills the JScrollPane with FormattedLabels
+ 	 * @param sanityInfo is a Tuple out of the Date (String) and a Integer (0 = finished / -1 and x = not finished)
+	 */
+	public void setSanityInfo(ArrayList<Tuple<String, Integer>> sanityInfo)
+	{
+		jpMain.setLayout(new GridLayout(sanityInfo.size(), 1));
+		int i = 0;
+		for (Tuple<String, Integer> stringIntegerTuple : sanityInfo)
+		{
+			jpMain.add(new FormattedLabel(stringIntegerTuple.getFirst(), stringIntegerTuple.getSecond(), i++));
+		}
+		revalidate();
+		repaint();
+	}
+
+	/**
 	 * creates a panel which contains a Date and the current status of schedule
 	 */
 	private class FormattedLabel extends JPanel
@@ -107,9 +123,9 @@ public class FormTourSanity extends FormGeneral
 				}
 
 			});
-			jlStatus = new JLabel(new ImageIcon("res/images/green.png"));
+			jlStatus = new JLabel(new ImageIcon(this.getClass().getResource("/images/green.png")));
 			if (sanity == -1 || sanity > 0)
-				jlStatus.setIcon(new ImageIcon("res/images/red.png"));
+				jlStatus.setIcon(new ImageIcon(this.getClass().getResource("/images/red.png")));
 			add(jlDate, BorderLayout.CENTER);
 
 			panel = new JPanel();
@@ -136,21 +152,5 @@ public class FormTourSanity extends FormGeneral
 			}
 			add(panel, BorderLayout.EAST);
 		}
-	}
-
-	/**
-	 * fills the JScrollPane with FormattedLabels
- 	 * @param sanityInfo is a Tuple out of the Date (String) and a Integer (0 = finished / -1 and x = not finished)
-	 */
-	public void setSanityInfo(ArrayList<Tuple<String, Integer>> sanityInfo)
-	{
-		jpMain.setLayout(new GridLayout(sanityInfo.size(), 1));
-		int i = 0;
-		for (Tuple<String, Integer> stringIntegerTuple : sanityInfo)
-		{
-			jpMain.add(new FormattedLabel(stringIntegerTuple.getFirst(), stringIntegerTuple.getSecond(), i++));
-		}
-		revalidate();
-		repaint();
 	}
 }

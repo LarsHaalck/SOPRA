@@ -4,6 +4,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerFrameMain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -53,10 +54,14 @@ public class FrameMain extends JFrame
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setResizable(false);
 
-		ImageIcon icon16 = new ImageIcon("res/images/icon_16.png");
-		ImageIcon icon32 = new ImageIcon("res/images/icon_32.png");
-		ImageIcon icon64 = new ImageIcon("res/images/icon_64.png");
-		ImageIcon icon128 = new ImageIcon("res/images/icon_128.png");
+
+		ImageIcon icon16 = new ImageIcon(this.getClass().getResource("/images/icon_16.png"));
+		ImageIcon icon32 = new ImageIcon(this.getClass().getResource("/images/icon_32.png"));
+		ImageIcon icon64 = new ImageIcon(this.getClass().getResource("/images/icon_64.png"));
+		ImageIcon icon128 = new ImageIcon(this.getClass().getResource("/images/icon_128.png"));
+
+
+
 		ArrayList<Image> icons = new ArrayList<>();
 		icons.add(icon16.getImage());
 		icons.add(icon32.getImage());

@@ -23,7 +23,7 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 	private ControllerDatabase controllerDatabase;
 
 	/**
-	 * Creates a controllerFormusStopPrint-object.
+	 * Creates a controllerFormBusStopPrint-object.
 	 *
 	 * @param formBusStopPrint form to be controlled
 	 * @param objectId of the selected busStop

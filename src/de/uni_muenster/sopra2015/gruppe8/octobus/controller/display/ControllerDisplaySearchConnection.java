@@ -131,7 +131,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             //What happens if Dijkstra doesn't find any connection?
             if (currentConnectionSearch == null)
             {
-                latestDay = curDay.plus(1);
+                latestDay = latestDay.plus(1);
                 time = 0;
                 if (latestDay == curDay) break;
                 continue;
@@ -183,7 +183,8 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         Connection nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
 
 
-        if (!(possiblePreviousConnection.equals(earliestConnection)))   //There are earlier connections on the same day.
+
+        if (possiblePreviousConnection != null && !(possiblePreviousConnection.equals(earliestConnection)))   //There are earlier connections on the same day.
         {
             while (!(nextConnection.equals(earliestConnection)))
             {
@@ -196,7 +197,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             earliestDay = earliestDay.minus(1);
             possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
 
-            while (possiblePreviousConnection == null || (possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
+            while ((possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
             {
                 earliestDay = earliestDay.minus(1);
                 //There is only one connection.

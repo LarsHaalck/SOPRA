@@ -10,7 +10,6 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
-import javax.print.attribute.HashPrintRequestAttributeSet;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
@@ -38,7 +37,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case STOPPING_POINT:
-				HashPrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 				Book bookStoppingPoints = new Book();
 				int firstPage = 0;
 
@@ -99,11 +97,14 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 				//Create new print-job
 				PrintWorkPlan printWorkPlan = new PrintWorkPlan(name, tourData);
-				
-				PrinterJob job = PrinterJob.getPrinterJob();
 				//PrintViewWorkPlan is only for managing data to print
 				PrintViewWorkPlan printViewWorkPlan = new PrintViewWorkPlan(printWorkPlan);
-				job.setPrintable(printViewWorkPlan);
+				Book bookWorkPlan = new Book();
+				bookWorkPlan.append(printViewWorkPlan, new PageFormat(), printViewWorkPlan.getNumberOfPages());
+
+
+				PrinterJob job = PrinterJob.getPrinterJob();
+				job.setPageable(bookWorkPlan);
 
 				//Show dialog to user, select printer
 				boolean doPrint = job.printDialog();
