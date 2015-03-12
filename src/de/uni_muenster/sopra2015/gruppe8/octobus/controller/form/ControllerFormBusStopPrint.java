@@ -77,7 +77,9 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 				ids.add(stop.getSecond());
 			}
 		}
+		formBusStopPrint.setCursor(true);
 		ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
+		formBusStopPrint.setCursor(false);
 	}
 
 	/**
