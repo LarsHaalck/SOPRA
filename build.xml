@@ -226,9 +226,10 @@
       <zipfileset src="${basedir}/lib/sqlite-jdbc-3.8.7.jar"/>
       <zipfileset src="${basedir}/lib/jooq-3.5.3-javadoc.jar"/>
       <zipfileset src="${basedir}/lib/jooq-3.5.3-sources.jar"/>
-      <fileset dir="${basedir}" includes="res/**"/>
+      <fileset dir="${basedir}/res"/>
     </jar>
     <copy file="${temp.jar.path.SOPRA.jar}" tofile="${artifact.temp.output.sopra:jar}/SOPRA.jar"/>
+    <copy file="${basedir}/${db_name}" tofile="${artifact.output.sopra:jar}/${db_name}" />
   </target>
   
   <target name="build.all.artifacts" depends="artifact.sopra:jar" description="Build all artifacts">
