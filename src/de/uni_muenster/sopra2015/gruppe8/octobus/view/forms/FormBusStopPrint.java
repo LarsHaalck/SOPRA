@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.StoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.Tuple;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ public class FormBusStopPrint extends FormGeneral
 
 		ArrayList<StoppingPoint> stoppingPoints = controllerFormBusStopPrint.getStoppingPoints();
 
+		getRootPane().setBorder(new EmptyBorder(new Insets(10, 10, 5, 10)));
 		setLayout(new GridBagLayout());
 		GridBagConstraints cst = new GridBagConstraints();
 
@@ -70,6 +72,15 @@ public class FormBusStopPrint extends FormGeneral
 		pack();
 		setLocationRelativeTo(null);
 	}
+
+	public void setCursor(boolean waitActive)
+	{
+		if(waitActive)
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		else
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
+
 	public ArrayList<Tuple<JCheckBox, Integer>> getStops()
 	{
 		return stops;

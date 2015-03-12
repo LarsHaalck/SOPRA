@@ -98,6 +98,30 @@ public class ControllerTabBusStop extends Controller implements ListenerButton, 
 				{
 					tabBusStop.showMessageDialog("Um eine Haltestelle zu drucken wählen Sie bitte einen Eintrag aus der Tabelle.");
 				}
+				break;
+
+			case TAB_BUS_STOP_ROUTES:
+				if(tabBusStop.getSelectedID() != -1)
+				{
+					ArrayList<String> routes = controllerDatabase.getRouteNamesUsingBusStopId(tabBusStop.getSelectedID());
+					if(routes.size() == 0)
+						tabBusStop.showMessageDialog("Die Haltestelle wird von keiner Route angefahren");
+					else
+					{
+						String routesNames = "";
+						routesNames += routes.get(0);
+						for (int i = 1; i < routes.size(); i++)
+						{
+							routesNames += "\n" + routes.get(i);
+						}
+						tabBusStop.showMessageDialog("Die Haltestelle wird von folgenden Routen angefahren:\n" + routesNames);
+					}
+				}
+				else
+				{
+					tabBusStop.showMessageDialog("Um die Routen anzusehen, die eine Haltestelle anfahren, wählen Sie zuerst eine Haltestelle aus.");
+				}
+				break;
 		}
 	}
 

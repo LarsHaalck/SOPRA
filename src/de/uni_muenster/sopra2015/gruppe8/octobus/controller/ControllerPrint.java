@@ -10,6 +10,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.print.PrintWorkPlan;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewStoppingPoint;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.print_views.PrintViewWorkPlan;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
@@ -37,13 +38,16 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case STOPPING_POINT:
+				HashPrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 				Book bookStoppingPoints = new Book();
+				int firstPage = 0;
 
 				for (Integer objectId : objectIds)
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
-					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(),printStoppingPoint.getNumRoutes());
+					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint, firstPage);
+					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(), printStoppingPoint.getNumRoutes());
+					firstPage += printStoppingPoint.getNumRoutes();
 				}
 
 				PrinterJob job = PrinterJob.getPrinterJob();

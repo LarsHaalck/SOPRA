@@ -5,12 +5,13 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterBut
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterTable;
 import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableModelSearchConnection;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldNumber;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldDate;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -42,8 +43,7 @@ public class DisplaySearchConnection extends JPanel
     private JButton btnSelectDestination;
     private JComboBox<TupleIntString> cbOriginSelection;
     private JComboBox<TupleIntString> cbDestinationSelection;
-    private FieldNumber nfOrigin;
-    private FieldNumber nfDestination;
+    private FieldDate fieldDate;
     private JComboBox<String> cbDateSelection;
     private JComboBox<Integer> cbHourSelection;
     private JComboBox<Integer> cbMinuteSelection;
@@ -51,7 +51,7 @@ public class DisplaySearchConnection extends JPanel
     private JScrollPane scrollPaneTable;
     private JPanel panelSelectedConnection;
     private JTextPane formattedConnectionDisplay;
-
+    private JPanel rightTransparent;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
@@ -106,7 +106,7 @@ public class DisplaySearchConnection extends JPanel
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_EARLIER));
 
         //Button to show (add) the earliest journey in the journeytable.
-        btnFirst = new JButton("Erster Fahrt");
+        btnFirst = new JButton("Erste Fahrt");
         btnFirst.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_FIRST));
 
@@ -120,7 +120,7 @@ public class DisplaySearchConnection extends JPanel
         btnLast.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
-        btnSelectOrigin = new JButton("Abfahrt Bushaltestelle wählen");
+        btnSelectOrigin = new JButton("Abfahrtshaltestelle wählen");
         btnSelectOrigin.addActionListener(e ->
                 controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_ORIGIN));
 
@@ -134,22 +134,18 @@ public class DisplaySearchConnection extends JPanel
         cbHourSelection = new JComboBox<>();
         cbMinuteSelection = new JComboBox<>();
 
+
         //Comboboxes to chooes origin and destination
         cbOriginSelection = new JComboBox<>(busStops);
-        //cbOriginSelection.setBorder(BorderFactory.createEmptyBorder());
-        //cbOriginSelection.setPreferredSize(new Dimension());
 
         cbDestinationSelection = new JComboBox<>(busStops);
-        //cbDestinationSelection.setPreferredSize(new Dimension);
 
         //JPanel to display details about the selected
         panelSelectedConnection = new JPanel();
 
 
-        nfOrigin = new FieldNumber();
-        nfOrigin.setToolTipText("Starthaltestelle eingeben");
-        nfDestination = new FieldNumber();
-        nfDestination.setToolTipText("Zielhaltestelle eingeben");
+        fieldDate = new FieldDate();
+        fieldDate.setDate(Calendar.getInstance().getTime());
 
 
         createTable();
@@ -201,8 +197,6 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
-        nfOrigin.setPreferredSize(comboBoxSize);
-        //leftGridPanel.add(nfOrigin, c);
         leftGridPanel.add(cbOriginSelection, c);
 
 
@@ -217,8 +211,6 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 2;
-        nfDestination.setPreferredSize(comboBoxSize);
-        //leftGridPanel.add(nfDestination, c);
         leftGridPanel.add(cbDestinationSelection,c );
 
 
@@ -233,17 +225,14 @@ public class DisplaySearchConnection extends JPanel
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 1;
-        leftGridPanel.add(new JLabel("Uhrzeit:"), c);
-
-        //String[] dummyCal = {"1.Januar.2015", "2.Januar.2013"};
-        //cbDateSelection = new JComboBox<>(dummyCal);
+        leftGridPanel.add(new JLabel("Abfahrt um:"), c);
 
 
 
         Integer[] hours = new Integer[24];
         for (int i = 0; i < hours.length; i++)
             hours[i] = i;
-        Integer[] minutes = new Integer[60];
+        Integer[] minutes = new Integer[59];
         for (int i = 0; i < minutes.length; i++)
             minutes[i] = i;
 
@@ -253,7 +242,7 @@ public class DisplaySearchConnection extends JPanel
         cbMinuteSelection.setSelectedIndex(Calendar.MINUTE);
 
 
-        //dateSelectionPanel.add(cbDateSelection);
+        dateSelectionPanel.add(fieldDate);
         dateSelectionPanel.add(cbHourSelection);
         dateSelectionPanel.add(cbMinuteSelection);
 
@@ -295,7 +284,7 @@ public class DisplaySearchConnection extends JPanel
         rightParentGridPanel = new JPanel();
 
         //The transparent border.
-        JPanel rightTransparent = new JPanel();
+        rightTransparent = new JPanel();
         rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
         rightTransparent.setBorder(BorderFactory.createEmptyBorder());
         rightParentGridPanel.add(rightTransparent);
@@ -346,6 +335,30 @@ public class DisplaySearchConnection extends JPanel
     }
 
     /**
+     * Removes the content of the rightGridPanel
+     */
+    public void removeRightGridPanel(){
+        rightParentGridPanel.removeAll();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+        //The transparent border.
+        rightTransparent = new JPanel();
+        rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
+        rightTransparent.setBorder(BorderFactory.createEmptyBorder());
+        rightParentGridPanel.add(rightTransparent);
+
+
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+    }
+
+    /**
      * Adds an element to the tableModel and positions at the bottom of the list.
      * @param foundConnection connection which will be added.
      */
@@ -354,16 +367,23 @@ public class DisplaySearchConnection extends JPanel
         ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
 
 
+
+        scrollPaneTable.validate();
+        scrollPaneTable.revalidate();
+        scrollPaneTable.repaint();
         tableSearchResults.revalidate();
         tableSearchResults.repaint();
         scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
+        rightParentGridPanel.validate();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
     }
 
     /**
      * Adds an element to the tableModel and positions it at the top of the list.
-     * @param foundConnection
+     * @param foundConnection connection which will be added.
      */
     public void addFirstConnectionAndUpdateTable(Connection foundConnection)
     {
@@ -398,17 +418,43 @@ public class DisplaySearchConnection extends JPanel
 
     }
 
+    /**
+     * Removes content from the textPane
+     */
+    public void removeTextPaneInformation()
+    {
+        StyledDocument doc = formattedConnectionDisplay.getStyledDocument();
 
+        try {
+            doc.remove(0, doc.getLength());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Gets the table filled with the connections
+     * @return
+     */
     public JTable getTableSearchResults()
     {
         return tableSearchResults;
     }
 
+    /**
+     * Returns the comboBox which specifies the origin
+     * @return the comboBox specifying the origin
+     */
     public JComboBox<TupleIntString> getOrigin()
     {
         return cbOriginSelection;
     }
 
+    /**
+     * Returns the comboBox which specifies th
+     * @return
+     */
     public JComboBox<TupleIntString> getDestination()
     {
         return cbDestinationSelection;
@@ -416,10 +462,44 @@ public class DisplaySearchConnection extends JPanel
 
     public int getTime() { return cbHourSelection.getSelectedIndex() * 60 + cbMinuteSelection.getSelectedIndex(); }
 
-    public void fillBusses(TupleIntString[] arrayBusses)
+    /**
+     * Fills the array used by the comboBoxes with busStops
+     * @param arrayBusStops array of busStops with their ID and name that will be saved
+     */
+    public void fillBusStops(TupleIntString[] arrayBusStops)
     {
-        this.busStops = arrayBusses;
+        this.busStops = arrayBusStops;
     }
+
+    /**
+     * Parses the Calendar.Day_Of_Week specified by the fieldDate into a DayOfWeek
+     * @return the DayOfWeek specified by the fieldDate
+     */
+    public DayOfWeek getDayOfWeek()
+    {
+        Calendar.getInstance().setTime(fieldDate.getDate());
+
+        switch (Calendar.DAY_OF_WEEK)
+        {
+            case Calendar.MONDAY:
+                return DayOfWeek.MONDAY;
+            case Calendar.TUESDAY:
+                return DayOfWeek.TUESDAY;
+            case Calendar.WEDNESDAY:
+                return DayOfWeek.WEDNESDAY;
+            case Calendar.THURSDAY:
+                return DayOfWeek.THURSDAY;
+            case Calendar.FRIDAY:
+                return DayOfWeek.FRIDAY;
+            case Calendar.SATURDAY:
+                return DayOfWeek.SATURDAY;
+            case Calendar.SUNDAY:
+                return DayOfWeek.SUNDAY;
+        }
+
+        return null;
+    }
+
 
 
 

@@ -30,13 +30,19 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
     private BusStop destination;
     private TupleIntString[] arrayBusStops;
     private int time;
-    private int latestTime;
+    private Connection latestConnection;
     private Connection earliestConnection;
+    private DayOfWeek curDay;
+    private DayOfWeek latestDay;
+    private DayOfWeek earliestDay;
 
     public ControllerDisplaySearchConnection(DisplaySearchConnection journeyDialog)
     {
         this.journeyDialog = journeyDialog;
         this.cg = new ControllerGraph();
+        this.cg.init();
+        earliestConnection = new Connection();
+        latestConnection = new Connection();
         db = ControllerDatabase.getInstance();
         ArrayList<BusStop> busStops = db.getBusStops();
         arrayBusStops = new TupleIntString[busStops.size()];
@@ -45,7 +51,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             arrayBusStops[i] = new TupleIntString(busStop.getId(), busStop.getName());
             i++;
         }
-        journeyDialog.fillBusses(arrayBusStops);
+        journeyDialog.fillBusStops(arrayBusStops);
 
     }
 
@@ -56,7 +62,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         switch (emitter)
         {
             case DISPLAY_CONNECTION_SEARCH:
-                searchJourney();
+                searchConnection();
                 break;
             case DISPLAY_CONNECTION_EARLIER:
                 //Look for earlier Journeys and add them to the table
@@ -68,11 +74,11 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 break;
             case DISPLAY_CONNECTION_LATER:
                 //Look for later Journeys and add them to the table
-                searchLaterJourney();
+                searchLaterConnection();
                 break;
             case DISPLAY_CONNECTION_LAST:
                 //Look for the last Journey and add it to the table
-                searchLatestJourney();
+                searchLatestConnection();
                 break;
 			case DISPLAY_CONNECTION_BACK:
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
@@ -85,93 +91,254 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
 	//TODO JavaDoc
 	/**
-	 *
+	 *  Looks for the earliest arrival connection between the specified origin and destination bus stops.
 	 */
-	private void searchJourney()
+	private void searchConnection()
     {
-        int orig = ((TupleIntString)journeyDialog.getOrigin().getSelectedItem()).getFirst();
+        //Get BusStops from IDs specified by the combobox
+        origin = db.getBusStopById(
+                ((TupleIntString) journeyDialog.getOrigin().getSelectedItem())
+                        .getFirst());
+        destination = db.getBusStopById(
+                ((TupleIntString)journeyDialog.getDestination().getSelectedItem())
+                        .getFirst());
+
+        curDay = journeyDialog.getDayOfWeek();
+        latestDay = curDay;
+        earliestDay = curDay;
+
+        time = journeyDialog.getTime();
+
+        //Clear if previous content is displayed in the textPane and clear selection
+        if (!(journeyDialog.getTableSearchResults().getSelectionModel().isSelectionEmpty()))
+        {
+            journeyDialog.getTableSearchResults().getSelectionModel().clearSelection();
+            updateTextPane();
+        }
+
+        ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
+
+        if (origin.getId() == destination.getId())
+        {
+            journeyDialog.removeRightGridPanel();
+            return;
+        }
+
+
+        while (true)
+        {
+            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), latestDay, time);
+            //What happens if Dijkstra doesn't find any connection?
+            if (currentConnectionSearch == null)
+            {
+                latestDay = curDay.plus(1);
+                time = 0;
+                if (latestDay == curDay) break;
+                continue;
+            }/*else if (currentConnectionSearch.changedDay()) //Needs to be implemented
+                latestDay = curDay.plus(1);*/
+
+            earliestConnection = currentConnectionSearch;
+            latestConnection = currentConnectionSearch;
+            curDay = latestDay;
+            earliestDay = latestDay;
+            journeyDialog.modifyRightGridPanel();
+            journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
+            break;
+        }
+
+        /*int orig = ((TupleIntString)journeyDialog.getOrigin().getSelectedItem()).getFirst();
         int dest = ((TupleIntString)journeyDialog.getDestination().getSelectedItem()).getFirst();
+        if (!(journeyDialog.getTableSearchResults().getSelectionModel().isSelectionEmpty()))
+        {
+            journeyDialog.getTableSearchResults().getSelectionModel().clearSelection();
+            updateTextPane();
+        }
+        curDay = journeyDialog.getDayOfWeek();
         ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
         origin = db.getBusStopById(orig);
         destination = db.getBusStopById(dest);
+        if (orig == dest) return;
         time = journeyDialog.getTime();
         if (! (origin == null || destination == null))
         {
-
-            /*
-            Search update JTextPane
-             */
-            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, time);
+            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), curDay, time);
             if (currentConnectionSearch == null ) return;
             journeyDialog.modifyRightGridPanel();
             earliestConnection = currentConnectionSearch;
             journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
             latestTime = currentConnectionSearch.getTime();
-        }
-    }
-
-    private void searchEarlierConnection()
-    {
-        int currentEarliest = earliestConnection.getTime();
-        Connection currentConnection = earliestConnection;
-
-		int counter = 0;
-        while (currentConnection.equals(earliestConnection) && counter < 1440)
-        {
-			counter++;
-			currentEarliest = currentEarliest - 1 < 0 ? 1439 : --currentEarliest;
-			System.out.println(currentEarliest);
-			currentConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, currentEarliest);
-        }
-        if (earliestConnection.equals(currentConnection)) return;
-        earliestConnection = currentConnection;
-        journeyDialog.addFirstConnectionAndUpdateTable(currentConnection);
-    }
-
-    private void searchFirstConnection()
-    {
-        if (! (origin == null || destination == null)) {
-            Connection earliestConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, 0);
-            journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection);
-        }
-    }
-
-    public void searchLatestJourney()
-    {
-        /*int hoursBeforeMidnight = 1380;
-
-        while ( hoursBeforeMidnight > 0 )
-        {
-            int firstFoundStartTime;
-            Connection firstFoundConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, hoursBeforeMidnight);
-            firstFoundStartTime = firstFoundConnection.getTime();
-            Connection secondFoundConnection = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, firstFoundStartTime + 1);
-            while (lastFoundStartTime <  )
         }*/
     }
 
-    public void searchLaterJourney()
-    {
-        latestTime++;
-        if (!(latestTime < 1440)) return;
-        Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), DayOfWeek.MONDAY, latestTime);
-        journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
-        latestTime = currentConnectionSearch.getTime();
-    }
 
-
-    //BusStops are distinguished by IDs. How to find BusStops by name?
-	//TODO clean up
     /**
-     * Looks for the BusStop specified by its name in the DB and returns
-     * this (and only one?) BusStop.
-     * @param name name of the BusStop
-     * @return the BusStop
-     * @throws IllegalArgumentException if no such BusStop can be found
+     * Looks for earlier departures than the earliest connection in the table for connections between
+     * the specified origin and destination bus stops.
      */
-    private BusStop getBusStop(String name) {
-		return null;
+    private void searchEarlierConnection()
+    {
+        boolean hasOnlyOneConnection = false;
+        Connection possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
+        Connection nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
+
+
+        if (!(possiblePreviousConnection.equals(earliestConnection)))   //There are earlier connections on the same day.
+        {
+            while (!(nextConnection.equals(earliestConnection)))
+            {
+                possiblePreviousConnection = nextConnection;
+                nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
+            }
+        } else //Earlier connections on earlier days.
+        {
+            DayOfWeek curEarliest = earliestDay;
+            earliestDay = earliestDay.minus(1);
+            possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
+
+            while (possiblePreviousConnection == null || (possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
+            {
+                earliestDay = earliestDay.minus(1);
+                //There is only one connection.
+                if (earliestDay == curEarliest)
+                {
+                    hasOnlyOneConnection = true;
+                    break;
+                }
+                possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
+            }
+
+            nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
+
+            while (!(nextConnection == null || nextConnection.getStartingDay() != earliestDay)) //!(nextConnection == null || nextConnection.changedDay())
+            {
+                if (hasOnlyOneConnection) break;
+                possiblePreviousConnection = nextConnection;
+                nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
+            }
+        }
+
+        if (hasOnlyOneConnection) possiblePreviousConnection = earliestConnection;
+
+        earliestConnection = possiblePreviousConnection;
+        journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection);
+
+
+
+
+
+
+        /*Connection currentEarliestConnection = earliestConnection;
+        Connection possiblePreviousConnection;
+        Connection nextConnection;
+        int startTime = 0;
+        DayOfWeek currentDay = curDay;
+
+        while (true)
+        {
+            possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, startTime);
+            startTime = possiblePreviousConnection.getTime();
+            nextConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, startTime + 1);
+            if (nextConnection.equals(currentEarliestConnection) && startTime < nextConnection.getTime())
+                break;
+            else if (nextConnection.equals(possiblePreviousConnection))
+            {
+                prevDay();
+                break;
+            }
+        }
+        /*int currentEarliest = earliestConnection.getTime();
+        Connection currentEarliestConnection = earliestConnection;
+
+		int counter = 0;
+        while (currentEarliestConnection.equals(earliestConnection) && counter < 1440)
+        {
+			counter++;
+            if (currentEarliest - 1 < 0)
+            {
+                while (c)
+            }
+			System.out.println(currentEarliest);
+			currentEarliestConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, currentEarliest);
+        }
+
+
+        if (earliestConnection.equals(currentEarliestConnection)) return;
+        earliestConnection = currentEarliestConnection;
+        journeyDialog.addFirstConnectionAndUpdateTable(currentEarliestConnection);*/
     }
+
+    /**
+     * Looks for the first departure on earliest day.
+     */
+    private void searchFirstConnection()
+    {
+        Connection currentEarliest = earliestConnection;
+        earliestConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
+
+        if (currentEarliest.equals(earliestConnection)) return;
+
+        journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection);
+    }
+
+    /**
+     * Looks for the latest departure on latest day.
+     */
+    public void searchLatestConnection()
+    {
+        Connection currentLatest = latestConnection;
+
+        while (true) {
+            Connection nextConnection = cg.getConnection(origin.getId(), destination.getId(), latestDay, latestConnection.getTime() + 1);
+            if (nextConnection == null || nextConnection.getStartingDay() != latestDay) break; //nextConnection.changedDay() || nextConnection == null
+            latestConnection = nextConnection;
+        }
+
+        if (currentLatest.equals(latestConnection)) return;
+
+        journeyDialog.addLastConnectionAndUpdateTable(latestConnection);
+    }
+
+    /**
+     * Looks for connections later than the currently latest connection.
+     */
+    public void searchLaterConnection()
+    {
+        int latestTime = latestConnection.getTime() + 1;
+        do {
+            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), latestDay, latestTime);
+            //Dijkstra haven't found one yet.
+            if (currentConnectionSearch == null)
+            {
+                latestTime = 0;
+                latestDay = latestDay.plus(1);
+                continue;
+            } else if (false) //currentConnectionSearch.changedDay()
+            {
+                latestDay = latestDay.plus(1);
+            } else
+            {
+                latestConnection = currentConnectionSearch;
+                journeyDialog.addLastConnectionAndUpdateTable(latestConnection);
+                break;
+            }
+
+        } while(true);
+
+
+
+        /*int latestTime = latestConnection.getTime();
+        latestTime++;
+        if (!(latestTime < 1440))
+        {
+            nextDay();
+            latestTime = 0;
+        }
+        Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), curDay, latestTime);
+        journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
+        latestTime = currentConnectionSearch.getTime();*/
+    }
+
 
 
     @Override
@@ -196,34 +363,59 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         switch(emitter)
         {
             case FORM_JOURNEY_SEARCH_RESULT:
-
-                String result = "";
-                int rowSelected = journeyDialog.getTableSearchResults().getSelectedRow();
-                LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).getConnectionByIndex(rowSelected).getTrips();
-                for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips) {
-                    StoppingPoint spFirst = trip.getSecond();
-                    StoppingPoint spSecond = trip.getFourth();
-                    String bsFirstName = db.getBusStopByStoppingPointId(spFirst.getId()).getName();
-                    String bsSecondName = db.getBusStopByStoppingPointId(spSecond.getId()).getName();
-                    String spFirstName = spFirst.getName();
-                    String spSecondName = spSecond.getName();
-                    String routeName = trip.getThird().getName();
-
-                    String s =
-                            formatTime(trip.getFirst() / 60, trip.getFirst() % 60)
-                                    + " ab " + bsFirstName + " Bstg. " + spFirstName
-                                    + "\n              " //2 TABs 4 TABS
-                                    + routeName
-                                    + "\n"
-                                    + formatTime(trip.getFifth() / 60, trip.getFifth() % 60)
-                                    + " nach "
-                                    + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
-                    result = result + s;
-                }
-                result = result + "\n Sie erhalten unter dem Reiter \"Fahrkarten anzeigen\"  Informationen zu unseren Fahrkarten.";
-                journeyDialog.showSelectedConnection(result);
+                updateTextPane();
                 break;
         }
+    }
+
+    /**
+     * Updates the textPane with the information of the selected connection.
+     */
+    private void updateTextPane(){
+        String result = "";
+        int rowSelected = journeyDialog.getTableSearchResults().getSelectedRow();
+        if (rowSelected < 0)
+        {
+            journeyDialog.removeTextPaneInformation();
+            return;
+        }
+        result = result +
+                formatDayOfWeekToGerman(
+                        ((TableModelSearchConnection)journeyDialog
+                                .getTableSearchResults()
+                                .getModel())
+                                .getConnectionByIndex(rowSelected)
+                                .getStartingDay()
+                )
+                + "\n\n";
+        LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips =
+                ((TableModelSearchConnection)journeyDialog
+                        .getTableSearchResults()
+                        .getModel())
+                        .getConnectionByIndex(rowSelected)
+                        .getTrips();
+        for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips) {
+            StoppingPoint spFirst = trip.getSecond();
+            StoppingPoint spSecond = trip.getFourth();
+            String bsFirstName = db.getBusStopByStoppingPointId(spFirst.getId()).getName();
+            String bsSecondName = db.getBusStopByStoppingPointId(spSecond.getId()).getName();
+            String spFirstName = spFirst.getName();
+            String spSecondName = spSecond.getName();
+            String routeName = trip.getThird().getName();
+
+            String s =
+                    formatTime(trip.getFirst() / 60, trip.getFirst() % 60)
+                            + " ab " + bsFirstName + " Bstg. " + spFirstName
+                            + "\n              " //2 TABs 4 TABS
+                            + routeName
+                            + "\n"
+                            + formatTime(trip.getFifth() / 60, trip.getFifth() % 60)
+                            + " an "
+                            + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
+            result = result + s;
+        }
+        result = result + "\n Informationen zu unseren günstigsten Fahrkarten erhalten Sie unter dem Reiter \"Fahrkarten anzeigen\"";
+        journeyDialog.showSelectedConnection(result);
     }
 
 	/**
@@ -244,6 +436,28 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         else
             minuteString = Integer.toString(minutes);
         return hourString + ":" + minuteString;
+    }
+
+    private String formatDayOfWeekToGerman(DayOfWeek dayOfWeek)
+    {
+        switch (dayOfWeek)
+        {
+            case MONDAY:
+                return "Montag";
+            case TUESDAY:
+                return "Dienstag";
+            case WEDNESDAY:
+                return "Mittwoch";
+            case THURSDAY:
+                return "Donnerstag";
+            case FRIDAY:
+                return "Freitag";
+            case SATURDAY:
+                return "Samstag";
+            case SUNDAY:
+                return "Sonntag";
+        }
+        return "";
     }
 
 	@Override
