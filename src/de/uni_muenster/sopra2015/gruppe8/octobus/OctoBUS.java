@@ -19,40 +19,8 @@ public class OctoBUS
 			@Override
 			public void run()
 			{
-				new FrameMain(); //for debugging purposes, see EntryPoint.java for possible Values
+				new FrameMain();
 			}
 		});
-		drawASCII();
-	}
-
-	public static void drawASCII()
-	{
-		System.out.println("               ,@@#+''''+#@+               ");
-		System.out.println("             @';;;;;;;;;;;;;;@,            ");
-		System.out.println("           `+;;;';:......,;';;;#           ");
-		System.out.println("           +;;,..............;;;`          ");
-		System.out.println("          .;;.................;;@@.        ");
-		System.out.println("          .;;.................;;@;;`     # ");
-		System.out.println("         '.;;............:::..;;@,';`  `;' ");
-		System.out.println(" #      ;;+;;...........:::::.;;@  +;`.;;  ");
-		System.out.println(" ;'    ';+';;...........,:::,.;;@   #;;;`  ");
-		System.out.println(" `;;` ';` :;;............,:,..;;@    #+.   ");
-		System.out.println("  .;;''   .;;...........,:::,.;;@          ");
-		System.out.println("   ;;#    .;;..........,:::::,;;@;;+`      ");
-		System.out.println("          .;;';;;;;;;;;;;;;;;;;;@:+;+      ");
-		System.out.println("       ##'';;;;;;;;;;;;;;;;;;;;;@ @;;      ");
-		System.out.println("       ;;#;;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
-		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
-		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ @;.      ");
-		System.out.println("       ;; .;;;;;;;;;;;;;;;;;;;;;@ +;`      ");
-		System.out.println("       ;; .+,,';;;;;;;;;;;;;;,,:@ ';.      ");
-		System.out.println("       ;; .',,#;;;;;;;;;;;;;;,,+@  ;;;'@,  ");
-		System.out.println("       ;' .;;;;;''''''''''';;;;;@  ;';;;;;+");
-		System.out.println("   '#';;@ .;;;;;. : .,:. : ;;;;;@      .+#`");
-		System.out.println(" ;;;;;;#  .;;;;;;;;;;;;;;;;;;;;;@          ");
-		System.out.println(" +@'.     .@@@@@@@@@@@@@@@@@@@@@@          ");
-		System.out.println("            +@@+           ;@@+            ");
-		System.out.println("            +@@+           ;@@+            ");
-		System.out.println("            .@@.           `@@:");
 	}
 }

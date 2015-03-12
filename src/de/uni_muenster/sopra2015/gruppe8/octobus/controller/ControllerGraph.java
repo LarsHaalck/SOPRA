@@ -6,6 +6,10 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 
+/**
+ * Controller for connection search algorithm. Builds adjacency set and uses a variation of dijkstra to determine
+ * optimal route (minimizes earliest arrival)
+ */
 public class ControllerGraph
 {
 	int numStops;
@@ -23,17 +27,6 @@ public class ControllerGraph
 	{
 		db = ControllerDatabase.getInstance();
 	}
-
-	public static void main(String[] args)
-	{
-		ControllerGraph graph = new ControllerGraph();
-		graph.init();
-		Connection con = graph.getConnection(104, 7, DayOfWeek.THURSDAY, 840);
-
-
-		return;
-	}
-
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -132,6 +125,12 @@ public class ControllerGraph
 			prev = new HashMap<>();
 		}
 
+		/**
+		 * Calculates how many days need to be added to day, requested in connetion, in order to get to
+		 * passed day
+		 * @param day
+		 * @return number of days to be added
+		 */
 		private int getValueInWeek(DayOfWeek day)
 		{
 			DayOfWeek current = this.day;
@@ -145,6 +144,15 @@ public class ControllerGraph
 			return i;
 		}
 
+		/**
+		 * Weight function for Dijkstra, calculates earliest arrival time at id2, when going from id1
+		 * with earliest start of time
+		 * @param id1 start BusStop (id)
+		 * @param id2 end BusStop (id)
+		 * @param time earliest start time
+		 * @return earliest arrival
+		 * @pre id1 and id2 must be ids in database, time must be non-negative
+		 */
 		private int arrivalTime(int id1, int id2, int time)
 		{
 			int arrival = -1;
@@ -242,7 +250,7 @@ public class ControllerGraph
 		/**
 		 * Determines all direct neighbours of specified BusStop
 		 * @param stopId
-		 * @return
+		 * @return ArrayList of neighbours
 		 */
 		private ArrayList<BusStop> getNeighbours(int stopId)
 		{
