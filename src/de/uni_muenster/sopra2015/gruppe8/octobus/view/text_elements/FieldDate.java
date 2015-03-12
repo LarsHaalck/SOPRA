@@ -81,8 +81,7 @@ public class FieldDate extends FieldText
 					else if(!isLeapYear && day > 28) return false;
 			}
 
-			if(year <= 1901 && month <= 12 && day <= 13) return false; //unix timestamp overflow
-			return true;
+            return !(year <= 1901 && month <= 12 && day <= 13);
         }
 		else
         {
@@ -104,6 +103,7 @@ public class FieldDate extends FieldText
 			Calendar c = Calendar.getInstance();
             // -1 because Calendar.MONTH is 0-indexed
             c.set(year, month - 1, day, 0, 0);
+
 
 			return c.getTime();
 		}

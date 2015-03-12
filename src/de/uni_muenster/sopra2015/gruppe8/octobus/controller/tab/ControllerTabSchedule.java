@@ -8,6 +8,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.TabSchedule;
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models.TableDate;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -80,8 +81,8 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	 */
 	private void fillTable()
 	{
-		ImageIcon red = new ImageIcon("res/images/red.png");
-		ImageIcon green = new ImageIcon("res/images/green.png");
+		ImageIcon red = new ImageIcon(this.getClass().getResource("/images/red.png"));
+		ImageIcon green = new ImageIcon(this.getClass().getResource("/images/green.png"));
 
         controllerDatabase.createTours(tabSchedule.getDateStart());
 		ArrayList<Object[]> tours = controllerDatabase.getToursForDate(tabSchedule.getDateStart());
@@ -111,7 +112,9 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 		if(start == null)
 			tabSchedule.showMessageDialog("Das Start-Datum liegt in keinem gültigen Format vor.");
 		else {
+			tabSchedule.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			fillTable();
+			tabSchedule.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
 	}

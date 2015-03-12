@@ -98,6 +98,7 @@ public class ControllerFormTicket extends Controller implements ListenerButton
 	 */
 	private boolean parseValuesFromForm()
 	{
+		formTicket.setCursor(true);
 		if(objectID == -1)
 		{
 			ticket = new Ticket();

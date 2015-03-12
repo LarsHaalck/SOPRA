@@ -17,6 +17,7 @@ public class PrintViewStoppingPoint implements Printable
 {
 	private final int entryXStart = 80;
 	private final int entryYStart = 180;
+	private int firstPage;
 	private Graphics2D graphics2D;
 	private Font fontHeader;
 	private Font fontHeader2;
@@ -25,9 +26,10 @@ public class PrintViewStoppingPoint implements Printable
 	private PrintStoppingPoint data;
 	private ArrayList<PrintStoppingPoint.RouteEntry> routes;
 
-	public PrintViewStoppingPoint(PrintStoppingPoint data)
+	public PrintViewStoppingPoint(PrintStoppingPoint data, int firstPage)
 	{
 		this.data = data;
+		this.firstPage = firstPage;
 
 		fontHeader = new Font("Serif", Font.BOLD, 40);
 		fontHeader2 = new Font("Serif", Font.BOLD, 10);
@@ -50,12 +52,12 @@ public class PrintViewStoppingPoint implements Printable
 
 		routes = data.getRouteEntries();
 
-		if (pageIndex >= routes.size())
+		if (pageIndex - firstPage >= routes.size())
 		{
 			return NO_SUCH_PAGE;
 		}
 
-		PrintStoppingPoint.RouteEntry routeEntry = routes.get(pageIndex);
+		PrintStoppingPoint.RouteEntry routeEntry = routes.get(pageIndex - firstPage);
 		drawHeader(routeEntry);
 		drawContent(routeEntry);
 
@@ -96,7 +98,7 @@ public class PrintViewStoppingPoint implements Printable
 			else if(day == DayOfWeek.THURSDAY){curDate = "Do:";}
 			else if(day == DayOfWeek.FRIDAY){curDate = "Fr:";}
 			else if(day == DayOfWeek.SATURDAY){curDate = "Sa:";}
-			else {curDate = "So:";}
+			else {curDate = "So/Fe:";}
 			graphics2D.drawString(curDate, curX, curY);
 			graphics2D.setFont(fontNormal);
 			curY += 20;

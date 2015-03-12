@@ -46,11 +46,11 @@ public class ControllerDisplayTicket extends Controller implements ListenerButto
 	public void fill(){
 		int i =0;
 
-		//for loop for all tickets
+		//for-loop for all tickets
 		for(Ticket t: tickets)
 		{
 			displayTicket.addPanel(t.getName(), t.getPrice(), t.getNumPassengers(), t.getDescription(), i);
-			i += calcNumLines(t);
+			i += calcNumLines(t); //to high the y-coordinate for the gridBagLayout
 		}
 	}
 

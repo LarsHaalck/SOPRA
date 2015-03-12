@@ -14,6 +14,7 @@ import java.awt.*;
 import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * Used to display connections.
@@ -22,7 +23,6 @@ public class DisplaySearchConnection extends JPanel
 {
     //Constants
 	final private int WIDTH = 1000;
-    final private Dimension comboBoxSize = new Dimension(WIDTH/2 - 10, 23);
     final private Dimension maxGridDimensions = new Dimension(WIDTH/2 - 10, 270);
     final private int halfDefaultWidth = WIDTH/2;
 
@@ -44,23 +44,21 @@ public class DisplaySearchConnection extends JPanel
     private JComboBox<TupleIntString> cbOriginSelection;
     private JComboBox<TupleIntString> cbDestinationSelection;
     private FieldDate fieldDate;
-    private JComboBox<String> cbDateSelection;
     private JComboBox<Integer> cbHourSelection;
     private JComboBox<Integer> cbMinuteSelection;
     private JTable tableSearchResults;
     private JScrollPane scrollPaneTable;
     private JPanel panelSelectedConnection;
     private JTextPane formattedConnectionDisplay;
-
+    private JPanel rightTransparent;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
     private TupleIntString[] busStops;
     //private Calendar cal;
 
-    //private JButton
 
-    //TODO: Add functionality to buttons.
+
     public DisplaySearchConnection()
     {
         controllerDisplaySearchConnection = new ControllerDisplaySearchConnection(this);
@@ -76,9 +74,7 @@ public class DisplaySearchConnection extends JPanel
 		add(display, BorderLayout.CENTER);
 
 		btnBack = new JButton("Zurück");
-		btnBack.addActionListener(e->{
-			controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_BACK);
-		});
+		btnBack.addActionListener(e-> controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_BACK));
 
 		JPanel plButton = new JPanel();
 		plButton.setLayout(new BorderLayout());
@@ -128,9 +124,8 @@ public class DisplaySearchConnection extends JPanel
         btnSelectDestination.addActionListener(e ->
                 controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_DESTINATION));
 
-        //Comboboxes to choose date and time.
+        //Comboboxes to choose time.
 
-        //cbDateSelection = new JComboBox<>();
         cbHourSelection = new JComboBox<>();
         cbMinuteSelection = new JComboBox<>();
 
@@ -163,9 +158,9 @@ public class DisplaySearchConnection extends JPanel
 
         tableSearchResults = new JTable(tableModel);
         tableSearchResults.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-        //tableSearchResults.setSelectionModel(new ForcedListSelectionModel());
-        tableSearchResults.getSelectionModel().addListSelectionListener(e ->
-                controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT));
+        tableSearchResults.getSelectionModel().addListSelectionListener(e -> {
+            controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT);
+        });
         tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
         scrollPaneTable = new JScrollPane(tableSearchResults);
         scrollPaneTable.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
@@ -236,10 +231,12 @@ public class DisplaySearchConnection extends JPanel
         for (int i = 0; i < minutes.length; i++)
             minutes[i] = i;
 
+        Calendar cal = Calendar.getInstance();
+
         cbHourSelection = new JComboBox<>(hours);
-        cbHourSelection.setSelectedIndex(Calendar.HOUR_OF_DAY);
+        cbHourSelection.setSelectedIndex(cal.get(Calendar.HOUR_OF_DAY));
         cbMinuteSelection = new JComboBox<>(minutes);
-        cbMinuteSelection.setSelectedIndex(Calendar.MINUTE);
+        cbMinuteSelection.setSelectedIndex(cal.get(Calendar.MINUTE));
 
 
         dateSelectionPanel.add(fieldDate);
@@ -284,7 +281,7 @@ public class DisplaySearchConnection extends JPanel
         rightParentGridPanel = new JPanel();
 
         //The transparent border.
-        JPanel rightTransparent = new JPanel();
+        rightTransparent = new JPanel();
         rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
         rightTransparent.setBorder(BorderFactory.createEmptyBorder());
         rightParentGridPanel.add(rightTransparent);
@@ -335,7 +332,32 @@ public class DisplaySearchConnection extends JPanel
     }
 
     /**
+     * Removes the content of the rightGridPanel
+     */
+    public void removeRightGridPanel(){
+        rightParentGridPanel.removeAll();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+        //The transparent border.
+        rightTransparent = new JPanel();
+        rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
+        rightTransparent.setBorder(BorderFactory.createEmptyBorder());
+        rightParentGridPanel.add(rightTransparent);
+
+
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+    }
+
+    /**
      * Adds an element to the tableModel and positions at the bottom of the list.
+     * @pre foundConnection is not null and filled with correct data
      * @param foundConnection connection which will be added.
      */
     public void addLastConnectionAndUpdateTable(Connection foundConnection)
@@ -343,15 +365,23 @@ public class DisplaySearchConnection extends JPanel
         ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
 
 
+
+        scrollPaneTable.validate();
+        scrollPaneTable.revalidate();
+        scrollPaneTable.repaint();
         tableSearchResults.revalidate();
         tableSearchResults.repaint();
         scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
+        rightParentGridPanel.validate();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
     }
 
     /**
      * Adds an element to the tableModel and positions it at the top of the list.
+     * @pre foundConnection is not null and filled with correct data
      * @param foundConnection connection which will be added.
      */
     public void addFirstConnectionAndUpdateTable(Connection foundConnection)
@@ -366,6 +396,12 @@ public class DisplaySearchConnection extends JPanel
         scrollPaneTable.repaint();
     }
 
+    /**
+     * Shows information about this currentSelectedConnection inside the textPane.
+     * @pre currentSelectedConnection is filled with correct data
+     * @param currentSelectedConnection connection whose information should be shown inside
+     *                                  the textPane.
+     */
     public void showSelectedConnection(String currentSelectedConnection){
         if (formattedConnectionDisplay == null)
         {
@@ -404,7 +440,7 @@ public class DisplaySearchConnection extends JPanel
 
     /**
      * Gets the table filled with the connections
-     * @return
+     * @return the result table
      */
     public JTable getTableSearchResults()
     {
@@ -421,8 +457,8 @@ public class DisplaySearchConnection extends JPanel
     }
 
     /**
-     * Returns the comboBox which specifies th
-     * @return
+     * Returns the comboBox which specifies the destination
+     * @return comboBox specifying the destination
      */
     public JComboBox<TupleIntString> getDestination()
     {
@@ -446,30 +482,27 @@ public class DisplaySearchConnection extends JPanel
      */
     public DayOfWeek getDayOfWeek()
     {
-        Calendar.getInstance().setTime(fieldDate.getDate());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fieldDate.getDate());
 
-        switch (Calendar.DAY_OF_WEEK)
+        switch (cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH).toUpperCase())
         {
-            case Calendar.MONDAY:
+            case "MONDAY":
                 return DayOfWeek.MONDAY;
-            case Calendar.TUESDAY:
+            case "TUESDAY":
                 return DayOfWeek.TUESDAY;
-            case Calendar.WEDNESDAY:
+            case "WEDNESDAY":
                 return DayOfWeek.WEDNESDAY;
-            case Calendar.THURSDAY:
+            case "THURSDAY":
                 return DayOfWeek.THURSDAY;
-            case Calendar.FRIDAY:
+            case "FRIDAY":
                 return DayOfWeek.FRIDAY;
-            case Calendar.SATURDAY:
+            case "SATURDAY":
                 return DayOfWeek.SATURDAY;
-            case Calendar.SUNDAY:
+            case "SUNDAY":
                 return DayOfWeek.SUNDAY;
         }
 
         return null;
     }
-
-
-
-
 }
