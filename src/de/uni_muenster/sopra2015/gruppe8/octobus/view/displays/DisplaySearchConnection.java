@@ -89,54 +89,41 @@ public class DisplaySearchConnection extends JPanel
      */
     public void initComponents()
     {
-        //Panel to contain components for the right hand side.
         rightParentGridPanel = new JPanel();
 
-        //Button to make a searchrequest
+
         btnSearch = new JButton("Suchen");
         btnSearch.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SEARCH));
 
-        //Button to show (add) earlier results in the journeytable
+
         btnEarlier = new JButton("Früher");
         btnEarlier.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_EARLIER));
 
-        //Button to show (add) the earliest journey in the journeytable.
+
         btnFirst = new JButton("Erste Fahrt");
         btnFirst.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_FIRST));
 
-        //Analog to earlier
+
         btnLater = new JButton("Später");
         btnLater.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LATER));
 
-        //Analog to first
         btnLast = new JButton("Letzte Fahrt");
         btnLast.addActionListener(e ->
 				controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_LAST));
 
-        btnSelectOrigin = new JButton("Abfahrtshaltestelle wählen");
-        btnSelectOrigin.addActionListener(e ->
-                controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_ORIGIN));
-
-        btnSelectDestination = new JButton("Zielhaltestelle wählen");
-        btnSelectDestination.addActionListener(e ->
-                controllerDisplaySearchConnection.buttonPressed(EmitterButton.DISPLAY_CONNECTION_SELECT_DESTINATION));
-
-        //Comboboxes to choose time.
 
         cbHourSelection = new JComboBox<>();
         cbMinuteSelection = new JComboBox<>();
 
 
-        //Comboboxes to chooes origin and destination
         cbOriginSelection = new JComboBox<>(busStops);
 
         cbDestinationSelection = new JComboBox<>(busStops);
 
-        //JPanel to display details about the selected
         panelSelectedConnection = new JPanel();
 
 
@@ -228,7 +215,7 @@ public class DisplaySearchConnection extends JPanel
         Integer[] hours = new Integer[24];
         for (int i = 0; i < hours.length; i++)
             hours[i] = i;
-        Integer[] minutes = new Integer[59];
+        Integer[] minutes = new Integer[60];
         for (int i = 0; i < minutes.length; i++)
             minutes[i] = i;
 
