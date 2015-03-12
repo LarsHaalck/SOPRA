@@ -28,9 +28,9 @@ public class PrintViewWorkPlan implements Printable, Pageable
 	private PrintWorkPlan data;
 	private int entriesPerPage;
 	private int numPages;
-	private final int entryHeight = 70;
-	private final int entryXStart = 60;
-	private final int entryYStart = 180;
+	private final int entryHeight = 60;
+	private final int entryXStart = 25;
+	private final int entryYStart = 95;
 
 	public PrintViewWorkPlan(PrintWorkPlan data)
 	{
@@ -39,6 +39,15 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		fontHeader = new Font("Serif", Font.BOLD, 50);
 		fontHeader2 = new Font("Serif", Font.BOLD, 20);
 		fontNormal = new Font("Serif", Font.BOLD, 12);
+
+
+		PageFormat pageFormat = new PageFormat();
+		pageHeight = pageFormat.getImageableHeight();
+		pageWidth = pageFormat.getImageableWidth();
+
+		System.out.println(pageHeight + " - " + pageWidth);
+
+		calcEntriesPerPage();
 	}
 
 	@Override
@@ -46,11 +55,6 @@ public class PrintViewWorkPlan implements Printable, Pageable
 	PrinterException {
 		graphics2D = (Graphics2D) graphics;
 		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-
-		pageHeight = pageFormat.getImageableHeight();
-		pageWidth = pageFormat.getImageableWidth();
-
-		calcEntriesPerPage();
 
 		if (pageIndex >= numPages)
 		{
@@ -66,9 +70,9 @@ public class PrintViewWorkPlan implements Printable, Pageable
 	private void drawHeader()
 	{
 		graphics2D.setFont(fontHeader);
-		graphics2D.drawString("OctoBUS", 140, 110);
+		graphics2D.drawString("OctoBUS", 20, 40);
 		graphics2D.setFont(fontHeader2);
-		graphics2D.drawString("Arbeitsplan für "+data.getEmployeeName(), 140,135);
+		graphics2D.drawString("Arbeitsplan für "+data.getEmployeeName(), 20, 65);
 	}
 
 	private void drawContent(int pageIndex)
@@ -113,29 +117,10 @@ public class PrintViewWorkPlan implements Printable, Pageable
 
 	private void calcEntriesPerPage()
 	{
-		entriesPerPage = ((int)(pageHeight)/entryHeight)-2;
+		entriesPerPage = ((int)(pageHeight)/entryHeight);
 		numPages = data.numTours()/entriesPerPage;
 		if(data.numTours()%entriesPerPage != 0)
 			numPages++;
-	}
-
-	private void drawLines()
-	{
-		Font f = new Font("Serif", Font.PLAIN, 10);
-		graphics2D.setFont(f);
-		graphics2D.setColor(Color.black);
-		for(double i=0; i<pageHeight; i+=20)
-		{
-			graphics2D.drawLine(0, (int) i, (int) pageWidth, (int) i);
-			String s = (int)i+"";
-			graphics2D.drawString(s, 1, 1+(int)i);
-			for (double j = 0; j < pageWidth; j += 20)
-			{
-				s = (int)j+"";
-				graphics2D.drawString(s, (int)j+1, 11);
-				graphics2D.drawLine((int) j, 0, (int) j, (int) pageHeight);
-			}
-		}
 	}
 
 	@Override

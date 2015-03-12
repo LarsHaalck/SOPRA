@@ -85,7 +85,7 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		//Check for next inspection
 		Date today = new Date();
 		//Add milliseconds of 4 week -> 28 days
-		long time = today.getTime() - 1440*28*60000;
+		long time = today.getTime() + (1440l * 28l * 60l * 1000l);
 		Date fourWeeks = new Date(time);
 		for(int i=0; i<buses.size(); i++)
 		{

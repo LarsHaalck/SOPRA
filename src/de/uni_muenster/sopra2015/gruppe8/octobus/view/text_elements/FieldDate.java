@@ -105,6 +105,7 @@ public class FieldDate extends FieldText
             // -1 because Calendar.MONTH is 0-indexed
             c.set(year, month - 1, day, 0, 0);
 
+
 			return c.getTime();
 		}
 		else

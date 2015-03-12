@@ -38,12 +38,14 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		{
 			case STOPPING_POINT:
 				Book bookStoppingPoints = new Book();
+				int firstPage = 0;
 
 				for (Integer objectId : objectIds)
 				{
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
-					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint);
-					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(),printStoppingPoint.getNumRoutes());
+					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint, firstPage);
+					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(), printStoppingPoint.getNumRoutes());
+					firstPage += printStoppingPoint.getNumRoutes();
 				}
 
 				PrinterJob job = PrinterJob.getPrinterJob();
@@ -95,11 +97,14 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 				//Create new print-job
 				PrintWorkPlan printWorkPlan = new PrintWorkPlan(name, tourData);
-				
-				PrinterJob job = PrinterJob.getPrinterJob();
 				//PrintViewWorkPlan is only for managing data to print
 				PrintViewWorkPlan printViewWorkPlan = new PrintViewWorkPlan(printWorkPlan);
-				job.setPrintable(printViewWorkPlan);
+				Book bookWorkPlan = new Book();
+				bookWorkPlan.append(printViewWorkPlan, new PageFormat(), printViewWorkPlan.getNumberOfPages());
+
+
+				PrinterJob job = PrinterJob.getPrinterJob();
+				job.setPageable(bookWorkPlan);
 
 				//Show dialog to user, select printer
 				boolean doPrint = job.printDialog();
