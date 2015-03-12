@@ -42,7 +42,9 @@ public class FieldEmail extends FieldText
 	public String getEmail()
 	{
 		String input = this.getText();
-		if(isValidEmail(input))
+		if(input.trim().length() == 0)
+			return "";
+		else if(isValidEmail(input))
 			return input;
 		else
 			return null;
