@@ -219,6 +219,9 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					break;
 				if (viewRow == -1)
 					break;
+
+				if (viewRow >= contentTableCurrent.size())
+					break;
 				//removes stopping point from list of content of "table current"
 				contentTableCurrent.remove(viewRow);
 				//Refreshes "table current" with new content list
