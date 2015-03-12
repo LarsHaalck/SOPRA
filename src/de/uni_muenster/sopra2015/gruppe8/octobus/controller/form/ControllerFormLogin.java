@@ -40,6 +40,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
                 if (usernameFromForm.equals(""))
                 {
                     dialog.illegalInput("Benutzername darf nicht leer sein!");
+					dialog.clearPassword();
                     return;
                 }
 
@@ -55,6 +56,7 @@ public class ControllerFormLogin extends Controller implements ListenerButton
                 if (candidateEmployee == null)
                 {
                     dialog.illegalInput("Benutzer existiert nicht!");
+					dialog.clearPassword();
                     return;
                 }
 
@@ -86,7 +88,8 @@ public class ControllerFormLogin extends Controller implements ListenerButton
 					dialog.dispose();
 				} else
 				{
-					dialog.illegalInput("Falsches Kennwort!");
+					dialog.illegalInput("Falsches Passwort!");
+					dialog.clearPassword();
 				}
 				dialog.setCursor(false);
 				break;

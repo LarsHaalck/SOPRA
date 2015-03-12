@@ -6,6 +6,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldPasswor
 import de.uni_muenster.sopra2015.gruppe8.octobus.view.text_elements.FieldText;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -28,6 +29,8 @@ public class FormLogin extends FormGeneral
 		super(parent, "Login");
 
 		controllerFormLogin = new ControllerFormLogin(this);
+
+		getRootPane().setBorder(new EmptyBorder(new Insets(10,10,0,10)));
 
 		panel = new JPanel(new GridBagLayout());
 		cs = new GridBagConstraints();
@@ -71,7 +74,7 @@ public class FormLogin extends FormGeneral
 		btnLogin.addActionListener(e ->
 				controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_LOGIN));
 
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(e ->
 				controllerFormLogin.buttonPressed(EmitterButton.FORM_LOGIN_CANCEL));
 		JPanel bp = new JPanel();
@@ -108,5 +111,13 @@ public class FormLogin extends FormGeneral
 	{
 		tfUsername.setText("root");
 		pfPassword.setText("abc123");
+	}
+
+	/**
+	 * clears the Password field
+	 */
+	public void clearPassword()
+	{
+		pfPassword.setText("");
 	}
 }
