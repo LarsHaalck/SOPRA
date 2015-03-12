@@ -125,9 +125,9 @@ public class Route
 		{
 			if(sumUp)
 				duration += t.getThird();
-			if(t.getFirst().equals(start))
+			if(t.getFirst().getId() == start.getId())
 				sumUp = true;
-			if(t.getFirst().equals(end) && sumUp)
+			if((t.getFirst().getId() == end.getId()) && sumUp)
 				break;
 		}
 		return duration;
