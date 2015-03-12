@@ -128,7 +128,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 					{
 						formRoute.setCursor(true);
 						boolean save = true;
-						if(stopsChangedOnEdit)
+						if(stopsChangedOnEdit && objectID != -1)
 						{
 							save = formRoute.showConfirmDialog("Änderungen an der Linie führen dazu, dass alle Fahrten der Linie in der Datenbank zurückgesetzt werden.\nFortfahren? (Zum Wiederherstellen des alten Zustands danach abbrechen)");
 						}
