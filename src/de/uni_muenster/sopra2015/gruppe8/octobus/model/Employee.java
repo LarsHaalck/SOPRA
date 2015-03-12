@@ -47,6 +47,12 @@ public class Employee
 		this.roles = roles;
     }
 
+	public Employee(String name, String firstName, String address, String zipCode, String city, Date dateOfBirth,
+					String phone, String email, String username, String note, HashSet<Role> roles)
+	{
+		this(name, firstName, address, zipCode, city, dateOfBirth, phone, email, username, null, null, note, roles);
+	}
+
     public String getName()
     {
         return name;

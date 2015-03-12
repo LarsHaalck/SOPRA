@@ -7,6 +7,7 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.view.PanelEmployee;
 
 /**
  * Controller for the PanelEmployee class.
+ * @pre User is logged in.
  */
 public class ControllerPanelEmployee extends Controller implements ListenerButton, ListenerUserState
 {

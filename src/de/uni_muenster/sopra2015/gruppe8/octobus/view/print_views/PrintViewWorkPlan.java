@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-//TODO JavaDoc
 /**
- * Created by Florian on 06.03.2015.
+ * Implements method that is called during print
  */
 public class PrintViewWorkPlan implements Printable, Pageable
 {
@@ -32,6 +31,10 @@ public class PrintViewWorkPlan implements Printable, Pageable
 	private final int entryXStart = 25;
 	private final int entryYStart = 95;
 
+	/**
+	 * Inits all needed vars
+	 * @param data PrintWorkPlan-Object, contains all data needed for print
+	 */
 	public PrintViewWorkPlan(PrintWorkPlan data)
 	{
 		this.data = data;
@@ -45,8 +48,6 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		pageHeight = pageFormat.getImageableHeight();
 		pageWidth = pageFormat.getImageableWidth();
 
-		System.out.println(pageHeight + " - " + pageWidth);
-
 		calcEntriesPerPage();
 	}
 
@@ -56,6 +57,7 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		graphics2D = (Graphics2D) graphics;
 		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
+		//Check if there are still pages to print.
 		if (pageIndex >= numPages)
 		{
 			return NO_SUCH_PAGE;
@@ -67,6 +69,9 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		return PAGE_EXISTS;
 	}
 
+	/**
+	 * Draw header
+	 */
 	private void drawHeader()
 	{
 		graphics2D.setFont(fontHeader);
@@ -75,6 +80,10 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		graphics2D.drawString("Arbeitsplan für "+data.getEmployeeName(), 20, 65);
 	}
 
+	/**
+	 * Draws content for specific page
+	 * @param pageIndex page to print
+	 */
 	private void drawContent(int pageIndex)
 	{
 		SimpleDateFormat date = new SimpleDateFormat("E, d. MMM YYYY", Locale.GERMANY);
@@ -90,11 +99,13 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		ArrayList<Quadruple<String, Date, Integer, String>> tours = data.getTours();
 		for (int i = pageIndex*entriesPerPage; i<entriesPerPage*(pageIndex + 1); i++)
 		{
+			//Only print tour if there are some left
 			if(i>= tours.size())
 				break;
 
 			Quadruple<String, Date, Integer, String> tour = tours.get(i);
 			String curDate = date.format(tour.getSecond());
+			//Check if to draw new date-string
 			if(!curDate.equals(lastDate))
 			{
 				lastDate = curDate;
@@ -102,8 +113,10 @@ public class PrintViewWorkPlan implements Printable, Pageable
 				curY += 20;
 			}
 			curX += 20;
+			//Calculates finish-time
 			Date finishedTime = new Date(tour.getSecond().getTime() + (tour.getThird() * 60 * 1000));
 			String timeString = hour.format(tour.getSecond()) + " - "+hour.format(finishedTime);
+			//Draw tour-details
 			graphics2D.drawString(timeString,curX, curY);
 			curX += 70;
 			graphics2D.drawString(tour.getFirst(),curX, curY);
@@ -115,6 +128,10 @@ public class PrintViewWorkPlan implements Printable, Pageable
 		}
 	}
 
+	/**
+	 * Calculate how many entries we could have on one page
+	 * Calculate how many pages we will have
+	 */
 	private void calcEntriesPerPage()
 	{
 		entriesPerPage = ((int)(pageHeight)/entryHeight);

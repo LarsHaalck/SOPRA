@@ -26,8 +26,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 	{
 		super();
 		controllerDatabase = ControllerDatabase.getInstance();
-		//TODO clean up
-		//controllerDatabase.createTours(new Date((long)1425966900*1000), new Date((long)1425981300*1000));
 	}
 
 	@Override
@@ -36,12 +34,15 @@ public class ControllerPrint extends Controller implements ListenerPrint
 
 		switch (emitter)
 		{
+			//Print stopping-point-plans
 			case STOPPING_POINT:
 				Book bookStoppingPoints = new Book();
 				int firstPage = 0;
 
+				//Every given id is an unique stopping-point
 				for (Integer objectId : objectIds)
 				{
+					//Create print-data and add them to print-book
 					PrintStoppingPoint printStoppingPoint = new PrintStoppingPoint(controllerDatabase.getStoppingPointById(objectId));
 					PrintViewStoppingPoint printViewStoppingPoint = new PrintViewStoppingPoint(printStoppingPoint, firstPage);
 					bookStoppingPoints.append(printViewStoppingPoint, new PageFormat(), printStoppingPoint.getNumRoutes());
@@ -75,8 +76,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 		switch (emitter)
 		{
 			case WORK_PLAN:
-				//TODO Maybe show a little message to user, prepare print or se
-
 				if(objectId <= 0)
 					break;
 
@@ -119,9 +118,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 						System.out.println("Don't print");
 					}
 				}
-
-				//TODO Show error
-
 				break;
 		}
 	}

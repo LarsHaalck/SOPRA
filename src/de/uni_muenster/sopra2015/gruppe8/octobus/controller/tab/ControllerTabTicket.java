@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for TabTicket class.
+ * @pre User is logged in and has Ticket-Planner-Role
  */
 public class ControllerTabTicket extends Controller implements ListenerButton, ListenerTable
 {
