@@ -40,8 +40,6 @@ public class ControllerFormChangePassword extends Controller implements Listener
 		}
 	}
 
-	//TODO maybe more comments?
-
 	@Override
 	public void buttonPressed(EmitterButton emitter)
 	{
@@ -107,6 +105,7 @@ public class ControllerFormChangePassword extends Controller implements Listener
 					dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 					break;
 				}
+				dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 

@@ -54,9 +54,8 @@ public abstract class FormGeneral extends JDialog
         setMySettings();
     }
 
-	//TODO
 	/**
-	 *
+	 *	Initial settings.
 	 */
 	private void setMySettings(){
         setSize(new Dimension(WIDTH, HEIGHT));

@@ -58,7 +58,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//When selection changes, provide user with row numbers for
 		//both view and model.
-		//TODO: Move this to controller, maybe
 		table.getSelectionModel().addListSelectionListener(
 				event -> {
 					int viewRow = table.getSelectedRow();
@@ -223,8 +222,6 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	{
 		table.clearSelection();
 		model.setData(data);
-
-		// TODO: check which of these are enough :D
 		table.revalidate();
 		table.repaint();
 		model.fireTableDataChanged();

@@ -161,7 +161,7 @@ public class DisplaySearchConnection extends JPanel
         tableSearchResults.getSelectionModel().addListSelectionListener(e -> {
             controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT);
         });
-        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
+        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 465));
         scrollPaneTable = new JScrollPane(tableSearchResults);
         scrollPaneTable.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
         scrollPaneTable.setMaximumSize(new Dimension(halfDefaultWidth - 10, 494));
@@ -366,6 +366,8 @@ public class DisplaySearchConnection extends JPanel
 
 
 
+        tableSearchResults.invalidate();
+        scrollPaneTable.repaint();
         scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
@@ -408,7 +410,8 @@ public class DisplaySearchConnection extends JPanel
             formattedConnectionDisplay = new JTextPane();
             formattedConnectionDisplay.setPreferredSize(new Dimension(halfDefaultWidth - 30, 340));
             formattedConnectionDisplay.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            panelSelectedConnection.add(formattedConnectionDisplay);
+            JScrollPane scrollPaneArea = new JScrollPane(formattedConnectionDisplay);
+            panelSelectedConnection.add(scrollPaneArea);
             panelSelectedConnection.revalidate();
             panelSelectedConnection.repaint();
         }

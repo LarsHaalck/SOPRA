@@ -60,7 +60,7 @@ public class FormChangePassword extends JDialog
 		panel.add(lbNewPassword, cs);
 
 		tfNewPassword = new JPasswordField(20);
-		tfNewPassword.setToolTipText("Das Passwort muss aus 8 Zeichen bestehen");
+		tfNewPassword.setToolTipText("Das Passwort muss aus 5 Zeichen bestehen");
 		cs.gridx = 1;
 		cs.gridy = 2;
 		cs.gridwidth = 2;
@@ -129,7 +129,6 @@ public class FormChangePassword extends JDialog
 	 */
 	public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
 	{
-		//Todo: Move this to error-dialog. Should looks a bit nicer then.
 		if (OldPassword)
 			lbOldPassword_Error.setText("Das Passwort ist falsch!");
 		else

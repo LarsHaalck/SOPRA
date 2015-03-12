@@ -336,7 +336,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                             + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
             result = result + s;
         }
-        result = result + "\n Informationen zu unseren günstigsten Fahrkarten erhalten Sie unter dem Reiter \"Fahrkarten anzeigen\"";
+        result = result + "\n Informationen zu unseren günstigsten Fahrkarten erhalten Sie unter \"Fahrkarten anzeigen\"";
         journeyDialog.showSelectedConnection(result);
     }
 

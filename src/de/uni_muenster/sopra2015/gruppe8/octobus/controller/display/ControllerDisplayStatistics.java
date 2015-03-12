@@ -5,5 +5,5 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.controller.display;
  */
 public class ControllerDisplayStatistics
 {
-	//TODO this
+	//Future implementation of a display could go here.
 }
