@@ -193,13 +193,6 @@ public class ControllerGraph
 				ArrayList<Integer> temp = new ArrayList<>();
 
 
-				/*int overNights = time / 1440;
-				if(overNights != 0)
-				{
-					System.out.println(overNights);
-				}*/
-
-				boolean nextDay = false;
 				boolean getNewTimes = false;
 				for (Integer start : startTimesOnDay)
 				{
@@ -359,6 +352,7 @@ public class ControllerGraph
 		{
 			int time = 0;
 			int duration = 0;
+			int dayOffset = 0;
 
 			LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = new LinkedList<>();
 
@@ -376,6 +370,7 @@ public class ControllerGraph
 				if(prev.get(prevStop) == null)
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
+					dayOffset = time / 1440;
 					duration = dist.get(stopId).intValue() - time;
 					time = time >= 1440 ? time % 1440 : time;
 				}
@@ -430,7 +425,7 @@ public class ControllerGraph
 				System.out.println("Arrival: " + trip.getFifth() + " (" + trip.getFifth() / 60 + ":" + trip.getFifth() % 60 + ")");
 
 			}*/
-			return new Connection(trips, duration, time);
+			return new Connection(trips, duration, time, day.plus(dayOffset));
 		}
 	}
 }
