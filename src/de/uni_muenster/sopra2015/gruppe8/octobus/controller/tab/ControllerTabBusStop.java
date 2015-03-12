@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Controller for TabBusStop class.
+ * @pre User is logged in and has Network-Planner-Role
  */
 public class ControllerTabBusStop extends Controller implements ListenerButton, ListenerTable
 {

@@ -1,13 +1,13 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.controller.form;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerManager;
-import de.uni_muenster.sopra2015.gruppe8.octobus.controller.Controller;
-import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
-import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterUserState;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.ListenerButton;
+import de.uni_muenster.sopra2015.gruppe8.octobus.model.Employee;
+import de.uni_muenster.sopra2015.gruppe8.octobus.view.forms.FormLogin;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Controller for the FormLogin class.
+ * @pre User isn't logged in.
  */
 public class ControllerFormLogin extends Controller implements ListenerButton
 {
