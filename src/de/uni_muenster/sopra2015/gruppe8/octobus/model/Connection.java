@@ -1,5 +1,6 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.model;
 
+import java.time.DayOfWeek;
 import java.util.LinkedList;
 
 /**
@@ -10,6 +11,10 @@ public class Connection
 	//Quintuple: (startingTime, start StoppingPoint, Route, end StoppingPoint, arrivalTime)
 	private LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips;
 	private int duration;
+
+
+
+	private DayOfWeek startingDay;
 	private int time;
 
 	public Connection()
@@ -17,11 +22,12 @@ public class Connection
 		trips = new LinkedList<>();
 	}
 
-	public Connection(LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips, int duration, int time)
+	public Connection(LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips, int duration, int time, DayOfWeek startingDay)
 	{
 		this.trips = trips;
 		this.duration = duration;
 		this.time = time;
+		this.startingDay = startingDay;
 	}
 
 	public LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> getTrips()
@@ -37,6 +43,11 @@ public class Connection
 	public int getTime()
 	{
 		return time;
+	}
+
+	public DayOfWeek getStartingDay()
+	{
+		return startingDay;
 	}
 
 	/**

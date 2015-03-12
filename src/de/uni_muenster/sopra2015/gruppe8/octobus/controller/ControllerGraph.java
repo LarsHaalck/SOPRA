@@ -22,14 +22,13 @@ public class ControllerGraph
 	public ControllerGraph()
 	{
 		db = ControllerDatabase.getInstance();
-		init();
 	}
 
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
-	private void init()
+	public void init()
 	{
 		stops = db.getBusStops();
 		routes = db.getRoutes();
@@ -40,6 +39,20 @@ public class ControllerGraph
 
 		buildAdjSet();
 	}
+
+	/*public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+		graph.init();
+
+		//for (DayOfWeek dayOfWeek : DayOfWeek.values())
+		//{
+		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
+		//}
+		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
+
+		return;
+	}*/
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -123,6 +136,12 @@ public class ControllerGraph
 			prev = new HashMap<>();
 		}
 
+
+		private boolean isWorkDay(DayOfWeek day)
+		{
+			return (day == DayOfWeek.MONDAY || day == DayOfWeek.TUESDAY|| day == DayOfWeek.THURSDAY || day == DayOfWeek.WEDNESDAY || day == DayOfWeek.THURSDAY);
+		}
+
 		/**
 		 * Calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2). s2 must be in neighbourhood of s1
 		 * @param id1 first Vertex in edge
@@ -172,13 +191,22 @@ public class ControllerGraph
 				}
 
 				ArrayList<Integer> temp = new ArrayList<>();
+
+
+				boolean getNewTimes = false;
 				for (Integer start : startTimesOnDay)
 				{
 
 					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
 					{
-						int x = (time - start - timeDiff)/1440 + 1;
-						temp.add(timeDiffOnFirst + start + x * 1440); //convert time in days, add one and convert back in minutes
+						int x = (time - start - timeDiff)/1440 + 1; //convert time in days, add one and convert back in minutes
+						if(isWorkDay(day.plus(1)) && isWorkDay(day)) //if requested day and requested day + x are both between Mo-Fr
+						{
+							temp.add(timeDiffOnFirst + start + x * 1440);
+
+						}
+						else
+							getNewTimes = true;
 					}
 					else
 					{
@@ -187,7 +215,28 @@ public class ControllerGraph
 					}
 				}
 
-				currentArrival = Collections.min(temp);
+				if(getNewTimes)
+				{
+					int dayOffset = time / 1440;
+					LinkedList<Integer> newStarTimes = connector.getStartTimes().get(day.plus(dayOffset));
+
+					for (Integer newStarTime : newStarTimes)
+					{
+						if(timeDiffOnFirst + newStarTime < time)
+						{
+							int x = (time - newStarTime - timeDiff)/1440 + 1;
+							temp.add(timeDiffOnFirst + newStarTime + x * 1440);
+						}
+
+					}
+				}
+
+
+
+				if(temp.size() != 0)
+					currentArrival = Collections.min(temp);
+				else
+					currentArrival = Integer.MAX_VALUE;
 
 				if(currentArrival < arrival || arrival == -1)
 				{
@@ -206,7 +255,8 @@ public class ControllerGraph
 				}
 
 			}
-            //Keine Ahnung gerade ich geh pennen :)
+
+
 			if(arrival - dist.get(id1).intValue() < 0)
 				System.out.println("negative edge weight -> midnight bug");
 			return arrival;
@@ -302,6 +352,7 @@ public class ControllerGraph
 		{
 			int time = 0;
 			int duration = 0;
+			int dayOffset = 0;
 
 			LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips = new LinkedList<>();
 
@@ -319,6 +370,7 @@ public class ControllerGraph
 				if(prev.get(prevStop) == null)
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
+					dayOffset = time / 1440;
 					duration = dist.get(stopId).intValue() - time;
 					time = time >= 1440 ? time % 1440 : time;
 				}
@@ -373,7 +425,7 @@ public class ControllerGraph
 				System.out.println("Arrival: " + trip.getFifth() + " (" + trip.getFifth() / 60 + ":" + trip.getFifth() % 60 + ")");
 
 			}*/
-			return new Connection(trips, duration, time);
+			return new Connection(trips, duration, time, day.plus(dayOffset));
 		}
 	}
 }

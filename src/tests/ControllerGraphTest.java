@@ -17,6 +17,7 @@ public class ControllerGraphTest
 	public void setUp() throws Exception
 	{
 		controllerGraph = new ControllerGraph();
+		controllerGraph.init();
 	}
 
 	@Test
