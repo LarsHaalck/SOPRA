@@ -129,7 +129,6 @@ public class FormChangePassword extends JDialog
 	 */
 	public void illegalChanges(boolean OldPassword, boolean NewPassword, boolean NewPasswordCorrect)
 	{
-		//Todo: Move this to error-dialog. Should looks a bit nicer then.
 		if (OldPassword)
 			lbOldPassword_Error.setText("Das Passwort ist falsch!");
 		else

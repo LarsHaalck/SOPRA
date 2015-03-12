@@ -57,7 +57,6 @@ public class ControllerFormBus extends Controller implements ListenerButton
 				}
 				break;
 			case FORM_BUS_CANCEL:
-				//TODO: If time: Check if something was changed and ask if user really wants to cancel
 				closeDialog();
 				break;
 		}
