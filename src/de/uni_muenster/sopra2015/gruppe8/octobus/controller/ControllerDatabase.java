@@ -42,7 +42,7 @@ public class ControllerDatabase
 	/**
 	 * Used for date conversions
 	 */
-	private final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+	private final long DAY_IN_MILLIS = 1000l * 60l * 60l * 24l;
 
 	private static ControllerDatabase controllerDatabase = null;
 
