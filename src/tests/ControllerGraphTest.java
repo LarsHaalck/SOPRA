@@ -43,7 +43,7 @@ public class ControllerGraphTest
 	public void testAlmostMidnight() throws Exception
 	{
 		Connection connection = controllerGraph.getConnection(43, 3, DayOfWeek.MONDAY, 1439);
-		assertEquals(21, connection.getTime());
+		assertEquals(22, connection.getTime());
 		assertEquals(322, connection.getDuration());
 		assertEquals(1, connection.getNumberOfTransitions());
 	}
@@ -53,7 +53,7 @@ public class ControllerGraphTest
 	{
 		Connection connection = controllerGraph.getConnection(43, 3, DayOfWeek.MONDAY, 1432);
 		assertEquals(1432, connection.getTime());
-		assertEquals(351, connection.getDuration());
+		assertEquals(352, connection.getDuration());
 		assertEquals(1, connection.getNumberOfTransitions());
 	}
 
