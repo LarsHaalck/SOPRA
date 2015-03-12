@@ -24,6 +24,19 @@ public class ControllerGraph
 		db = ControllerDatabase.getInstance();
 	}
 
+	public static void main(String[] args)
+	{
+		ControllerGraph graph = new ControllerGraph();
+		graph.init();
+
+		//for (DayOfWeek dayOfWeek : DayOfWeek.values())
+		//{
+		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
+		//}
+		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
+
+		return;
+	}
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -39,20 +52,6 @@ public class ControllerGraph
 
 		buildAdjSet();
 	}
-
-	/*public static void main(String[] args)
-	{
-		ControllerGraph graph = new ControllerGraph();
-		graph.init();
-
-		//for (DayOfWeek dayOfWeek : DayOfWeek.values())
-		//{
-		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
-		//}
-		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
-
-		return;
-	}*/
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -136,7 +135,21 @@ public class ControllerGraph
 			prev = new HashMap<>();
 		}
 
+		public int getValueInWeek(DayOfWeek day)
+		{
+			DayOfWeek current = this.day;
+			int i = 0;
+			while (current != day)
+			{
+				current = current.plus(1);
+				i++;
+			}
 
+			return i;
+		}
+
+
+		// <editor-fold desc="old attempt">
 		private boolean isWorkDay(DayOfWeek day)
 		{
 			return (day == DayOfWeek.MONDAY || day == DayOfWeek.TUESDAY|| day == DayOfWeek.THURSDAY || day == DayOfWeek.WEDNESDAY || day == DayOfWeek.THURSDAY);
@@ -150,7 +163,7 @@ public class ControllerGraph
 		 * @return earliest arrival at s2 in unix timestamp
 		 * @pre s2 is direct neighbour of s1
 		 */
-		private int arrivalTime(int id1, int id2, int time)
+		/*private int arrivalTime(int id1, int id2, int time)
 		{
 			int arrival = -1;
 
@@ -229,6 +242,107 @@ public class ControllerGraph
 						}
 
 					}
+				}
+
+
+
+				if(temp.size() != 0)
+					currentArrival = Collections.min(temp);
+				else
+					currentArrival = Integer.MAX_VALUE;
+
+				if(currentArrival < arrival || arrival == -1)
+				{
+					arrival = currentArrival;
+					TupleInt tuple = new TupleInt(id1, id2);
+					bestRoutes.put(tuple, connector);
+
+
+					//only add/modify existing entry, if new weight is smaller than existing weight
+					if(currentArrival < dist.get(id2))
+					{
+						bestStoppingPoints.put(id2, stoppingPoint2);
+						if(id1 == startId)
+							bestStoppingPoints.put(id1, stoppingPoint1);
+					}
+				}
+
+			}
+
+
+			if(arrival - dist.get(id1).intValue() < 0)
+				System.out.println("negative edge weight -> midnight bug");
+			return arrival;
+		}*/
+		// // </editor-fold>
+
+		private int arrivalTime(int id1, int id2, int time)
+		{
+			int arrival = -1;
+
+			//connectors contains all routes going from s1 to s2
+			LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2));
+
+
+			StoppingPoint stoppingPoint1 = null;
+			StoppingPoint stoppingPoint2 = null;
+			for (Route connector : connectors)
+			{
+				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
+
+				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
+
+				int currentArrival = 0;
+
+				int timeDiff = 0;
+				int timeDiffOnFirst = 0;
+
+				for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
+				{
+					timeDiff += routeStop.getThird();
+
+					BusStop currentStop = routeStop.getFirst();
+
+					if(currentStop.getId() == id1) //bus arrived at s1
+					{
+						timeDiffOnFirst = timeDiff;
+						stoppingPoint1 = routeStop.getSecond();
+					}
+					else if (currentStop.getId() == id2) //bus arrived at s2 -> break
+					{
+						stoppingPoint2 = routeStop.getSecond();
+						break;
+					}
+				}
+
+				ArrayList<Integer> temp = new ArrayList<>();
+
+				int bla;
+				if( time >= 1440)
+					bla = 5;
+
+				DayOfWeek currentDay = this.day.plus(time/1440);
+
+
+				LinkedList<Integer> startTimesOnDay = startTimes.get(currentDay);
+				LinkedList<Integer> starTimesTomorrow = startTimes.get(currentDay.plus(1));
+
+				for (Integer start : startTimesOnDay)
+				{
+					int startTime = start + 1440 * getValueInWeek(currentDay);
+
+					if(timeDiffOnFirst + startTime >= time)
+					{
+						temp.add(startTime + timeDiff);
+						break;
+					}
+				}
+
+				for (Integer startTomorrow : starTimesTomorrow)
+				{
+					int startTime = startTomorrow + 1440 * getValueInWeek(currentDay.plus(1));
+
+					temp.add(startTime + timeDiff);
 				}
 
 
