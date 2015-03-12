@@ -43,6 +43,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 				//Checks if input is valid
 				if(parseValuesFromForm())
 				{
+					formBus.setCursor(true);
 					//Saves bus to DB and refreshes TAB_BUS
 					if(saveToDB())
 					{
@@ -51,6 +52,7 @@ public class ControllerFormBus extends Controller implements ListenerButton
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 						closeDialog();
 					}
+					formBus.setCursor(false);
 				}
 				break;
 			case FORM_BUS_CANCEL:

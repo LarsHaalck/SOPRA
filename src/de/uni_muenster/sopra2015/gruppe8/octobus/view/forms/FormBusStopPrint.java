@@ -72,6 +72,7 @@ public class FormBusStopPrint extends FormGeneral
 		pack();
 		setLocationRelativeTo(null);
 	}
+
 	public ArrayList<Tuple<JCheckBox, Integer>> getStops()
 	{
 		return stops;

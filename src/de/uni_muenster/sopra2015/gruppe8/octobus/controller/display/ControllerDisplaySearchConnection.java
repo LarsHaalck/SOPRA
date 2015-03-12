@@ -89,13 +89,13 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         }
     }
 
-	//TODO JavaDoc
+
 	/**
 	 *  Looks for the earliest arrival connection between the specified origin and destination bus stops.
 	 */
 	private void searchConnection()
     {
-        //Get BusStops from IDs specified by the combobox
+        //Get BusStops from IDs specified by the comboBox
         origin = db.getBusStopById(
                 ((TupleIntString) journeyDialog.getOrigin().getSelectedItem())
                         .getFirst());
@@ -131,7 +131,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             //What happens if Dijkstra doesn't find any connection?
             if (currentConnectionSearch == null)
             {
-                latestDay = curDay.plus(1);
+                latestDay = latestDay.plus(1);
                 time = 0;
                 if (latestDay == curDay) break;
                 continue;
@@ -146,29 +146,6 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
             break;
         }
-
-        /*int orig = ((TupleIntString)journeyDialog.getOrigin().getSelectedItem()).getFirst();
-        int dest = ((TupleIntString)journeyDialog.getDestination().getSelectedItem()).getFirst();
-        if (!(journeyDialog.getTableSearchResults().getSelectionModel().isSelectionEmpty()))
-        {
-            journeyDialog.getTableSearchResults().getSelectionModel().clearSelection();
-            updateTextPane();
-        }
-        curDay = journeyDialog.getDayOfWeek();
-        ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
-        origin = db.getBusStopById(orig);
-        destination = db.getBusStopById(dest);
-        if (orig == dest) return;
-        time = journeyDialog.getTime();
-        if (! (origin == null || destination == null))
-        {
-            Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), curDay, time);
-            if (currentConnectionSearch == null ) return;
-            journeyDialog.modifyRightGridPanel();
-            earliestConnection = currentConnectionSearch;
-            journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
-            latestTime = currentConnectionSearch.getTime();
-        }*/
     }
 
 
@@ -183,7 +160,8 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         Connection nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
 
 
-        if (!(possiblePreviousConnection.equals(earliestConnection)))   //There are earlier connections on the same day.
+
+        if (possiblePreviousConnection != null && !(possiblePreviousConnection.equals(earliestConnection)))   //There are earlier connections on the same day.
         {
             while (!(nextConnection.equals(earliestConnection)))
             {
@@ -196,7 +174,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             earliestDay = earliestDay.minus(1);
             possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
 
-            while (possiblePreviousConnection == null || (possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
+            while ((possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
             {
                 earliestDay = earliestDay.minus(1);
                 //There is only one connection.
@@ -222,50 +200,6 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
         earliestConnection = possiblePreviousConnection;
         journeyDialog.addFirstConnectionAndUpdateTable(earliestConnection);
-
-
-
-
-
-
-        /*Connection currentEarliestConnection = earliestConnection;
-        Connection possiblePreviousConnection;
-        Connection nextConnection;
-        int startTime = 0;
-        DayOfWeek currentDay = curDay;
-
-        while (true)
-        {
-            possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, startTime);
-            startTime = possiblePreviousConnection.getTime();
-            nextConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, startTime + 1);
-            if (nextConnection.equals(currentEarliestConnection) && startTime < nextConnection.getTime())
-                break;
-            else if (nextConnection.equals(possiblePreviousConnection))
-            {
-                prevDay();
-                break;
-            }
-        }
-        /*int currentEarliest = earliestConnection.getTime();
-        Connection currentEarliestConnection = earliestConnection;
-
-		int counter = 0;
-        while (currentEarliestConnection.equals(earliestConnection) && counter < 1440)
-        {
-			counter++;
-            if (currentEarliest - 1 < 0)
-            {
-                while (c)
-            }
-			System.out.println(currentEarliest);
-			currentEarliestConnection = cg.getConnection(origin.getId(), destination.getId(), curDay, currentEarliest);
-        }
-
-
-        if (earliestConnection.equals(currentEarliestConnection)) return;
-        earliestConnection = currentEarliestConnection;
-        journeyDialog.addFirstConnectionAndUpdateTable(currentEarliestConnection);*/
     }
 
     /**
@@ -324,19 +258,6 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             }
 
         } while(true);
-
-
-
-        /*int latestTime = latestConnection.getTime();
-        latestTime++;
-        if (!(latestTime < 1440))
-        {
-            nextDay();
-            latestTime = 0;
-        }
-        Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), curDay, latestTime);
-        journeyDialog.addLastConnectionAndUpdateTable(currentConnectionSearch);
-        latestTime = currentConnectionSearch.getTime();*/
     }
 
 

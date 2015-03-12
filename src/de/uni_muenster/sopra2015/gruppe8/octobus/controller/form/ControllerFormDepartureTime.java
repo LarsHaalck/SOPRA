@@ -43,6 +43,7 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 				int temp = parseValuesFromFormDeparture();
 				if (temp == 1)
 				{
+					formDepartureTime.setCursor(true);
 					//Only start time and days of week given
 					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
 					//Adds the new start times to the route for each selected day
@@ -62,8 +63,10 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					route.setStartTimes(startTimes);
 					ControllerManager.informWindowClose(EmitterWindow.FORM_ROUTE_STEP2_DEPARTURE_CLOSE);
 					closeDialog();
+					formDepartureTime.setCursor(false);
 				} else if (temp == 2)
 				{
+					formDepartureTime.setCursor(true);
 					//start time, end time, frequency and days of week are given
 					HashMap<DayOfWeek,LinkedList<Integer>> startTimes = route.getStartTimes();
 					ArrayList<Integer> departures = new ArrayList<>();
@@ -90,6 +93,7 @@ public class ControllerFormDepartureTime extends Controller implements ListenerB
 					route.setStartTimes(startTimes);
 					ControllerManager.informWindowClose(EmitterWindow.FORM_ROUTE_STEP2_DEPARTURE_CLOSE);
 					closeDialog();
+					formDepartureTime.setCursor(false);
 				}
 				break;
 

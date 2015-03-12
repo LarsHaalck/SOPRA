@@ -63,5 +63,17 @@ public class ControllerGraphTest
 		//108 = St Franziskus, nur Regional Busse, keine Innenstadtbusse
 		Connection connection = controllerGraph.getConnection(43, 108, DayOfWeek.MONDAY, 1432);
 		assertNull(connection);
+		connection = controllerGraph.getConnection(108, 43, DayOfWeek.MONDAY, 1432);
+		assertNull(connection);
+	}
+
+
+	@Test
+	public void testWeekend() throws Exception
+	{
+		Connection connection = controllerGraph.getConnection(43, 3, DayOfWeek.SATURDAY, 540);
+		assertEquals(549, connection.getTime());
+		assertEquals(18, connection.getDuration());
+		assertEquals(2, connection.getNumberOfTransitions());
 	}
 }

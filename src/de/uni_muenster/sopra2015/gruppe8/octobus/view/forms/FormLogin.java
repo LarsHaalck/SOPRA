@@ -12,7 +12,7 @@ import java.awt.*;
  * Form used to log in. The user enters his username and passwort to
  * gain access to the employee section.
  */
-public class FormLogin extends JDialog
+public class FormLogin extends FormGeneral
 {
 	private ControllerFormLogin controllerFormLogin;
 
@@ -25,14 +25,14 @@ public class FormLogin extends JDialog
 
 	public FormLogin(Frame parent)
 	{
-		super(parent, "Login", true);
+		super(parent, "Login");
 
 		controllerFormLogin = new ControllerFormLogin(this);
 
 		panel = new JPanel(new GridBagLayout());
 		cs = new GridBagConstraints();
 
-		lbUsername = new JLabel("Username: ");
+		lbUsername = new JLabel("Benutzername: ");
 		cs.gridx = 0;
 		cs.gridy = 0;
 		cs.gridwidth = 1;
@@ -46,6 +46,8 @@ public class FormLogin extends JDialog
 		panel.add(tfUsername, cs);
 
 		lbPassword = new JLabel("Password: ");
+		lbPassword.setHorizontalAlignment(JLabel.LEFT);
+		lbPassword.setPreferredSize(new Dimension(77, 10));
 		cs.gridx = 0;
 		cs.gridy = 1;
 		cs.gridwidth = 1;

@@ -51,6 +51,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 				//Check if input is valid
 				if(parseValuesFromForm())
 				{
+					formBusStop.setCursor(true);
 					//
 					if (saveToDB())
 					{
@@ -59,6 +60,7 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
 						closeDialog();
 					}
+					formBusStop.setCursor(false);
 				}
 				break;
 

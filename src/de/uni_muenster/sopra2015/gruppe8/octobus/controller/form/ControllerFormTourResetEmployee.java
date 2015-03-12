@@ -56,11 +56,13 @@ public class ControllerFormTourResetEmployee extends Controller implements Liste
 			case FORM_TOUR_RESET_EMPLOYEE_SAVE:
 				if(parseValuesFromForm())
 				{
+					formTourResetEmployee.setCursor(true);
 					if (saveToDB())
 					{
 						ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 						closeDialog();
 					}
+					formTourResetEmployee.setCursor(false);
 				}
 				break;
 
