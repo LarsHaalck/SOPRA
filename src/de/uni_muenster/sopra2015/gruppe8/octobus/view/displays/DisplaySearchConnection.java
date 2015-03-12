@@ -51,6 +51,7 @@ public class DisplaySearchConnection extends JPanel
     private JPanel panelSelectedConnection;
     private JTextPane formattedConnectionDisplay;
     private JPanel rightTransparent;
+    private int tableHeight;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
@@ -161,10 +162,10 @@ public class DisplaySearchConnection extends JPanel
         tableSearchResults.getSelectionModel().addListSelectionListener(e -> {
             controllerDisplaySearchConnection.tableSelectionChanged(EmitterTable.FORM_JOURNEY_SEARCH_RESULT);
         });
-        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 465));
+        tableHeight = 470;
+        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, 470));
         scrollPaneTable = new JScrollPane(tableSearchResults);
         scrollPaneTable.setPreferredSize(new Dimension(halfDefaultWidth - 10, 494));
-        scrollPaneTable.setMaximumSize(new Dimension(halfDefaultWidth - 10, 494));
     }
 
 
@@ -364,21 +365,10 @@ public class DisplaySearchConnection extends JPanel
     {
         ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
 
+        tableHeight();
 
-
-        tableSearchResults.invalidate();
-        scrollPaneTable.repaint();
-        scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
-        tableSearchResults.revalidate();
-        tableSearchResults.repaint();
-        scrollPaneTable.validate();
-        scrollPaneTable.revalidate();
-        scrollPaneTable.repaint();
-        rightParentGridPanel.validate();
-        rightParentGridPanel.revalidate();
-        rightParentGridPanel.repaint();
     }
 
     /**
@@ -390,10 +380,8 @@ public class DisplaySearchConnection extends JPanel
     {
         ((TableModelSearchConnection)tableSearchResults.getModel()).addFirstConnection(foundConnection);
 
+        tableHeight();
 
-        tableSearchResults.revalidate();
-        tableSearchResults.repaint();
-        scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
     }
@@ -507,5 +495,11 @@ public class DisplaySearchConnection extends JPanel
         }
 
         return null;
+    }
+
+    public void tableHeight()
+    {
+        tableHeight = tableHeight + 10;
+        tableSearchResults.setPreferredSize(new Dimension(halfDefaultWidth - 10, tableHeight));
     }
 }

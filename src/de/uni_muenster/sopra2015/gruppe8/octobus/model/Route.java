@@ -127,7 +127,7 @@ public class Route
 				duration += t.getThird();
 			if(t.getFirst().equals(start))
 				sumUp = true;
-			if(t.getFirst().equals(end))
+			if(t.getFirst().equals(end) && sumUp)
 				break;
 		}
 		return duration;
@@ -149,7 +149,7 @@ public class Route
 				duration += t.getThird();
 			if(t.getFirst().getId() == start)
 				sumUp = true;
-			if(t.getFirst().getId() == end)
+			if(t.getFirst().getId() == end && sumUp)
 				break;
 		}
 		return duration;
