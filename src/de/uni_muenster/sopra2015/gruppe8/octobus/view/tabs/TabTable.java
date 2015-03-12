@@ -31,7 +31,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 	private boolean isRefineable = true;
 	private boolean enableMultiFilter = false;
 	private int filterColumn = 1;
-	private ArrayList listSortKeys;
+	private ArrayList<RowSorter.SortKey> listSortKeys;
 	private boolean sortKeySet = false;
 
 	public TabTable(Class<TM> type, boolean isRefineable, boolean enableMultifilter)
@@ -47,7 +47,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 		}
 
 		sorter = new TableRowSorter<>((type.cast(model)));
-		table = new JTable((TM)model);
+		table = new JTable(model);
 		table.setFillsViewportHeight(true);
 
 		table.removeColumn(table.getColumnModel().getColumn(0));
@@ -84,7 +84,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 			}
 		});
 
-		cbFilter = new JComboBox<>(((TM)model).getRefineableColumns());
+		cbFilter = new JComboBox<>(model.getRefineableColumns());
 
 		if(isRefineable)
 		{
@@ -92,11 +92,11 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 			if(enableMultifilter) //multi-filter should only work, if filters are generally enabled
 			{
 				cbFilter.addItem("alle");
-				cbFilter.setSelectedIndex(((TM)model).getRefineableColumns().length);
+				cbFilter.setSelectedIndex(model.getRefineableColumns().length);
 			}
 
 			cbFilter.addActionListener(e -> {
-				filterColumn = ((TM)model).getColumnIndex((String) cbFilter.getSelectedItem());
+				filterColumn = model.getColumnIndex((String) cbFilter.getSelectedItem());
 				newFilter();
 			});
 
@@ -127,7 +127,7 @@ public abstract class TabTable<TM extends ExtendedTableModel> extends JPanel
 					});
 		}
 
-		listSortKeys = new ArrayList();
+		listSortKeys = new ArrayList<>();
 		listSortKeys.add(new RowSorter.SortKey(model.getFirstSortColumn(), SortOrder.ASCENDING));
 	}
 
