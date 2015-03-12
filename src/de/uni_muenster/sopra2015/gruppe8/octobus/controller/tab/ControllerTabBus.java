@@ -79,9 +79,9 @@ public class ControllerTabBus extends Controller implements ListenerButton, List
 		Object[][] data = new Object[buses.size()][9];
 
 		//Images for small state-circles
-		ImageIcon imageRed = new ImageIcon("res/images/red.png");
-		ImageIcon imageYellow = new ImageIcon("res/images/grelb.png");
-		ImageIcon imageGreen = new ImageIcon("res/images/green.png");
+		ImageIcon imageRed = new ImageIcon(this.getClass().getResource("/images/red.png"));
+		ImageIcon imageYellow = new ImageIcon(this.getClass().getResource("/images/grelb.png"));
+		ImageIcon imageGreen = new ImageIcon(this.getClass().getResource("/images/green.png"));
 		//Check for next inspection
 		Date today = new Date();
 		//Add milliseconds of 4 week -> 28 days

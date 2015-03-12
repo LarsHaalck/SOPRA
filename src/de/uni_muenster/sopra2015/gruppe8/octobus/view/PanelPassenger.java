@@ -23,7 +23,8 @@ public class PanelPassenger extends JPanel
 		GridBagConstraints c = new GridBagConstraints();
 		Dimension bigButtonSize = new Dimension(300, 300);
 
-		ImageIcon icon = new ImageIcon("res/images/icon_128.png");
+
+		ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/icon_128.png"));
 		JLabel lbLogo = new JLabel(icon);
 		c.gridx = 0;
 		c.gridy = 0;

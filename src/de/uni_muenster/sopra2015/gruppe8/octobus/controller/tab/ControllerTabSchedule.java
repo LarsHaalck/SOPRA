@@ -80,8 +80,8 @@ public class ControllerTabSchedule extends Controller implements ListenerButton,
 	 */
 	private void fillTable()
 	{
-		ImageIcon red = new ImageIcon("res/images/red.png");
-		ImageIcon green = new ImageIcon("res/images/green.png");
+		ImageIcon red = new ImageIcon(this.getClass().getResource("/images/red.png"));
+		ImageIcon green = new ImageIcon(this.getClass().getResource("/images/green.png"));
 
         controllerDatabase.createTours(tabSchedule.getDateStart());
 		ArrayList<Object[]> tours = controllerDatabase.getToursForDate(tabSchedule.getDateStart());
