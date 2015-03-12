@@ -27,6 +27,10 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	private int viewRow;
 	private ArrayList<Tuple<Integer, String>> routeStoppingPoints;
 
+	//Used to prevent displaying a warning when creating a new route and initially selecting
+	//stopping points.
+	private boolean initialChanges;
+
 	//Used to save times in second step if no stopping points were changed.
 	private boolean stopsChanged;
 
@@ -41,12 +45,14 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		route = new Route();
 		this.formRoute = formRoute;
 		this.objectID = objectID;
+		initialChanges = false;
 		stopsChanged = false;
 		stopsChangedOnEdit = false;
 
 		//Sets the global route to the passed objectID
 		if(objectID != -1)
 		{
+			initialChanges = true;
 			setRouteInfo();
 		}
 	}
@@ -68,49 +74,59 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 
 			case FORM_ROUTE_NEXT:
 				if (formRoute.getPanelCounter() == 0)
+				{
 					//Step 1
-					//Check if data input is valid
-					if(parseValuesFromFormRouteStep1())
+					boolean confirmation = true;
+					if(initialChanges && stopsChanged)
 					{
-						formRoute.getBackButton().setEnabled(true);
-						formRoute.getNextButton().setText("Fertig");
-
-						//Array containing every selected stopping point name
-						String[] busStops = new String[routeStoppingPoints.size()];
-
-						for (int i = 0; i < busStops.length; i++)
-						{
-							busStops[i] = routeStoppingPoints.get(i).getSecond();
-						}
-						//only used when user applied changes to the selected stopping points
-						if(stopsChanged)
-						{
-							//refreshes the form used to set the time between stopping points
-							formRoute.getStep2().fillJpMain(busStops);
-							stopsChanged = false;
-						}
-						else
-						{
-							//also refreshes form used to set the time between stopping points
-							//and inserts preexisting values if it is used to change a route.
-							if(objectID != -1)
-							{
-								formRoute.getStep2().fillJpMain(busStops);
-							}
-							insertDepartureTimes();
-						}
-						refreshTablesStep2();
+						confirmation = formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)");
 					}
-					else
+					if (confirmation)
+					{
+						//Check if data input is valid
+						if (parseValuesFromFormRouteStep1())
+						{
+							formRoute.getBackButton().setEnabled(true);
+							formRoute.getNextButton().setText("Fertig");
+
+							//Array containing every selected stopping point name
+							String[] busStops = new String[routeStoppingPoints.size()];
+
+							for (int i = 0; i < busStops.length; i++)
+							{
+								busStops[i] = routeStoppingPoints.get(i).getSecond();
+							}
+							//only used when user applied changes to the selected stopping points
+							if (stopsChanged)
+							{
+								//refreshes the form used to set the time between stopping points
+								formRoute.getStep2().fillJpMain(busStops);
+								stopsChanged = false;
+							} else
+							{
+								//also refreshes form used to set the time between stopping points
+								//and inserts preexisting values if it is used to change a route.
+								if (objectID != -1)
+								{
+									formRoute.getStep2().fillJpMain(busStops);
+								}
+								insertDepartureTimes();
+							}
+							refreshTablesStep2();
+							initialChanges = true;
+						}
+					} else
 					{
 						break;
 					}
+				}
 				if (formRoute.getPanelCounter() == formRoute.getPanelMax())
 				{
 					//Step 2
 					//Checks if data input is valid
 					if(parseValuesFromFormRouteStep2())
 					{
+						formRoute.setCursor(true);
 						boolean save = true;
 						if(stopsChangedOnEdit)
 						{
@@ -125,6 +141,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 							ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
 							closeDialog();
 						}
+						formRoute.setCursor(false);
 					}
 					break;
 				}
@@ -421,12 +438,10 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 	 */
 	private boolean saveToDB()
 	{
-		formRoute.setCursor(true);
 		if(objectID == -1)
 			ControllerDatabase.getInstance().addRoute(route);
 		else
 			ControllerDatabase.getInstance().modifyRoute(route, stopsChangedOnEdit);
-		formRoute.setCursor(false);
 		return true;
 	}
 
@@ -462,7 +477,7 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		else
 		{
 			//If input is valid this sets the global route's attributes to the form input.
-			if(stopsChanged)
+			/*if(stopsChanged)
 			{
 				if(formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)"))
 				{
@@ -477,12 +492,12 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				}
 			}
 			else
-			{
+			{*/
 				route.setName(name);
 				route.setNight(night);
 				routeStoppingPoints = stoppingPoints;
 				return true;
-			}
+		//	}
 		}
 	}
 

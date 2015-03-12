@@ -77,7 +77,12 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 						if (newAnswer.length() == 0)
 						{
 							formBusStop.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
-						} else
+						}
+						else if(newAnswer.length() > 50)
+						{
+							formBusStop.showErrorForm("Der Name des Haltepunktes darf nicht mehr als 50 Zeichen enthalten.");
+						}
+						else
 						{
 							formBusStop.addStoppingPoint(newAnswer);
 							break;
@@ -124,7 +129,12 @@ public class ControllerFormBusStop extends Controller implements ListenerButton
 						if (newAnswer.length() == 0)
 						{
 							formBusStop.showErrorForm("Bitte geben Sie einen Namen für den Haltepunkt ein.");
-						} else
+						}
+						else if(newAnswer.length() > 50)
+						{
+							formBusStop.showErrorForm("Der Name des Haltepunktes darf nicht mehr als 50 Zeichen enthalten.");
+						}
+						else
 						{
 							formBusStop.editStoppingPoint(formBusStop.getSelectedRow(), newAnswer);
 							break;
