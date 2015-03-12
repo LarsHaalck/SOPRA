@@ -118,7 +118,11 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
         ((TableModelSearchConnection)journeyDialog.getTableSearchResults().getModel()).clearTableModel();
 
-        if (origin.getId() == destination.getId()) return;
+        if (origin.getId() == destination.getId())
+        {
+            journeyDialog.removeRightGridPanel();
+            return;
+        }
 
 
         while (true)
@@ -192,7 +196,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             earliestDay = earliestDay.minus(1);
             possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
 
-            while (possiblePreviousConnection == null || (possiblePreviousConnection.getStartingDay() == earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
+            while (possiblePreviousConnection == null || (possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
             {
                 earliestDay = earliestDay.minus(1);
                 //There is only one connection.
@@ -206,7 +210,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
             nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
 
-            while (!(nextConnection == null || nextConnection.getStartingDay() == earliestDay)) //!(nextConnection == null || nextConnection.changedDay())
+            while (!(nextConnection == null || nextConnection.getStartingDay() != earliestDay)) //!(nextConnection == null || nextConnection.changedDay())
             {
                 if (hasOnlyOneConnection) break;
                 possiblePreviousConnection = nextConnection;
@@ -286,7 +290,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 
         while (true) {
             Connection nextConnection = cg.getConnection(origin.getId(), destination.getId(), latestDay, latestConnection.getTime() + 1);
-            if (nextConnection == null || nextConnection.getStartingDay() == latestDay) break; //nextConnection.changedDay() || nextConnection == null
+            if (nextConnection == null || nextConnection.getStartingDay() != latestDay) break; //nextConnection.changedDay() || nextConnection == null
             latestConnection = nextConnection;
         }
 
@@ -375,6 +379,15 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             journeyDialog.removeTextPaneInformation();
             return;
         }
+        result = result +
+                formatDayOfWeekToGerman(
+                        ((TableModelSearchConnection)journeyDialog
+                                .getTableSearchResults()
+                                .getModel())
+                                .getConnectionByIndex(rowSelected)
+                                .getStartingDay()
+                )
+                + "\n\n";
         LinkedList<Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer>> trips =
                 ((TableModelSearchConnection)journeyDialog
                         .getTableSearchResults()
@@ -397,7 +410,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                             + routeName
                             + "\n"
                             + formatTime(trip.getFifth() / 60, trip.getFifth() % 60)
-                            + " nach "
+                            + " an "
                             + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
             result = result + s;
         }
@@ -423,6 +436,28 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         else
             minuteString = Integer.toString(minutes);
         return hourString + ":" + minuteString;
+    }
+
+    private String formatDayOfWeekToGerman(DayOfWeek dayOfWeek)
+    {
+        switch (dayOfWeek)
+        {
+            case MONDAY:
+                return "Montag";
+            case TUESDAY:
+                return "Dienstag";
+            case WEDNESDAY:
+                return "Mittwoch";
+            case THURSDAY:
+                return "Donnerstag";
+            case FRIDAY:
+                return "Freitag";
+            case SATURDAY:
+                return "Samstag";
+            case SUNDAY:
+                return "Sonntag";
+        }
+        return "";
     }
 
 	@Override
