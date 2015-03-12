@@ -481,7 +481,7 @@ public class ControllerGraph
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
 					dayOffset = time / 1440;
-					if(dayOffset >= 1)
+					if(dayOffset >= 2)
 						return null;
 					duration = dist.get(stopId).intValue() - time;
 					time = time >= 1440 ? time % 1440 : time;
