@@ -1,9 +1,12 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view;
 
+import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerDatabase;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.ControllerFrameMain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -72,5 +75,14 @@ public class FrameMain extends JFrame
 		// Center frame on screen (as per http://stackoverflow.com/a/2442614/2010258)
 		setLocationRelativeTo(null);
 		setVisible(true);
+		//Closes database on exit.
+		this.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				ControllerDatabase.getInstance().closeDB();
+			}
+		});
 	}
 }

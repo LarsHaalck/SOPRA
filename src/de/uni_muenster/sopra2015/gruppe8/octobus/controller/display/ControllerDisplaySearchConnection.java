@@ -84,7 +84,6 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
 				ControllerManager.informDisplaySwitch(EmitterDisplay.DISPLAY_MAIN);
 				removeListeners();
 				break;
-            case DISPLAY_CONNECTION_SELECT_ORIGIN:
 
         }
     }
@@ -128,15 +127,15 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
         while (true)
         {
             Connection currentConnectionSearch = cg.getConnection(origin.getId(), destination.getId(), latestDay, time);
-            //What happens if Dijkstra doesn't find any connection?
+
             if (currentConnectionSearch == null)
             {
                 latestDay = latestDay.plus(1);
                 time = 0;
                 if (latestDay == curDay) break;
                 continue;
-            }/*else if (currentConnectionSearch.changedDay()) //Needs to be implemented
-                latestDay = curDay.plus(1);*/
+            }else if (currentConnectionSearch.getStartingDay() == latestDay)
+                latestDay = curDay.plus(1);
 
             earliestConnection = currentConnectionSearch;
             latestConnection = currentConnectionSearch;
