@@ -59,15 +59,17 @@ public class ControllerFormTourEdit extends Controller implements ListenerButton
 
 			case FORM_TOUR_EDIT_SAVE:
 				ArrayList<String> errors = new ArrayList<>();
-				if(formTourEdit.getSelectedBus() == 0)
-					errors.add("Es wurde kein Bus ausgewählt.");
-				if(formTourEdit.getSelectedBusDriver() == 0)
-					errors.add("Es wurde kein Bus-Fahrer ausgewählt.");
+				Integer selBus = formTourEdit.getSelectedBus();
+				if(formTourEdit.getSelectedBus() == -1)
+					selBus = null;
+				Integer selDriver = formTourEdit.getSelectedBusDriver();
+				if(formTourEdit.getSelectedBusDriver() == -1)
+					selDriver = null;
 
 				if(errors.size() == 0)
 				{
 					formTourEdit.setCursor(true);
-					controllerDatabase.modifyTour(objectId, formTourEdit.getSelectedBus(), formTourEdit.getSelectedBusDriver());
+					controllerDatabase.modifyTour(objectId, selBus, selDriver);
 					ControllerManager.informTableContentChanged(EmitterTable.TAB_SCHEDULE);
 					ControllerManager.informTableContentChanged(EmitterTable.TAB_WORKPLAN);
 					ControllerManager.informTableContentChanged(EmitterTable.TAB_NETWORK);
