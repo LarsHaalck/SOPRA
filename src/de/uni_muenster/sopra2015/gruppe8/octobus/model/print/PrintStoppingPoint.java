@@ -129,14 +129,18 @@ public class PrintStoppingPoint
 		{
 			ArrayList<String> nextStops = new ArrayList<>();
 			boolean arrived = false;
+			int time = 0;
 			for(Triple<BusStop, StoppingPoint, Integer> triple: route.getStops())
 			{
+				if(arrived)
+				{
+					time += triple.getThird();
+					nextStops.add(triple.getFirst().getName() + " (" + time + " min)");
+				}
 				if(triple.getFirst().getId() == busStop.getId() && triple.getSecond().getId() == stopPoint.getId())
 				{
 					arrived = true;
 				}
-				if(arrived)
-					nextStops.add(triple.getFirst().getName() + " (" + triple.getThird() + " min)");
 			}
 
 			return nextStops;
