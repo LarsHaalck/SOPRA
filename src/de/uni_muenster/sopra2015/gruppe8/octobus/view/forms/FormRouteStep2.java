@@ -270,7 +270,7 @@ public class FormRouteStep2 extends JPanel
 		jpTables.add(jspSa);
 
 		//Sunday
-		dtmSo = new DefaultTableModel(null, new String[] {"Sonntag"})
+		dtmSo = new DefaultTableModel(null, new String[] {"Sonn-/Feiertag"})
 		{
 			@Override
 			public boolean isCellEditable(int row, int column)
