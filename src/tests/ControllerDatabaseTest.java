@@ -208,8 +208,6 @@ public class ControllerDatabaseTest
 		cdb.addEmployee(testEmployee);
 	}
 
-
-
 	/**
 	 * This method is fairly complicated in its setup as it requires a lot of things to come together to work properly.
 	 */
