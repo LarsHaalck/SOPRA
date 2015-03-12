@@ -51,7 +51,7 @@ public class DisplaySearchConnection extends JPanel
     private JScrollPane scrollPaneTable;
     private JPanel panelSelectedConnection;
     private JTextPane formattedConnectionDisplay;
-
+    private JPanel rightTransparent;
 
     //Variables
     //Gets filled with possible lines that are heading from start to destination
@@ -284,7 +284,7 @@ public class DisplaySearchConnection extends JPanel
         rightParentGridPanel = new JPanel();
 
         //The transparent border.
-        JPanel rightTransparent = new JPanel();
+        rightTransparent = new JPanel();
         rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
         rightTransparent.setBorder(BorderFactory.createEmptyBorder());
         rightParentGridPanel.add(rightTransparent);
@@ -335,6 +335,30 @@ public class DisplaySearchConnection extends JPanel
     }
 
     /**
+     * Removes the content of the rightGridPanel
+     */
+    public void removeRightGridPanel(){
+        rightParentGridPanel.removeAll();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+        //The transparent border.
+        rightTransparent = new JPanel();
+        rightTransparent.setPreferredSize(new Dimension(halfDefaultWidth - 10, 542));
+        rightTransparent.setBorder(BorderFactory.createEmptyBorder());
+        rightParentGridPanel.add(rightTransparent);
+
+
+        rightParentGridPanel.repaint();
+        rightParentGridPanel.revalidate();
+
+
+    }
+
+    /**
      * Adds an element to the tableModel and positions at the bottom of the list.
      * @param foundConnection connection which will be added.
      */
@@ -343,11 +367,18 @@ public class DisplaySearchConnection extends JPanel
         ((TableModelSearchConnection)tableSearchResults.getModel()).addLastConnection(foundConnection);
 
 
+
+        scrollPaneTable.validate();
+        scrollPaneTable.revalidate();
+        scrollPaneTable.repaint();
         tableSearchResults.revalidate();
         tableSearchResults.repaint();
         scrollPaneTable.validate();
         scrollPaneTable.revalidate();
         scrollPaneTable.repaint();
+        rightParentGridPanel.validate();
+        rightParentGridPanel.revalidate();
+        rightParentGridPanel.repaint();
     }
 
     /**
@@ -468,6 +499,7 @@ public class DisplaySearchConnection extends JPanel
 
         return null;
     }
+
 
 
 
