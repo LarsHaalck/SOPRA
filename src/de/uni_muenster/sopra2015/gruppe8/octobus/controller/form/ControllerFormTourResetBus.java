@@ -29,7 +29,6 @@ public class ControllerFormTourResetBus extends Controller implements ListenerBu
 		this.formTourResetBus = formTourResetBus;
 		ArrayList<Bus> busesDirect = ControllerDatabase.getInstance().getBuses();
 		TupleIntString[] busesFinal = new TupleIntString[busesDirect.size()];
-		System.out.println(busesDirect.toString());
 		int i = 0;
 		for (Bus bus : busesDirect)
 		{

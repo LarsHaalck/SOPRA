@@ -82,7 +82,6 @@ public class TableDate implements Comparator<TableDate>, Comparable<TableDate>
 	{
 		if (o1.getType() != o2.getType())
 		{
-			System.out.println("compared two TableDates with different types.");
 			return 0;
 		}
 
