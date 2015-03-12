@@ -174,7 +174,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
             earliestDay = earliestDay.minus(1);
             possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
 
-            while ((possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
+            while (possiblePreviousConnection == null ? true : (possiblePreviousConnection.getStartingDay() != earliestDay)) //possiblePreviousConnection == null || possiblePreviousConnection.changedDay()
             {
                 earliestDay = earliestDay.minus(1);
                 //There is only one connection.
@@ -186,7 +186,8 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 possiblePreviousConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, 0);
             }
 
-            nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
+            if (possiblePreviousConnection != null)
+                nextConnection = cg.getConnection(origin.getId(), destination.getId(), earliestDay, possiblePreviousConnection.getTime() + 1);
 
             while (!(nextConnection == null || nextConnection.getStartingDay() != earliestDay)) //!(nextConnection == null || nextConnection.changedDay())
             {
@@ -335,7 +336,7 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                             + bsSecondName + " Bstg. " + spSecondName + "\n----------------------------------------\n";
             result = result + s;
         }
-        result = result + "\n Informationen zu unseren günstigsten Fahrkarten erhalten Sie unter dem Reiter \"Fahrkarten anzeigen\"";
+        result = result + "\n Informationen zu unseren günstigsten Fahrkarten erhalten Sie unter \"Fahrkarten anzeigen\"";
         journeyDialog.showSelectedConnection(result);
     }
 

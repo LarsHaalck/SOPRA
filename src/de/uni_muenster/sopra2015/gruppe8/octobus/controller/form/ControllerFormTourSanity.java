@@ -16,6 +16,7 @@ import java.util.Locale;
 
 /**
  * Controller for FormTourSanity class.
+ * @pre User is logged in and has Schedule-Planner-Role.
  */
 public class ControllerFormTourSanity extends Controller implements ListenerButton
 {
