@@ -173,6 +173,8 @@
       <include name="src"/>
     </dirset>
   </path>
+
+    <property name="report.dir"  value="${sopra.output.dir}/junitreport"/>
   
   
   <target name="compile.module.sopra" depends="compile.module.sopra.production,compile.module.sopra.tests" description="Compile module SOPRA"/>
@@ -246,6 +248,29 @@
   <target name="doc" depends="init" description="generate documentation">
     <javadoc sourcepath="${basedir}/src" destdir="${sopra.output.dir}/doc" additionalparam="-private -taglet PreTaglet -taglet PostTaglet -taglet InvTaglet -tagletpath ${basedir}/lib/cbs_taglets.jar"/>
   </target>
-  
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+
+   <target name="run" depends="all" description="runs the jar and builds if necessary">
+       <exec executable="java">
+           <arg line="-jar out/artifacts/SOPRA_jar/SOPRA.jar"/>
+       </exec>
+   </target>
+
+    <path id="lib">
+        <fileset dir="${basedir}/lib" includes="*.jar" />
+    </path>
+
+    <target name="test" depends="all">
+        <mkdir dir="${report.dir}"/>
+        <junit printsummary="yes">
+            <classpath>
+                <path location="${basedir}/out/artifacts/SOPRA_jar/SOPRA.jar" />
+                <path refid="lib"/>
+            </classpath>
+            <formatter type="xml" />
+            <batchtest fork="yes" todir="${report.dir}">
+                <fileset dir="${basedir}/src/" includes="tests/*.java"/>
+            </batchtest>
+        </junit>
+    </target>
+   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
