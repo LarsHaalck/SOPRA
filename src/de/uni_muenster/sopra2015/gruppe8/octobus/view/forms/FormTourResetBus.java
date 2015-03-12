@@ -60,6 +60,7 @@ public class FormTourResetBus extends FormGeneral
 		jpBusDriver.setBorder(new EmptyBorder(new Insets(5, 5, 10, 5)));
 		jlBusDriver = new JLabel("Kennzeichen: ");
 		cbBuses = new JComboBox<>(arrayBuses);
+		cbBuses.setMinimumSize(new Dimension(1,1));
 		jpBusDriver.add(jlBusDriver);
 		jpBusDriver.add(Box.createHorizontalStrut(8));
 		jpBusDriver.add(cbBuses);
