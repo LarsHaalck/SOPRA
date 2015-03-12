@@ -41,12 +41,4 @@ public class PanelEmployee extends JPanel
 	{
 		panelNavigation.setWelcomeText("Willkommen, "+username+"!");
 	}
-
-	/*
-	 * TODO: delete before Deployment, only for DEBUGGING-purposes
-	 */
-	public PaneTabs getPaneTabs()
-	{
-		return this.paneTabs;
-	}
 }

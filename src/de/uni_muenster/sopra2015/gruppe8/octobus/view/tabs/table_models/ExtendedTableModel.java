@@ -50,6 +50,7 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	 * Returns name of a column by index (also id)
 	 * @param columnIndex Index of requested column-name.
 	 * @return name corresponding to index.
+	 * @pre columnIndex < number of columns
 	 */
 	public String getColumnName(int columnIndex)
 	{
@@ -64,6 +65,7 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	 * Returns index for a shown column-name.
 	 * @param column column name.
 	 * @return index-id
+	 * @pre column is valid column-name and in columns-array
 	 */
 	public int getColumnIndex(String column)
 	{
@@ -85,7 +87,7 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	/*
 	 * JTable uses this method to determine the default renderer/
 	 * editor for each cell.  If we didn't implement this method,
-	 * then the last column would contain text ("true"/"false"),
+	 * then the columns just use toString-methods for all data
 	 * rather than a check box.
 	 */
 	public abstract Class getColumnClass(int column);
@@ -123,6 +125,8 @@ public abstract class ExtendedTableModel extends AbstractTableModel
 	/**
 	 * Sets the data of the table.
 	 * @param data data to be set.
+	 * @pre data is not null
+	 * @post data is now in table
 	 */
 	public void setData(Object[][] data)
 	{
