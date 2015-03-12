@@ -317,10 +317,6 @@ public class ControllerGraph
 
 				ArrayList<Integer> temp = new ArrayList<>();
 
-				int bla;
-				if( time >= 1440)
-					bla = 5;
-
 				DayOfWeek currentDay = this.day.plus(time/1440);
 
 
@@ -485,6 +481,8 @@ public class ControllerGraph
 				{
 					time = (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop));
 					dayOffset = time / 1440;
+					if(dayOffset >= 1)
+						return null;
 					duration = dist.get(stopId).intValue() - time;
 					time = time >= 1440 ? time % 1440 : time;
 				}
