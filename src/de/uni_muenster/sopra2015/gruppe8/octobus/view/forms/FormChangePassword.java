@@ -60,7 +60,7 @@ public class FormChangePassword extends JDialog
 		panel.add(lbNewPassword, cs);
 
 		tfNewPassword = new JPasswordField(20);
-		tfNewPassword.setToolTipText("Das Passwort muss aus 8 Zeichen bestehen");
+		tfNewPassword.setToolTipText("Das Passwort muss aus 5 Zeichen bestehen");
 		cs.gridx = 1;
 		cs.gridy = 2;
 		cs.gridwidth = 2;
