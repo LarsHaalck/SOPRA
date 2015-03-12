@@ -108,10 +108,11 @@ public class ControllerDatabase
 		} catch (ClassNotFoundException e)
 		{
 			System.out.println("Unable to load JDBC driver.");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} catch (SQLException e)
 		{
-			System.out.println("SQL-Exception occurred.");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -551,6 +552,10 @@ public class ControllerDatabase
 	 */
 	public void deleteBusStop(int id)
 	{
+		deleteStoppingPointsUsingBusStopId(id);
+
+		// Without taking care of the stopping points this ought to throw a foreign key constraint fail.
+		// However... it doesn't. It just deletes the whole bus stop. Bug in jOOQ? We don't know!
 		create.delete(BUSSTOPS)
 				.where(BUSSTOPS.BUSSTOPS_ID.equal(id))
 				.execute();
@@ -1648,11 +1653,9 @@ public class ControllerDatabase
 				.where(BUSSTOPS.BUSSTOPS_ID.eq(busStopID))
 				.fetchOne();
 
-		String compoundName = stoprecord.getName().equals(rec.getName()) ?
+		return stoprecord.getName().equals(rec.getName()) ?
 				stoprecord.getName() :
 				stoprecord.getName() + " " + rec.getName();
-
-		return compoundName;
 	}
 
 	/**

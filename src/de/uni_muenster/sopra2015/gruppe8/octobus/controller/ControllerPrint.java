@@ -97,7 +97,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 			catch(Exception e)
 			{
 				System.out.println(e.getMessage());
-				System.out.println("Don't print");
 			}
 		}
 	}
@@ -136,7 +135,6 @@ public class ControllerPrint extends Controller implements ListenerPrint
 			} catch (Exception e)
 			{
 				System.out.println(e.getMessage());
-				System.out.println("Don't print");
 			}
 		}
 	}
