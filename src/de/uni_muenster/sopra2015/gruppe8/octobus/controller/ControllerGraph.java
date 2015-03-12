@@ -24,19 +24,6 @@ public class ControllerGraph
 		db = ControllerDatabase.getInstance();
 	}
 
-	public static void main(String[] args)
-	{
-		ControllerGraph graph = new ControllerGraph();
-		graph.init();
-
-		//for (DayOfWeek dayOfWeek : DayOfWeek.values())
-		//{
-		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
-		//}
-		Connection con = graph.getConnection(8, 18, DayOfWeek.SUNDAY, 686);
-
-		return;
-	}
 
 	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
@@ -135,7 +122,7 @@ public class ControllerGraph
 			prev = new HashMap<>();
 		}
 
-		public int getValueInWeek(DayOfWeek day)
+		private int getValueInWeek(DayOfWeek day)
 		{
 			DayOfWeek current = this.day;
 			int i = 0;
@@ -147,134 +134,6 @@ public class ControllerGraph
 
 			return i;
 		}
-
-
-		// <editor-fold desc="old attempt">
-		private boolean isWorkDay(DayOfWeek day)
-		{
-			return (day == DayOfWeek.MONDAY || day == DayOfWeek.TUESDAY|| day == DayOfWeek.THURSDAY || day == DayOfWeek.WEDNESDAY || day == DayOfWeek.THURSDAY);
-		}
-
-		/**
-		 * Calculates edge arrivalTime or rather earliest arrival time in unix timestamp at s2 for edge (s1,s2). s2 must be in neighbourhood of s1
-		 * @param id1 first Vertex in edge
-		 * @param id2 second Vertex in edge
-		 * @param time earliest departure at s1 in unix timestamp
-		 * @return earliest arrival at s2 in unix timestamp
-		 * @pre s2 is direct neighbour of s1
-		 */
-		/*private int arrivalTime(int id1, int id2, int time)
-		{
-			int arrival = -1;
-
-			//connectors contains all routes going from s1 to s2
-			LinkedList<Route> connectors = routesConnecting.get(new TupleInt(id1, id2));
-
-
-			StoppingPoint stoppingPoint1 = null;
-			StoppingPoint stoppingPoint2 = null;
-			for (Route connector : connectors)
-			{
-				HashMap<DayOfWeek, LinkedList<Integer>> startTimes = connector.getStartTimes();
-
-				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
-				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
-
-				int currentArrival = 0;
-
-				int timeDiff = 0;
-				int timeDiffOnFirst = 0;
-
-				for (Triple<BusStop, StoppingPoint, Integer> routeStop : routeStops)
-				{
-					timeDiff += routeStop.getThird();
-
-					BusStop currentStop = routeStop.getFirst();
-
-					if(currentStop.getId() == id1) //bus arrived at s1
-					{
-						timeDiffOnFirst = timeDiff;
-						stoppingPoint1 = routeStop.getSecond();
-					}
-					else if (currentStop.getId() == id2) //bus arrived at s2 -> break
-					{
-						stoppingPoint2 = routeStop.getSecond();
-						break;
-					}
-				}
-
-				ArrayList<Integer> temp = new ArrayList<>();
-
-
-				boolean getNewTimes = false;
-				for (Integer start : startTimesOnDay)
-				{
-
-					if(timeDiffOnFirst + start < time) //bus arrives at s1 before specified time
-					{
-						int x = (time - start - timeDiff)/1440 + 1; //convert time in days, add one and convert back in minutes
-						if(isWorkDay(day.plus(1)) && isWorkDay(day)) //if requested day and requested day + x are both between Mo-Fr
-						{
-							temp.add(timeDiffOnFirst + start + x * 1440);
-
-						}
-						else
-							getNewTimes = true;
-					}
-					else
-					{
-						temp.add(start + timeDiff);
-						break;
-					}
-				}
-
-				if(getNewTimes)
-				{
-					int dayOffset = time / 1440;
-					LinkedList<Integer> newStarTimes = connector.getStartTimes().get(day.plus(dayOffset));
-
-					for (Integer newStarTime : newStarTimes)
-					{
-						if(timeDiffOnFirst + newStarTime < time)
-						{
-							int x = (time - newStarTime - timeDiff)/1440 + 1;
-							temp.add(timeDiffOnFirst + newStarTime + x * 1440);
-						}
-
-					}
-				}
-
-
-
-				if(temp.size() != 0)
-					currentArrival = Collections.min(temp);
-				else
-					currentArrival = Integer.MAX_VALUE;
-
-				if(currentArrival < arrival || arrival == -1)
-				{
-					arrival = currentArrival;
-					TupleInt tuple = new TupleInt(id1, id2);
-					bestRoutes.put(tuple, connector);
-
-
-					//only add/modify existing entry, if new weight is smaller than existing weight
-					if(currentArrival < dist.get(id2))
-					{
-						bestStoppingPoints.put(id2, stoppingPoint2);
-						if(id1 == startId)
-							bestStoppingPoints.put(id1, stoppingPoint1);
-					}
-				}
-
-			}
-
-
-			if(arrival - dist.get(id1).intValue() < 0)
-				System.out.println("negative edge weight -> midnight bug");
-			return arrival;
-		}*/
-		// // </editor-fold>
 
 		private int arrivalTime(int id1, int id2, int time)
 		{
@@ -342,7 +201,6 @@ public class ControllerGraph
 				}
 
 
-
 				if(temp.size() != 0)
 					currentArrival = Collections.min(temp);
 				else
@@ -366,9 +224,6 @@ public class ControllerGraph
 
 			}
 
-
-			if(arrival - dist.get(id1).intValue() < 0)
-				System.out.println("negative edge weight -> midnight bug");
 			return arrival;
 		}
 
@@ -487,12 +342,6 @@ public class ControllerGraph
 					time = time >= 1440 ? time % 1440 : time;
 				}
 
-				/*System.out.println("Start: " + (dist.get(currentStop).intValue() - currentRoute.getDuration(prevStop, currentStop)));
-				System.out.println("Arrival at 2nd BusStop: " + dist.get(currentStop).intValue());
-				System.out.println("Stopping Point - Begin: " + db.getBusStopById(prevStop).getName() + ": " + bestStoppingPoints.get(prevStop).getName());
-				System.out.println("Route taken: " + bestRoutes.get(new TupleInt(prevStop, currentStop)).getName());
-				System.out.println("Stopping Point - End: " + db.getBusStopById(currentStop).getName() + ": " + bestStoppingPoints.get(currentStop).getName());*/
-
 
 				//no change of route -> no transition -> delete old Quadruple but save its end stopping point
 				endStoppingPoint = bestStoppingPoints.get(currentStop);
@@ -525,18 +374,6 @@ public class ControllerGraph
 				prevStop = prev.get(currentStop) == null ? -1 : prev.get(currentStop);
 			}
 
-			/*System.out.println("Time: " + time + " (" + time / 60 + ":" + time % 60 + ")");
-			System.out.println("Duration: " + duration);
-			System.out.println();
-			for (Quintuple<Integer, StoppingPoint, Route, StoppingPoint, Integer> trip : trips)
-			{
-				System.out.println("Start: " + trip.getFirst() + " (" + trip.getFirst() / 60 + ":" + trip.getFirst() % 60 + ")");
-				System.out.println("From: " + db.getBusStopByStoppingPointId(trip.getSecond().getId()).getName() + ": " + trip.getSecond().getName());
-				System.out.println("Route: " + trip.getThird().getName());
-				System.out.println("To: " + db.getBusStopByStoppingPointId(trip.getFourth().getId()).getName() + ": " + trip.getFourth().getName());
-				System.out.println("Arrival: " + trip.getFifth() + " (" + trip.getFifth() / 60 + ":" + trip.getFifth() % 60 + ")");
-
-			}*/
 			return new Connection(trips, duration, time, day.plus(dayOffset));
 		}
 	}
