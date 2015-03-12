@@ -12,7 +12,8 @@ public enum ColumnsBus
 	ARTICULATED_BUS,
 	NUMBER_OF_SEATS,
 	STANDING_ROOM,
-	NEXT_INSPECTION;
+	NEXT_INSPECTION,
+	NEXT_INSPECTION_STATUS;
 
 	@Override
 	public String toString()
@@ -33,6 +34,8 @@ public enum ColumnsBus
 				return "Stehplätze";
 			case NEXT_INSPECTION:
 				return "Nächste Inspektion";
+			case NEXT_INSPECTION_STATUS:
+				return "";
 		}
 		return "";
 	}

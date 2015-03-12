@@ -1,5 +1,7 @@
 package de.uni_muenster.sopra2015.gruppe8.octobus.view.tabs.table_models;
 
+import javax.swing.*;
+
 /**
  * TableModel for TabBus table.
  */
@@ -49,6 +51,9 @@ public class TableModelBus extends ExtendedTableModel
 
 			case 7:
 				return TableDate.class;
+
+			case 8:
+				return ImageIcon.class;
 		}
 		return null;
 	}
