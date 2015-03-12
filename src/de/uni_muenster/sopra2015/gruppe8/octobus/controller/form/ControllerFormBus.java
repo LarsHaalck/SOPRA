@@ -115,7 +115,15 @@ public class ControllerFormBus extends Controller implements ListenerButton
 			errorFields.add("Das Kennzeichen darf nicht leer sein.");
 		else if(licencePlate.trim().length() < 5)
 			errorFields.add("Das Kennzeichen muss mindestens 5 Zeichen umfassen.");
-		//else if(objectID == -1 && controllerDatabase.get)
+		else if(objectID == -1 && controllerDatabase.getBusByLicensePlate(licencePlate) != null)
+			errorFields.add("Das Kennzeichen existiert bereits.");
+		else if(objectID != -1 && controllerDatabase.getBusByLicensePlate(licencePlate) != null)
+		{
+			if(!licencePlate.equals(bus.getLicencePlate()))
+			{
+				errorFields.add("Das Kenzeichen existiert bereits.");
+			}
+		}
 		if(numberOfSeats == -1)
 			errorFields.add("Die Anzahl der Sitzplätze darf nicht leer sein.");
 		if(standingRoom == -1)
