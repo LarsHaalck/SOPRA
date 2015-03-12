@@ -2401,7 +2401,7 @@ public class ControllerDatabase
 	 * @pre bus and employee with supplied ID exist in database
 	 * @post bus and employee with supplied ID are assigned to tour
 	 */
-	public void modifyTour(int tourID, int busID, int empID)
+	public void modifyTour(int tourID, Integer busID, Integer empID)
 	{
 		create.update(TOURS)
 				.set(TOURS.BUSES_ID, busID)
