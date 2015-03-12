@@ -29,6 +29,14 @@ public class ControllerGraph
 	}
 
 	/**
+	 * sets DB connection to test db. Only for testing!!
+	 */
+	public void setTest()
+	{
+		db = ControllerDatabase.getTestingInstance("DB_for_jUnit_tests.db");
+	}
+
+	/**
 	 * Reinitializes all variables and rebuilds adjacency set. Should be called after changing BusStops or Routes
 	 */
 	public void init()
