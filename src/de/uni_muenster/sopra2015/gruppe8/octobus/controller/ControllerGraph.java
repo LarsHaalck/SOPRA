@@ -51,17 +51,19 @@ public class ControllerGraph
 		//	System.out.println(dayOfWeek + " + 2 Tage = " + dayOfWeek.plus(2));
 		//}
 
-		for(int i = 0; i < 1440; i++)
+		for(int i = 1391; i < 1440; i++)
 		{
 			DayOfWeek friday = DayOfWeek.FRIDAY;
 			System.out.println(i);
 
-			for(int j = 0; j < 2; j++)
+			for(int j = 0; j < 3; j++)
 			{
 				graph.getConnection(8, 18, friday.plus(j), i);
 			}
 
 		}
+
+
 
 
 		return;
@@ -211,13 +213,19 @@ public class ControllerGraph
 
 				ArrayList<Integer> temp = new ArrayList<>();
 
+				int bla;
+				if( time >= 1440)
+					bla = 5;
 
-				LinkedList<Integer> startTimesOnDay = startTimes.get(day);
-				LinkedList<Integer> starTimesTomorrow = startTimes.get(day.plus(1));
+				DayOfWeek currentDay = this.day.plus(time/1440);
+
+
+				LinkedList<Integer> startTimesOnDay = startTimes.get(currentDay);
+				LinkedList<Integer> starTimesTomorrow = startTimes.get(currentDay.plus(1));
 
 				for (Integer start : startTimesOnDay)
 				{
-					int startTime = start + 1440 * getValueInWeek(day);
+					int startTime = start + 1440 * getValueInWeek(currentDay);
 
 					if(timeDiffOnFirst + startTime >= time)
 					{
@@ -228,10 +236,9 @@ public class ControllerGraph
 
 				for (Integer startTomorrow : starTimesTomorrow)
 				{
-					int startTime = startTomorrow + 1440 * getValueInWeek(day.plus(1));
+					int startTime = startTomorrow + 1440 * getValueInWeek(currentDay.plus(1));
 
 					temp.add(startTime + timeDiff);
-					break;
 				}
 
 
