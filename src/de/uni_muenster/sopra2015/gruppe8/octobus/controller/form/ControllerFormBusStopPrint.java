@@ -54,8 +54,8 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 		switch (emitter)
 		{
 			case FORM_BUS_STOP_PRINT_PRINT:
-				printBusStop();
-				closeDialog();
+				if(printBusStop())
+					closeDialog();
 			break;
 			case FORM_BUS_STOP_PRINT_CANCEL:
 				closeDialog();
@@ -66,7 +66,7 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 	/**
 	 * Gives a printRequest to the controllerManager for an array with every selected stoppingPoint
 	 */
-	public void printBusStop(){
+	public boolean printBusStop(){
 		ArrayList<Tuple<JCheckBox, Integer>> stops = formBusStopPrint.getStops();
 		ArrayList<Integer> ids = new ArrayList<>();
 
@@ -77,9 +77,18 @@ public class ControllerFormBusStopPrint extends Controller implements ListenerBu
 				ids.add(stop.getSecond());
 			}
 		}
-		formBusStopPrint.setCursor(true);
-		ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
-		formBusStopPrint.setCursor(false);
+		if(ids.size() == 0)
+		{
+			formBusStopPrint.showErrorForm("Bitte wählen Sie mindestens einen Haltepunkt aus.");
+			return false;
+		}
+		else
+		{
+			formBusStopPrint.setCursor(true);
+			ControllerManager.informPrintRequested(EmitterPrint.STOPPING_POINT, ids);
+			formBusStopPrint.setCursor(false);
+			return true;
+		}
 	}
 
 	/**

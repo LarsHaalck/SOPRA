@@ -9,9 +9,8 @@ import java.awt.print.PrinterException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 
-//TODO JavaDoc
 /**
- * Created by Florian on 07.03.2015.
+ * Implements method that is called during print
  */
 public class PrintViewStoppingPoint implements Printable
 {
@@ -26,6 +25,11 @@ public class PrintViewStoppingPoint implements Printable
 	private PrintStoppingPoint data;
 	private ArrayList<PrintStoppingPoint.RouteEntry> routes;
 
+	/**
+	 * Inits all data
+	 * @param data Data to print
+	 * @param firstPage first-page for this view in print-book
+	 */
 	public PrintViewStoppingPoint(PrintStoppingPoint data, int firstPage)
 	{
 		this.data = data;
@@ -37,15 +41,7 @@ public class PrintViewStoppingPoint implements Printable
 		fontNormal = new Font("Serif", Font.PLAIN, 8);
 	}
 
-	/**
-	 * Gives back if page will be printed.
-	 *
-	 * @param graphics
-	 * @param pageFormat
-	 * @param pageIndex
-	 * @return if page exists
-	 * @throws PrinterException
-	 */
+	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 	{
 		graphics2D = (Graphics2D) graphics;

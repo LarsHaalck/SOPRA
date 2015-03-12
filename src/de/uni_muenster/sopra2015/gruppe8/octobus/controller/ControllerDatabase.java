@@ -47,6 +47,7 @@ public class ControllerDatabase
 	private static ControllerDatabase controllerDatabase = null;
 
 	private DSLContext create;
+	private Connection conn;
 
 	private ControllerDatabase(String databaseName, boolean jUnitTest)
 	{
@@ -95,7 +96,6 @@ public class ControllerDatabase
 				newFile= !checkDatabaseFile();
 
 			String url = "jdbc:sqlite:" + databaseName;
-			Connection conn;
 
 			// Dynamically load SQLite driver
 			Class.forName("org.sqlite.JDBC");
@@ -114,6 +114,21 @@ public class ControllerDatabase
 		{
 			System.out.println("SQL-Exception occurred.");
 			e.printStackTrace();
+		}
+	}
+
+	public void closeDB()
+	{
+		try
+		{
+			conn.close();
+			controllerDatabase = null;
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		} catch (Throwable throwable)
+		{
+			throwable.printStackTrace();
 		}
 	}
 
@@ -876,7 +891,7 @@ public class ControllerDatabase
 	 * @pre no employee with the same user name is in the database. userName and roles are not null.
 	 * @post employee is successfully added to database
 	 */
-	public int addEmployee(Employee emp)
+	public Triple<Integer, String, String> addEmployee(Employee emp)
 	{
 		// Take care of creating a salt and hashing the default password with that salt
 		SecureRandom random = new SecureRandom();
@@ -933,10 +948,12 @@ public class ControllerDatabase
 						emp.isRole(Role.TICKET_PLANNER),
 						emp.isRole(Role.HR_MANAGER),
 						emp.isRole(Role.SCHEDULE_MANAGER))
-				.returning(EMPLOYEES.EMPLOYEES_ID)
+				.returning(EMPLOYEES.EMPLOYEES_ID, EMPLOYEES.PASSWORD, EMPLOYEES.SALT)
 				.fetchOne();
 
-		return (newEmp.getEmployeesId());
+		return (new Triple<>(newEmp.getEmployeesId(),
+				newEmp.getSalt(),
+				newEmp.getPassword()));
 	}
 
 	/**

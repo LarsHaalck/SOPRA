@@ -2,7 +2,6 @@ package de.uni_muenster.sopra2015.gruppe8.octobus.view.displays;
 
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.display.ControllerDisplayTicket;
 import de.uni_muenster.sopra2015.gruppe8.octobus.controller.listeners.EmitterButton;
-import javafx.scene.text.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,6 @@ import java.awt.Font;
  */
 public class DisplayTicket extends JPanel
 {
-	//panel which shall show all tickets should be with scollpane
 	private JPanel plTable;
 	private JPanel plTickets;
 	private JButton btnBack;
@@ -46,7 +44,7 @@ public class DisplayTicket extends JPanel
 		plTickets.setLayout(new GridBagLayout());
 		plTickets.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		cst = new GridBagConstraints();
-		controller.fill();
+		controller.fill(); //adds the ticketInformation
 		plTable.add(plTickets);
 	}
 
@@ -119,7 +117,7 @@ public class DisplayTicket extends JPanel
 	 * @param price of the ticket
 	 * @return String with the right format of the price
 	 */
-	public String formatPrice(int price)
+	private String formatPrice(int price)
 	{
 		int euro = price/100;
 		int cent = price%100;

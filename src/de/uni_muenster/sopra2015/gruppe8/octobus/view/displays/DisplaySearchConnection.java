@@ -357,6 +357,7 @@ public class DisplaySearchConnection extends JPanel
 
     /**
      * Adds an element to the tableModel and positions at the bottom of the list.
+     * @pre foundConnection is not null and filled with correct data
      * @param foundConnection connection which will be added.
      */
     public void addLastConnectionAndUpdateTable(Connection foundConnection)
@@ -380,6 +381,7 @@ public class DisplaySearchConnection extends JPanel
 
     /**
      * Adds an element to the tableModel and positions it at the top of the list.
+     * @pre foundConnection is not null and filled with correct data
      * @param foundConnection connection which will be added.
      */
     public void addFirstConnectionAndUpdateTable(Connection foundConnection)
@@ -394,6 +396,12 @@ public class DisplaySearchConnection extends JPanel
         scrollPaneTable.repaint();
     }
 
+    /**
+     * Shows information about this currentSelectedConnection inside the textPane.
+     * @pre currentSelectedConnection is filled with correct data
+     * @param currentSelectedConnection connection whose information should be shown inside
+     *                                  the textPane.
+     */
     public void showSelectedConnection(String currentSelectedConnection){
         if (formattedConnectionDisplay == null)
         {
@@ -497,9 +505,4 @@ public class DisplaySearchConnection extends JPanel
 
         return null;
     }
-
-
-
-
-
 }
