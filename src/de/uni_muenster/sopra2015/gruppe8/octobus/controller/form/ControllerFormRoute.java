@@ -52,7 +52,6 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		//Sets the global route to the passed objectID
 		if(objectID != -1)
 		{
-			initialChanges = true;
 			setRouteInfo();
 		}
 	}
@@ -106,11 +105,11 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 							{
 								//also refreshes form used to set the time between stopping points
 								//and inserts preexisting values if it is used to change a route.
-								if (objectID != -1)
+								if (objectID != -1 && !initialChanges)
 								{
 									formRoute.getStep2().fillJpMain(busStops);
+									insertDepartureTimes();
 								}
-								insertDepartureTimes();
 							}
 							refreshTablesStep2();
 							initialChanges = true;
@@ -476,28 +475,10 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 		}
 		else
 		{
-			//If input is valid this sets the global route's attributes to the form input.
-			/*if(stopsChanged)
-			{
-				if(formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)"))
-				{
-					route.setName(name);
-					route.setNight(night);
-					routeStoppingPoints = stoppingPoints;
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{*/
 				route.setName(name);
 				route.setNight(night);
 				routeStoppingPoints = stoppingPoints;
 				return true;
-		//	}
 		}
 	}
 
