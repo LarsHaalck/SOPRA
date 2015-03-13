@@ -4,6 +4,9 @@ import de.uni_muenster.sopra2015.gruppe8.octobus.model.*;
 
 import java.time.DayOfWeek;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -18,6 +21,8 @@ public class ControllerGraph
 	private ControllerDatabase db;
 	private ArrayList<BusStop> stops;
 	private ArrayList<Route> routes;
+	private int cpuCount;
+	//private ExecutorService service;
 
 
 	/**
@@ -26,6 +31,8 @@ public class ControllerGraph
 	public ControllerGraph()
 	{
 		db = ControllerDatabase.getInstance();
+		this.cpuCount = Runtime.getRuntime().availableProcessors();
+		//this.service = Executors.newFixedThreadPool(cpuCount);
 	}
 
 	/**
@@ -51,6 +58,7 @@ public class ControllerGraph
 
 		buildAdjSet();
 	}
+
 
 	/**
 	 * Builds set of directly connected BusStops and stores connecting routes for later use in Dijkstra-Algorithm
@@ -251,6 +259,7 @@ public class ControllerGraph
 					}
 				}
 				//else leave arrival alone
+
 
 			}
 
