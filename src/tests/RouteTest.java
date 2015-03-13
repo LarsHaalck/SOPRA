@@ -17,9 +17,11 @@ public class RouteTest
 	@Before
 	public void setUp() throws Exception
 	{
-		ControllerDatabase db = ControllerDatabase.getInstance();
-		route = db.getRouteById(4); // 2 -> Clemenshospital
-		a = db.getBusStopById(18); //Engelenschanze
+		ControllerDatabase db = ControllerDatabase.getTestingInstance("DB_for_jUnit_tests.db");
+		// 2 -> Clemenshospital
+		route = db.getRouteById(4);
+		//Engelenschanze
+		a = db.getBusStopById(18);
 		b = db.getBusStopById(13);
 
 	}
@@ -42,7 +44,4 @@ public class RouteTest
 	{
 		assertEquals(6, route.getDuration(a, b));
 	}
-
-
-
 }
