@@ -134,8 +134,8 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 time = 0;
                 if (latestDay == curDay) break;
                 continue;
-            }else if (currentConnectionSearch.getStartingDay() == latestDay)
-                latestDay = curDay.plus(1);
+            }else if (currentConnectionSearch.getStartingDay() != latestDay)
+                latestDay = latestDay.plus(1);
 
             earliestConnection = currentConnectionSearch;
             latestConnection = currentConnectionSearch;
@@ -247,9 +247,10 @@ public class ControllerDisplaySearchConnection extends Controller implements Lis
                 latestTime = 0;
                 latestDay = latestDay.plus(1);
                 continue;
-            } else if (false) //currentConnectionSearch.changedDay()
+            } else if (currentConnectionSearch.getStartingDay() != latestDay) //currentConnectionSearch.changedDay()
             {
                 latestDay = latestDay.plus(1);
+                latestTime = 0;
             } else
             {
                 latestConnection = currentConnectionSearch;
