@@ -77,9 +77,19 @@ public class ControllerFormRoute extends Controller implements ListenerButton, L
 				{
 					//Step 1
 					boolean confirmation = true;
-					if(initialChanges && stopsChanged)
+					if(objectID != -1)
 					{
-						confirmation = formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)");
+						if (stopsChanged)
+						{
+							confirmation = formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)");
+						}
+					}
+					else
+					{
+						if (initialChanges && stopsChanged)
+						{
+							confirmation = formRoute.showConfirmDialog("Sie haben Änderungen an den Haltestellen vorgenommen. \nDadurch werden die Zeiten zwischen den Haltepunkten zurückgesetzt. \nFortfahren? (Zum Wiederherstellen des alten Zustands danach Abbrechen)");
+						}
 					}
 					if (confirmation)
 					{
