@@ -178,7 +178,7 @@ public class ControllerGraph
 
 				LinkedList<Triple<BusStop, StoppingPoint, Integer>> routeStops = connector.getStops();
 
-				int currentArrival = 0;
+				int currentArrival = -1;
 
 				int timeDiff = 0;
 				int timeDiffOnFirst = 0;
@@ -233,9 +233,9 @@ public class ControllerGraph
 				if(temp.size() != 0)
 					currentArrival = Collections.min(temp);
 				else
-					currentArrival = Integer.MAX_VALUE;
+					currentArrival = -1;
 
-				if(currentArrival < arrival || arrival == -1)
+				if(currentArrival < arrival || arrival == -1 && currentArrival != -1)
 				{
 					arrival = currentArrival;
 					TupleInt tuple = new TupleInt(id1, id2);
@@ -250,6 +250,7 @@ public class ControllerGraph
 							bestStoppingPoints.put(id1, stoppingPoint1);
 					}
 				}
+				//else leave arrival alone
 
 			}
 
@@ -325,6 +326,7 @@ public class ControllerGraph
 						arrivalAtNeighbour = arrivalTime(stopId, neighbourId, dist.get(stopId).intValue()); //arrivalTime contains earliest arrival at w
 
 
+					if(arrivalAtNeighbour == -1) continue;
 					if(arrivalAtNeighbour < dist.get(neighbour.getId()))
 					{
 						fibHeap.enqueue(neighbourId, arrivalAtNeighbour);
